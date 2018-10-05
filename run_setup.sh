@@ -2,11 +2,15 @@
 
 ICINGA2_AGENT_VERSION="2.9.2"
 
+# Init share folder structure
+#
+./scripts/010_init_neteyeshare.sh
+
 # Icinga2 Agents
 #
-./scripts/010_get_icinga2_agents.sh $ICINGA2_AGENT_VERSION
+./scripts/020_get_icinga2_agents.sh $ICINGA2_AGENT_VERSION
 
 # Icinga2 Configuration of defaults
 #
 # LDAP Ressource
-./scripts/020_ressources_init.sh
+./scripts/030_ressources_init.sh
