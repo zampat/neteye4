@@ -6,6 +6,7 @@ ICINGA2_AGENT_VERSION=$1
 
 if [ ! -f $FOLDER_MONITORING_AGENT_MICROSOFT/Icinga2-v$ICINGA2_AGENT_VERSION-x86.msi ]
 then
+   mkdir -p $FOLDER_MONITORING_AGENT_MICROSOFT
    echo "[i] Installing Icinga Monitoring Agent Version $ICINGA2_AGENT_VERSION for Microsoft"
    wget https://packages.icinga.com/windows/Icinga2-v$ICINGA2_AGENT_VERSION-x86_64.msi -O ${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2-v$ICINGA2_AGENT_VERSION-x86_64.msi
    wget https://packages.icinga.com/windows/Icinga2-v$ICINGA2_AGENT_VERSION-x86.msi -O ${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2-v$ICINGA2_AGENT_VERSION-x86.msi
