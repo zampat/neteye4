@@ -14,3 +14,7 @@ ICINGA2_AGENT_VERSION="2.9.2"
 #
 # LDAP Ressource
 ./scripts/030_ressources_init.sh
+
+# Monitoring Templates Import
+#
+./scripts/040_monitoring_templates_init.sh
