@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FOLDER_MONITORING="/neteye/shared/neteyeshare/Monitoring"
+FOLDER_MONITORING="/neteye/shared/neteyeshare/monitoring"
 
 #Create folder structure
 if [ ! -d $FOLDER_MONITORING ]

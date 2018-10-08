@@ -18,3 +18,9 @@ ICINGA2_AGENT_VERSION="2.9.2"
 # Monitoring Templates Import
 #
 ./scripts/040_monitoring_templates_init.sh
+
+
+# Monitoring Plugins Import
+#
+./scripts/050_monitoring_plugins_extra_init.sh
+./scripts/051_monitoring_plugins_activate.sh

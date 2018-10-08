@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FOLDER_MONITORING_AGENT_MICROSOFT="/neteye/shared/neteyeshare/Monitoring/Agents/Microsoft/Icinga"
+FOLDER_MONITORING_AGENT_MICROSOFT="/neteye/shared/neteyeshare/monitoring/agents/microsoft/icinga"
 ICINGA2_AGENT_VERSION=$1
 
 
