@@ -13,6 +13,6 @@ fi
 if [ ! -d ${FOLDER_MONITORING}/Extra_Icinga2_Configs/ ]
 then
    echo "[ ] Copy content of Extra_Icinga2_Configs"
-   cp -r Monitoring/Extra_Icinga2_Configs $FOLDER_MONITORING
+   cp -r monitoring/Extra_Icinga2_Configs $FOLDER_MONITORING
 fi
 
