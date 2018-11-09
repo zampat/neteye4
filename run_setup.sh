@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ICINGA2_AGENT_VERSION="2.9.2"
+ICINGA2_AGENT_VERSION="2.10.1"
 
 # Init share folder structure
 #
