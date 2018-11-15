@@ -1,0 +1,8 @@
+thruk_local.conf contains:
+1) Additional action menus
+provide dropdown for each host with direct link to:
+- nedi
+- glpi
+
+2) Report Scheduling
+Define email senders name
