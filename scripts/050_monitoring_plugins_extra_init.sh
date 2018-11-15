@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Define Variables
-FILESHARE_MONITORING="/neteye/shared/neteyeshare/monitoring"
+FILESHARE_MONITORING=$1
 FILESHARE_MONIT_PLUGINS="plugins-scripts"
 
 GIT_MONITORING_PLUGINS="https://github.com/zampat/monitoring.git"

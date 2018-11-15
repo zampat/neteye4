@@ -1,6 +1,12 @@
 #!/bin/bash
 
+# VARIABLES DEFINITION
 ICINGA2_AGENT_VERSION="2.10.1"
+
+NETEYESHARE_ROOT_PATH="/neteye/shared/neteyeshare"
+NETEYESHARE_MONITORING="${NETEYESHARE_ROOT_PATH} + /monitoring"
+
+
 
 # Init share folder structure
 #
@@ -22,5 +28,5 @@ ICINGA2_AGENT_VERSION="2.10.1"
 
 # Monitoring Plugins Import
 #
-./scripts/050_monitoring_plugins_extra_init.sh
+./scripts/050_monitoring_plugins_extra_init.sh $NETEYESHARE_MONITORING
 ./scripts/051_monitoring_plugins_activate.sh
