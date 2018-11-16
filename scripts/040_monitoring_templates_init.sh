@@ -1,11 +1,10 @@
 #!/bin/bash
 
 #Define Variables
-FILESHARE_TEMPLATES="/neteye/shared/neteyeshare/monitoring/"
+FILESHARE_TEMPLATES="$1 + /monitoring/"
 FILESHARE_MONIT_TEMPLATES="monitoring-templates/"
 
-
-GIT_MONITORING_TEMPLATES="https://github.com/zampat/icinga2-monitoring-templates.git"
+GIT_MONITORING_TEMPLATES="$2"
 
 # Clone Git Repo
 if [ ! -d ${FILESHARE_TEMPLATES}${FILESHARE_MONIT_TEMPLATES} ]

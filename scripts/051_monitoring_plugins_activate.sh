@@ -1,25 +1,25 @@
 #!/bin/bash
 
 # Activate selected monitoring Plugins in contrib foler
+MONITORING_PLUGINS_CONTRIB_DIR="$1"
 
 #Define Variables
-FILESHARE_MONITORING="/neteye/shared/neteyeshare/monitoring"
-FILESHARE_MONIT_PLUGINS="${FILESHARE_MONITORING}/plugins-scripts/monitoring-plugins"
-
-MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
+CHECK_INTERFACES="./monitoring/monitoring-plugins/network-devices/check_interfaces"
 
 
 # Clone Git Repo
-if [ -d ${FILESHARE_MONIT_PLUGINS} ]
+if [ -d ${MONITORING_PLUGINS_CONTRIB_DIR} ]
 then
    echo "[i] Copying Monitoring Plugins from git to Plugins contrib dir: ${MONITORING_PLUGINS_CONTRIB_DIR}"
 
-   PLUGIN="check_interfaces"
-   if [ -f ${FILESHARE_MONIT_PLUGINS}${PLUGIN} ]
+   # PLUGIN check_interfaces
+   PLUGIN="/check_interfaces"
+   if [ -f ${MONITORING_PLUGINS_CONTRIB_DIR}${PLUGIN} ]
    then
-	cp --force ${FILESHARE_MONIT_PLUGINS}/${PLUGIN} ${FILESHARE_MONIT_PLUGINS}/${PLUGIN}.bak
+	echo "[+] Creating Backup of ${PLUGIN}"
+	cp --force ${MONITORING_PLUGINS_CONTRIB_DIR}/${PLUGIN} ${MONITORING_PLUGINS_CONTRIB_DIR}/${PLUGIN}.bak
    fi
-   cp ${FILESHARE_MONIT_PLUGINS}/${PLUGIN} ${MONITORING_PLUGINS_CONTRIB_DIR}
+   cp ${CHECK_INTERFACES} ${MONITORING_PLUGINS_CONTRIB_DIR}
    echo "[i] Copied ${PLUGIN}"
 
 fi

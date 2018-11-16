@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FOLDER_MONITORING_AGENT_MICROSOFT="/neteye/shared/neteyeshare/monitoring/agents/microsoft/icinga"
-ICINGA2_AGENT_VERSION=$1
+FOLDER_MONITORING_AGENT_MICROSOFT="$1 + /agents/microsoft/icinga"
+ICINGA2_AGENT_VERSION=$2
 
 
 if [ ! -f $FOLDER_MONITORING_AGENT_MICROSOFT/Icinga2-v$ICINGA2_AGENT_VERSION-x86.msi ]
