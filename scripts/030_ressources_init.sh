@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Define Variables
-FILE_RESSOURCES="$1 + /resources.ini"
+FILE_RESSOURCES="$1/resources.ini"
 
 # Check if a demo Ressource for LDAP exists
 grep "ldap" $FILE_RESSOURCES > /dev/null 2>&1

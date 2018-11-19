@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #Define Variables
-FILESHARE_TEMPLATES="$1 + /monitoring/"
+FILESHARE_TEMPLATES="$1/monitoring/"
 FILESHARE_MONIT_TEMPLATES="monitoring-templates/"
 
 GIT_MONITORING_TEMPLATES="$2"
 
 # Clone Git Repo
-if [ ! -d ${FILESHARE_TEMPLATES}${FILESHARE_MONIT_TEMPLATES} ]
+if [ ! -d "${FILESHARE_TEMPLATES}${FILESHARE_MONIT_TEMPLATES}" ]
 then
    LOC=`pwd`
    echo "[i] Fetching Monitoring Templates for import from git."

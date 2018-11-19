@@ -1,10 +1,10 @@
 #!/bin/bash
 
-FOLDER_MONITORING_AGENT_MICROSOFT="$1 + /agents/microsoft/icinga"
+FOLDER_MONITORING_AGENT_MICROSOFT="$1/agents/microsoft/icinga"
 ICINGA2_AGENT_VERSION=$2
 
 
-if [ ! -f $FOLDER_MONITORING_AGENT_MICROSOFT/Icinga2-v$ICINGA2_AGENT_VERSION-x86.msi ]
+if [ ! -f "${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2-v$ICINGA2_AGENT_VERSION-x86.msi" ]
 then
    mkdir -p $FOLDER_MONITORING_AGENT_MICROSOFT
    echo "[i] Installing Icinga Monitoring Agent Version $ICINGA2_AGENT_VERSION for Microsoft"
