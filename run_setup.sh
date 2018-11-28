@@ -37,3 +37,4 @@ MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
 ./scripts/050_monitoring_plugins.sh $NETEYESHARE_MONITORING
 ./scripts/051_monitoring_plugins_activate.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
 ./scripts/052_monitoring_configurations.sh ${NETEYESHARE_MONITORING}
+./scripts/053_monitoring_analytics.sh ${NETEYESHARE_MONITORING}
