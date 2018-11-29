@@ -8,6 +8,7 @@
 #
 # Changelog: 2018-04-05 Creation of script
 # 2018-09-03 Warning/Critical threshold for MAX Incidents and MIN OK values. Rewrite of logic. 
+# 2018-11-29 Automate NetEye 3 and 4 compatibility (livestatus selector) 
 # 
 
 TMPFILE=/tmp/check_service_aggregator$$.tmp
@@ -16,6 +17,11 @@ MAX_INCIDENT_WARN="2"
 MAX_INCIDENT_CRIT="3"
 MIN_OK_WARN="3"
 MIN_OK_CRIT="2"
+
+NETEYE_3_LIVESTATUS_DIR="/var/log/nagios/rw"
+NETEYE_3_LIVESTATUS="${NETEYE_3_LIVESTATUS_DIR}/live"
+NETEYE_4_LIVESTATUS_DIR="/var/run/icinga2-master/icinga2/cmd"
+NETEYE_4_LIVESTATUS="${NETEYE_4_LIVESTATUS_DIR}/livestatus"
 
 trap 'rm -f $TMPFILE; exit 1' 1 2 15
 trap 'rm -f $TMPFILE' 0
@@ -83,10 +89,24 @@ then
    exit $STATE_UNKNOWN
 fi
 
-# NetEye 3: /var/log/nagios/rw/live
-echo -e "GET services\nColumns: host_display_name description state state_type acknowledged scheduled_downtime_depth\nFilter: description = $SERVICE" | ncat --unixsock /var/log/nagios/rw/live >$TMPFILE
-# NetEye 4: /var/run/icinga2-master/icinga2/cmd/livestatus
-#echo -e "GET services\nColumns: host_display_name description state state_type acknowledged scheduled_downtime_depth\nFilter: description = $SERVICE\n" | ncat --unixsock /var/run/icinga2-master/icinga2/cmd/livestatus >$TMPFILE
+#
+# NetEye 3 and 4 compatibility check: Livestatus path changes
+#
+if [ -d $NETEYE_3_LIVESTATUS_DIR ]
+then
+   # NetEye 3: /var/log/nagios/rw/live
+   echo -e "GET services\nColumns: host_display_name description state state_type acknowledged scheduled_downtime_depth\nFilter: description = $SERVICE" | ncat --unixsock $NETEYE_3_LIVESTATUS >$TMPFILE
+
+elif [ -d $NETEYE_4_LIVESTATUS_DIR ]
+then
+   # NetEye 4: /var/run/icinga2-master/icinga2/cmd/livestatus
+   echo -e "GET services\nColumns: host_display_name description state state_type acknowledged scheduled_downtime_depth\nFilter: description = $SERVICE\n" | ncat --unixsock $NETEYE_4_LIVESTATUS >$TMPFILE
+
+else
+   echo "Exception: Monitoring results can not be fetched from livestatus. Make sure livestatus is running"
+   exit 3
+fi
+
 
 NUM_OF_SERVICES=0
 NUM_OF_OK=0
