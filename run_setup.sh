@@ -3,8 +3,7 @@
 # VARIABLES DEFINITION
 GIT_MONITORING_TEMPLATES="https://github.com/zampat/icinga2-monitoring-templates.git"
 
-
-ICINGA2_AGENT_VERSION="2.10.1"
+ICINGA2_AGENT_VERSION="2.10.2"
 
 NETEYESHARE_ROOT_PATH="/neteye/shared/neteyeshare"
 NETEYESHARE_MONITORING="${NETEYESHARE_ROOT_PATH}/monitoring"
@@ -37,3 +36,4 @@ MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
 ./scripts/050_monitoring_plugins.sh $NETEYESHARE_MONITORING
 ./scripts/051_monitoring_plugins_activate.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
 ./scripts/052_monitoring_configurations.sh ${NETEYESHARE_MONITORING}
+./scripts/053_monitoring_analytics.sh ${NETEYESHARE_MONITORING}
