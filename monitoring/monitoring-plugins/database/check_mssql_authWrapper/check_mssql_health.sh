@@ -5,12 +5,12 @@ PWDFILE="/etc/nagios/neteye/plugins/mssql/auth.conf"
 PROG=$(basename $0)
 
 SECTION=$1
+shift
 MSSQL_CMD_ARGS=$*
 SECTION_FOUND_LINE="0"
 
 if [ -f $PWDFILE ]
 then
-
    for i in `cat $PWDFILE`
    do
 	
@@ -43,6 +43,9 @@ then
    echo "   $PWDFILE "
    exit 3
 fi
+
+# Trim special characters added by IWF file parser
+USER=$(echo "$USER"|tr -d "'\`\"")
 
 MSSQL_HEALTH="$NAGIOS_PATH/check_mssql_health --username $USER --password $PASSWD"
 
