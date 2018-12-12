@@ -13,9 +13,10 @@ ICINGA2_MASTERCONF_DIR="/neteye/shared/icingaweb2/conf"
 MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
 
 
-# Init share folder structure
+# Init share folder structure and WEB link
 #
 ./scripts/010_init_neteyeshare.sh ${NETEYESHARE_MONITORING}
+./scripts/011_init_neteyeshare_weblink.sh
 
 # Icinga2 Agents
 #
