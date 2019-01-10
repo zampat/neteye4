@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Script action:
+# Copy NetEye4 / Icinga2 monitoring configuration files to neteyeshare/
+#
+
 FOLDER_MONITORING=$1
 
 #Copy files ./monitoring/configurations

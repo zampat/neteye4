@@ -11,6 +11,7 @@ NETEYESHARE_MONITORING="${NETEYESHARE_ROOT_PATH}/monitoring"
 ICINGA2_MASTERCONF_DIR="/neteye/shared/icingaweb2/conf"
 
 MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
+MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 
 
 # Init share folder structure and WEB link
@@ -18,14 +19,18 @@ MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
 ./scripts/010_init_neteyeshare.sh ${NETEYESHARE_MONITORING}
 ./scripts/011_init_neteyeshare_weblink.sh
 
+
 # Icinga2 Agents
 #
 ./scripts/020_get_icinga2_agents.sh ${NETEYESHARE_MONITORING} ${ICINGA2_AGENT_VERSION}
 
-# Icinga2 Configuration of defaults
+
+# NetEye 4 default configurations
+# - Ressources
 #
 # LDAP Ressource
 ./scripts/030_ressources_init.sh ${ICINGA2_MASTERCONF_DIR}
+
 
 # Monitoring Templates Import
 #
@@ -34,8 +39,15 @@ MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
 
 # Monitoring Plugins Import
 #
-./scripts/050_monitoring_plugins.sh $NETEYESHARE_MONITORING
-./scripts/051_monitoring_plugins_activate.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
-./scripts/052_monitoring_configurations.sh ${NETEYESHARE_MONITORING}
-./scripts/053_monitoring_analytics.sh ${NETEYESHARE_MONITORING}
-./scripts/054_monitoring_third_party_gits.sh ${NETEYESHARE_MONITORING} 
+# Only copy contents to neteyeshare/
+./scripts/050_copy_nonproduct_monitoring_plugins.sh $NETEYESHARE_MONITORING
+./scripts/051_copy_nonproduct_monitoring_git_plugins.sh $NETEYESHARE_MONITORING
+# Activate Plugins in PluginsContribDir/
+./scripts/052_install_nonproduct_monitoring_plugins.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
+./scripts/053_install_product_monitoring_plugins_before_release.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
+
+# Extra content for neteyeshare
+# - Monitoring configuration samples
+./scripts/060_monitoring_configurations.sh ${NETEYESHARE_MONITORING}
+./scripts/061_monitoring_analytics.sh ${NETEYESHARE_MONITORING}
+
