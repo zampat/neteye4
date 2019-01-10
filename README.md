@@ -19,17 +19,17 @@ This project aims to provide scripts, monitoring plugins and other useful data t
 - 040_monitoring_templates_init.sh
   Provide monitoring templates for Icinga Director in neteyeshare
 
-- 050_monitoring_plugins.sh
+- 050_copy_nonproduct_monitoring_plugins.sh and 051_copy_nonproduct_monitoring_git_plugins.sh
   Provide monitoring plugins neteyeshare
 
-- 051_monitoring_plugins_activate.sh
+- 052_install_nonproduct_monitoring_plugins.sh and 053_install_product_monitoring_plugins_before_release.sh
   Activate useful monitoring plugins in PluginsContribDir
 
-- 052_monitoring_configurations.sh
+- 060_monitoring_configurations.sh
   Place additional Icinga2 monitoring configuration into neteyeshare. 
   a) Provide general Dependency apply rule to implement a parent-child hierarchy
 
-- 053_monitoring_analytics.sh
+- 061_monitoring_analytics.sh
   Place sample Analytics dashboards into neteyeshare.
   a) generic_services_by_hosts.json
   b) generic_snmp_interfaces.json
