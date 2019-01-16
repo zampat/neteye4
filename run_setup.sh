@@ -8,7 +8,8 @@ ICINGA2_AGENT_VERSION="2.10.2"
 NETEYESHARE_ROOT_PATH="/neteye/shared/neteyeshare"
 NETEYESHARE_MONITORING="${NETEYESHARE_ROOT_PATH}/monitoring"
 
-ICINGA2_MASTERCONF_DIR="/neteye/shared/icingaweb2/conf"
+ICINGA2_LIB_HOME_DIR="/usr/share/icingaweb2"
+ICINGA2_CONF_HOME_DIR="/neteye/shared/icingaweb2/conf"
 
 MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
 MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
@@ -29,12 +30,15 @@ MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 # - Ressources
 #
 # LDAP Ressource
-./scripts/030_ressources_init.sh ${ICINGA2_MASTERCONF_DIR}
+./scripts/030_ressources_init.sh ${ICINGA2_CONF_HOME_DIR}
 
 
 # Monitoring Templates Import
+# - Icinga2 Templates
+# - Icingaweb2 Icons: Host icions
 #
 ./scripts/040_monitoring_templates_init.sh ${NETEYESHARE_ROOT_PATH} ${GIT_MONITORING_TEMPLATES}
+./scripts/041_icingaweb2_icons_init.sh ${ICINGA2_LIB_HOME_DIR}
 
 
 # Monitoring Plugins Import

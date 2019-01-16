@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #Define Variables
+# ARG1: ICINGA2_CONF_HOME_DIR="/neteye/shared/icingaweb2/conf"
 FILE_RESSOURCES="$1/resources.ini"
 
 # Check if a demo Ressource for LDAP exists
@@ -10,9 +11,9 @@ RES=$?
 if [ $RES -ne 0 ]
 then
 
-echo "[i] Adding LDAP configuration sample to Icinga2 Ressources."
+   echo "[i] Adding LDAP configuration sample to Icinga2 Ressources."
 
-cat >>$FILE_RESSOURCES <<EOM
+   cat >>$FILE_RESSOURCES <<EOM
 
 [ldap_bind.local]
 type = "ldap"
@@ -23,6 +24,7 @@ root_dn = "dc=mydomain,dc=local"
 bind_dn = "ldapRO@mydomain.local"
 bind_pw = "password"
 EOM
+
 else
-  echo "[ ] LDAP configuration in Icinga2 Ressources already exists."
+   echo "[ ] LDAP configuration in Icinga2 Ressources already exists."
 fi
