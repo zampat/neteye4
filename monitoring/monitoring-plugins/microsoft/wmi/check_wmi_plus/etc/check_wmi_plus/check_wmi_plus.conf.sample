@@ -1,0 +1,108 @@
+# Check WMI Plus Config file
+# This is read in-line into the perl program, so the syntax has to be just right.
+
+# The settings in here override the default settings in the plugin code
+# This file is only required if you want to change the default settings in the plugin
+
+# It is provided in the release package as check_wmi_plus.conf.sample
+# Rename it to check_wmi_plus.conf and/or set its location right at the top of the check_wmi_plus.pl script
+
+# this file makes it easier to upgrade the plugin since you can keep your old settings in your own copy of this file
+
+# ---------------------- FILE LOCATIONS -------------------------
+
+# Set the full path where the plugin is installed
+# You might not even use this variable if you have different locations for everything
+$base_dir='CHANGE ME TO THE DIRECTORY WHERE THE PLUGIN IS INSTALLED'; # CHANGE THIS IF NEEDED
+
+# This is the full path location of the wmic command
+# - standard value "/usr/bin/wmic" since this is where it goes when it is compiled
+$wmic_command="/usr/bin/wmic"; # CHANGE THIS IF NEEDED
+
+# set the location of the ini file. Set to '' if not using it or specify using the --inifile parameter
+# set this to something else if you want
+# - standard value "$conf_file_dir/check_wmi_plus.ini"
+$wmi_ini_file='';
+
+# set the location of the ini dir. Set to '' if not using it or specify using the --inidir parameter
+# set this to something else if you want
+# - standard value "$conf_file_dir/check_wmi_plus.d"
+$wmi_ini_dir="$conf_file_dir/check_wmi_plus.d";
+
+# set the location of temporary directory - used for keep state option
+# if running on Windows then $ENV{'TMP'} will be set and hence used
+$tmp_dir=$ENV{"TMP"} || '/tmp';
+
+# this script helps with making the manpage help. By default it is in the same directory as the plugin itself
+$make_manpage_script="$base_dir/check_wmi_plus.makeman.sh";
+
+# this is the directory where the manpage is stored when created, defaults to the same directory as the ini files
+$manpage_dir="$wmi_ini_dir";
+
+# PRO only: set the location of where the check_wmi_plus will store some persistent data
+# - standard value "$conf_file_dir/check_wmi_plus.data"
+$wmi_data_dir="$conf_file_dir/check_wmi_plus.data";
+
+# PRO only: this is the file where the usage stats are stored (if using it via $collect_usage_info or --icollectusage)
+$usage_db_file="$wmi_data_dir/check_wmi_plus.usagedb";
+
+# PRO only: this is the file where the compiled ini files are stored
+$compiled_ini_file="$wmi_data_dir/check_wmi_plus.compiledini";
+
+# ---------------------- OTHER CONFIGURATION -------------------------
+
+# Disable the check of Perl Module versions
+# The module versions are checked because the are often the cause of the plugin not working correctly
+# If you want support you will need to reproduce the fault with the supported versions of the modules ie enable this check
+# Set to 1 to ignore the version check, Set to 0 to perform the check
+# Setting this to 1 has the same effect as the command line option  --IgnoreMyOutDatedPerlModuleVersions
+# Setting either this to 1 or the command line option will disable the check
+$ignore_my_outdated_perl_module_versions=0; # CHANGE THIS IF NEEDED
+
+# force the use of the wmic command line binary. Set to 1 to force
+# this is used if you have the wmiclient library installed but want to use the command line version
+$force_wmic_command=0; # CHANGE THIS IF NEEDED
+
+# used cached wmic responses
+# you don't really want this on unless you want to totally bypass wmic
+# some checks will totally fail with this set
+# all your check response will be inaccurate
+$use_cached_wmic_responses=0;
+
+# extra wmic args
+# specify standard additional arguments to pass directly to the wmic command line for ALL invocations of wmic
+# Note that the command line parameter --extrawmicarg is also available if you need this on a case by case basis
+# This is an array so you need to put each argument into a separate array index
+# eg @opt_extra_wmic_args=( "argument1=value1", "argument2=value2" );
+# should be set to @opt_extra_wmic_args=() if not used
+# extra wmic arguments specified on the command line are added to the ones specified here
+our @opt_extra_wmic_args=(); # extra arguments to pass to wmic
+
+# ------------------------ PRO Library Options -------------------------
+# PRO Only:
+# collect various usage info and store it in $usage_db_file for later analysis
+# also available by using the --icollectusage command line parameter
+# requires additional perl modules if invoked
+# turning this on adds a relatively large elapsed time penalty (relative to the execution time of the program)
+$collect_usage_info=1;
+
+# PRO Only:
+# show various usage info at end of plugin output
+# also available by using the --ishowusage command line parameter
+# requires additional perl modules if invoked
+$show_usage_info=0;
+
+# Pro Only:
+# Generate a Nagios error if there is a problem updating the usage stats
+# If set to 0, errors updating usage stats will be shown in the plugin output but will not impact the Nagios alert type
+$generate_nagios_error_for_usage_stats_problem=1;
+
+# Pro Only:
+# use compiled ini files for additional speed (reduces CPU and Elapsed times)
+$use_compiled_ini_files=0;
+
+# Pro Only:
+# force reading of the ini files - you may want to do this if you are doing a non-ini file check and you are using variables defined in an ini file
+# only use this if you really needed it since it makes each invocation of the plugin a lot slower
+$force_ini_open=0;
+
