@@ -43,13 +43,14 @@ export CERT_PATH=$ES_PATH_CONF/certs/
 
 Define a Role
 
-SI Consulting NetEye > LDAP Authentication: AD Group driven role assignment > image2019-1-30_9-57-0.png
+![AD Group driven role assignment](role_definition.png)
 
 Assign Index Permissions
-a) Define Index and Document type
+1. Define Index and Document type
 SI Consulting NetEye > LDAP Authentication: AD Group driven role assignment > image2019-1-30_9-57-46.png
-b) Assign permission to Index permission
+2. Assign permission to Index permission
 SI Consulting NetEye > LDAP Authentication: AD Group driven role assignment > image2019-1-30_9-58-31.png
+
 Assign optional Cluster Permissions
 NB: You can find this sample role as yml export in community git repo: sg_roles_sample.yml
 https://github.com/zampat/neteye4_monitoring_share/tree/master/logmanager/searchguard
@@ -57,7 +58,7 @@ https://github.com/zampat/neteye4_monitoring_share/tree/master/logmanager/search
 Sample sgadmin call to import new roles definitions:
 NB: Remember - all existing Roles will be replaced
 
-# /bin/bash /usr/share/elasticsearch/plugins/search-guard-6/tools/sgadmin.sh -f sg_roles_2019-Jan-29_15-10-48.yml -t roles -icl -nhnv -cacert $CERT_PATH/root-ca.crt -cert $CERT_PATH/admin.crt.pem -key $CERT_PATH/private/admin.key.pem
+/bin/bash /usr/share/elasticsearch/plugins/search-guard-6/tools/sgadmin.sh -f sg_roles_2019-Jan-29_15-10-48.yml -t roles -icl -nhnv -cacert $CERT_PATH/root-ca.crt -cert $CERT_PATH/admin.crt.pem -key $CERT_PATH/private/admin.key.pem
 
 
 ## Role Mapping
