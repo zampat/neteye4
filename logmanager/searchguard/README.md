@@ -24,8 +24,9 @@ Sample command call for NetEye to export all active configurations into a local 
 export ES_PATH_CONF=/neteye/local/elasticsearch/conf/
 export CERT_PATH=$ES_PATH_CONF/certs/
 
+```
 /bin/bash /usr/share/elasticsearch/plugins/search-guard-6/tools/sgadmin.sh -r  -icl -nhnv -cacert $CERT_PATH/root-ca.crt -cert $CERT_PATH/admin.crt.pem -key $CERT_PATH/private/admin.key.pem
-
+```
 
 ## Authentication via LDAP
 Setup the AD Authentication backend
@@ -37,7 +38,9 @@ Modify your sg_config* retrieved from above backup procedure and push new config
 export ES_PATH_CONF=/neteye/local/elasticsearch/conf/
 export CERT_PATH=$ES_PATH_CONF/certs/
 
+```
 /bin/bash /usr/share/elasticsearch/plugins/search-guard-6/tools/sgadmin.sh -f sg_config_<year_month_day>.yml -t config -icl -nhnv -cacert $CERT_PATH/root-ca.crt -cert $CERT_PATH/admin.crt.pem -key $CERT_PATH/private/admin.key.pem
+```
 
 ## LDAP user authentication and role assignment
 
@@ -58,7 +61,9 @@ https://github.com/zampat/neteye4_monitoring_share/tree/master/logmanager/search
 Sample sgadmin call to import new roles definitions:
 NB: Remember - all existing Roles will be replaced
 
+```
 /bin/bash /usr/share/elasticsearch/plugins/search-guard-6/tools/sgadmin.sh -f sg_roles_2019-Jan-29_15-10-48.yml -t roles -icl -nhnv -cacert $CERT_PATH/root-ca.crt -cert $CERT_PATH/admin.crt.pem -key $CERT_PATH/private/admin.key.pem
+```
 
 
 ## Role Mapping
@@ -91,6 +96,8 @@ https://github.com/zampat/neteye4_monitoring_share/tree/master/logmanager/search
 Sample sgadmin call to import new rolesmapping definitions:
 NB: Remember - all existing Role-Mappings will be replaced
 
+```
 /bin/bash /usr/share/elasticsearch/plugins/search-guard-6/tools/sgadmin.sh -f sg_roles_mapping_2019-Jan-29_15-10-48.yml -t rolesmapping -icl -nhnv -cacert $CERT_PATH/root-ca.crt -cert $CERT_PATH/admin.crt.pem -key $CERT_PATH/private/admin.key.pem
+```
 
 
