@@ -43,13 +43,13 @@ export CERT_PATH=$ES_PATH_CONF/certs/
 
 Define a Role
 
-![AD Group driven role assignment](role_definition.png)
+![Searchguard role definition](role_definition.png)
 
 Assign Index Permissions
 1. Define Index and Document type
-SI Consulting NetEye > LDAP Authentication: AD Group driven role assignment > image2019-1-30_9-57-46.png
+![Role Index Filter](role_definition_indexfilter.png)
 2. Assign permission to Index permission
-SI Consulting NetEye > LDAP Authentication: AD Group driven role assignment > image2019-1-30_9-58-31.png
+![Role Index Permissions](role_definition_indexpermission.png)
 
 Assign optional Cluster Permissions
 NB: You can find this sample role as yml export in community git repo: sg_roles_sample.yml
@@ -68,7 +68,7 @@ Define Role Mapping for
 searchguard role (choose from selection box)
 assign a user name for login (LDAP user or local user)
 assign a backen role (https://docs.search-guard.com/latest/mapping-users-roles#backend-roles-and-search-guard-roles )
-SI Consulting NetEye > LDAP Authentication: AD Group driven role assignment > image2019-1-30_10-1-10.png
+![Role Mapping definition](rolemapping_definition.png)
 
 
 
@@ -81,7 +81,7 @@ NB: Make use of SG Configuration tempalte file you can get from git community re
 Define a Role mapping as above
 
 Specify as Backend Role the name of the LDAP Group. Members of those group will recieve permissions associated to defined sg role.
-SI Consulting NetEye > LDAP Authentication: AD Group driven role assignment > image2019-1-30_10-10-15.png
+![Role Mapping on AD Groups definition](rolemapping_AD_Groups_definition.png)
 
 
 
