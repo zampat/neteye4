@@ -1,0 +1,61 @@
+---
+searchguard:
+  dynamic:
+    http:
+      anonymous_auth_enabled: false
+      xff:
+        enabled: false
+    authc:
+      basic_internal_auth_domain:
+        http_enabled: true
+        transport_enabled: true
+        order: 1
+        http_authenticator:
+          type: "basic"
+          challenge: true
+        authentication_backend:
+          type: "intern"
+      ldap:
+        http_enabled: true
+        transport_enabled: false
+        order: 2
+        http_authenticator:
+          type: "basic"
+          challenge: false
+        authentication_backend:
+          type: "ldap"
+          config:
+            enable_ssl: false
+            enable_start_tls: false
+            hosts:
+            - "ldapserver.localdomian:3268"
+            bind_dn: "ldap-ro-user@mydomain.local"
+            password: "s3cr3t_pa$$word"
+            userbase: "DC=mydomain,DC=local"
+            usersearch: "(&(objectClass=user)(!(objectClass=computer))(!(userAccountControl=514))(samaccountname={0}))"
+            username_attribute: "samaccountname"
+    authz:
+      roles_from_myldap:
+        http_enabled: true
+        transport_enabled: false
+        authorization_backend:
+          type: "ldap"
+          config:
+            enable_ssl: false
+            enable_start_tls: false
+            hosts:
+            - "ldapserver.localdomian:3268"
+            bind_dn: "ldap-ro-user@mydomain.local"
+            password: "s3cr3t_pa$$word"
+            rolebase: "DC=mydomain,DC=local"
+            rolesearch: "(member={0})"
+            userroleattribute: null
+            userrolename: "memberOf"
+            rolesearch_enabled: true
+            rolename: "cn"
+            resolve_nested_roles: false
+            userbase: "DC=mydomain,DC=local"
+            usersearch: "(&(objectClass=user)(!(objectClass=computer))(!(userAccountControl=514))(samaccountname={0}))"
+            skip_users:
+            - "logstash"
+            - "kibanaserver"

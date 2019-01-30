@@ -1,0 +1,7 @@
+---
+sg_myrole_all_view:
+  cluster: []
+  indices:
+    '*':
+      '*':
+      - "UNLIMITED"

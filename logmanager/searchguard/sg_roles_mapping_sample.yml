@@ -1,0 +1,8 @@
+---
+sg_myrole_all_view:
+  backendroles:
+  - "admin"
+  - "AD_MYGROUP_NAME"
+  hosts: []
+  users:
+  - "logmanager_user1"
