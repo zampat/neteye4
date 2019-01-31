@@ -33,6 +33,7 @@
 # 2.1: (20150403) : Duplicate Host check: introduce case insensitive regex 
 # 2.2: (20180927) : assets_in_monitoring check if Assets in GLPI are under active monitoring (Monarch) 
 # 2.2: (20181015) : Verify last run of a automatic action 
+# 2.3: (20190131) : Filter for Entity ID for Duplicates in GLPI 
 
 use DBI;
 use POSIX;
@@ -281,8 +282,16 @@ if ( length($str_detailOutput) < 1){
 sub check_glpi_duplicate_hostNames
 ############################################
 {
+
 if (defined ($o_ignoretrash) ) {
 	$query = "select ID, name, serial, date_mod from glpi_computers WHERE is_deleted='0' and ( name in (SELECT name FROM `glpi_computers` WHERE is_deleted='0' GROUP BY name having ( count(name) > 1 ) ) ) ORDER BY name";
+
+} elsif (defined ($o_glpiEntityID)){
+	$query = "select ID, name, serial, date_mod from glpi_computers WHERE entities_id = '$o_glpiEntityID' and ( name in (SELECT name FROM `glpi_computers` WHERE entities_id = '$o_glpiEntityID' GROUP BY name having ( count(name) > 1 ) ) ) ORDER BY name";
+
+} elsif (defined ($o_glpiEntityID) and defined(o_ignoretrash)){
+	$query = "select ID, name, serial, date_mod from glpi_computers WHERE is_deleted='0' and entities_id = '$o_glpiEntityID' and ( name in (SELECT name FROM `glpi_computers` WHERE is_deleted='0' and entities_id = '$o_glpiEntityID' GROUP BY name having ( count(name) > 1 ) ) ) ORDER BY name";
+
 } else {
 	$query = "select ID, name, serial, date_mod from glpi_computers WHERE name in (SELECT name FROM `glpi_computers` GROUP BY name having ( count(name) > 1 ) ) ORDER BY name";
 }
@@ -587,6 +596,7 @@ GetOptions(
 'v'	=> \$o_verb,		'verbous'	=> \$o_verb,
 'I'	=> \$o_ignoretrash,	'ignoretrash'	=> \$o_ignoretrash,
 'x:s'   => \$o_exclHosts,       'exlude:s'        =>\$o_exclHosts,
+'e:s'   => \$o_glpiEntityID,      'glpi_entityid:s'        =>\$o_glpiEntityID,
 's:s'   => \$o_glpiStatus,      'glpi_status:s'        =>\$o_glpiStatus,
 't:s'   => \$o_glpiTechGroup,   'glpi_tech_group:s'        =>\$o_glpiTechGroup,
 'a:s'   => \$o_glpiCronName,    'glpi_automatic_action_name:s'        =>\$o_glpiCronName,
@@ -689,6 +699,7 @@ Default: 20
 
 -I Ignore items marked as deleted
 
+-e GLPI Entity ID (only for -C duplications )
 -s GLPI STATUS ID (only for -C assets_in_monitoring )
 -t GLPI Tech. Groups ID (only for -C assets_in_monitoring )
 -a GLPI automatic action name to verify (only for -C automatic_action_last_run)
