@@ -364,8 +364,19 @@ start_neteye_services() {
 	if [ -e /etc/init.d/grafana-server ]
 	then
         	/etc/init.d/grafana-server start
-		RETVAL=$?
-		[ $RETVAL -ne 0 ] && exit 64
+		#RETVAL=$?
+		#[ $RETVAL -ne 0 ] && exit 64
+		COUNTER=0
+		TIMEOUT=60
+		while [ $COUNTER -lt $TIMEOUT ]
+ 		do
+                   ((COUNTER++))
+                   /etc/init.d/grafana-server status >/dev/null
+                   if [ $? -eq 0 ]; then
+                      break
+                   fi
+                   sleep 1
+                done
 	fi
 	if [ -e /etc/init.d/npcd ]
 	then
