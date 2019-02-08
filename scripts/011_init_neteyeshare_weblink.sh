@@ -21,23 +21,7 @@ fi
 
 if [ ! -f ${HTTP_CONF_FILE} ]
 then
-   cat >>${HTTP_CONF_FILE} <<EOM
-#
-# This configuration file allows the neteye client software to be accessed at
-# http://localhost/neteye-client-software/
-#
-Alias /neteyeshare /neteye/shared/neteyeshare
-
-<Directory "/neteye/shared/neteyeshare">
-    AuthType Basic
-    AuthName "Restricted Files"
-    # (Following line optional)
-    AuthBasicProvider file
-    AuthUserFile "/usr/local/httpd/passwd"
-    Require user sharero
-    Options Indexes
-</Directory>
-EOM
+   cp neteye4/neteyeshare/neteye-share.conf  ${HTTP_CONF_FILE}
 
    echo "[!] Now please reload service httpd to activate new neteyeshare weblink"
    echo "    systemctl restart httpd.service"
