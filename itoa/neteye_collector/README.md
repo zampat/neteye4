@@ -74,3 +74,12 @@ Enable and start telegraf collector service
 # systemctl status telegraf.service
 # systemctl enable telegraf.service
 ```
+
+# Influxdb retention policy
+
+Define retention policy of 365d for db "telegraf"
+
+```
+> SHOW RETENTION POLICIES
+> ALTER RETENTION POLICY autogen ON telegraf DURATION 365d DEFAULT
+```
