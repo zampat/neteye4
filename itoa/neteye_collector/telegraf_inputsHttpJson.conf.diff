@@ -1,0 +1,77 @@
+--- /etc/nagios/neteye/telegraf/sample_telegraf.conf.tpl	2018-07-30 14:44:58.000000000 +0200
++++ /etc/nagios/neteye/telegraf/telegraf.conf	2019-02-12 12:06:57.406826041 +0100
+@@ -25,7 +25,7 @@
+ # Configuration for telegraf agent
+ [agent]
+   ## Default data collection interval for all inputs
+-  interval = "10s"
++  interval = "180s"
+   ## Rounds collection interval to 'interval'
+   ## ie, if interval="10s" then always collect on :00, :10, :20, etc.
+   round_interval = true
+@@ -1890,34 +1890,37 @@
+ #   #   Host = "github.com"
+ 
+ 
+-# # Read flattened metrics from one or more JSON HTTP endpoints
+-# [[inputs.httpjson]]
+-#   ## NOTE This plugin only reads numerical measurements, strings and booleans
+-#   ## will be ignored.
+-#
+-#   ## Name for the service being polled.  Will be appended to the name of the
+-#   ## measurement e.g. httpjson_webserver_stats
+-#   ##
+-#   ## Deprecated (1.3.0): Use name_override, name_suffix, name_prefix instead.
+-#   name = "webserver_stats"
+-#
+-#   ## URL of each server in the service's cluster
+-#   servers = [
+-#     "http://localhost:9999/stats/",
+-#     "http://localhost:9998/stats/",
+-#   ]
+-#   ## Set response_timeout (default 5 seconds)
+-#   response_timeout = "5s"
+-#
+-#   ## HTTP method to use: GET or POST (case-sensitive)
+-#   method = "GET"
+-#
+-#   ## List of tag names to extract from top-level of JSON server response
+-#   # tag_keys = [
+-#   #   "my_tag_1",
+-#   #   "my_tag_2"
+-#   # ]
+-#
++# Read flattened metrics from one or more JSON HTTP endpoints
++[[inputs.httpjson]]
++  ## NOTE This plugin only reads numerical measurements, strings and booleans
++  ## will be ignored.
++
++  ## Name for the service being polled.  Will be appended to the name of the
++  ## measurement e.g. httpjson_webserver_stats
++  ##
++  ## Deprecated (1.3.0): Use name_override, name_suffix, name_prefix instead.
++  name_override = "monitoring_status"
++
++  ## URL of each server in the service's cluster
++  # Server 1: All Host details from Thruk
++  #   Note: We dont need the hosts details, bease all fields are provided by service details
++  #     "http://username:password@localhost/thruk/cgi-bin/status.cgi?hostgroup=all&style=hostdetail&view_mode=json",
++  # Server 2: All Service details from Thruk
++  servers = [
++    "http://username:password@localhost/thruk/cgi-bin/status.cgi?view_mode=json",
++  ]
++  ## Set response_timeout (default 5 seconds)
++  response_timeout = "20s"
++
++  ## HTTP method to use: GET or POST (case-sensitive)
++  method = "GET"
++
++  ## List of tag names to extract from top-level of JSON server response
++   tag_keys = [
++     "host_name",
++     "description"
++   ]
++
+ #   ## Optional TLS Config
+ #   # tls_ca = "/etc/telegraf/ca.pem"
+ #   # tls_cert = "/etc/telegraf/cert.pem"

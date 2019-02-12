@@ -1,0 +1,24 @@
+--- /etc/nagios/neteye/telegraf/sample_telegraf.conf.tpl	2018-07-30 14:44:58.000000000 +0200
++++ /etc/nagios/neteye/telegraf/telegraf.conf	2019-02-12 09:37:51.913480908 +0100
+@@ -90,10 +90,10 @@
+   ## urls will be written to each interval.
+   # urls = ["unix:///var/run/influxdb.sock"]
+   # urls = ["udp://127.0.0.1:8089"]
+-  # urls = ["http://127.0.0.1:8086"]
++  urls = ["http://127.0.0.1:8086"]
+ 
+   ## The target database for metrics; will be created as needed.
+-  # database = "telegraf"
++  database = "telegraf"
+ 
+   ## If true, no CREATE DATABASE queries will be sent.  Set to true when using
+   ## Telegraf with a user without permissions to create databases or when the
+@@ -109,7 +109,7 @@
+   # write_consistency = "any"
+ 
+   ## Timeout for HTTP messages.
+-  # timeout = "5s"
++  timeout = "5s"
+ 
+   ## HTTP Basic Auth
+   # username = "telegraf"

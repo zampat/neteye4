@@ -1,0 +1,51 @@
+--- /etc/nagios/neteye/telegraf/sample_telegraf.conf.tpl	2018-07-30 14:44:58.000000000 +0200
++++ /etc/nagios/neteye/telegraf/telegraf.conf	2019-02-12 09:46:15.178756533 +0100
+@@ -3562,27 +3562,27 @@
+ #   data_format = "influx"
+ 
+ 
+-# # Read metrics from NATS subject(s)
+-# [[inputs.nats_consumer]]
+-#   ## urls of NATS servers
+-#   # servers = ["nats://localhost:4222"]
+-#   ## Use Transport Layer Security
+-#   # secure = false
+-#   ## subject(s) to consume
+-#   # subjects = ["telegraf"]
+-#   ## name a queue group
+-#   # queue_group = "telegraf_consumers"
+-#
+-#   ## Sets the limits for pending msgs and bytes for each subscription
+-#   ## These shouldn't need to be adjusted except in very high throughput scenarios
+-#   # pending_message_limit = 65536
+-#   # pending_bytes_limit = 67108864
+-#
+-#   ## Data format to consume.
+-#   ## Each data format has its own unique set of configuration options, read
+-#   ## more about them here:
+-#   ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+-#   data_format = "influx"
++# Read metrics from NATS subject(s)
++[[inputs.nats_consumer]]
++  ## urls of NATS servers
++  servers = ["nats://localhost:4222"]
++  ## Use Transport Layer Security
++  secure = false
++  ## subject(s) to consume
++  subjects = ["telegraf"]
++  ## name a queue group
++  queue_group = "telegraf_consumers"
++
++  ## Sets the limits for pending msgs and bytes for each subscription
++  ## These shouldn't need to be adjusted except in very high throughput scenarios
++  # pending_message_limit = 65536
++  # pending_bytes_limit = 67108864
++
++  ## Data format to consume.
++  ## Each data format has its own unique set of configuration options, read
++  ## more about them here:
++  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
++  data_format = "influx"
+ 
+ 
+ # # Read NSQ topic for metrics.
