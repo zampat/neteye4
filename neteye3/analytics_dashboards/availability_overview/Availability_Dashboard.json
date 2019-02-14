@@ -61,7 +61,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1550079072094,
+  "iteration": 1550152783397,
   "links": [],
   "panels": [
     {
@@ -99,7 +99,7 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 2,
+        "w": 3,
         "x": 0,
         "y": 1
       },
@@ -161,7 +161,7 @@
           "measurement": "availability",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT 1 - (sum(\"time_critical\") / sum(\"time_total\")) FROM \"availability\" WHERE \"host\" =~ /^business_processes$|^business_processes_detail$/ AND \"timeperiod\" =~ /^$Timeperiod$/ AND \"service\" =~ /^$Service$/ AND time > $month AND time < $month + 30d",
+          "query": "SELECT 1 - (sum(\"time_critical\") / sum(\"time_total\")) FROM \"availability\" WHERE \"host\" =~ /^business_processes$|^business_processes_detail$/ AND \"timeperiod\" =~ /^$Timeperiod$/ AND \"service\" =~ /^$Service$/ AND $month",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -185,9 +185,9 @@
       "thresholds": "0.985,0.999",
       "timeFrom": null,
       "timeShift": null,
-      "title": "Month $month",
+      "title": "$month",
       "type": "singlestat",
-      "valueFontSize": "80%",
+      "valueFontSize": "50%",
       "valueMaps": [
         {
           "op": "=",
@@ -208,7 +208,7 @@
       ],
       "datasource": "${DS_MONITORING_AVAILABILITY}",
       "decimals": null,
-      "format": "dtdurations",
+      "format": "dthms",
       "gauge": {
         "maxValue": 1,
         "minValue": 0,
@@ -218,7 +218,7 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 2,
+        "w": 3,
         "x": 0,
         "y": 4
       },
@@ -280,7 +280,7 @@
           "measurement": "availability",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"time_critical\") FROM \"availability\" WHERE \"host\" =~ /^business_processes$|^business_processes_detail$/ AND \"timeperiod\" =~ /^$Timeperiod$/ AND \"service\" =~ /^$Service$/ AND time > $month AND time < $month + 30d",
+          "query": "SELECT sum(\"time_critical\") FROM \"availability\" WHERE \"host\" =~ /^business_processes$|^business_processes_detail$/ AND \"timeperiod\" =~ /^$Timeperiod$/ AND \"service\" =~ /^$Service$/ AND $month",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -371,11 +371,11 @@
         "datasource": "${DS_GLPI}",
         "hide": 0,
         "includeAll": false,
-        "label": null,
+        "label": "Monat",
         "multi": true,
         "name": "month",
         "options": [],
-        "query": "SELECT 'Jan. 2018' as __text, '1514764800s' as __value UNION ALL SELECT 'Feb. 2018' as __text, '1517443200s' as __value UNION ALL SELECT 'Mrz. 2018' as __text, '1519862400s' as __value UNION ALL SELECT 'Apr. 2018' as __text, '1522540800s' as __value UNION ALL SELECT 'Mai. 2018' as __text, '1525132800s' as __value UNION ALL SELECT 'Jun. 2018' as __text, '1527811200s' as __value UNION ALL SELECT 'Jul. 2018' as __text, '1530403200s' as __value UNION ALL SELECT 'Aug. 2018' as __text, '1533081600s' as __value UNION ALL SELECT 'Sep. 2018' as __text, '1535760000s' as __value UNION ALL SELECT 'Okt. 2018' as __text, '1538352000s' as __value UNION ALL SELECT 'Nov. 2018' as __text, '1541030400s' as __value UNION ALL SELECT 'Dez. 2018' as __text, '1543622400s' as __value UNION ALL SELECT 'Jan. 2019' as __text, '1546300800s' as __value UNION ALL SELECT 'Feb. 2019' as __text, '1548979200s' as __value UNION ALL SELECT 'Mrz. 2019' as __text, '1551398400s' as __value UNION ALL SELECT 'Apr. 2019' as __text, '1554076800s' as __value UNION ALL SELECT 'Mai. 2019' as __text, '1556668800s' as __value UNION ALL SELECT 'Jun. 2019' as __text, '1559347200s' as __value UNION ALL SELECT 'Jul. 2019' as __text, '1561939200s' as __value UNION ALL SELECT 'Aug. 2019' as __text, '1564617600s' as __value UNION ALL SELECT 'Sep. 2019' as __text, '1567296000s' as __value UNION ALL SELECT 'Okt. 2019' as __text, '1569888000s' as __value UNION ALL SELECT 'Nov. 2019' as __text, '1572566400s' as __value UNION ALL SELECT 'Dez. 2019' as __text, '1575158400s' as __value",
+        "query": "SELECT 'Jan. 2018' as __text, 'time > 1514764800s AND time < 1517443200s' as __value UNION ALL SELECT 'Feb. 2018' as __text, 'time > 1517443200s AND time < 1519862400s' as __value UNION ALL SELECT 'Mar. 2018' as __text, 'time > 1519862400s AND time < 1522540800s' as __value UNION ALL SELECT 'Apr. 2018' as __text, 'time > 1522540800s AND time < 1525132800s' as __value UNION ALL SELECT 'Mai. 2018' as __text, 'time > 1525132800s AND time < 1527811200s' as __value UNION ALL SELECT 'Jun. 2018' as __text, 'time > 1527811200s AND time < 1530403200s' as __value UNION ALL SELECT 'Jul. 2018' as __text, 'time > 1530403200s AND time < 1533081600s' as __value UNION ALL SELECT 'Aug. 2018' as __text, 'time > 1533081600s AND time < 1535760000s' as __value UNION ALL SELECT 'Sep. 2018' as __text, 'time > 1535760000s AND time < 1538352000s' as __value UNION ALL SELECT 'Okt. 2018' as __text, 'time > 1538352000s AND time < 1541030400s' as __value UNION ALL SELECT 'Nov. 2018' as __text, 'time > 1541030400s AND time < 1543622400s' as __value UNION ALL SELECT 'Dez. 2018' as __text, 'time > 1543622400s AND time < 1546300800s' as __value UNION ALL SELECT 'Jan. 2019' as __text, 'time > 1546300800s AND time < 1548979200s' as __value UNION ALL SELECT 'Feb. 2019' as __text, 'time > 1548979200s AND time < 1551398400s' as __value UNION ALL SELECT 'Mar. 2019' as __text, 'time > 1551398400s AND time < 1554076800s' as __value UNION ALL SELECT 'Apr. 2019' as __text, 'time > 1554076800s AND time < 1556668800s' as __value UNION ALL SELECT 'Mai. 2019' as __text, 'time > 1556668800s AND time < 1559347200s' as __value UNION ALL SELECT 'Jun. 2019' as __text, 'time > 1559347200s AND time < 1561939200s' as __value UNION ALL SELECT 'Jul. 2019' as __text, 'time > 1561939200s AND time < 1564617600s' as __value UNION ALL SELECT 'Aug. 2019' as __text, 'time > 1564617600s AND time < 1567296000s' as __value UNION ALL SELECT 'Sep. 2019' as __text, 'time > 1567296000s AND time < 1569888000s' as __value UNION ALL SELECT 'Okt. 2019' as __text, 'time > 1569888000s AND time < 1572566400s' as __value UNION ALL SELECT 'Nov. 2019' as __text, 'time > 1572566400s AND time < 1575158400s' as __value UNION ALL SELECT 'Dez. 2019' as __text, 'time > 1575158400s AND time < 1577836800s' as __value",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -388,8 +388,8 @@
     ]
   },
   "time": {
-    "from": "now-1y/y",
-    "to": "now-1y/y"
+    "from": "now-90d",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -419,5 +419,5 @@
   "timezone": "browser",
   "title": "Availability Dashboard Devel",
   "uid": "000000041",
-  "version": 17
+  "version": 31
 }
