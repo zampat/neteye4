@@ -1,0 +1,73 @@
+--- /etc/nagios/neteye/telegraf/sample_telegraf.conf.tpl	2019-02-14 11:37:22.966929197 +0100
++++ /etc/nagios/neteye/telegraf/telegraf_nats_collector.conf	2019-02-14 12:12:16.366928826 +0100
+@@ -90,10 +90,10 @@
+   ## urls will be written to each interval.
+   # urls = ["unix:///var/run/influxdb.sock"]
+   # urls = ["udp://127.0.0.1:8089"]
+-  # urls = ["http://127.0.0.1:8086"]
++  urls = ["http://127.0.0.1:8086"]
+ 
+   ## The target database for metrics; will be created as needed.
+-  # database = "telegraf"
++  database = "telegraf"
+ 
+   ## If true, no CREATE DATABASE queries will be sent.  Set to true when using
+   ## Telegraf with a user without permissions to create databases or when the
+@@ -109,7 +109,7 @@
+   # write_consistency = "any"
+ 
+   ## Timeout for HTTP messages.
+-  # timeout = "5s"
++  timeout = "5s"
+ 
+   ## HTTP Basic Auth
+   # username = "telegraf"
+@@ -3981,27 +3981,27 @@
+ #   data_format = "influx"
+ 
+ 
+-# # Read metrics from NATS subject(s)
+-# [[inputs.nats_consumer]]
+-#   ## urls of NATS servers
+-#   # servers = ["nats://localhost:4222"]
+-#   ## Use Transport Layer Security
+-#   # secure = false
+-#   ## subject(s) to consume
+-#   # subjects = ["telegraf"]
+-#   ## name a queue group
+-#   # queue_group = "telegraf_consumers"
+-#
+-#   ## Sets the limits for pending msgs and bytes for each subscription
+-#   ## These shouldn't need to be adjusted except in very high throughput scenarios
+-#   # pending_message_limit = 65536
+-#   # pending_bytes_limit = 67108864
+-#
+-#   ## Data format to consume.
+-#   ## Each data format has its own unique set of configuration options, read
+-#   ## more about them here:
+-#   ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+-#   data_format = "influx"
++# Read metrics from NATS subject(s)
++[[inputs.nats_consumer]]
++  ## urls of NATS servers
++  servers = ["nats://localhost:4222"]
++  ## Use Transport Layer Security
++  secure = false
++  ## subject(s) to consume
++  subjects = ["telegraf"]
++  ## name a queue group
++  queue_group = "telegraf_consumers"
++
++  ## Sets the limits for pending msgs and bytes for each subscription
++  ## These shouldn't need to be adjusted except in very high throughput scenarios
++  # pending_message_limit = 65536
++  # pending_bytes_limit = 67108864
++
++  ## Data format to consume.
++  ## Each data format has its own unique set of configuration options, read
++  ## more about them here:
++  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
++  data_format = "influx"
+ 
+ 
+ # # Read NSQ topic for metrics.
