@@ -50,3 +50,15 @@ cp /etc/init.d/telegraf /etc/init.d/telegraf_monitoring_tactical_overview
 # chkconfig --list telegraf_monitoring_tactical_overview
 telegraf_monitoring_tactical_overview   0:off   1:off   2:on    3:on    4:on    5:on    6:off
 ```
+
+## Dashboarding of Monitoring data
+
+Here I provide a sample dashboard providing data from both measurements:
+- tactical overview
+- host/service details
+
+Import provided .json file in Grafana (5.x or later) to obtain the following dashboard:
+
+![Host Status Overview](host_status_overview.png)!
+
+
