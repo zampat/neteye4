@@ -78,7 +78,7 @@
 +  # Server 1: Monitoring Service Details view from Thruk
 +  #   Note: We dont need the hosts details, bease all fields are provided by service details
 +  servers = [
-+    "http://username:password@localhost/thruk/cgi-bin/status.cgi?view_mode=json",
++    "http://username:password@localhost/thruk/cgi-bin/tac.cgi?view_mode=json",
 +  ]
 +  ## Set response_timeout (default 5 seconds)
 +  response_timeout = "20s"
