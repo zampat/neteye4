@@ -1,6 +1,6 @@
 # Important note for monitoring-plugins
 
-The content of this folder "monitoring-plugins" had been extracted from this repot and moved to a dedicated public repo on WuerthPhoenix repository.
+The content of this folder "monitoring-plugins" had been extracted from this repo and moved to a dedicated public repo on WuerthPhoenix repository.
 
 To clone from that repository execute
 ```
