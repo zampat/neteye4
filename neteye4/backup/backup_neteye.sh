@@ -1,5 +1,6 @@
 #! /bin/sh
 #
+scriptname=$(hostname)
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin
 
 if [ -e /etc/sysconfig/neteye-backup.conf ]
@@ -82,7 +83,7 @@ do
 		then
 			mkdir -p $BACKUPDIR/db/$i
 		fi
-		mysqldump --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-quote-names --skip-extended-insert $i | gzip >$BACKUPDIR/db/$i.sql.gz
+		mysqldump --single-transaction --quick --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-quote-names --skip-extended-insert $i | gzip >$BACKUPDIR/db/$i.sql.gz
 		for j in $(mysql -BNe "show tables from $i")
 		do
 			mysqldump  --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-quote-names --skip-extended-insert $i $j | gzip >$BACKUPDIR/db/$i/$j.sql.gz
@@ -101,9 +102,9 @@ done 2>&1 | grep -v "Warning: Skipping the data of table mysql.event"
 /usr/bin/rpm -qa >$BACKUPDIR/rpm-fulllist.txt
 
 ## Track running services in case of cluster
-if pcs >/dev/null 2>&1
+if [ -f /usr/sbin/pcs ]
 then
-   pcs status > $BACKUPDIR/cluster_services_status.txt
+   /usr/sbin/pcs status > $BACKUPDIR/cluster_services_status.txt
 else 
    /usr/sbin/neteye status > $BACKUPDIR/standalone_services_status.txt
 fi
@@ -115,14 +116,14 @@ then
 	exit 0
 fi
 
-BKNAME="neteye-backup.tar.gz"
+BKNAME="$scriptname-neteye-backup.tar.gz"
 
 if [ -f $BACKUPDIR/$BKNAME ]
 then
 	$ECHO mv $BACKUPDIR/$BKNAME $BACKUPDIR/${BKNAME}.old
 fi
 
-BKDIRS="$BKDIRS $BACKUPDIR/rpm-fulllist.txt $dirs_to_add"
+BKDIRS="$BKDIRS $BACKUPDIR/rpm-fulllist.txt $BACKUPDIR/cluster_services_status.txt $BACKUPDIR/standalone_services_status.txt $dirs_to_add"
 
 $ECHO tar ${EXCLOPTS} ${TAROPTS} -czf $BACKUPDIR/$BKNAME $BKDIRS 2>&1 | grep -v "tar: Removing leading" | grep -v "socket ignored" | grep -v "file changed as we read" | grep -v "Cannot stat: No such file or directory" | grep -v "File removed before we read it" | grep -v "Error exit delayed from previous errors" | grep -v "Exiting with failure status due to previous errors"
 
