@@ -4,14 +4,14 @@
 https://blog.netways.de/2011/07/18/switch-monitoring-via-snmp/
 
 ## Implementing in NetEye 4
-..* Monitoring Service template:
-  [Provided and installed by default icinga2-monitoring-templates. File: 1101a-st_snmp_network_traffic.sh ](https://github.com/zampat/icinga2-monitoring-templates)
-..* Install Analytics Dashboard
-   Provided by File: interfaces_traffic.json
-   Dashboard provided looks like:
+- Monitoring Service template:
+[Provided and installed by default icinga2-monitoring-templates. File: 1101a-st_snmp_network_traffic.sh ](https://github.com/zampat/icinga2-monitoring-templates)
+- Install Analytics Dashboard
+Provided by File: interfaces_traffic.json
+Dashboard provided looks like:
 [Interface traffic dashboard](https://github.com/zampat/neteye4_monitoring_share/blob/master/monitoring/monitoring-plugins/network-devices/interfaces/interface_traffic.png)
-..* A custom field on service template redirects to this dashboard
-   [Read in NetEye 4 user guide about custom dashboards](https://neteye.yourdomain/neteye/doc/module/toc?moduleName=analytics#!/neteye/doc/module/analytics/chapter/itoa-customization#itoa-customization-dashboards)
+- A custom field on service template redirects to this dashboard
+![Read in NetEye 4 user guide about custom dashboards](https://neteye.yourdomain/neteye/doc/module/toc?moduleName=analytics#!/neteye/doc/module/analytics/chapter/itoa-customization#itoa-customization-dashboards "Read in NetEye 4 user guide about custom dashboards")
 
 ## Repositoring and compiling check
 
