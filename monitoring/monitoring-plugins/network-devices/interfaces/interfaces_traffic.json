@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.1.2"
+      "version": "5.2.4"
     },
     {
       "type": "panel",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1539176114992,
+  "iteration": 1551088614745,
   "links": [],
   "panels": [
     {
@@ -58,8 +58,8 @@
       },
       "id": 4,
       "panels": [],
-      "repeat": "Host",
-      "title": "$Host",
+      "repeat": "hostname",
+      "title": "$hostname",
       "type": "row"
     },
     {
@@ -157,7 +157,7 @@
             {
               "key": "hostname",
               "operator": "=~",
-              "value": "/^$Host$/"
+              "value": "/^$hostname$/"
             },
             {
               "condition": "AND",
@@ -228,7 +228,7 @@
         "includeAll": false,
         "label": null,
         "multi": true,
-        "name": "Host",
+        "name": "hostname",
         "options": [],
         "query": "SHOW TAG VALUES FROM interfaces WITH KEY=hostname",
         "refresh": 1,
@@ -245,12 +245,12 @@
         "current": {},
         "datasource": "${DS_ICINGA2-INFLUXDB}",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": null,
         "multi": true,
         "name": "Interfaces",
         "options": [],
-        "query": "SHOW TAG VALUES FROM interfaces WITH KEY=metric WHERE hostname =~ /$Host/",
+        "query": "SHOW TAG VALUES FROM interfaces WITH KEY=metric WHERE hostname =~ /$hostname/",
         "refresh": 2,
         "regex": "(.*:):.*::\\w+",
         "sort": 0,
@@ -270,7 +270,7 @@
         "multi": true,
         "name": "Filter",
         "options": [],
-        "query": "SHOW TAG VALUES FROM interfaces WITH KEY=metric WHERE hostname =~ /$Host/",
+        "query": "SHOW TAG VALUES FROM interfaces WITH KEY=metric WHERE hostname =~ /$hostname/",
         "refresh": 2,
         "regex": ".*::.*::(\\w+)",
         "sort": 0,
@@ -312,7 +312,7 @@
     ]
   },
   "timezone": "",
-  "title": "Interfaces: Traffic",
+  "title": "Interfaces Traffic",
   "uid": "gITkmapik",
-  "version": 6
+  "version": 11
 }
