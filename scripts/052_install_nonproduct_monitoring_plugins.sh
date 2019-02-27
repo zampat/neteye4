@@ -11,7 +11,7 @@ DATE=`date +%Y%m%d`
 
 # Plugin 1: check_interfaces
 # Details : C-Based light script for interface traffic monitoring without any use of cache files
-INTERFACES_SRC="./monitoring/monitoring-plugins/network-devices/check_interfaces"
+INTERFACES_SRC="./monitoring/monitoring-plugins/network-devices/interfaces/check_interfaces"
 INTERFACES_FILE="check_interfaces"
 
 # Plugin 2: check_mem.pl

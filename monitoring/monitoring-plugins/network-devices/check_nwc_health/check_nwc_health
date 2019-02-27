@@ -976,7 +976,7 @@ eval {
   $Data::Dumper::Sparseseen = 1;
 };
 our $AUTOLOAD;
-*VERSION = \'3.2.0.1';
+*VERSION = \'3.2.5';
 
 use constant { OK => 0, WARNING => 1, CRITICAL => 2, UNKNOWN => 3 };
 
@@ -4349,10 +4349,13 @@ sub get_snmp_tables {
     my $class = $info->[2];
     my $filter = $info->[3];
     my $rows = $info->[4];
+    my $key_attr = $info->[5];
     $self->{$arrayname} = [] if ! exists $self->{$arrayname};
     if (! exists $Monitoring::GLPlugin::SNMP::tablecache->{$mib} || ! exists $Monitoring::GLPlugin::SNMP::tablecache->{$mib}->{$table}) {
       $Monitoring::GLPlugin::SNMP::tablecache->{$mib}->{$table} = [];
-      foreach ($self->get_snmp_table_objects($mib, $table, undef, $rows)) {
+      foreach ($key_attr ?
+          $self->get_snmp_table_objects_with_cache($mib, $table, $key_attr, $rows) :
+          $self->get_snmp_table_objects($mib, $table, undef, $rows)) {
         push(@{$Monitoring::GLPlugin::SNMP::tablecache->{$mib}->{$table}}, $_);
         my $new_object = $class->new(%{$_});
         next if (defined $filter && ! &$filter($new_object));
@@ -5780,6 +5783,290 @@ $Monitoring::GLPlugin::SNMP::MibsAndOids::mibs_and_oids->{'SNMP-FRAMEWORK-MIB'} 
 
 
 
+package Monitoring::GLPlugin::SNMP::MibsAndOids::ADSLLINEMIB;
+
+$Monitoring::GLPlugin::SNMP::MibsAndOids::origin->{'ADSL-LINE-MIB'} = {
+  url => '',
+  name => 'ADSL-LINE-MIB',
+};
+
+$Monitoring::GLPlugin::SNMP::MibsAndOids::mib_ids->{'ADSL-LINE-MIB'} =
+    '1.3.6.1.2.1.10.94.1';
+
+$Monitoring::GLPlugin::SNMP::MibsAndOids::mibs_and_oids->{'ADSL-LINE-MIB'} = {
+  adslMIB => '1.3.6.1.2.1.10.94',
+  adslLineMib => '1.3.6.1.2.1.10.94.1',
+  adslMibObjects => '1.3.6.1.2.1.10.94.1.1',
+  adslLineTable => '1.3.6.1.2.1.10.94.1.1.1',
+  adslLineEntry => '1.3.6.1.2.1.10.94.1.1.1.1',
+  adslLineCoding => '1.3.6.1.2.1.10.94.1.1.1.1.1',
+  adslLineCodingDefinition => 'ADSL-LINE-MIB::adslLineCoding',
+  adslLineType => '1.3.6.1.2.1.10.94.1.1.1.1.2',
+  adslLineTypeDefinition => 'ADSL-LINE-MIB::adslLineType',
+  adslLineSpecific => '1.3.6.1.2.1.10.94.1.1.1.1.3',
+  adslLineConfProfile => '1.3.6.1.2.1.10.94.1.1.1.1.4',
+  adslLineAlarmConfProfile => '1.3.6.1.2.1.10.94.1.1.1.1.5',
+  adslAtucPhysTable => '1.3.6.1.2.1.10.94.1.1.2',
+  adslAtucPhysEntry => '1.3.6.1.2.1.10.94.1.1.2.1',
+  adslAtucInvSerialNumber => '1.3.6.1.2.1.10.94.1.1.2.1.1',
+  adslAtucInvVendorID => '1.3.6.1.2.1.10.94.1.1.2.1.2',
+  adslAtucInvVersionNumber => '1.3.6.1.2.1.10.94.1.1.2.1.3',
+  adslAtucCurrSnrMgn => '1.3.6.1.2.1.10.94.1.1.2.1.4',
+  adslAtucCurrAtn => '1.3.6.1.2.1.10.94.1.1.2.1.5',
+  adslAtucCurrStatus => '1.3.6.1.2.1.10.94.1.1.2.1.6',
+  adslAtucCurrOutputPwr => '1.3.6.1.2.1.10.94.1.1.2.1.7',
+  adslAtucCurrAttainableRate => '1.3.6.1.2.1.10.94.1.1.2.1.8',
+  adslAturPhysTable => '1.3.6.1.2.1.10.94.1.1.3',
+  adslAturPhysEntry => '1.3.6.1.2.1.10.94.1.1.3.1',
+  adslAturInvSerialNumber => '1.3.6.1.2.1.10.94.1.1.3.1.1',
+  adslAturInvVendorID => '1.3.6.1.2.1.10.94.1.1.3.1.2',
+  adslAturInvVersionNumber => '1.3.6.1.2.1.10.94.1.1.3.1.3',
+  adslAturCurrSnrMgn => '1.3.6.1.2.1.10.94.1.1.3.1.4',
+  adslAturCurrAtn => '1.3.6.1.2.1.10.94.1.1.3.1.5',
+  adslAturCurrStatus => '1.3.6.1.2.1.10.94.1.1.3.1.6',
+  adslAturCurrOutputPwr => '1.3.6.1.2.1.10.94.1.1.3.1.7',
+  adslAturCurrAttainableRate => '1.3.6.1.2.1.10.94.1.1.3.1.8',
+  adslAtucChanTable => '1.3.6.1.2.1.10.94.1.1.4',
+  adslAtucChanEntry => '1.3.6.1.2.1.10.94.1.1.4.1',
+  adslAtucChanInterleaveDelay => '1.3.6.1.2.1.10.94.1.1.4.1.1',
+  adslAtucChanCurrTxRate => '1.3.6.1.2.1.10.94.1.1.4.1.2',
+  adslAtucChanPrevTxRate => '1.3.6.1.2.1.10.94.1.1.4.1.3',
+  adslAtucChanCrcBlockLength => '1.3.6.1.2.1.10.94.1.1.4.1.4',
+  adslAturChanTable => '1.3.6.1.2.1.10.94.1.1.5',
+  adslAturChanEntry => '1.3.6.1.2.1.10.94.1.1.5.1',
+  adslAturChanInterleaveDelay => '1.3.6.1.2.1.10.94.1.1.5.1.1',
+  adslAturChanCurrTxRate => '1.3.6.1.2.1.10.94.1.1.5.1.2',
+  adslAturChanPrevTxRate => '1.3.6.1.2.1.10.94.1.1.5.1.3',
+  adslAturChanCrcBlockLength => '1.3.6.1.2.1.10.94.1.1.5.1.4',
+  adslAtucPerfDataTable => '1.3.6.1.2.1.10.94.1.1.6',
+  adslAtucPerfDataEntry => '1.3.6.1.2.1.10.94.1.1.6.1',
+  adslAtucPerfLofs => '1.3.6.1.2.1.10.94.1.1.6.1.1',
+  adslAtucPerfLoss => '1.3.6.1.2.1.10.94.1.1.6.1.2',
+  adslAtucPerfLols => '1.3.6.1.2.1.10.94.1.1.6.1.3',
+  adslAtucPerfLprs => '1.3.6.1.2.1.10.94.1.1.6.1.4',
+  adslAtucPerfESs => '1.3.6.1.2.1.10.94.1.1.6.1.5',
+  adslAtucPerfInits => '1.3.6.1.2.1.10.94.1.1.6.1.6',
+  adslAtucPerfValidIntervals => '1.3.6.1.2.1.10.94.1.1.6.1.7',
+  adslAtucPerfInvalidIntervals => '1.3.6.1.2.1.10.94.1.1.6.1.8',
+  adslAtucPerfCurr15MinTimeElapsed => '1.3.6.1.2.1.10.94.1.1.6.1.9',
+  adslAtucPerfCurr15MinLofs => '1.3.6.1.2.1.10.94.1.1.6.1.10',
+  adslAtucPerfCurr15MinLoss => '1.3.6.1.2.1.10.94.1.1.6.1.11',
+  adslAtucPerfCurr15MinLols => '1.3.6.1.2.1.10.94.1.1.6.1.12',
+  adslAtucPerfCurr15MinLprs => '1.3.6.1.2.1.10.94.1.1.6.1.13',
+  adslAtucPerfCurr15MinESs => '1.3.6.1.2.1.10.94.1.1.6.1.14',
+  adslAtucPerfCurr15MinInits => '1.3.6.1.2.1.10.94.1.1.6.1.15',
+  adslAtucPerfCurr1DayTimeElapsed => '1.3.6.1.2.1.10.94.1.1.6.1.16',
+  adslAtucPerfCurr1DayLofs => '1.3.6.1.2.1.10.94.1.1.6.1.17',
+  adslAtucPerfCurr1DayLoss => '1.3.6.1.2.1.10.94.1.1.6.1.18',
+  adslAtucPerfCurr1DayLols => '1.3.6.1.2.1.10.94.1.1.6.1.19',
+  adslAtucPerfCurr1DayLprs => '1.3.6.1.2.1.10.94.1.1.6.1.20',
+  adslAtucPerfCurr1DayESs => '1.3.6.1.2.1.10.94.1.1.6.1.21',
+  adslAtucPerfCurr1DayInits => '1.3.6.1.2.1.10.94.1.1.6.1.22',
+  adslAtucPerfPrev1DayMoniSecs => '1.3.6.1.2.1.10.94.1.1.6.1.23',
+  adslAtucPerfPrev1DayLofs => '1.3.6.1.2.1.10.94.1.1.6.1.24',
+  adslAtucPerfPrev1DayLoss => '1.3.6.1.2.1.10.94.1.1.6.1.25',
+  adslAtucPerfPrev1DayLols => '1.3.6.1.2.1.10.94.1.1.6.1.26',
+  adslAtucPerfPrev1DayLprs => '1.3.6.1.2.1.10.94.1.1.6.1.27',
+  adslAtucPerfPrev1DayESs => '1.3.6.1.2.1.10.94.1.1.6.1.28',
+  adslAtucPerfPrev1DayInits => '1.3.6.1.2.1.10.94.1.1.6.1.29',
+  adslAturPerfDataTable => '1.3.6.1.2.1.10.94.1.1.7',
+  adslAturPerfDataEntry => '1.3.6.1.2.1.10.94.1.1.7.1',
+  adslAturPerfLofs => '1.3.6.1.2.1.10.94.1.1.7.1.1',
+  adslAturPerfLoss => '1.3.6.1.2.1.10.94.1.1.7.1.2',
+  adslAturPerfLprs => '1.3.6.1.2.1.10.94.1.1.7.1.3',
+  adslAturPerfESs => '1.3.6.1.2.1.10.94.1.1.7.1.4',
+  adslAturPerfValidIntervals => '1.3.6.1.2.1.10.94.1.1.7.1.5',
+  adslAturPerfInvalidIntervals => '1.3.6.1.2.1.10.94.1.1.7.1.6',
+  adslAturPerfCurr15MinTimeElapsed => '1.3.6.1.2.1.10.94.1.1.7.1.7',
+  adslAturPerfCurr15MinLofs => '1.3.6.1.2.1.10.94.1.1.7.1.8',
+  adslAturPerfCurr15MinLoss => '1.3.6.1.2.1.10.94.1.1.7.1.9',
+  adslAturPerfCurr15MinLprs => '1.3.6.1.2.1.10.94.1.1.7.1.10',
+  adslAturPerfCurr15MinESs => '1.3.6.1.2.1.10.94.1.1.7.1.11',
+  adslAturPerfCurr1DayTimeElapsed => '1.3.6.1.2.1.10.94.1.1.7.1.12',
+  adslAturPerfCurr1DayLofs => '1.3.6.1.2.1.10.94.1.1.7.1.13',
+  adslAturPerfCurr1DayLoss => '1.3.6.1.2.1.10.94.1.1.7.1.14',
+  adslAturPerfCurr1DayLprs => '1.3.6.1.2.1.10.94.1.1.7.1.15',
+  adslAturPerfCurr1DayESs => '1.3.6.1.2.1.10.94.1.1.7.1.16',
+  adslAturPerfPrev1DayMoniSecs => '1.3.6.1.2.1.10.94.1.1.7.1.17',
+  adslAturPerfPrev1DayLofs => '1.3.6.1.2.1.10.94.1.1.7.1.18',
+  adslAturPerfPrev1DayLoss => '1.3.6.1.2.1.10.94.1.1.7.1.19',
+  adslAturPerfPrev1DayLprs => '1.3.6.1.2.1.10.94.1.1.7.1.20',
+  adslAturPerfPrev1DayESs => '1.3.6.1.2.1.10.94.1.1.7.1.21',
+  adslAtucIntervalTable => '1.3.6.1.2.1.10.94.1.1.8',
+  adslAtucIntervalEntry => '1.3.6.1.2.1.10.94.1.1.8.1',
+  adslAtucIntervalNumber => '1.3.6.1.2.1.10.94.1.1.8.1.1',
+  adslAtucIntervalLofs => '1.3.6.1.2.1.10.94.1.1.8.1.2',
+  adslAtucIntervalLoss => '1.3.6.1.2.1.10.94.1.1.8.1.3',
+  adslAtucIntervalLols => '1.3.6.1.2.1.10.94.1.1.8.1.4',
+  adslAtucIntervalLprs => '1.3.6.1.2.1.10.94.1.1.8.1.5',
+  adslAtucIntervalESs => '1.3.6.1.2.1.10.94.1.1.8.1.6',
+  adslAtucIntervalInits => '1.3.6.1.2.1.10.94.1.1.8.1.7',
+  adslAtucIntervalValidData => '1.3.6.1.2.1.10.94.1.1.8.1.8',
+  adslAturIntervalTable => '1.3.6.1.2.1.10.94.1.1.9',
+  adslAturIntervalEntry => '1.3.6.1.2.1.10.94.1.1.9.1',
+  adslAturIntervalNumber => '1.3.6.1.2.1.10.94.1.1.9.1.1',
+  adslAturIntervalLofs => '1.3.6.1.2.1.10.94.1.1.9.1.2',
+  adslAturIntervalLoss => '1.3.6.1.2.1.10.94.1.1.9.1.3',
+  adslAturIntervalLprs => '1.3.6.1.2.1.10.94.1.1.9.1.4',
+  adslAturIntervalESs => '1.3.6.1.2.1.10.94.1.1.9.1.5',
+  adslAturIntervalValidData => '1.3.6.1.2.1.10.94.1.1.9.1.6',
+  adslAtucChanPerfDataTable => '1.3.6.1.2.1.10.94.1.1.10',
+  adslAtucChanPerfDataEntry => '1.3.6.1.2.1.10.94.1.1.10.1',
+  adslAtucChanReceivedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.1',
+  adslAtucChanTransmittedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.2',
+  adslAtucChanCorrectedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.3',
+  adslAtucChanUncorrectBlks => '1.3.6.1.2.1.10.94.1.1.10.1.4',
+  adslAtucChanPerfValidIntervals => '1.3.6.1.2.1.10.94.1.1.10.1.5',
+  adslAtucChanPerfInvalidIntervals => '1.3.6.1.2.1.10.94.1.1.10.1.6',
+  adslAtucChanPerfCurr15MinTimeElapsed => '1.3.6.1.2.1.10.94.1.1.10.1.7',
+  adslAtucChanPerfCurr15MinReceivedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.8',
+  adslAtucChanPerfCurr15MinTransmittedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.9',
+  adslAtucChanPerfCurr15MinCorrectedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.10',
+  adslAtucChanPerfCurr15MinUncorrectBlks => '1.3.6.1.2.1.10.94.1.1.10.1.11',
+  adslAtucChanPerfCurr1DayTimeElapsed => '1.3.6.1.2.1.10.94.1.1.10.1.12',
+  adslAtucChanPerfCurr1DayReceivedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.13',
+  adslAtucChanPerfCurr1DayTransmittedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.14',
+  adslAtucChanPerfCurr1DayCorrectedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.15',
+  adslAtucChanPerfCurr1DayUncorrectBlks => '1.3.6.1.2.1.10.94.1.1.10.1.16',
+  adslAtucChanPerfPrev1DayMoniSecs => '1.3.6.1.2.1.10.94.1.1.10.1.17',
+  adslAtucChanPerfPrev1DayReceivedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.18',
+  adslAtucChanPerfPrev1DayTransmittedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.19',
+  adslAtucChanPerfPrev1DayCorrectedBlks => '1.3.6.1.2.1.10.94.1.1.10.1.20',
+  adslAtucChanPerfPrev1DayUncorrectBlks => '1.3.6.1.2.1.10.94.1.1.10.1.21',
+  adslAturChanPerfDataTable => '1.3.6.1.2.1.10.94.1.1.11',
+  adslAturChanPerfDataEntry => '1.3.6.1.2.1.10.94.1.1.11.1',
+  adslAturChanReceivedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.1',
+  adslAturChanTransmittedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.2',
+  adslAturChanCorrectedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.3',
+  adslAturChanUncorrectBlks => '1.3.6.1.2.1.10.94.1.1.11.1.4',
+  adslAturChanPerfValidIntervals => '1.3.6.1.2.1.10.94.1.1.11.1.5',
+  adslAturChanPerfInvalidIntervals => '1.3.6.1.2.1.10.94.1.1.11.1.6',
+  adslAturChanPerfCurr15MinTimeElapsed => '1.3.6.1.2.1.10.94.1.1.11.1.7',
+  adslAturChanPerfCurr15MinReceivedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.8',
+  adslAturChanPerfCurr15MinTransmittedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.9',
+  adslAturChanPerfCurr15MinCorrectedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.10',
+  adslAturChanPerfCurr15MinUncorrectBlks => '1.3.6.1.2.1.10.94.1.1.11.1.11',
+  adslAturChanPerfCurr1DayTimeElapsed => '1.3.6.1.2.1.10.94.1.1.11.1.12',
+  adslAturChanPerfCurr1DayReceivedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.13',
+  adslAturChanPerfCurr1DayTransmittedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.14',
+  adslAturChanPerfCurr1DayCorrectedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.15',
+  adslAturChanPerfCurr1DayUncorrectBlks => '1.3.6.1.2.1.10.94.1.1.11.1.16',
+  adslAturChanPerfPrev1DayMoniSecs => '1.3.6.1.2.1.10.94.1.1.11.1.17',
+  adslAturChanPerfPrev1DayReceivedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.18',
+  adslAturChanPerfPrev1DayTransmittedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.19',
+  adslAturChanPerfPrev1DayCorrectedBlks => '1.3.6.1.2.1.10.94.1.1.11.1.20',
+  adslAturChanPerfPrev1DayUncorrectBlks => '1.3.6.1.2.1.10.94.1.1.11.1.21',
+  adslAtucChanIntervalTable => '1.3.6.1.2.1.10.94.1.1.12',
+  adslAtucChanIntervalEntry => '1.3.6.1.2.1.10.94.1.1.12.1',
+  adslAtucChanIntervalNumber => '1.3.6.1.2.1.10.94.1.1.12.1.1',
+  adslAtucChanIntervalReceivedBlks => '1.3.6.1.2.1.10.94.1.1.12.1.2',
+  adslAtucChanIntervalTransmittedBlks => '1.3.6.1.2.1.10.94.1.1.12.1.3',
+  adslAtucChanIntervalCorrectedBlks => '1.3.6.1.2.1.10.94.1.1.12.1.4',
+  adslAtucChanIntervalUncorrectBlks => '1.3.6.1.2.1.10.94.1.1.12.1.5',
+  adslAtucChanIntervalValidData => '1.3.6.1.2.1.10.94.1.1.12.1.6',
+  adslAturChanIntervalTable => '1.3.6.1.2.1.10.94.1.1.13',
+  adslAturChanIntervalEntry => '1.3.6.1.2.1.10.94.1.1.13.1',
+  adslAturChanIntervalNumber => '1.3.6.1.2.1.10.94.1.1.13.1.1',
+  adslAturChanIntervalReceivedBlks => '1.3.6.1.2.1.10.94.1.1.13.1.2',
+  adslAturChanIntervalTransmittedBlks => '1.3.6.1.2.1.10.94.1.1.13.1.3',
+  adslAturChanIntervalCorrectedBlks => '1.3.6.1.2.1.10.94.1.1.13.1.4',
+  adslAturChanIntervalUncorrectBlks => '1.3.6.1.2.1.10.94.1.1.13.1.5',
+  adslAturChanIntervalValidData => '1.3.6.1.2.1.10.94.1.1.13.1.6',
+  adslLineConfProfileTable => '1.3.6.1.2.1.10.94.1.1.14',
+  adslLineConfProfileEntry => '1.3.6.1.2.1.10.94.1.1.14.1',
+  adslLineConfProfileName => '1.3.6.1.2.1.10.94.1.1.14.1.1',
+  adslAtucConfRateMode => '1.3.6.1.2.1.10.94.1.1.14.1.2',
+  adslAtucConfRateModeDefinition => 'ADSL-LINE-MIB::adslAtucConfRateMode',
+  adslAtucConfRateChanRatio => '1.3.6.1.2.1.10.94.1.1.14.1.3',
+  adslAtucConfTargetSnrMgn => '1.3.6.1.2.1.10.94.1.1.14.1.4',
+  adslAtucConfMaxSnrMgn => '1.3.6.1.2.1.10.94.1.1.14.1.5',
+  adslAtucConfMinSnrMgn => '1.3.6.1.2.1.10.94.1.1.14.1.6',
+  adslAtucConfDownshiftSnrMgn => '1.3.6.1.2.1.10.94.1.1.14.1.7',
+  adslAtucConfUpshiftSnrMgn => '1.3.6.1.2.1.10.94.1.1.14.1.8',
+  adslAtucConfMinUpshiftTime => '1.3.6.1.2.1.10.94.1.1.14.1.9',
+  adslAtucConfMinDownshiftTime => '1.3.6.1.2.1.10.94.1.1.14.1.10',
+  adslAtucChanConfFastMinTxRate => '1.3.6.1.2.1.10.94.1.1.14.1.11',
+  adslAtucChanConfInterleaveMinTxRate => '1.3.6.1.2.1.10.94.1.1.14.1.12',
+  adslAtucChanConfFastMaxTxRate => '1.3.6.1.2.1.10.94.1.1.14.1.13',
+  adslAtucChanConfInterleaveMaxTxRate => '1.3.6.1.2.1.10.94.1.1.14.1.14',
+  adslAtucChanConfMaxInterleaveDelay => '1.3.6.1.2.1.10.94.1.1.14.1.15',
+  adslAturConfRateMode => '1.3.6.1.2.1.10.94.1.1.14.1.16',
+  adslAturConfRateModeDefinition => 'ADSL-LINE-MIB::adslAturConfRateMode',
+  adslAturConfRateChanRatio => '1.3.6.1.2.1.10.94.1.1.14.1.17',
+  adslAturConfTargetSnrMgn => '1.3.6.1.2.1.10.94.1.1.14.1.18',
+  adslAturConfMaxSnrMgn => '1.3.6.1.2.1.10.94.1.1.14.1.19',
+  adslAturConfMinSnrMgn => '1.3.6.1.2.1.10.94.1.1.14.1.20',
+  adslAturConfDownshiftSnrMgn => '1.3.6.1.2.1.10.94.1.1.14.1.21',
+  adslAturConfUpshiftSnrMgn => '1.3.6.1.2.1.10.94.1.1.14.1.22',
+  adslAturConfMinUpshiftTime => '1.3.6.1.2.1.10.94.1.1.14.1.23',
+  adslAturConfMinDownshiftTime => '1.3.6.1.2.1.10.94.1.1.14.1.24',
+  adslAturChanConfFastMinTxRate => '1.3.6.1.2.1.10.94.1.1.14.1.25',
+  adslAturChanConfInterleaveMinTxRate => '1.3.6.1.2.1.10.94.1.1.14.1.26',
+  adslAturChanConfFastMaxTxRate => '1.3.6.1.2.1.10.94.1.1.14.1.27',
+  adslAturChanConfInterleaveMaxTxRate => '1.3.6.1.2.1.10.94.1.1.14.1.28',
+  adslAturChanConfMaxInterleaveDelay => '1.3.6.1.2.1.10.94.1.1.14.1.29',
+  adslLineConfProfileRowStatus => '1.3.6.1.2.1.10.94.1.1.14.1.30',
+  adslLineAlarmConfProfileTable => '1.3.6.1.2.1.10.94.1.1.15',
+  adslLineAlarmConfProfileEntry => '1.3.6.1.2.1.10.94.1.1.15.1',
+  adslLineAlarmConfProfileName => '1.3.6.1.2.1.10.94.1.1.15.1.1',
+  adslAtucThresh15MinLofs => '1.3.6.1.2.1.10.94.1.1.15.1.2',
+  adslAtucThresh15MinLoss => '1.3.6.1.2.1.10.94.1.1.15.1.3',
+  adslAtucThresh15MinLols => '1.3.6.1.2.1.10.94.1.1.15.1.4',
+  adslAtucThresh15MinLprs => '1.3.6.1.2.1.10.94.1.1.15.1.5',
+  adslAtucThresh15MinESs => '1.3.6.1.2.1.10.94.1.1.15.1.6',
+  adslAtucThreshFastRateUp => '1.3.6.1.2.1.10.94.1.1.15.1.7',
+  adslAtucThreshInterleaveRateUp => '1.3.6.1.2.1.10.94.1.1.15.1.8',
+  adslAtucThreshFastRateDown => '1.3.6.1.2.1.10.94.1.1.15.1.9',
+  adslAtucThreshInterleaveRateDown => '1.3.6.1.2.1.10.94.1.1.15.1.10',
+  adslAtucInitFailureTrapEnable => '1.3.6.1.2.1.10.94.1.1.15.1.11',
+  adslAtucInitFailureTrapEnableDefinition => 'ADSL-LINE-MIB::adslAtucInitFailureTrapEnable',
+  adslAturThresh15MinLofs => '1.3.6.1.2.1.10.94.1.1.15.1.12',
+  adslAturThresh15MinLoss => '1.3.6.1.2.1.10.94.1.1.15.1.13',
+  adslAturThresh15MinLprs => '1.3.6.1.2.1.10.94.1.1.15.1.14',
+  adslAturThresh15MinESs => '1.3.6.1.2.1.10.94.1.1.15.1.15',
+  adslAturThreshFastRateUp => '1.3.6.1.2.1.10.94.1.1.15.1.16',
+  adslAturThreshInterleaveRateUp => '1.3.6.1.2.1.10.94.1.1.15.1.17',
+  adslAturThreshFastRateDown => '1.3.6.1.2.1.10.94.1.1.15.1.18',
+  adslAturThreshInterleaveRateDown => '1.3.6.1.2.1.10.94.1.1.15.1.19',
+  adslLineAlarmConfProfileRowStatus => '1.3.6.1.2.1.10.94.1.1.15.1.20',
+  adslLCSMib => '1.3.6.1.2.1.10.94.1.1.16',
+  adslTraps => '1.3.6.1.2.1.10.94.1.2',
+  adslAtucTraps => '1.3.6.1.2.1.10.94.1.2.1',
+  adslAturTraps => '1.3.6.1.2.1.10.94.1.2.2',
+  adslConformance => '1.3.6.1.2.1.10.94.1.3',
+  adslGroups => '1.3.6.1.2.1.10.94.1.3.1',
+  adslCompliances => '1.3.6.1.2.1.10.94.1.3.2',
+};
+
+$Monitoring::GLPlugin::SNMP::MibsAndOids::definitions->{'ADSL-LINE-MIB'} = {
+  adslAtucInitFailureTrapEnable => {
+    '1' => 'enable',
+    '2' => 'disable',
+  },
+  adslAtucConfRateMode => {
+    '1' => 'fixed',
+    '2' => 'adaptAtStartup',
+    '3' => 'adaptAtRuntime',
+  },
+  adslLineType => {
+    '1' => 'noChannel',
+    '2' => 'fastOnly',
+    '3' => 'interleavedOnly',
+    '4' => 'fastOrInterleaved',
+    '5' => 'fastAndInterleaved',
+  },
+  adslAturConfRateMode => {
+    '1' => 'fixed',
+    '2' => 'adaptAtStartup',
+    '3' => 'adaptAtRuntime',
+  },
+  adslLineCoding => {
+    '1' => 'other',
+    '2' => 'dmt',
+    '3' => 'cap',
+    '4' => 'qam',
+  },
+};
 package Monitoring::GLPlugin::SNMP::MibsAndOids::AIRESPACESWITCHINGMIB;
 
 $Monitoring::GLPlugin::SNMP::MibsAndOids::origin->{'AIRESPACE-SWITCHING-MIB'} = {
@@ -12623,6 +12910,126 @@ $Monitoring::GLPlugin::SNMP::MibsAndOids::definitions->{'CISCO-PORT-CHANNEL-MIB'
   portChannelAddType => {
     '1' => 'normal',
     '2' => 'force',
+  },
+};
+package Monitoring::GLPlugin::SNMP::MibsAndOids::CISCOPORTSECURITYMIB;
+
+$Monitoring::GLPlugin::SNMP::MibsAndOids::origin->{'CISCO-PORT-SECURITY-MIB'} = {
+  url => '',
+  name => 'CISCO-PORT-SECURITY-MIB',
+};
+
+$Monitoring::GLPlugin::SNMP::MibsAndOids::mib_ids->{'CISCO-PORT-SECURITY-MIB'} =
+    '1.3.6.1.4.1.9.9.315';
+
+$Monitoring::GLPlugin::SNMP::MibsAndOids::mibs_and_oids->{'CISCO-PORT-SECURITY-MIB'} = {
+  ciscoPortSecurityMIB => '1.3.6.1.4.1.9.9.315',
+  ciscoPortSecurityMIBNotifs => '1.3.6.1.4.1.9.9.315.0',
+  cpsInterfaceNotifs => '1.3.6.1.4.1.9.9.315.0.0',
+  ciscoPortSecurityMIBObjects => '1.3.6.1.4.1.9.9.315.1',
+  cpsGlobalObjects => '1.3.6.1.4.1.9.9.315.1.1',
+  cpsGlobalMaxSecureAddress => '1.3.6.1.4.1.9.9.315.1.1.1',
+  cpsGlobalTotalSecureAddress => '1.3.6.1.4.1.9.9.315.1.1.2',
+  cpsGlobalPortSecurityEnable => '1.3.6.1.4.1.9.9.315.1.1.3',
+  cpsGlobalPortSecurityEnableDefinition => 'SNMPv2-TC-v1-MIB::TruthValue',
+  cpsGlobalSNMPNotifRate => '1.3.6.1.4.1.9.9.315.1.1.4',
+  cpsGlobalSNMPNotifControl => '1.3.6.1.4.1.9.9.315.1.1.5',
+  cpsGlobalClearSecureMacAddresses => '1.3.6.1.4.1.9.9.315.1.1.6',
+  cpsGlobalClearSecureMacAddressesDefinition => 'CISCO-PORT-SECURITY-MIB::ClearSecureMacAddrType',
+  cpsInterfaceObjects => '1.3.6.1.4.1.9.9.315.1.2',
+  cpsIfConfigTable => '1.3.6.1.4.1.9.9.315.1.2.1',
+  cpsIfConfigEntry => '1.3.6.1.4.1.9.9.315.1.2.1.1',
+  cpsIfPortSecurityEnable => '1.3.6.1.4.1.9.9.315.1.2.1.1.1',
+  cpsIfPortSecurityEnableDefinition => 'SNMPv2-TC-v1-MIB::TruthValue',
+  cpsIfPortSecurityStatus => '1.3.6.1.4.1.9.9.315.1.2.1.1.2',
+  cpsIfPortSecurityStatusDefinition => 'CISCO-PORT-SECURITY-MIB::cpsIfPortSecurityStatus',
+  cpsIfMaxSecureMacAddr => '1.3.6.1.4.1.9.9.315.1.2.1.1.3',
+  cpsIfCurrentSecureMacAddrCount => '1.3.6.1.4.1.9.9.315.1.2.1.1.4',
+  cpsIfSecureMacAddrAgingTime => '1.3.6.1.4.1.9.9.315.1.2.1.1.5',
+  cpsIfSecureMacAddrAgingType => '1.3.6.1.4.1.9.9.315.1.2.1.1.6',
+  cpsIfSecureMacAddrAgingTypeDefinition => 'CISCO-PORT-SECURITY-MIB::cpsIfSecureMacAddrAgingType',
+  cpsIfStaticMacAddrAgingEnable => '1.3.6.1.4.1.9.9.315.1.2.1.1.7',
+  cpsIfStaticMacAddrAgingEnableDefinition => 'SNMPv2-TC-v1-MIB::TruthValue',
+  cpsIfViolationAction => '1.3.6.1.4.1.9.9.315.1.2.1.1.8',
+  cpsIfViolationActionDefinition => 'CISCO-PORT-SECURITY-MIB::cpsIfViolationAction',
+  cpsIfViolationCount => '1.3.6.1.4.1.9.9.315.1.2.1.1.9',
+  cpsIfSecureLastMacAddress => '1.3.6.1.4.1.9.9.315.1.2.1.1.10',
+  cpsIfClearSecureAddresses => '1.3.6.1.4.1.9.9.315.1.2.1.1.11',
+  cpsIfClearSecureAddressesDefinition => 'SNMPv2-TC-v1-MIB::TruthValue',
+  cpsIfUnicastFloodingEnable => '1.3.6.1.4.1.9.9.315.1.2.1.1.12',
+  cpsIfUnicastFloodingEnableDefinition => 'SNMPv2-TC-v1-MIB::TruthValue',
+  cpsIfShutdownTimeout => '1.3.6.1.4.1.9.9.315.1.2.1.1.13',
+  cpsIfClearSecureMacAddresses => '1.3.6.1.4.1.9.9.315.1.2.1.1.14',
+  cpsIfClearSecureMacAddressesDefinition => 'CISCO-PORT-SECURITY-MIB::ClearSecureMacAddrType',
+  cpsIfStickyEnable => '1.3.6.1.4.1.9.9.315.1.2.1.1.15',
+  cpsIfStickyEnableDefinition => 'SNMPv2-TC-v1-MIB::TruthValue',
+  cpsIfInvalidSrcRateLimitEnable => '1.3.6.1.4.1.9.9.315.1.2.1.1.16',
+  cpsIfInvalidSrcRateLimitEnableDefinition => 'SNMPv2-TC-v1-MIB::TruthValue',
+  cpsIfInvalidSrcRateLimitValue => '1.3.6.1.4.1.9.9.315.1.2.1.1.17',
+  cpsIfSecureLastMacAddrVlanId => '1.3.6.1.4.1.9.9.315.1.2.1.1.18',
+  cpsSecureMacAddressTable => '1.3.6.1.4.1.9.9.315.1.2.2',
+  cpsSecureMacAddressEntry => '1.3.6.1.4.1.9.9.315.1.2.2.1',
+  cpsSecureMacAddress => '1.3.6.1.4.1.9.9.315.1.2.2.1.1',
+  cpsSecureMacAddrType => '1.3.6.1.4.1.9.9.315.1.2.2.1.2',
+  cpsSecureMacAddrTypeDefinition => 'CISCO-PORT-SECURITY-MIB::cpsSecureMacAddrType',
+  cpsSecureMacAddrRemainingAge => '1.3.6.1.4.1.9.9.315.1.2.2.1.3',
+  cpsSecureMacAddrRowStatus => '1.3.6.1.4.1.9.9.315.1.2.2.1.4',
+  cpsIfVlanSecureMacAddrTable => '1.3.6.1.4.1.9.9.315.1.2.3',
+  cpsIfVlanSecureMacAddrEntry => '1.3.6.1.4.1.9.9.315.1.2.3.1',
+  cpsIfVlanSecureMacAddress => '1.3.6.1.4.1.9.9.315.1.2.3.1.1',
+  cpsIfVlanSecureVlanIndex => '1.3.6.1.4.1.9.9.315.1.2.3.1.2',
+  cpsIfVlanSecureMacAddrType => '1.3.6.1.4.1.9.9.315.1.2.3.1.3',
+  cpsIfVlanSecureMacAddrTypeDefinition => 'CISCO-PORT-SECURITY-MIB::cpsIfVlanSecureMacAddrType',
+  cpsIfVlanSecureMacAddrRemainAge => '1.3.6.1.4.1.9.9.315.1.2.3.1.4',
+  cpsIfVlanSecureMacAddrRowStatus => '1.3.6.1.4.1.9.9.315.1.2.3.1.5',
+  cpsIfVlanTable => '1.3.6.1.4.1.9.9.315.1.2.4',
+  cpsIfVlanEntry => '1.3.6.1.4.1.9.9.315.1.2.4.1',
+  cpsIfVlanIndex => '1.3.6.1.4.1.9.9.315.1.2.4.1.1',
+  cpsIfVlanMaxSecureMacAddr => '1.3.6.1.4.1.9.9.315.1.2.4.1.2',
+  cpsIfVlanCurSecureMacAddrCount => '1.3.6.1.4.1.9.9.315.1.2.4.1.3',
+  cpsIfMultiVlanTable => '1.3.6.1.4.1.9.9.315.1.2.5',
+  cpsIfMultiVlanEntry => '1.3.6.1.4.1.9.9.315.1.2.5.1',
+  cpsIfMultiVlanIndex => '1.3.6.1.4.1.9.9.315.1.2.5.1.1',
+  cpsIfMultiVlanMaxSecureMacAddr => '1.3.6.1.4.1.9.9.315.1.2.5.1.2',
+  cpsIfMultiVlanSecureMacAddrCount => '1.3.6.1.4.1.9.9.315.1.2.5.1.3',
+  cpsIfMultiVlanClearSecureMacAddr => '1.3.6.1.4.1.9.9.315.1.2.5.1.4',
+  cpsIfMultiVlanClearSecureMacAddrDefinition => 'CISCO-PORT-SECURITY-MIB::ClearSecureMacAddrType',
+  cpsIfMultiVlanRowStatus => '1.3.6.1.4.1.9.9.315.1.2.5.1.5',
+  ciscoPortSecurityMIBConform => '1.3.6.1.4.1.9.9.315.2',
+  ciscoPortSecurityMIBCompliances => '1.3.6.1.4.1.9.9.315.2.1',
+  ciscoPortSecurityMIBGroups => '1.3.6.1.4.1.9.9.315.2.2',
+};
+
+$Monitoring::GLPlugin::SNMP::MibsAndOids::definitions->{'CISCO-PORT-SECURITY-MIB'} = {
+  cpsIfPortSecurityStatus => {
+    '1' => 'secureup',
+    '2' => 'securedown',
+    '3' => 'shutdown',
+  },
+  cpsIfVlanSecureMacAddrType => {
+    '1' => 'static',
+    '2' => 'dynamic',
+    '3' => 'sticky',
+  },
+  cpsIfSecureMacAddrAgingType => {
+    '1' => 'absolute',
+    '2' => 'inactivity',
+  },
+  cpsIfViolationAction => {
+    '1' => 'shutdown',
+    '2' => 'dropNotify',
+    '3' => 'drop',
+  },
+  ClearSecureMacAddrType => {
+    '0' => 'done',
+    '1' => 'dynamic',
+    '2' => 'static',
+    '3' => 'sticky',
+    '4' => 'all',
+  },
+  cpsSecureMacAddrType => {
+    '1' => 'static',
+    '2' => 'dynamic',
   },
 };
 package Monitoring::GLPlugin::SNMP::MibsAndOids::CISCOPROCESSMIB;
@@ -57065,7 +57472,7 @@ sub unhex_mac {
     $value =~ s/ //g;
     $value = join(":", unpack "C*", pack "H*", $value);
   } elsif ($value && unpack("H12", $value) =~ /(\w{2})(\w{2})(\w{2})(\w{2})(\w{2})(\w{2})/) {
-    $value = join(":", map { hex($_) } ($1, $2, $3, $4, $5, $6));
+    $value = join(":", ($1, $2, $3, $4, $5, $6));
   }
   return $value;
 }
@@ -58785,6 +59192,140 @@ sub init {
 package Classes::Bintec;
 our @ISA = qw(Classes::Device);
 use strict;
+
+package Classes::Cisco::CISCOPORTSECURITYMIB::Component::InterfaceSubsystem;
+our @ISA = qw(Classes::IFMIB::Component::InterfaceSubsystem);
+use strict;
+
+sub init {
+  my ($self) = @_;
+  my @iftable_columns = qw(ifIndex ifDescr ifAlias ifName);
+  my @cpsifconfigtable_columns = ();
+  if ($self->mode =~ /device::interfaces::portsecurity/) {
+    $self->get_snmp_objects('CISCO-PORT-SECURITY-MIB', qw(cpsGlobalPortSecurityEnable));
+    if ($self->{cpsGlobalPortSecurityEnable} eq 'false') {
+      return;
+    }
+    push(@iftable_columns, qw(
+        ifOperStatus ifAdminStatus
+    ));
+    push(@cpsifconfigtable_columns, qw(
+        cpsIfPortSecurityEnable cpsIfPortSecurityStatus cpsIfViolationCount
+        cpsIfSecureLastMacAddress
+    ));
+  } else {
+    $self->SUPER::init();
+  }
+  if ($self->mode =~ /device::interfaces::portsecurity/) {
+    my $if_has_changed = $self->update_interface_cache(0);
+    my $only_admin_up =
+        $self->opts->name && $self->opts->name eq '_adminup_' ? 1 : 0;
+    my $only_oper_up =
+        $self->opts->name && $self->opts->name eq '_operup_' ? 1 : 0;
+    if ($only_admin_up || $only_oper_up) {
+      $self->override_opt('name', undef);
+      $self->override_opt('drecksptkdb', undef);
+    }
+    my @indices = $self->get_interface_indices();
+    my @all_indices = @indices;
+    my @selected_indices = ();
+    if (! $self->opts->name && ! $self->opts->name3) {
+      # get_table erzwingen
+      @indices = ();
+      $self->bulk_is_baeh(10);
+    }
+    if (!$self->opts->name || scalar(@indices) > 0) {
+      my @save_indices = @indices; # die werden in get_snmp_table_objects geshiftet
+      foreach ($self->get_snmp_table_objects(
+          'IFMIB', 'ifTable+ifXTable', \@indices, \@iftable_columns)) {
+        next if $only_admin_up && $_->{ifAdminStatus} ne 'up';
+        next if $only_oper_up && $_->{ifOperStatus} ne 'up';
+        my $interface = Classes::Cisco::CISCOPORTSECURITYMIB::Component::InterfaceSubsystem::Interface->new(%{$_});
+        $interface->{columns} = [@iftable_columns];
+        push(@{$self->{interfaces}}, $interface);
+      }
+      @indices = map { [$_->{ifIndex}]; } @{$self->{interfaces}};
+      if (! $self->opts->name && ! $self->opts->name3) {
+        $self->get_snmp_tables('CISCO-PORT-SECURITY-MIB', [
+            ['cpsifs', 'cpsIfConfigTable', 'Classes::Cisco::CISCOPORTSECURITYMIB::Component::InterfaceSubsystem::CpsIf'],
+        ]);
+      } else {
+        $self->{cpsifs} = [];
+        foreach ($self->get_snmp_table_objects(
+            'CISCO-PORT-SECURITY-MIB', 'cpsIfConfigTable', \@indices, \@cpsifconfigtable_columns)) {
+          my $interface = Classes::Cisco::CISCOPORTSECURITYMIB::Component::InterfaceSubsystem::CpsIf->new(%{$_});
+          push(@{$self->{cpsifs}}, $interface);
+        }
+      }
+      $self->merge_tables('interfaces', 'cpsifs');
+      @{$self->{interfaces}} = grep {
+        exists $_->{cpsIfPortSecurityEnable} &&
+            $_->{cpsIfPortSecurityEnable} eq 'true';
+      } @{$self->{interfaces}};
+    }
+  } else {
+    $self->SUPER::init();
+  }
+}
+
+sub check {
+  my ($self) = @_;
+  if ($self->mode =~ /device::interfaces::portsecurity/) {
+    if ($self->{cpsGlobalPortSecurityEnable} eq 'true') {
+      $self->SUPER::check();
+    } else {
+      $self->add_ok("port security is not enabled on this device");
+    }
+  } else {
+    $self->SUPER::check();
+  }
+}
+
+package Classes::Cisco::CISCOPORTSECURITYMIB::Component::InterfaceSubsystem::CpsIf;
+our @ISA = qw(Monitoring::GLPlugin::SNMP::TableItem);
+use strict;
+
+sub finish {
+  my ($self) = @_;
+  $self->{cpsIfSecureLastMacAddress} = $self->{cpsIfSecureLastMacAddress} ?
+      $self->unhex_mac($self->{cpsIfSecureLastMacAddress}) : '-unknown-';
+
+}
+
+package Classes::Cisco::CISCOPORTSECURITYMIB::Component::InterfaceSubsystem::Interface;
+our @ISA = qw(Classes::IFMIB::Component::InterfaceSubsystem::Interface);
+use strict;
+
+
+sub check {
+  my ($self) = @_;
+  my $full_descr = sprintf "%s%s",
+      $self->{ifDescr},
+      $self->{ifAlias} && $self->{ifAlias} ne $self->{ifDescr} ?
+          " (alias ".$self->{ifAlias}.")" : "";
+  if ($self->mode =~ /device::interfaces::portsecurity/) {
+    if ($self->{cpsIfPortSecurityEnable} eq 'false') {
+      $self->add_info(sprintf 'interface %s security not enabled',
+          $full_descr);
+      $self->add_ok();
+    } else {
+      $self->add_info(sprintf 'interface %s security status is %s',
+          $full_descr, $self->{cpsIfPortSecurityStatus});
+      if ($self->{cpsIfPortSecurityStatus} eq 'secureup') {
+        $self->add_ok();
+      } elsif ($self->{cpsIfPortSecurityStatus} eq 'securedown') {
+        $self->annotate_info('last mac address was '.$self->{cpsIfSecureLastMacAddress});
+        $self->add_unknown_mitigation();
+      } elsif ($self->{cpsIfPortSecurityStatus} eq 'shutdown') {
+        $self->annotate_info('last mac address was '.$self->{cpsIfSecureLastMacAddress});
+        $self->add_critical();
+      }
+    }
+  } else {
+    $self->SUPER::check();
+  }
+}
+
 
 package Classes::Cisco::OLDCISCOINTERFACESMIB::Component::InterfaceSubsystem;
 our @ISA = qw(Classes::IFMIB::Component::InterfaceSubsystem);
@@ -62546,6 +63087,12 @@ sub init {
     if ($self->mode =~ /device::interfaces::etherstats/) {
       if ($self->implements_mib('OLD-CISCO-INTERFACES-MIB')) {
         $self->analyze_and_check_interface_subsystem("Classes::Cisco::OLDCISCOINTERFACESMIB::Component::InterfaceSubsystem");
+      } else {
+        $self->no_such_mode();
+      }
+    } elsif ($self->mode =~ /device::interfaces::portsecurity/) {
+      if ($self->implements_mib('CISCO-PORT-SECURITY-MIB')) {
+        $self->analyze_and_check_interface_subsystem("Classes::Cisco::CISCOPORTSECURITYMIB::Component::InterfaceSubsystem");
       } else {
         $self->no_such_mode();
       }
@@ -73958,6 +74505,138 @@ sub init {
   }
 }
 
+package Classes::DrayTek::Vigor::Component::CpuSubsystem;
+our @ISA = qw(Monitoring::GLPlugin::SNMP::Item);
+use strict;
+
+sub init {
+  my ($self) = @_;
+  my $sysdescr = $self->get_snmp_object('MIB-2-MIB', 'sysDescr', 0);
+  if ($sysdescr =~ /CPU Usage:\s*([\d\.])+%/i) {
+    $self->{cpu_usage} = $1;
+  } else {
+    $self->no_such_mode();
+  }
+}
+
+sub check {
+  my ($self) = @_;
+  $self->add_info('checking cpu');
+  $self->add_info(sprintf 'cpu usage is %.2f%%', $self->{cpu_usage});
+  $self->set_thresholds(warning => 80, critical => 90);
+  $self->add_message($self->check_thresholds($self->{cpu_usage}));
+  $self->add_perfdata(
+      label => 'cpu_usage',
+      value => $self->{cpu_usage},
+      uom => '%',
+  );
+}
+
+package Classes::DrayTek::Vigor::Component::EnvironmentalSubsystem;
+our @ISA = qw(Monitoring::GLPlugin::SNMP::Item);
+use strict;
+use Data::Dumper;
+
+sub init {
+  my ($self) = @_;
+  $self->get_snmp_tables('ADSL-LINE-MIB', [
+      ['lines', 'adslAturPhysTable', 'Classes::DrayTek::Vigor::Component::AdslLine'],
+  ]);
+}
+
+
+package Classes::DrayTek::Vigor::Component::AdslLine;
+our @ISA = qw(Monitoring::GLPlugin::SNMP::TableItem);
+use strict;
+
+sub finish {
+  my ($self) = @_;
+  if ($self->{adslAturCurrStatus}) {
+    chomp $self->{adslAturCurrStatus};
+    $self->{adslAturCurrStatus} =~ s/\x00+$//;
+  }
+}
+
+sub check {
+  my ($self) = @_;
+  $self->add_info(sprintf 'adsl line %s has status %s', 
+      $self->{flat_indices}, $self->{adslAturCurrStatus});
+  if ($self->{adslAturCurrStatus} ne "SHOWTIME") {
+    $self->add_critical();
+  } else {
+    $self->add_ok();
+  }
+}
+
+package Classes::DrayTek::Vigor::Component::MemSubsystem;
+our @ISA = qw(Monitoring::GLPlugin::SNMP::Item);
+use strict;
+
+sub init {
+  my ($self) = @_;
+  my $sysdescr = $self->get_snmp_object('MIB-2-MIB', 'sysDescr', 0);
+  if ($sysdescr =~ /Memory Usage:\s*([\d\.])+%/i) {
+    $self->{mem_usage} = $1;
+  } else {
+    $self->no_such_mode();
+  }
+}
+
+sub check {
+  my ($self) = @_;
+  $self->add_info('checking mem');
+  $self->add_info(sprintf 'memory usage is %.2f%%', $self->{mem_usage});
+  $self->set_thresholds(warning => 90, critical => 95);
+  $self->add_message($self->check_thresholds($self->{mem_usage}));
+  $self->add_perfdata(
+      label => 'mem_usage',
+      value => $self->{mem_usage},
+      uom => '%',
+  );
+}
+
+package Classes::DrayTek::Vigor;
+our @ISA = qw(Classes::DrayTek);
+use strict;
+
+sub init {
+  my ($self) = @_;
+  if ($self->mode =~ /device::hardware::health/) {
+    $self->analyze_and_check_environmental_subsystem("Classes::DrayTek::Vigor::Component::EnvironmentalSubsystem");
+  } elsif ($self->mode =~ /device::hardware::load/) {
+    $self->analyze_and_check_cpu_subsystem("Classes::DrayTek::Vigor::Component::CpuSubsystem");
+  } elsif ($self->mode =~ /device::hardware::memory/) {
+    $self->analyze_and_check_mem_subsystem("Classes::DrayTek::Vigor::Component::MemSubsystem");
+  } else {
+    $self->no_such_mode();
+  }
+}
+
+package Classes::DrayTek;
+our @ISA = qw(Classes::Device);
+use strict;
+
+
+sub init {
+  my ($self) = @_;
+  if ($self->{productname} =~ /Vigor/i) {
+    bless $self, 'Classes::DrayTek::Vigor';
+    $self->debug('using Classes::DrayTek::Vigor');
+  }
+  if (ref($self) ne "Classes::DrayTek") {
+    $self->init();
+  } else {
+    $self->no_such_device();
+  }
+}
+
+sub pretty_sysdesc {
+  my ($self, $sysDescr) = @_;
+  if ($sysDescr =~ /DrayTek.*Vigor(\d+).*(Version: .*?)[ ,]/) {
+    return 'DrayTek Vigor '.$1.' '.$2;
+  }
+}
+
 package Classes::Device;
 our @ISA = qw(Monitoring::GLPlugin::SNMP Monitoring::GLPlugin::UPNP);
 use strict;
@@ -74070,6 +74749,8 @@ sub classify {
       } elsif ($self->{productname} =~ /Pulse Secure.*LLC/i) {
         # Pulse Secure,LLC,Pulse Policy Secure,IC-6500,5.2R7.1 (build 37645)
         $self->rebless('Classes::Juniper::IVE');
+      } elsif ($self->{productname} =~ /DrayTek.*Vigor/i) {
+        $self->rebless('Classes::DrayTek');
       } elsif ($self->implements_mib('NETGEAR-MIB')) {
         $self->rebless('Classes::Netgear');
       } elsif ($self->{productname} =~ /^(GS|FS)/i) {
@@ -74212,7 +74893,7 @@ my $plugin = Classes::Device->new(
         '--mode <what-to-do> '.
         '--hostname <network-component> --community <snmp-community>'.
         '  ...]',
-    version => '$Revision: 7.4.2.1 $',
+    version => '$Revision: 7.5.0.1 $',
     blurb => 'This plugin checks various parameters of network components ',
     url => 'http://labs.consol.de/nagios/check_nwc_health',
     timeout => 60,
@@ -74337,6 +75018,12 @@ $plugin->add_mode(
     spec => 'interface-uptime',
     alias => undef,
     help => 'Check state changes of interfaces',
+);
+$plugin->add_mode(
+    internal => 'device::interfaces::portsecurity',
+    spec => 'interface-security',
+    alias => undef,
+    help => 'Check interfaces for security violations',
 );
 $plugin->add_mode(
     internal => 'device::routes::list',
