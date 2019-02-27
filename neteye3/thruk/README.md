@@ -1,14 +1,35 @@
 
 # Thruk Configuration extension 
 
-- Additional action menus for Services and Host details view
-- Define Senders email address for report scheduling
+This folder provides configuration and scripts to extend the Neteye 3 monitoring view of Thruk.
 
-thruk_local.conf contains:
-1) Additional action menus
-provide dropdown for each host with direct link to:
-- nedi
-- glpi
+Enhancements:
+1. Action menu items for Services and Host details view
+   provide dropdown for each host with direct link to:
+  * Highlight NagVis Maps where host is registered (directly or through related hostgroup) 
+  * Search host as device in NeDi
+  * Search host as asset in AssetManagement (GLPI)
+2. Report Scheduling
+  * Define Senders email address for report scheduling
+3. Thruk NetEye Theme CSS error fix
+   Show the red background for hosts with status down in hosts and service details view
 
-2) Report Scheduling
-Define email senders name
+# Configuration and Setup
+
+1. Install thruk_local.conf:
+Note: Backup your original thruk_local.conf first.
+```
+cp thruk_local.conf /var/lib/neteye/thruk/thruk_local.conf
+```
+
+2. Install discovery script for monitoring maps:
+Note: Default pahts for NagVis, Livestatus are defined within .cgi scrip. Adapt if ported to non-NetEye environments.
+```
+cp monitoring2maps_link.cgi /usr/lib/nagios/cgi/monitoring2maps_link.cgi
+```
+
+3. Thruk NetEye Theme CSS error fix
+```
+patch /var/lib/neteye/thruk/themes/themes-available/Neteye/stylesheets/status.css < themes_NetEye_stylesheets/status.css.diff
+```
+
