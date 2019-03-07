@@ -1,33 +1,27 @@
 
 # NetEye ITOA Software and Configurations overview
 
-IT operations analytics (ITOA) provides an infrastructure of:
-- collecting agents
-- streaming data to a central data collector and
-- a forwarder, writing those data into a database
+IT operations analytics (ITOA) provides a solution to collect and archive performance data from various sources. The frequency of collection can be high and the contents indexed within a timeseries database.
 
-## collecting architecture
+The architecture consits of infrastructure of:
+1. collecting agents
+2. NetEye: collector for streaming data
+3. NetEye: forwarder to database
+
+# Setup and Configuration
+
+## collecting agents
 
 We make use of telegraf agents and provide various configuration to collect data of interest from systems.
-The agent is compatible with Windows, Linux/Unix.
-
-Configuration and instructions here:
-Folder: agents
-
-## streaming data to a central data collector and forwarder to database
-
 The telegraf agents stream their data to a central collector (installed on NetEye).
-As collector we use "nats-streaming-server".
-Within this folder you find also instructions for configuring the forwarder of data from streaming-server (nats) into the database (influxdb)
 
-Packages are provided by NetEye and instructions for installation and configuration is provided here:
-Folder: neteye_nats_collector
+The agent is compatible with Windows, Linux/Unix.
+[Configuration samples and instructions are found here](agents/)
 
-## collecting monitoring status infromation
 
-With telegraf we can collect the current status of your monitoring objects and write them into the database influxdb.
+## NetEye: collector of streaming data and forwarder to database
 
-Configuration and instructions here:
-Folder: neteye_monitoring_status_collector
+The collector service is provided as package for NetEye3 and NetEye4. You can [install the collector and find the relative how-to in the folder neteye_nats_collector](neteye_nats_collector/)
+
 
 
