@@ -9,7 +9,7 @@ Provides a selection of all Alyvix services and related hosts and allows to comp
 Setup: Import alyvix_performance overview.json into NetEye ITOA/Grafana.
 
 Preview:
-![alyvix_performance overview.png](alyvix_performance overview.png)!
+![alyvix_performance overview.png](alyvix_performance_overview.png)!
 
 ## Alyvix Troubleshooting view
 
