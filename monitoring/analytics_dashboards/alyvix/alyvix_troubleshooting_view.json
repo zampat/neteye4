@@ -1,0 +1,981 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_ALYVIX",
+      "label": "Alyvix",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "5.2.4"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": "5.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "5.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": "5.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "datasource": "${DS_ALYVIX}",
+        "enable": false,
+        "iconColor": "rgb(176, 208, 243)",
+        "name": "TS Info",
+        "query": "SELECT \"aos_name\", \"session_id\", \"ax_client_hostname\" FROM \"alyvix\" WHERE \"test_name\" =~ /^$test_cases$/ AND \"host\" =~ /^$host$/ AND $timeFilter",
+        "tagsColumn": "ax_client_hostname",
+        "textColumn": "session_id",
+        "titleColumn": "aos_name"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 1,
+  "id": null,
+  "iteration": 1551970371800,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 28,
+      "panels": [],
+      "repeat": null,
+      "title": "Cumulative Performance",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_ALYVIX}",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "height": "200",
+      "id": 1,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "minSpan": 6,
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "repeat": "host",
+      "seriesOverrides": [
+        {
+          "alias": "/- ok/",
+          "color": "#629E51",
+          "pointradius": 1
+        },
+        {
+          "alias": "/- warning/",
+          "color": "#EAB839",
+          "pointradius": 4
+        },
+        {
+          "alias": "/- critical/",
+          "color": "#EF843C",
+          "pointradius": 4
+        },
+        {
+          "alias": "/- timedout/",
+          "color": "#BF1B00",
+          "pointradius": 4
+        },
+        {
+          "alias": "/- not_executed/",
+          "color": "#CFFAFF",
+          "pointradius": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$tag_transaction_name - $tag_state",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "transaction_name"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "state"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "alyvix",
+          "policy": "default",
+          "query": "SELECT \"cumulative\" FROM \"alyvix\" WHERE \"test_name\" =~ /^$test_cases$/ AND \"host\" =~ /^$host$/ AND \"transaction_name\" =~ /^$transactions$/ AND $timeFilter GROUP BY \"transaction_name\", \"state\", \"point\"",
+          "rawQuery": false,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cumulative"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "test_name",
+              "operator": "=~",
+              "value": "/^$test_cases$/"
+            },
+            {
+              "condition": "AND",
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$host$/"
+            },
+            {
+              "condition": "AND",
+              "key": "transaction_name",
+              "operator": "=~",
+              "value": "/^$transactions$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Test Transaction Overview | $test_cases | $host",
+      "tooltip": {
+        "msResolution": true,
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "ms",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 29,
+      "panels": [],
+      "repeat": null,
+      "title": "Detailed Performance",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_ALYVIX}",
+      "fill": 1,
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 27,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "repeat": "host",
+      "seriesOverrides": [
+        {
+          "alias": "/- ok/",
+          "color": "#629E51",
+          "legend": false,
+          "pointradius": 1
+        },
+        {
+          "alias": "/- warning/",
+          "color": "#EAB839",
+          "legend": false,
+          "pointradius": 4
+        },
+        {
+          "alias": "/- critical/",
+          "color": "#EF843C",
+          "legend": false,
+          "pointradius": 4
+        },
+        {
+          "alias": "/- timedout/",
+          "color": "#BF1B00",
+          "legend": false,
+          "pointradius": 4
+        },
+        {
+          "alias": "/- not_executed/",
+          "color": "#CFFAFF",
+          "legend": false,
+          "pointradius": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$tag_transaction_name",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "transaction_name"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "alyvix",
+          "policy": "default",
+          "query": "C SELECT \"cumulative\" FROM \"alyvix\" WHERE \"test_name\" =~ /^$test_cases$/ AND \"host\" =~ /^$host$/ AND \"transaction_name\" =~ /^$transactions$/ AND $timeFilter GROUP BY \"transaction_name\", \"state\"",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "performance"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "test_name",
+              "operator": "=~",
+              "value": "/^$test_cases$/"
+            },
+            {
+              "condition": "AND",
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$host$/"
+            },
+            {
+              "condition": "AND",
+              "key": "transaction_name",
+              "operator": "=~",
+              "value": "/^$transactions$/"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_transaction_name  - $tag_state",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "transaction_name"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "state"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "alyvix",
+          "policy": "default",
+          "query": "C SELECT \"cumulative\" FROM \"alyvix\" WHERE \"test_name\" =~ /^$test_cases$/ AND \"host\" =~ /^$host$/ AND \"transaction_name\" =~ /^$transactions$/ AND $timeFilter GROUP BY \"transaction_name\", \"state\"",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "performance"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "test_name",
+              "operator": "=~",
+              "value": "/^$test_cases$/"
+            },
+            {
+              "condition": "AND",
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$host$/"
+            },
+            {
+              "condition": "AND",
+              "key": "transaction_name",
+              "operator": "=~",
+              "value": "/^$transactions$/"
+            },
+            {
+              "condition": "AND",
+              "key": "state",
+              "operator": "=~",
+              "value": "/^$state_of_interest$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Performances | $test_cases| $host",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "ms",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 47
+      },
+      "id": 30,
+      "panels": [],
+      "repeat": null,
+      "title": "Transactions",
+      "type": "row"
+    },
+    {
+      "columns": [],
+      "datasource": "${DS_ALYVIX}",
+      "editable": true,
+      "error": false,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "id": 4,
+      "links": [],
+      "minSpan": 6,
+      "pageSize": null,
+      "repeat": "host",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "ms"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "$tag_state | $tag_transaction_name",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "transaction_name"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "state"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "test_name"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": true,
+          "measurement": "alyvix",
+          "policy": "default",
+          "query": "SELECT \"performance\" FROM \"alyvix\" WHERE \"host\" =~ /^$host$/ AND \"test_name\" =~ /^$test_cases$/ AND $timeFilter GROUP BY \"transaction_name\", \"state\", \"test_name\"",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "performance"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "test_name",
+              "operator": "=~",
+              "value": "/^$test_cases$/"
+            },
+            {
+              "condition": "AND",
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$host$/"
+            },
+            {
+              "condition": "AND",
+              "key": "state",
+              "operator": "=~",
+              "value": "/^$state_of_interest$/"
+            },
+            {
+              "condition": "AND",
+              "key": "transaction_name",
+              "operator": "=~",
+              "value": "/^$transactions$/"
+            }
+          ]
+        },
+        {
+          "alias": "$tag_state | $tag_transaction_name",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "transaction_name"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "state"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "test_name"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "alyvix",
+          "policy": "default",
+          "query": "SELECT \"performance\" FROM \"alyvix\" WHERE \"host\" =~ /^$host$/ AND \"test_name\" =~ /^$test_cases$/ AND $timeFilter GROUP BY \"transaction_name\", \"state\", \"test_name\"",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "performance"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "test_name",
+              "operator": "=~",
+              "value": "/^$test_cases$/"
+            },
+            {
+              "condition": "AND",
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$host$/"
+            },
+            {
+              "condition": "AND",
+              "key": "state",
+              "operator": "!=",
+              "value": "ok"
+            },
+            {
+              "condition": "AND",
+              "key": "transaction_name",
+              "operator": "=~",
+              "value": "/^$transactions$/"
+            }
+          ]
+        }
+      ],
+      "title": "WARNING | CRITICAL | TIMEDOUT",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 72
+      },
+      "id": 31,
+      "panels": [
+        {
+          "columns": [],
+          "datasource": "${DS_ALYVIX}",
+          "editable": true,
+          "error": false,
+          "fontSize": "100%",
+          "gridPos": {
+            "h": 10,
+            "w": 8,
+            "x": 0,
+            "y": 21
+          },
+          "height": "400",
+          "id": 21,
+          "links": [],
+          "minSpan": 6,
+          "pageSize": null,
+          "repeat": "host",
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 0,
+            "desc": true
+          },
+          "styles": [
+            {
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "pattern": "AOS",
+              "sanitize": false,
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "pattern": "Session ID",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "alias": "[[col]]",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "test_name"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "alyvix",
+              "policy": "default",
+              "query": "SELECT \"aos_name\" AS \"AOS\", \"session_id\" AS \"Session ID\", \"ax_client_hostname\" AS \"Ax Client Hostname\" FROM \"alyvix\" WHERE \"test_name\" =~ /^$test_cases$/ AND \"host\" =~ /^$host$/ AND \"transaction_name\" =~ /^$transactions$/ AND $timeFilter GROUP BY \"test_name\"",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "aos_name"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [
+                      "AOS"
+                    ],
+                    "type": "alias"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "session_id"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [
+                      "Session ID"
+                    ],
+                    "type": "alias"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "ax_client_hostname"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [
+                      "Ax Client Hostname"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "test_name",
+                  "operator": "=~",
+                  "value": "/^$test_cases$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "host",
+                  "operator": "=~",
+                  "value": "/^$host$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "transaction_name",
+                  "operator": "=~",
+                  "value": "/^$transactions$/"
+                }
+              ]
+            }
+          ],
+          "title": "TROUBLESHOOTING INFO - $test_cases - $host",
+          "transform": "timeseries_to_columns",
+          "type": "table"
+        }
+      ],
+      "repeat": null,
+      "title": "Troubleshooting Info",
+      "type": "row"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_ALYVIX}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Test Case",
+        "multi": false,
+        "name": "test_cases",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"alyvix\" with KEY = test_name",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_ALYVIX}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Host",
+        "multi": true,
+        "name": "host",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"alyvix\" with KEY = host",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "hide": 2,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "state_of_interest",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "warning",
+            "value": "warning"
+          },
+          {
+            "selected": false,
+            "text": "critical",
+            "value": "critical"
+          },
+          {
+            "selected": false,
+            "text": "timedout",
+            "value": "timedout"
+          },
+          {
+            "selected": false,
+            "text": "not_executed",
+            "value": "not_executed"
+          }
+        ],
+        "query": "warning, critical, timedout, not_executed",
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_ALYVIX}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Transactions",
+        "multi": true,
+        "name": "transactions",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"alyvix\" with KEY = transaction_name where test_name =~ /^$test_cases$/",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "SHOW TAG VALUES FROM \"alyvix\" with KEY = transaction_name where test_name =~ /^$test_cases$/ AND transaction_group = '$tag'",
+        "tags": [
+          "neteye_action_launchpad",
+          "neteye_startup"
+        ],
+        "tagsQuery": "SHOW TAG VALUES FROM \"alyvix\" with KEY = transaction_group where test_name =~ /^$test_cases$/",
+        "type": "query",
+        "useTags": true
+      }
+    ]
+  },
+  "time": {
+    "from": "2018-03-10T19:36:00.022Z",
+    "to": "2018-07-03T03:27:05.452Z"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Alyvix - Troubleshooting View",
+  "uid": "000000050",
+  "version": 2
+}
