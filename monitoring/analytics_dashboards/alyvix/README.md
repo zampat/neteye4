@@ -14,9 +14,12 @@ Preview:
 ## Alyvix Troubleshooting view
 
 Provides a detailed view of performance data from Alyvix collected via ITOA streaming architecture. [For setup see ITOA](../../../itoa/).
-For each selected testcase a details view (with dots indicating the timestamp) is shown. For each available colltor Alyvix, an additional column is shown.
+For each selected testcase a details view (with dots indicating the timestamp) is shown. For each available collector Alyvix, an additional column is shown.
 
-Setup: Import alyvix_troubleshooting_view.json into NetEye ITOA/Grafana.
+Setup: 
+- Import alyvix_troubleshooting_view.json into NetEye ITOA/Grafana.
+- Setup the ITOA streaming architecture on NetEye (itoa -> neteye_nats_collector)
+- Send Alyvix perfdata to NetEye via streaming protocol with keyword ["Publish Perfdata"](https://alyvix.com/doc/test_case_building/system_keywords.html#publish-perfdata)
 
 Preview:
 ![alyvix_troubleshooting_view.png](alyvix_troubleshooting_view.png)!
