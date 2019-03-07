@@ -1,13 +1,19 @@
 
-# Installation of Nats straming server and configure it
+# Installation of NetEye data streaming architecture for ITOA
 
-## Install Nats streaming server
+Here you find instructions for configuring the streaming server listining for incoming data and the forwarder into the database.
 
+
+## Install streaming server
+
+The straming server "nats-straming-server" is installed and configured to listen on all interfaces for incoming data.
+
+1. Install the package (valid for NetEye 3 and NetEye 4)
 ```
 yum --enablerepo=neteye install nats-streaming-server
 ```
 
-## Configuration
+2. Configuration of streaming server
 
 Enable Nats input listener on all interfaces
 
@@ -19,29 +25,28 @@ Solution 2: Patch the nats configuration file **stan.conf** with provided change
 a) enable listening of nats on *ALL* interfaces on port 4222
 ```
 NetEye 3/4: 
-# patch /etc/nats/stan.conf < ./neteye4_monitoring_share/itoa/neteye_collector/stan_enablePublicListener.conf.diff
+# patch /etc/nats/stan.conf < ./stan_enablePublicListener.conf.diff
 ```
 
-Enable and start nats streaming service
+Enable and start nats streaming service (example valid for NetEye 4)
 ```
 # systemctl start nats-streaming-server.service
 # systemctl status nats-streaming-server.service
 # systemctl enable nats-streaming-server.service
 ```
 
-# Installation of Telegraf to collect data from nats and write to influx 
+# Installation of forwarder to database
 
-## Install Nats streaming server
-
+1. Install telegraf package (valid for NetEye 3 and NetEye 4)
 ```
 # yum --enablerepo=neteye install telegraf.x86_64
 ```
 
-## Configuration of Telegraf consumer from nats streaming server
+2. Configuration of Telegraf to consume data from nats streaming server
 
 - Copy a new telegraf configuration to run collection as separate instance
-- Path NetEye 3: /etc/nagios/neteye/telegraf/ 
-- Path NetEye 4: /neteye/shared/telegraf/
+- Path on NetEye 3: /etc/nagios/neteye/telegraf/ 
+- Path on NetEye 4: /neteye/shared/telegraf/
 - Patch new telegraf configuration file to enable:
   - nats input 
   - influx output
@@ -53,10 +58,10 @@ NetEye 4:
 # export TELEGRAFCONFDIR="/neteye/shared/telegraf"
 
 # cp $TELEGRAFCONFDIR/sample_telegraf.conf.tpl $TELEGRAFCONFDIR/telegraf.conf
-# patch $TELEGRAFCONFDIR/telegraf.conf < ./neteye4_monitoring_share/itoa/neteye_nats_collector/telegraf_inputsNats_consumer.conf.diff
+# patch $TELEGRAFCONFDIR/telegraf.conf < ./telegraf_inputsNats_consumer.conf.diff
 ```
 
-Enable and start telegraf collector service
+Enable and start telegraf collector service (example valid for NetEye 4)
 ```
 # systemctl start telegraf.service
 # systemctl status telegraf.service
