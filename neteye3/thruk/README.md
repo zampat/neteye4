@@ -3,6 +3,8 @@
 
 This folder provides configuration and scripts to extend the Neteye 3 monitoring view of Thruk.
 
+[The lookup mechanism for Hosts in NagVis maps is introduced in neteye blog.](https://www.neteye-blog.com/2019/03/monitoring-maps-to-support-your-it-incident-management/)
+
 Enhancements:
 1. Action menu items for Services and Host details view
    provide dropdown for each host with direct link to:
