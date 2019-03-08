@@ -1,6 +1,6 @@
-# NetEye 4 Monitoring Fileshare setup 
+# NetEye 4 Monitoring Community Portal
 
-This project aims to provide scripts, monitoring plugins and other useful data to setup a folder structure to simplify monitoring operations with NetEye 4.
+This repository comes with the purpose of a community portal for NetEye, to support you in setting up monitoring providing templates for Icinga2, additionals Plugin scriptsThis project aims to provide scripts, monitoring plugins and other useful data to setup a folder structure to simplify monitoring operations with NetEye 4.
 
 ## Features provided
 
