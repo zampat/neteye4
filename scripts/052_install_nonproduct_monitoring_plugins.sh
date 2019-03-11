@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script action: 
-# Copy NON-product monitoring plugins into PluginsContribDir/ foler
+# Copy NON-product monitoring plugins into PluginsContribDir/ folder
 #
 
 MONITORING_PLUGINS_CONTRIB_DIR="$1"
@@ -28,24 +28,26 @@ fi
 
 # Loop trough all Plugins
 # Register all prefixes of Plugins to copy here
+echo "[i] Run 052_install_nonproduct_monitoring_plugins.sh: Going to install NON-Product monitoring plugins into PluginsContribDir/"
+
 ELEMENTS=( INTERFACES MEMORY )
 
 for PLUGIN in ${ELEMENTS[@]}
 do
    PLUGIN_SRC=$PLUGIN\_SRC
    PLUGIN_FILE=$PLUGIN\_FILE
-   echo "[i] Copying Monitoring Plugin ${!PLUGIN_FILE} from git to Plugins contrib dir: ${MONITORING_PLUGINS_CONTRIB_DIR}"
+   echo "[+] Copying Monitoring Plugin ${!PLUGIN_FILE} from git to Plugins contrib dir: ${MONITORING_PLUGINS_CONTRIB_DIR}"
 
    # Check if Plugin already exists. If yes: backup first
    if [ -f ${MONITORING_PLUGINS_CONTRIB_DIR}/${!PLUGIN_FILE} ]
    then
-        echo "[+] Creating Backup of ${!PLUGIN_FILE}"
+        #echo "[+] Creating Backup of ${!PLUGIN_FILE}"
         cp --force ${MONITORING_PLUGINS_CONTRIB_DIR}/${!PLUGIN_FILE} ${MONITORING_PLUGINS_CONTRIB_DIR}/${!PLUGIN_FILE}.${DATE}_bak
    fi
    cp ${!PLUGIN_SRC} ${MONITORING_PLUGINS_CONTRIB_DIR}
-   echo "[i] Copied ${!PLUGIN_FILE}"
+   #echo "[i] Copied ${!PLUGIN_FILE}"
 
 done
 
 
-echo "[i] Done: Copied all Non-Product monitoring plugins"
+echo "[i] Done 052_install_nonproduct_monitoring_plugins.sh: Copied all Non-Product monitoring plugins"
