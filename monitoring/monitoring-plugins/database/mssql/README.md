@@ -1,30 +1,36 @@
+# Monitoring Microsoft SQL Server
 
-# Files in Foler:
+Monitoring of SQL Server availability, ressource usage and provided databases is best done by [community-based check_mssql_health.](https://labs.consol.de/nagios/check_mssql_health/)
 
-check_mssql_health for NetEye 3: file with extension .neteye3
-check_mssql_health for NetEye 4: file with extension .neteye4
+## Preparation of freetds on NetEye
 
-# Example of usage
-
-Plugin documentation is here: https://labs.consol.de/nagios/check_mssql_health/
-
-## Compiling of script:
-
-Cluster compatible cache files:
-NetEye 3: /var/cache/nagios
-NetEye 4: Path is not cluster compatible, yet! 
-ADVICE: make sure the cache folder exists!
-# mkdir /neteye/shared/monitoring/cache/check_mssql_health
-
+Enable the default SQL Server verion in freetds. [See related freetds documentation](http://www.freetds.org/userguide/freetdsconf.htm)
+Define in /etc/freetds.conf: *Note: This is valid for both NetEye 3 and 4.*
 ```
-Compiling for NetEye 3:
-# ./configure --prefix=/usr/lib64/nagios/plugins --with-nagios-user=nagios --with-nagios-group=nagios --with-perl=/usr/bin/perl --with-statefiles-dir=/var/cache/nagios
-
-Compiling for NetEye 4:
-# ./configure --prefix=/neteye/shared/monitoring/plugins --with-nagios-user=icinga --with-nagios-group=icinga --with-perl=/usr/bin/perl --with-statefiles-dir=/neteye/shared/monitoring/cache/check_mssql_health
+[global]
+        # TDS protocol version
+        tds version = 8.0
 ```
 
-## Advanced plugin usage examples
+## Install the compiled version on NetEye
+
+**NetEye 4:**
+*Note: This step is done automatically when executing script "run_setup.sh"*
+Copy the file "check_mssql_health" to /neteye/shared/monitoring/plugins/
+
+**NetEye 3:**
+Copy the file "check_mssql_health.neteye3" to /usr/lib64/nagios/plugins/
+
+
+## Configuring the Monitoring
+
+[General Plugin documentation is found here](https://labs.consol.de/nagios/check_mssql_health/)
+
+**NetEye 3:** A dedicated Monarch Profile is installed automatically and imporable in section "profiles"
+
+**NetEye 4:** Default service templates are installed when [installing the monitoring templates for NetEye 4](../../../../doc/monitoring_templates)
+
+### Advanced plugin usage examples
 
 SQL query requiring encryption:
 
@@ -37,4 +43,37 @@ Note the "$" in the table name of "[Complex table$nB Scheduler Job Log]"
 OK - running schedulers:: 0 | 'running'=0;100;150;;
 ```
 
+# Advanced topics
+
+### Building a new version of the Plugin-script
+
+1. Get lastest version from [project portal](https://labs.consol.de/nagios/check_mssql_health/#download)
+2. Untar into a local folder
+3. Compile according your NetEye environment
+   - Define cluster compatible cache file paths
+     NetEye 3: /var/cache/nagios
+     NetEye 4: WIP: No cluster compatible path had been defined, yet
+     Workaround: Make use of /neteye/shared/monitoring/cache/check_mssql_health
+     ADVICE: make sure the cache folder exists!
+4. Copy the Plugin build in plugins-scripts/ into NetEye Plugin dir
+
+```
+#wget https://labs.consol.de/assets/downloads/nagios/check_mssql_health-2.6.4.14.tar.gz
+# tar xvfz check_mssql_health-2.6.4.14.tar.gz
+# cd check_mssql_health-2.6.4.14/
+
+Compile for NetEye 3:
+# ./configure --prefix=/usr/lib64/nagios/plugins --with-nagios-user=nagios --with-nagios-group=nagios --with-perl=/usr/bin/perl --with-statefiles-dir=/var/cache/nagios
+# make
+
+Compile for NetEye 4:
+# mkdir /neteye/shared/monitoring/cache/check_mssql_health
+# ./configure --prefix=/neteye/shared/monitoring/plugins --with-nagios-user=icinga --with-nagios-group=icinga --with-perl=/usr/bin/perl --with-statefiles-dir=/neteye/shared/monitoring/cache/check_mssql_health
+# make
+
+NetEye 3:
+# cp plugins-scripts/check_mssql_health.pl /usr/lib64/nagios/plugins
+NetEye 4:
+# cp plugins-scripts/check_mssql_health.pl /neteye/shared/monitoring/plugins/
+```
 
