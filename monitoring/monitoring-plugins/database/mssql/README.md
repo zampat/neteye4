@@ -28,7 +28,7 @@ Copy the file "check_mssql_health.neteye3" to /usr/lib64/nagios/plugins/
 
 **NetEye 3:** A dedicated Monarch Profile is installed automatically and imporable in section "profiles"
 
-**NetEye 4:** Default service templates are installed when [installing the monitoring templates for NetEye 4](../../../../doc/monitoring_templates.md)
+**NetEye 4:** Default service templates are installed when [installing the monitoring template library for NetEye 4](../../../../doc/monitoring_templates.md)
 
 ### Advanced plugin usage examples
 
