@@ -9,18 +9,21 @@ NETEYESHARE_MONITORING="$1"
 DATE=`date +%Y%m%d`
 
  
-# Plugin 1: NetEye DRBD9
-# Details : DRBD monitoring
+# Details : Neteye DRBD9 monitoring
 NEDRBD_SRC="https://raw.githubusercontent.com/alaskacommunications/nagios_check_drbd9/master/check_drbd9.pl"
 NEDRBD_DST_DIR="../monitoring/monitoring-plugins/neteye/"
 NEDRBD_FILE="check_drbd9.pl"
-NEDRBD_REPLACE="0"
+
+# Plugin Details : Generic SAN storage health monitoring
+FIBREALL_SRC="https://raw.githubusercontent.com/pld-linux/nagios-plugin-check_fibrealliance/master/check_fibrealliance.sh"
+FIBREALL_DST_DIR="../monitoring/monitoring-plugins/storage/"
+FIBREALL_FILE="check_fibrealliance.sh"
 
 
 
 # Loop trough all Plugins
 # Register all prefixes of Plugins to copy here
-ELEMENTS=( NEDRBD )
+ELEMENTS=( NEDRBD FIBREALL )
 
 for PLUGIN in ${ELEMENTS[@]}
 do
@@ -28,7 +31,6 @@ do
    PLUGIN_DST_DIR=$PLUGIN\_DST_DIR
    PLUGIN_FILE=$PLUGIN\_FILE
    PLUGIN_SRC=$PLUGIN\_SRC
-   PLUGIN_REPLACE=$PLUGIN\_REPLACE
 
    
    # Valiation: Check existency of folder PluginsContrib
