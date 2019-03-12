@@ -13,7 +13,17 @@ git clone https://github.com/zampat/neteye4_monitoring_share.git
 Install contents on NetEye and download external ressources running the installation script.
 **Details related the automated activity is documentated below.**
 ```
-./neteye4_monitoring_share/run_setup.sh
+./run_setup.sh
+```
+
+## Update monitoring plugins from third-party repositories
+
+Clone external repositories into a temporary folder and compare if aupdates are available.
+**Note:** Updates to files provided by external repositories should alwasy be promoted as pull requests to the external repository to maintain community culture and keep aligned with external improvements.
+
+This step is automated by running script:
+```
+./update_monitoring-plugins_from_ext_git.sh
 ```
 
 
