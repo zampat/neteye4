@@ -14,7 +14,6 @@ then
    echo "[i] Adding LDAP configuration sample to Icinga2 Ressources."
 
    cat >>$FILE_RESSOURCES <<EOM
-
 [ldap_bind.local]
 type = "ldap"
 hostname = "dc.mydomain.local"
@@ -23,6 +22,17 @@ encryption = "none"
 root_dn = "dc=mydomain,dc=local"
 bind_dn = "ldapRO@mydomain.local"
 bind_pw = "password"
+
+[Sample remote MYSQL ressource]
+type = "db"
+db = "mysql"
+host = "192.168.200.200"
+port = "3306"
+dbname = "dbname"
+username = "username"
+password = "password"
+charset = "utf8"
+use_ssl = "0"
 EOM
 
 else

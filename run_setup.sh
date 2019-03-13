@@ -31,6 +31,8 @@ MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 #
 # LDAP Ressource
 ./scripts/030_ressources_init.sh ${ICINGA2_CONF_HOME_DIR}
+./scripts/031_root_navigation_sample.sh ${ICINGA2_CONF_HOME_DIR}
+./scripts/032_role_init.sh ${ICINGA2_CONF_HOME_DIR}
 
 
 # Monitoring Templates Import
