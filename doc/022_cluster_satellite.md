@@ -144,7 +144,7 @@ object Endpoint "neteye4vm2.mydomain.local" {
 }
 
 object Zone "cluster-satellite" {
-        endpoints = [ "neteye4vm1.mydomain.local", "neteye4vm2.sucden.co.uk" ]
+        endpoints = [ "neteye4vm1.mydomain.local", "neteye4vm2.mydomain.local" ]
         parent = "master"
     }
 ```
