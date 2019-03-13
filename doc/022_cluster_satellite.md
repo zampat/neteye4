@@ -24,6 +24,7 @@ Note: Generate and sign certificates where icinga2-master service is running!
 ## Certificate creation for satellite node
 
 ```
+# cd /neteye/shared/icinga2/data/lib/icinga2/certs/
 # export icinga_node_name="neteye4vm1.yourdomain.local"
 # icinga2 pki new-cert --cn "${icinga_node_name}" --key "${icinga_node_name}.key" --cert "${icinga_node_name}.crt" --csr "${icinga_node_name}.csr"
 # icinga2-master pki sign-csr --csr ${icinga_node_name}.csr --cert ${icinga_node_name}.crt
