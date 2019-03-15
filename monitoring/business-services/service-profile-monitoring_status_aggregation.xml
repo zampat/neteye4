@@ -12,9 +12,9 @@
   <prop name="command_line"><![CDATA[$USER1$/local/check_service_aggregator.sh -s $ARG1$]]></prop>
  </command>
  <time_period>
-  <prop name="comment"><![CDATA[Benachrichtigungen werden ohne Unterbrechung versandt.]]></prop>
+  <prop name="comment"><![CDATA['24x7' timeperiod definition]]></prop>
   <prop name="name"><![CDATA[24x7]]></prop>
-  <prop name="alias"><![CDATA[24x7]]></prop>
+  <prop name="alias"><![CDATA[24 Hours A Day, 7 Days A Week]]></prop>
   <prop name="tuesday"><![CDATA[00:00-24:00]]></prop>
   <prop name="friday"><![CDATA[00:00-24:00]]></prop>
   <prop name="sunday"><![CDATA[00:00-24:00]]></prop>
@@ -25,40 +25,47 @@
  </time_period>
  <service_template>
   <prop name="retry_check_interval"><![CDATA[1]]></prop>
+  <prop name="check_freshness"><![CDATA[0]]></prop>
   <prop name="template"><![CDATA[template-service]]></prop>
-  <prop name="is_volatile"><![CDATA[0]]></prop>
+  <prop name="process_perf_data"><![CDATA[1]]></prop>
   <prop name="check_period"><![CDATA[24x7]]></prop>
+  <prop name="is_volatile"><![CDATA[0]]></prop>
   <prop name="notification_period"><![CDATA[24x7]]></prop>
   <prop name="max_check_attempts"><![CDATA[3]]></prop>
   <prop name="notification_options"><![CDATA[u,c,w,r,f,s]]></prop>
   <prop name="name"><![CDATA[generic-service]]></prop>
+  <prop name="comment"><![CDATA[# Service definition]]></prop>
   <prop name="normal_check_interval"><![CDATA[5]]></prop>
   <prop name="notification_interval"><![CDATA[0]]></prop>
  </service_template>
  <service_template>
   <prop name="flap_detection_enabled"><![CDATA[1]]></prop>
-  <prop name="check_freshness"><![CDATA[0]]></prop>
+  <prop name="retry_check_interval"><![CDATA[1]]></prop>
+  <prop name="check_freshness"><![CDATA[1]]></prop>
   <prop name="notifications_enabled"><![CDATA[1]]></prop>
   <prop name="event_handler_enabled"><![CDATA[1]]></prop>
   <prop name="active_checks_enabled"><![CDATA[1]]></prop>
   <prop name="process_perf_data"><![CDATA[1]]></prop>
+  <prop name="is_volatile"><![CDATA[0]]></prop>
   <prop name="passive_checks_enabled"><![CDATA[1]]></prop>
   <prop name="retain_status_information"><![CDATA[1]]></prop>
+  <prop name="max_check_attempts"><![CDATA[3]]></prop>
   <prop name="parallelize_check"><![CDATA[1]]></prop>
+  <prop name="notification_options"><![CDATA[u,c,w,r,f,s]]></prop>
   <prop name="retain_nonstatus_information"><![CDATA[1]]></prop>
   <prop name="name"><![CDATA[template-service]]></prop>
-  <prop name="comment"><![CDATA[# Generic service definition template]]></prop>
+  <prop name="normal_check_interval"><![CDATA[5]]></prop>
   <prop name="obsess_over_service"><![CDATA[1]]></prop>
+  <prop name="notification_interval"><![CDATA[120]]></prop>
  </service_template>
  <extended_service_info_template>
   <prop name="script"><![CDATA[]]></prop>
-  <prop name="comment"><![CDATA[# extended_service_info_templates alyvix_ALYVIX_ATOSS_01_Login]]></prop>
+  <prop name="comment"><![CDATA[# extended_service_info_templates alyvix]]></prop>
   <prop name="name"><![CDATA[alyvix]]></prop>
   <prop name="action_url"><![CDATA[/grafana/d/000000051/alyvix-performance-overview?orgId=1]]></prop>
  </extended_service_info_template>
  <service_name>
-  <prop name="command_line"><![CDATA[check_service_aggregator!ALYVIX_ATOSS_01_Login -w 2 -c 3 -W 2 -C 1]]></prop>
-  <prop name="apply_services"><![CDATA[merge]]></prop>
+  <prop name="command_line"><![CDATA[check_service_aggregator!SERVICENAME -w 2 -c 3 -W 2 -C 1]]></prop>
   <prop name="template"><![CDATA[generic-service]]></prop>
   <prop name="extinfo"><![CDATA[alyvix]]></prop>
   <prop name="name"><![CDATA[Monitoring_Alyvix]]></prop>
