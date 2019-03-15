@@ -3,7 +3,7 @@
  <service_profile>
   <prop name="name"><![CDATA[monitoring_status_aggregation]]></prop>
   <prop name="description"><![CDATA[Aggregator of monitoring results from multiple hosts]]></prop>
-  <prop name="service"><![CDATA[Monitoring_Alyvix]]></prop>
+  <prop name="service"><![CDATA[Status_Alyvix]]></prop>
  </service_profile>
 
  <command>
@@ -60,15 +60,15 @@
  </service_template>
  <extended_service_info_template>
   <prop name="script"><![CDATA[]]></prop>
-  <prop name="comment"><![CDATA[# extended_service_info_templates alyvix]]></prop>
+  <prop name="comment"><![CDATA[# extended_service_info_templates alyvix_ALYVIX_ATOSS_01_Login]]></prop>
   <prop name="name"><![CDATA[alyvix]]></prop>
-  <prop name="action_url"><![CDATA[/grafana/d/000000051/alyvix-performance-overview?orgId=1]]></prop>
+  <prop name="action_url"><![CDATA[/grafana/d/HokCgWqmz/alyvix-overview?orgId=1]]></prop>
  </extended_service_info_template>
  <service_name>
   <prop name="command_line"><![CDATA[check_service_aggregator!SERVICENAME -w 2 -c 3 -W 2 -C 1]]></prop>
   <prop name="template"><![CDATA[generic-service]]></prop>
   <prop name="extinfo"><![CDATA[alyvix]]></prop>
-  <prop name="name"><![CDATA[Monitoring_Alyvix]]></prop>
+  <prop name="name"><![CDATA[Status_Alyvix]]></prop>
   <prop name="check_command"><![CDATA[check_service_aggregator]]></prop>
  </service_name>
 </profile>
