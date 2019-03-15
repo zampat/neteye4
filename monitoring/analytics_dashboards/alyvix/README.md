@@ -13,8 +13,9 @@ Preview:
 
 # Alyvix measurement Performance comparison
 
-Import file for NetEye 3: [Alyvix_ Performance comparison_neteye3.json](Alyvix_ Performance comparison_neteye3.json)
-![Alyvix_ Performance comparison.png](Alyvix_ Performance comparison.png)!
+Import file for NetEye 3: [AAlyvix_Performance_comparison_neteye3.json](Alyvix_Performance_comparison_neteye3.json)
+
+![Alyvix_Performance_comparison.png](Alyvix_Performance_comparison.png)!
 
 
 ## Alyvix Troubleshooting view
