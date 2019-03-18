@@ -6,7 +6,7 @@ Provides a selection of all Alyvix services and related hosts and allows to comp
 - Select Service
 - For each Host a column is added
 
-Setup: [Import Alyvix_ Performance overview_neteye3.json into NetEye ITOA/Grafana.](Alyvix_ Performance overview_neteye3.json)
+Setup: [Import Alyvix_ Performance overview_neteye3.json into NetEye ITOA/Grafana.](Alyvix_Performance_overview_neteye3.json)
 
 Preview:
 ![alyvix_performance overview.png](alyvix_performance_overview.png)
