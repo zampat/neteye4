@@ -42,7 +42,7 @@ This step is automated by running script:
   Define sample Ressource for LDAP bind.
 
 - 040_monitoring_templates_init.sh and 041_icingaweb2_icons_init.sh
-  Provide monitoring templates for Icinga Director in neteyeshare
+  Provide monitoring templates for Icinga Director in neteyeshare. [Read more about neteye template library and how to actate it.](../doc/030_neteye_template_library.md)
   Install additional Host Icons in Icinaweb2 folder
 
 - 050_copy_nonproduct_monitoring_plugins.sh and 051_copy_nonproduct_monitoring_git_plugins.sh
