@@ -1,4 +1,15 @@
-﻿Set-StrictMode -Version Latest
+param (
+    [string]$TestName = "NNMI-LAB-Test.robot",
+    [string]$ReportPath = "C:\NetEye\Alyvix\logs\NNMI-LAB-Test\"
+)
+
+
+Set-StrictMode -Version Latest
+
+$enable_report_handling = $false
+
+
+
 
 function Write-Log($Message) {
     $MessageDate = (Get-Date -Format "yyyyMMdd-HHmmss")
@@ -17,7 +28,25 @@ function Write-Log($Message) {
 ### Attenzione, questa parte ancora da fare. Attualmente, rimpiazzata dalle variabili $configuration e $TestList.
 $TestsFilePath  = "C:\AlyvixLauncher\alyvix_tests.csv"
 $ConfigFilePath = "C:\AlyvixLauncher\engine.ps1.conf"
-$TestName       = "test.robot"
+# TestName is taken from parameter
+# $TestName       = "NNMI-LAB-Test.robot" 
+
+#Caricamento della lista dei test
+
+
+Write-Log "Reading test list from file"
+$TestList = @{}
+
+$TestData=@{
+    Name          = "$TestName"
+    Description   = "Simply, a basic test for Alyvix probe."
+    RobotFilePath = "C:\Python27\Lib\site-packages\alyvix\robotproxy\alyvix_testcases\$TestName"
+    OutputPath    = "$ReportPath";
+    FileByDate    = $true
+    DaysToKeep    = 30
+    Timeout       = 60
+}
+
 
 $Configuration = @{
     PybotFilePath           = "C:\Python27\Scripts\alyvix_pybot.bat"
@@ -29,19 +58,7 @@ $Configuration = @{
 
 }
 
-#Caricamento della lista dei test
-Write-Log "Reading test list from file"
-$TestList = @{}
 
-$TestData=@{
-    Name          = "test.robot"
-    Description   = "Simply, a basic test for Alyvix probe. Something just idiot"
-    RobotFilePath = "C:\Python27\Lib\site-packages\alyvix\robotproxy\alyvix-testcases\test.robot"
-    OutputPath    = "C:\alyvix-reports\test";
-    FileByDate    = $true
-    DaysToKeep    = 30
-    Timeout       = 60
-}
 
 $NewTest = New-Object -TypeName PSCustomObject -Property $TestData
 $TestList[$NewTest.Name] = $NewTest
@@ -137,16 +154,18 @@ $KeyFile        = $Configuration.RemoteServerLogonKey
 $RemoteBasePath = "$($Configuration.RemoteServerReportsPath)/$TestName/"
 
 
+if ( $enable_report_handling -eq $true ){
 
-#$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
-#$ProcessInfo.FileName  = $Configuration.PSCPFilePath
-#$ProcessInfo.Arguments = "-p","-q","-r","-i",$KeyFile,"-batch","$OutputBasePath\*","$($Username)@$($ServerName):$($RemoteBasePath)"
-#$ProcessInfo.RedirectStandardError  = $true
-#$ProcessInfo.RedirectStandardOutput = $true
-#$ProcessInfo.UseShellExecute        = $false
-#$ProcessInfo.CreateNoWindow         = $true
-#
-#$Process = New-Object System.Diagnostics.Process
-#$Process.StartInfo = $ProcessInfo
-#$StartResult = $Process.Start()
-#$Process | Wait-Process
+    $ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
+    $ProcessInfo.FileName  = $Configuration.PSCPFilePath
+    $ProcessInfo.Arguments = "-p","-q","-r","-i",$KeyFile,"-batch","$OutputBasePath\*","$($Username)@$($ServerName):$($RemoteBasePath)"
+    $ProcessInfo.RedirectStandardError  = $true
+    $ProcessInfo.RedirectStandardOutput = $true
+    $ProcessInfo.UseShellExecute        = $false
+    $ProcessInfo.CreateNoWindow         = $true
+    
+    $Process = New-Object System.Diagnostics.Process
+    $Process.StartInfo = $ProcessInfo
+    $StartResult = $Process.Start()
+    $Process | Wait-Process
+}
