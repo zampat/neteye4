@@ -14,3 +14,7 @@ For the deployment of the provided contents, this repository provides scripts to
 
 *This chapter is work in progress. Contents will follow soon....*
 [The documents section provides an overview of available How-To's in this moment.](./doc)
+
+## Contributing to this community project
+
+[Read chapter 090_contributing_toGit.md](090_contributing_toGit.md)
