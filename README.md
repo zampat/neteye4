@@ -13,3 +13,4 @@ For the deployment of the provided contents, this repository provides scripts to
 ## NetEye 4 gettings started guide
 
 *This chapter is work in progress. Contents will follow soon....*
+[The documents section provides an overview of available How-To's in this moment.](./doc)
