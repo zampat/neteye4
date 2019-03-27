@@ -1,0 +1,212 @@
+#!/usr/bin/perl
+# This  Plugin checks the hardware of DELL 35XX and 62XX Switches (fans, temp-sensor, power supply)
+# tested only with PC3524 and the PC6248.
+#
+# Copyright (c) 2009 Gerrit Doornenbal, g(dot)doornenbal(at)hccnet(dot)nl
+# Many thanks to Sascha Tentscher , who provided a very good example 
+#  with his 3com plugin!
+#
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-130
+
+use strict;
+use Net::SNMP;
+
+if ($#ARGV == -1)
+{
+  print_help();
+}
+
+my %status       = (  'UNKNOWN'  => '-1',
+                      'OK'       => '0',
+                      'WARNING'  => '1',
+                      'CRITICAL' => '2' );
+
+my %unitstates   = (  '1' => 'unknown',
+                      '2' => 'inactive',
+                      '3' => 'OK',
+                      '4' => 'loading' );
+
+my %entitystate  = (  '1' => 'normal',
+                      '2' => 'warning',
+                      '3' => 'critical',
+                      '4' => 'shutdown',
+                      '5' => 'notPresent',
+                      '6' => 'notFunctioning' );
+
+sub pars_args
+{
+  my $ip        = "";
+  my $community = ""; 
+  while($ARGV[0] =~/^-/) 
+  {
+    if($ARGV[0] =~/^-H|^--host/) 
+    {
+      $ip = $ARGV[1];
+      shift @ARGV;
+      shift @ARGV;
+      next;
+    }
+    if($ARGV[0] =~/^-C|^--Community/) 
+    {
+      $community = $ARGV[1];
+      shift @ARGV;
+      shift @ARGV;
+      next;
+    }
+  }
+  return ($ip, $community);
+}
+sub print_help()
+{
+  print "Usage: check_dell_powerconnect -H host -C community\n";
+  print "Options:\n";
+  print " -H --host STRING or IPADDRESS\n";
+  print "   Check interface on the indicated host.\n";
+  print " -C --community STRING\n";
+  print "   Community-String for SNMP-Walk.\n\n";
+  print "This  Plugin checks the hardware of DELL 35XX and 62XX\nswitches (fans, temp-sensor, power supply), and probably\nmore models! (not tested)\n\n";
+  exit($status{"UNKNOWN"});
+}
+sub get_snmp_session
+{
+  my $ip        = $_[0];
+  my $community = $_[1];
+  my ($session, $error) = Net::SNMP->session(
+             -hostname  => $ip,
+             -community => $community,
+             -port      => 161,
+             -timeout   => 1,
+             -retries   => 3,
+             -translate => [-timeticks => 0x0] #schaltet Umwandlung von Timeticks in Zeitformat aus
+              );
+  return ($session, $error);
+}
+sub close_snmp_session
+{
+  my $session = $_[0];
+  
+  $session->close();
+}
+sub get_snmp_request
+{
+  my $session = $_[0];
+  my $oid     = $_[1];
+  return $session->get_request($oid);
+}
+sub get_snmp_table
+{
+  my $session = $_[0];
+  my $oid     = $_[1];
+  return $session->get_table($oid);
+}
+my ($ip, $community) = pars_args();
+my ($session, $error)       = get_snmp_session($ip, $community);
+
+my $oid_unitdesc    = ".1.3.6.1.4.1.674.10895.3000.1.2.100.1.0"; 
+my $oid_unitstate   = ".1.3.6.1.4.1.674.10895.3000.1.2.110.1.0"; 
+my $oid_tempstatus	= ".1.3.6.1.4.1.89.53.15.1.9.1";
+my $oid_fanname     = ".1.3.6.1.4.1.674.10895.3000.1.2.110.7.1.1.2";
+my $oid_fanstate    = ".1.3.6.1.4.1.674.10895.3000.1.2.110.7.1.1.3";
+my $oid_psuname     = ".1.3.6.1.4.1.674.10895.3000.1.2.110.7.2.1.2";
+my $oid_psustate    = ".1.3.6.1.4.1.674.10895.3000.1.2.110.7.2.1.3";
+
+my %result    = %{get_snmp_request($session, $oid_unitdesc)};
+my $unitdesc  = $result{$oid_unitdesc};
+   %result    = %{get_snmp_request($session, $oid_unitstate)};
+my $unitstate = $result{$oid_unitstate};
+#check temperature if possible (Only PC35XX ..??)
+my $temperature = "";
+    if ($unitdesc =~ /35/i) {
+		$temperature = ", Temp = ";
+		%result    = %{get_snmp_request($session, $oid_tempstatus)};
+		my $tempstatus = $result{$oid_tempstatus};
+		$temperature .=$tempstatus;	
+    }
+
+my %result1    = %{get_snmp_table($session, $oid_fanname)};
+my %result2   = %{get_snmp_table($session, $oid_fanstate)};
+my %result3   = %{get_snmp_table($session, $oid_psuname)};
+my %result4   = %{get_snmp_table($session, $oid_psustate)};
+
+my $counter = 0;
+my $counter1 = 0;
+my @fanname;
+my @fanstate;
+my @psuname;
+my @psustate;
+#find fanstates
+  foreach my $oid(sort keys %result1)
+  {
+    $fanname[$counter] = $result1{$oid};
+    $counter++;
+  }
+    $counter = 0;
+  foreach my $oid(sort keys %result2)
+  {
+    $fanstate[$counter] = $result2{$oid};
+    $counter++;
+  }
+#find PSU states
+  $counter1 = 0;
+  foreach my $oid(sort keys %result3)
+  {
+    $psuname[$counter1] = $result3{$oid};
+    $counter1++;
+  }
+  $counter1 = 0;
+  foreach my $oid(sort keys %result4)
+  {
+    $psustate[$counter1] = $result4{$oid};
+    $counter1++;
+  }
+  close_snmp_session($session);  
+
+# Create output line  
+my $string = $unitdesc.": ".$unitstates{$unitstate}.$temperature;
+  for(my $i =0; $i<$counter; $i++)
+  {
+	  if ($fanstate[$i] !=5)
+	{
+  $string .= ", ";
+  $string .= $fanname[$i]." ".$entitystate{$fanstate[$i]};
+	}
+  }
+  for(my $i =0; $i<$counter1; $i++)
+  {
+    if ($psustate[$i] !=5)
+	{
+    $string .= ", ";
+    $string .= $psuname[$i]." ".$entitystate{$psustate[$i]};
+	}
+  }
+
+#create correct exit state  
+  my $state = "OK";
+  if($string =~/UNKNOWN/)
+  {
+    $state = "UNKNOWN";
+  }
+  if($string =~/inactive|notpresent|WARNING/)
+  {
+    $state = "WARNING";
+  }
+  if($string =~/Error/)
+  {
+    $state = "CRITICAL";
+  }
+print $string."\n";
+exit($status{$state});
+
