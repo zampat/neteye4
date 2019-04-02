@@ -1,0 +1,3 @@
+[submodule "monitoring/monitoring-plugins/vmware/esx_hardware"]
+	path = monitoring/monitoring-plugins/vmware/esx_hardware
+	url = https://github.com/Napsty/check_esxi_hardware
