@@ -46,14 +46,14 @@ MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 # Monitoring Plugins Import
 #
 # Only copy contents to neteyeshare/
-./scripts/050_copy_nonproduct_monitoring_plugins.sh $NETEYESHARE_MONITORING
 ./scripts/051_copy_nonproduct_monitoring_git_plugins.sh $NETEYESHARE_MONITORING
 # Activate Plugins in PluginsContribDir/
 ./scripts/052_install_nonproduct_monitoring_plugins.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
 ./scripts/053_install_product_monitoring_plugins_before_release.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
 
-# Extra content for neteyeshare
+# Synchronize content for neteyeshare
+./scripts/060_synch_monitoring_plugins.sh $NETEYESHARE_MONITORING
 # - Monitoring configuration samples
-./scripts/060_monitoring_configurations.sh ${NETEYESHARE_MONITORING}
-./scripts/061_monitoring_analytics.sh ${NETEYESHARE_MONITORING}
+./scripts/061_sync_monitoring_configurations.sh ${NETEYESHARE_MONITORING}
+./scripts/062_sync_monitoring_analytics.sh ${NETEYESHARE_MONITORING}
 

@@ -26,7 +26,7 @@ then
 fi
 
 
-echo "[i] Run 053_install_product_monitoring_plugins_before_release.sh: Going to install NON-Product monitoring plugins into PluginsContribDir/"
+echo "[i] 053: install_product_monitoring_plugins_before_release.sh: Going to install NON-Product monitoring plugins into PluginsContribDir/"
 # Loop trough all Plugins
 # Register all prefixes of Plugins to copy here
 ELEMENTS=( NWCHEALTH MSSQLHEALTH )
@@ -49,4 +49,4 @@ do
 done
 
 
-echo "[i] Done 053_install_product_monitoring_plugins_before_release.sh: Copied all Non-Product monitoring plugins"
+#echo "[i] Done 053_install_product_monitoring_plugins_before_release.sh: Copied all Non-Product monitoring plugins"
