@@ -34,8 +34,7 @@ define: default_realm value
 [domain_realm]
 ```
 
-[Prepare adding principal to keytab file using ktutil.](https://web.mit.edu/kerberos/krb5-1.12/doc/admin/admin_commands/ktutil.html)
-[Howto reference](https://kb.iu.edu/d/aumh)
+[Prepare adding principal to keytab file using ktutil.](https://web.mit.edu/kerberos/krb5-1.12/doc/admin/admin_commands/ktutil.html) Kerberos [Howto reference](https://kb.iu.edu/d/aumh)
 
 ```
 # ktutil
@@ -62,6 +61,11 @@ KVNO Principal
 Test of kerberos ticket generation via kinit:
 ```
 # kinit -t /root/kerberos/keytab_neteye user_neteye_kerberos@mydomain.lan -V
+```
+
+Provide credentials related to machine name in [netrc file format](https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html). Place the file '.netrc' in the home path i.e /var/log/nagios/ with the following syntax:
+```
+machine <fqdn> login <the user> password <the password> 
 ```
 
 ### Usage
