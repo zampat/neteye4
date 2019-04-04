@@ -1,8 +1,19 @@
-# NetEye 4 Monitoring Community Portal
+# NetEye 4 Community Portal
 
-This repository comes with the purpose of a community portal for NetEye, to support you in setting up monitoring providing templates for Icinga2, additionals Plugin scripts and configuration how-to's for setting up or enhancing modules provided by NetEye 4.
+Welcome to the community repository for NetEye 4 users. 
+This repository comes with the purpose to share the best-practices and enhancements created by our userbase. Started as initiative during the first projects, it provides now a platform to accelerate any implementation project by providing:
+- how-to documentations for setup and configuration of a NetEye 4
+- monitoring templates such as host- or service templates, commands and fields
+- additionals monitoring plugins (scripts in part linked to 3rd party repositories)
+- sample configurations to automate the configuration of best-practice configurations
 
-[Note: NetEye 3 related enhancements and configuration templates are shared here](https://github.com/zampat/neteye3)
+## Gettings started guide for NetEye 4
+This repo guides you thourgh the following steps of NetEye. Depending on the status of your NetEye 4 project it is suggested to go through both steps:
+1. [setup of a fresh standalone NetEye 4](/doc/020_os_configuration.md)
+2. integration and autosetup of templates, monitoring plugins and sample configurations
+
+## References 
+NetEye 3 configuration and templates collection. A limited NetEye 3 related [collection of enhancements can be found here](https://github.com/zampat/neteye3)
 
 ## Deployment of contents on NetEye
 
@@ -10,10 +21,6 @@ For the deployment of the provided contents, this repository provides scripts to
 
 [Deployment of this contents can be automated by scripts documented in section "scripts"](scripts/).
 
-## NetEye 4 gettings started guide
-
-*This chapter is work in progress. Contents will follow soon....*
-[The documents section provides an overview of available How-To's in this moment.](./doc)
 
 ## Contributing to this community project
 
