@@ -9,7 +9,9 @@ This repository comes with the purpose to share the best-practices and enhanceme
 
 ## Gettings started guide for NetEye 4
 This repo guides you thourgh the following steps of NetEye. Depending on the status of your NetEye 4 project it is suggested to go through both steps:
-1. [setup of a fresh standalone NetEye 4](/doc/020_os_configuration.md)
+1. [setup the OS of a fresh standalone NetEye 4](/doc/020_os_configuration.md)
+2. [Initialize the NetEye 4 ressources (Standalone)](/doc/030_neteye_standalone_init.md)
+3. [Configure monitoring zoning architecture](/doc/031_monitoring_zones_master.md)
 2. integration and autosetup of templates, monitoring plugins and sample configurations
 
 ## References 
