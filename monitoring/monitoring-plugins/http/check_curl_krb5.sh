@@ -28,6 +28,11 @@ user='my_kerberos_user'
 # constants
 TMPFILE=/tmp/check_curl_krb5$$.tmp
 
+# variwable not used. Place instead the .netrc file in the HOME path of the user running the script! 
+# parameter --netrc-file not compatible with curl of CentOS6
+#pwfile='./.netrc'
+
+
 RET_CODE=3
 RET_STRING="Unknown"
 
@@ -37,7 +42,9 @@ trap 'rm -f $TMPFILE' 0
 function get_usage() {
    echo "Usage: check_curl_krb5.sh -u <url> -k <keytab_file> -s <search_string>"
    echo " "
-   echo "Hint: This Plugins defines a proxy server and kerberos user as constant. Please change this inside the file!"
+   echo "Hint: CURL makes use of a netrc file providing hostname, username and password. "
+   echo "      Place the file '.netrc' in the home path i.e /var/log/nagios/ with the following content:"
+   echo "      machine <fqdn> login <the user> password <the password> "
    echo " "
    echo "Hint: How to generate a keytab holding kerberos principal: "
    echo "# ktutil "
@@ -82,9 +89,6 @@ then
    get_usage
    exit $RET_CODE
 fi
-
-# variables
-pwfile='./.netrc'
 
 # get ticket
 kinit $user -k -t $KEYTAB
