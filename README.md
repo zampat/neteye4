@@ -23,7 +23,3 @@ For the deployment of the provided contents, this repository provides scripts to
 
 [Deployment of this contents can be automated by scripts documented in section "scripts"](scripts/).
 
-
-## Contributing to this community project
-
-[Read chapter 090_contributing_toGit.md](090_contributing_toGit.md)
