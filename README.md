@@ -12,7 +12,7 @@ This repo guides you thourgh the following steps of NetEye. Depending on the sta
 1. [setup the OS of a fresh standalone NetEye 4](/doc/020_os_configuration.md)
 2. [Initialize the NetEye 4 ressources (Standalone)](/doc/030_neteye_standalone_init.md)
 3. [Configure monitoring zoning architecture](/doc/031_monitoring_zones_master.md)
-2. integration and autosetup of templates, monitoring plugins and sample configurations
+4. [integration and autosetup of templates, monitoring plugins and sample configurations](/doc/050_community_configs_init.md)
 
 ## References 
 NetEye 3 configuration and templates collection. A limited NetEye 3 related [collection of enhancements can be found here](https://github.com/zampat/neteye3)
