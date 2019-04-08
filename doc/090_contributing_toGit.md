@@ -36,7 +36,8 @@ git push
 
 #### 5. Create pull request
 
-On web-ui perform a "new pull request".
+On web-ui perform a "new pull request". Place a meaningful title and description.
 
 #### 6. Stay synchronized with this repo
-[Keep my fork in sync](https://stackoverflow.com/questions/20984802/how-can-i-keep-my-fork-in-sync-without-adding-a-separate-remote/21131381#21131381)
+Once pull request has been submitted you might delete your fork to fork it at a later moment from the latest commit level.
+As alternative you need to keep you fork synchronized with main repository of neteye4. Unfortunately this can not be done via simple click on web-ui, but you need to synchronize all upstream changes as "Pull request" into your fork. [Read here how to keep my fork in sync](https://stackoverflow.com/questions/20984802/how-can-i-keep-my-fork-in-sync-without-adding-a-separate-remote/21131381#21131381)
