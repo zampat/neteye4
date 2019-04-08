@@ -18,3 +18,7 @@ This repo guides you thourgh the following steps of NetEye. Depending on the sta
 NetEye 3 configuration and templates collection. A limited NetEye 3 related [collection of enhancements can be found here](https://github.com/zampat/neteye3)
 
 
+## Contributing to community project
+
+Help from community is appreciated. Read how to contribute with your configurations, plugins, etc.:
+[Contribute with your improvements ](090_contributing_toGit.md)
