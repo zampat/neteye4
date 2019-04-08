@@ -1,6 +1,6 @@
-# NetEye 4 Documentation 
+# NetEye 4 setup how-to and community portal documentation 
 
-## Contents overview
+## NetEye 4 setup how-to
 
 __Preparative steps__
 - [setup the OS of a fresh standalone NetEye 4](/doc/020_os_configuration.md)
