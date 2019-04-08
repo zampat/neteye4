@@ -1,0 +1,2 @@
+# Icinga agents remote installation
+
