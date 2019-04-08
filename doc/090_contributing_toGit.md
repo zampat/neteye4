@@ -1,6 +1,8 @@
 # Contributing to this repository
 
-Overview:
+__General Info:__ Updates to files provided this or external repositories should alwasy be promoted as pull requests. According the community culture this facilitates the integration and helps to keep track of the incremental improvements.
+
+__Overview:__
 - Requirements
 - Fork of repo
 - Apply changes
