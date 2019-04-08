@@ -7,7 +7,7 @@ This repository comes with the purpose to share the best-practices and enhanceme
 - additionals monitoring plugins (scripts in part linked to 3rd party repositories)
 - sample configurations to automate the configuration of best-practice configurations
 
-## Gettings started guide for NetEye 4
+## Getting started guide for NetEye 4
 This repo guides you thourgh the following steps of NetEye. Depending on the status of your NetEye 4 project it is suggested to go through both steps:
 1. [setup the OS of a fresh standalone NetEye 4](/doc/020_os_configuration.md)
 2. [Initialize the NetEye 4 ressources (Standalone)](/doc/030_neteye_standalone_init.md)
