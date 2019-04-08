@@ -21,6 +21,7 @@ Fork the present repository to your own repository. A 1:1 copy of the entire con
 #### 3. Contribute improvements 
 
 Add your contributions by adding / editing files. You can perform this step via web-ui, in the same moment you can check-out (clone) your forked repository to your local system. [Fork repo to local system and create pull request (guide for linux)](https://help.github.com/en/articles/fork-a-repo)
+![Create / edit files](./img/090_new_pull_request.png)
 
 #### 4. Commit changes
 
@@ -35,7 +36,12 @@ git push
 
 #### 5. Create pull request
 
-On web-ui perform a "new pull request". Place a meaningful title and description.
+On web-ui perform a "new pull request":
+![create pull request](./img/090_pull_request_compare.png)
+ 
+Place a meaningful title and description:
+![Create / edit files](./img/090_pull_request_create.png)
+
 
 #### 6. Stay synchronized with this repo
 Once pull request has been submitted you might delete your fork to fork it at a later moment from the latest commit level.
