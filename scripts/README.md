@@ -5,7 +5,7 @@ The present community repository for NetEye 4 provides default configurations, m
 
 ## Installation and Update
 
-[Neteye Configurations and Template Library Setup documentation](doc/050_community_configs_init.md)
+[Neteye Configurations and Template Library Setup documentation](../doc/050_community_configs_init.md)
 
 
 ## Automated steps by scipts of this folder
