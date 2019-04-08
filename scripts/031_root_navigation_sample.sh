@@ -18,8 +18,6 @@ then
 type = "menu-item"
 target = "_blank"
 url = "../neteyeshare/"
-[root@neteye4vm2 root]# pwd
-/neteye/shared/icingaweb2/conf/preferences/root
 EOM
 
 else
