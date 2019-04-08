@@ -17,9 +17,4 @@ This repo guides you thourgh the following steps of NetEye. Depending on the sta
 ## References 
 NetEye 3 configuration and templates collection. A limited NetEye 3 related [collection of enhancements can be found here](https://github.com/zampat/neteye3)
 
-## Deployment of contents on NetEye
-
-For the deployment of the provided contents, this repository provides scripts to replicate contents to the right paths on NetEye. In this case Monitoring Plugins are placed within the Plugins directory, Icinga 2 Agents within folders to support the deployment within your infrastructure. In the same moment mechanisms to verify if existing contents should be replaced are provided.
-
-[Deployment of this contents can be automated by scripts documented in section "scripts"](scripts/).
 
