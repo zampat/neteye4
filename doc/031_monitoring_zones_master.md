@@ -76,3 +76,4 @@ Restart icinga2-master service
 Synchronize Director to Icinga2 Infrastructure defining now the new Endpoint name
 Icinga Director -> Infrastructure -> Kickstart Wizard
 
+[<<< Back to documentation overview <<<](./README.md)

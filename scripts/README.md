@@ -1,30 +1,11 @@
 
-# NetEye 4 community repo installation guide
+# NetEye 4 community setup section
 
-## Installation
+The present community repository for NetEye 4 provides default configurations, monitoring plugins and third-party scripts to simplify the setup of a NetEye 4 deployment. The deployment of the provided contents is performed by various script modules contained in this folder. The script installs the provided contents while verifying and maintaining existing contents.
 
-Clone git repository to NetEye filesystem.
-Create a dedicated folder within your user's home like /root or /home/any-user/. Then clone git repository into this folder:
-```
-mkdir /root/git_neteye/ && cd /root/git_neteye/
-git clone https://github.com/zampat/neteye4_monitoring_share.git
-```
+## Installation and Update
 
-Install contents on NetEye and download external ressources running the installation script.
-**Details related the automated activity is documentated below.**
-```
-./run_setup.sh
-```
-
-## Update monitoring plugins from third-party repositories
-
-Clone external repositories into a temporary folder and compare if aupdates are available.
-**Note:** Updates to files provided by external repositories should alwasy be promoted as pull requests to the external repository to maintain community culture and keep aligned with external improvements.
-
-This step is automated by running script:
-```
-./update_monitoring-plugins_from_ext_git.sh
-```
+[Neteye Configurations and Template Library Setup documentation](../doc/050_community_configs_init.md)
 
 
 ## Automated steps by scipts of this folder
@@ -40,22 +21,26 @@ This step is automated by running script:
 
 - 030_ressources_init.sh
   Define sample Ressource for LDAP bind.
+- 031_root_navigation_sample.sh
+  Add additional main menu entries, i.e. the link to the "NetEyeShare"
+- 032_role_init.sh
+  Add additional user permission roles, i.e. the "viewer"
 
 - 040_monitoring_templates_init.sh and 041_icingaweb2_icons_init.sh
   Provide monitoring templates for Icinga Director in neteyeshare. [Read more about neteye template library and how to actate it.](../doc/030_neteye_template_library.md)
   Install additional Host Icons in Icinaweb2 folder
 
-- 050_copy_nonproduct_monitoring_plugins.sh and 051_copy_nonproduct_monitoring_git_plugins.sh
-  Provide monitoring plugins neteyeshare
-
+- 051_copy_nonproduct_monitoring_git_plugins.sh
+  Fetch plugins from thrid-party repositories and place into "neteyeshare"
 - 052_install_nonproduct_monitoring_plugins.sh and 053_install_product_monitoring_plugins_before_release.sh
   Activate useful monitoring plugins in PluginsContribDir
 
-- 060_monitoring_configurations.sh
+- 060_synch_monitoring_plugins.sh
+  Synchronize all monitoring plugins to the "neteyeshare"
+- 061_sync_monitoring_configurations.sh
   Place additional Icinga2 monitoring configuration into neteyeshare. 
   a) Provide general Dependency apply rule to implement a parent-child hierarchy
-
-- 061_monitoring_analytics.sh
+- 062_sync_monitoring_analytics.sh
   Place sample Analytics dashboards into neteyeshare.
   a) generic_services_by_hosts.json
   b) generic_snmp_interfaces.json
