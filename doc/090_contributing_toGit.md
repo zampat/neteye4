@@ -32,7 +32,6 @@ git commit -m "description of improvement"
 git push
 ```
 [More examples in this simple how-to](https://help.github.com/en/articles/adding-a-file-to-a-repository-using-the-command-line)
-# Synchronize commits to stay in synch 
 
 #### 5. Create pull request
 
