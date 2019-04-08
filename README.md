@@ -21,4 +21,4 @@ NetEye 3 configuration and templates collection. A limited NetEye 3 related [col
 ## Contributing to community project
 
 Help from community is appreciated. Read how to contribute with your configurations, plugins, etc.:
-[Contribute with your improvements ](090_contributing_toGit.md)
+[Contribute with your improvements ](./doc/090_contributing_toGit.md)
