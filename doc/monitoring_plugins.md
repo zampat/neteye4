@@ -7,3 +7,7 @@ When cloning this repository to your NetEye 4 environment and running the "run_s
 Update policy role for these plugins: Here you should find Plugins from other authors of the Open-Source community. Plugins maintaind within third-party repositories should be generally maintained there and forked to NetEye repo. Pull requests to those third-party repositories help to maintain the code, contribute the community and finally help each other.
 
 Happy monitoring !
+
+[<<< Documentation overview <<<](./README.md)
+
+[<<< Monitoring Plugins <<<](../monitoring/monitoring-plugins)
