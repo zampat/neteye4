@@ -9,7 +9,7 @@ https://blog.netways.de/2011/07/18/switch-monitoring-via-snmp/
 - Install Analytics Dashboard
 Provided by File: interfaces_traffic.json
 Dashboard provided looks like:
-[Interface traffic dashboard](https://github.com/zampat/neteye4_monitoring_share/blob/master/monitoring/monitoring-plugins/network-devices/interfaces/interface_traffic.png)
+![Interface traffic dashboard](./interface_traffic.png)
 - A custom field on service template redirects to this dashboard
 ![Read in NetEye 4 user guide about custom dashboards](https://neteye.yourdomain/neteye/doc/module/toc?moduleName=analytics#!/neteye/doc/module/analytics/chapter/itoa-customization#itoa-customization-dashboards "Read in NetEye 4 user guide about custom dashboards")
 
