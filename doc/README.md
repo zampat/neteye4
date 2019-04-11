@@ -18,3 +18,8 @@ __NetEye 4 Monitoring Setup__
 ## Contributing to this community project
 
 [Contribute with your improvements to this repository](090_contributing_toGit.md)
+
+__Advanced topics:__
+[Branching model](091_git_branching.md)
+[Submodules for Git](092_git_submodules.md)
+
