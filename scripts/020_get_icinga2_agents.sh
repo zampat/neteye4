@@ -21,6 +21,7 @@ fi
 if [ -d "${FOLDER_MONITORING_AGENT_MICROSOFT}" ]
 then
    echo "[i] Synchronizing Icinga2 Agent deployment scripts to neteyeshare (to ${FOLDER_MONITORING_AGENT_MICROSOFT})"
+   /usr/bin/rsync -av ${SRC_GIT_AGENT_SCRIPTS_FOLDER}/* ${FOLDER_MONITORING_AGENT_MICROSOFT}/
    /usr/bin/rsync -av ${SRC_GIT_AGENT_SCRIPTS_FOLDER}/icinga2-powershell-module/Icinga2Agent/Icinga2Agent.psm1 ${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2Agent.psm1.default
 
 else
