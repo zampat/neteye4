@@ -15,6 +15,9 @@ MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
 MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 
 
+# Init submodules
+./scripts/005_git_submodules_init.sh
+
 # Init share folder structure and WEB link
 #
 ./scripts/010_init_neteyeshare.sh ${NETEYESHARE_MONITORING}
