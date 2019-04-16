@@ -20,6 +20,10 @@ target = "_blank"
 url = "../neteyeshare/"
 EOM
 
+   #Adapt permissions for folder and file
+   chown apache:icingaweb2 $DIR_RESSOURCES
+   chown apache:icingaweb2 $FILE_RESSOURCES
+
 else
    echo "[ ] Navigation item for user root already exists."
 fi
