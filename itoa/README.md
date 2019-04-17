@@ -14,7 +14,7 @@ We make use of telegraf agents and provide various configuration to collect data
 The telegraf agents stream their data to a central collector (installed on NetEye).
 
 The agent is compatible with Windows, Linux/Unix.
-[Configuration samples and instructions are found here](agents/)
+[Agent setup & configuration](agents/)
 
 ## Dashboards for Grafana
 Make use of suitable dashboards importable into Grafana. Great examples are provided by community.
