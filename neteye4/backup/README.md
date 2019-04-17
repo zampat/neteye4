@@ -6,6 +6,9 @@
 - All configurations, log files and datafiles of cluster neteye services
 - Allow to include/exclue additional paths 
 
+## Requirement
+yum install cifs-utils
+
 ## Install this backup script:
 ```
 backup_neteye.sh:   /usr/local/sbin
