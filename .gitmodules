@@ -4,3 +4,6 @@
 [submodule "monitoring/agents/microsoft/icinga/icinga2-powershell-module"]
 	path = monitoring/agents/microsoft/icinga/icinga2-powershell-module
 	url = https://github.com/Icinga/icinga2-powershell-module
+[submodule "itoa/dashboards/GrafanaWindowsHostDashboard"]
+	path = itoa/dashboards/GrafanaWindowsHostDashboard
+	url = https://github.com/ManDevOps/GrafanaWindowsHostDashboard

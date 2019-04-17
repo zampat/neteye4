@@ -7,6 +7,7 @@ ICINGA2_AGENT_VERSION="2.10.4"
 
 NETEYESHARE_ROOT_PATH="/neteye/shared/neteyeshare"
 NETEYESHARE_MONITORING="${NETEYESHARE_ROOT_PATH}/monitoring"
+NETEYESHARE_ITOA="${NETEYESHARE_ROOT_PATH}/itoa"
 
 ICINGA2_LIB_HOME_DIR="/usr/share/icingaweb2"
 ICINGA2_CONF_HOME_DIR="/neteye/shared/icingaweb2/conf"
@@ -20,7 +21,7 @@ MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 
 # Init share folder structure and WEB link
 #
-./scripts/010_init_neteyeshare.sh ${NETEYESHARE_MONITORING}
+./scripts/010_init_neteyeshare.sh ${NETEYESHARE_MONITORING} ${NETEYESHARE_ITOA}
 ./scripts/011_init_neteyeshare_weblink.sh
 
 
@@ -60,3 +61,5 @@ MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 ./scripts/061_sync_monitoring_configurations.sh ${NETEYESHARE_MONITORING}
 ./scripts/062_sync_monitoring_analytics.sh ${NETEYESHARE_MONITORING}
 
+# Synchronize contents for itoa
+./scripts/070_synch_itoa.sh ${NETEYESHARE_ITOA} 
