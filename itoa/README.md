@@ -11,9 +11,8 @@ The architecture consits of infrastructure of:
 ## Performance data collecting agents
 
 We make use of telegraf agents and provide various configuration to collect data of interest from systems.
-The telegraf agents stream their data to a central collector (installed on NetEye).
+The telegraf agents stream their data to a central collector (installed on NetEye). The agent is compatible with Windows, Linux/Unix.
 
-The agent is compatible with Windows, Linux/Unix.
 [Agent setup & configuration](agents/)
 
 ## Dashboards for Grafana
