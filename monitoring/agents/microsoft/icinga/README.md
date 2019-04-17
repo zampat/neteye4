@@ -13,6 +13,12 @@ exit Icinga2AgentModule `
     -IgnoreSSLErrors `
     -RunInstaller
 ```
+Download the Icinga2Agent.ps1 and execute the powershell script in administrative session:
+Note: Adjust execution policy if needed
+```
+> Set-ExecutionPolicy Unrestricted
+> Icinga2Agent.ps1
+```
 
 ## Automated deployment of Icinga2 Agent
 
