@@ -2,5 +2,5 @@
 
 ## Windows
 
-- [Setup and Configuration](./windows/README.md)
+- [Agent setup and configuration](./windows/README.md)
 - [Default Grafana Dashboard](../dashboards/README.md)
