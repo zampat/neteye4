@@ -1,0 +1,9 @@
+AuthUserFile /usr/local/httpd/.htpasswd
+AuthName "Authorization to Icinga2 Agent configs"
+AuthType Basic
+
+#Allow any valid user
+require valid-user
+
+#Allow only one user with specified username
+require user configro
