@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Add default ressources to icingaweb2 config
+# file: resources.ini
+
 #Define Variables
 # ARG1: ICINGA2_CONF_HOME_DIR="/neteye/shared/icingaweb2/conf"
 FILE_RESSOURCES="$1/resources.ini"
@@ -7,14 +10,13 @@ FILE_RESSOURCES="$1/resources.ini"
 # Check if a demo Ressource for LDAP exists
 grep "ldap" $FILE_RESSOURCES > /dev/null 2>&1
 RES=$?
-
 if [ $RES -ne 0 ]
 then
-
-   echo "[i] Adding LDAP configuration sample to Icinga2 Ressources."
+   echo "[i] 030: Adding LDAP configuration sample to Icinga2 Ressources."
 
    cat >>$FILE_RESSOURCES <<EOM
-[ldap_bind.local]
+
+[ldap_bind.sample]
 type = "ldap"
 hostname = "dc.mydomain.local"
 port = "389"

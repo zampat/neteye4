@@ -16,13 +16,14 @@ then
 
    cat >>$FILE_AUTHENTICATION <<EOM
 
-[ldap_bind.local]
-resource = "ldap_bind.local"
+[ldap_bind.sample]
+resource = "ldap_bind.sample"
 user_class = "user"
 filter = "!(objectClass=computer)"
 user_name_attribute = "sAMAccountName"
 backend = "ldap"
 base_dn = "DC=mydomain,DC=local"
+domain = "PLACE_YOUR_DOMAIN_OR_EMPTY_TO_LOGIN_WITHOUT_DOMAIN"
 EOM
 
    #Adapt permissions for folder and file
