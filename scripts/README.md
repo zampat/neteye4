@@ -32,7 +32,7 @@ The present community repository for NetEye 4 provides default configurations, m
   Add LDAP users and groups authentication sample
 
 - 040_monitoring_templates_init.sh and 041_icingaweb2_icons_init.sh
-  Provide monitoring templates for Icinga Director in neteyeshare. [Read more about neteye template library and how to actate it.](../doc/030_neteye_template_library.md)
+  Provide monitoring templates for Icinga Director in neteyeshare. [Read more about neteye template library and how to actate it.](../doc/050_community_configs_init.md)
   Install additional Host Icons in Icinaweb2 folder
 
 - 051_copy_nonproduct_monitoring_git_plugins.sh
