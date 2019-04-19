@@ -38,6 +38,8 @@ MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 ./scripts/030_ressources_init.sh ${ICINGA2_CONF_HOME_DIR}
 ./scripts/031_root_navigation_sample.sh ${ICINGA2_CONF_HOME_DIR}
 ./scripts/032_role_init.sh ${ICINGA2_CONF_HOME_DIR}
+./scripts/033_authentication_init.sh ${ICINGA2_CONF_HOME_DIR}
+./scripts/034_auth_groups_init.sh ${ICINGA2_CONF_HOME_DIR}
 
 
 # Monitoring Templates Import

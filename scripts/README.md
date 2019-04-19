@@ -10,6 +10,9 @@ The present community repository for NetEye 4 provides default configurations, m
 
 ## Automated steps by scipts of this folder
 
+- 005_git_submodules_init.sh
+  Initialize included submodules
+
 - 010_init_neteyeshare.sh
   Create a folder structure for Agents, Monitoring Configuration and scripts under /neteye/shared/neteyeshare/
 
@@ -25,6 +28,8 @@ The present community repository for NetEye 4 provides default configurations, m
   Add additional main menu entries, i.e. the link to the "NetEyeShare"
 - 032_role_init.sh
   Add additional user permission roles, i.e. the "viewer"
+- 033_authentication_init.sh and 034_auth_groups_init.sh
+  Add LDAP users and groups authentication sample
 
 - 040_monitoring_templates_init.sh and 041_icingaweb2_icons_init.sh
   Provide monitoring templates for Icinga Director in neteyeshare. [Read more about neteye template library and how to actate it.](../doc/030_neteye_template_library.md)
@@ -45,5 +50,6 @@ The present community repository for NetEye 4 provides default configurations, m
   a) generic_services_by_hosts.json
   b) generic_snmp_interfaces.json
 
-
+- 070_synch_itoa.sh
+  Synch ITOA agents and dashboards to local neteyeshare folder "itoa".
 
