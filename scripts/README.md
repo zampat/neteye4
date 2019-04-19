@@ -1,7 +1,7 @@
 
 # NetEye 4 community setup section
 
-The present community repository for NetEye 4 provides default configurations, monitoring plugins and third-party scripts to simplify the setup of a NetEye 4 deployment. The deployment of the provided contents is performed by various script modules contained in this folder. The script installs the provided contents while verifying and maintaining existing contents.
+The present community repository for NetEye 4 provides default configurations, monitoring plugins and third-party scripts to simplify the setup of a NetEye 4 deployment. The deployment of the provided contents is performed by various script modules contained in this folder. __The script installs the provided contents while verifying and maintaining existing contents.__
 
 ## Installation and Update
 
