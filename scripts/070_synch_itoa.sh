@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script action:
-# Synch all Monitoring Plugins from GIT folder "monitoring-plugins" to local neteyeshare folder.
+# Synch ITOA agents and dashboards to local neteyeshare folder "itoa" 
 #
 
 # PluginsContribDir: i.e. /neteye/shared/neteyeshare/itoa
