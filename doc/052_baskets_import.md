@@ -1,13 +1,13 @@
 # Import configurations via Baskets
 
-Since Neteye 4.5 the use of (Baskets is supporting the exchanges of configurations via import / export of json file)[https://github.com/Icinga/icingaweb2-module-director/issues/1630]
+Since Neteye 4.5 the use of [Baskets is supporting the exchanges of configurations via import / export of json file](https://github.com/Icinga/icingaweb2-module-director/issues/1630)
 
 Baskets will be provided in a standardized way for NetEye and will be made available within the "monitoring" section of this community portal or any other place if specified in a later moment.
 
 ## Getting baskets
 
 Overview of provided baskets:
-- Automation: (Import definitions and Synch rules)[../monitoring/import_automation]
+- Automation: [Import definitions and Synch rules](../monitoring/import_automation)
 
 ## Installing Baskets
 
