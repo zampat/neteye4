@@ -1,4 +1,4 @@
-AuthUserFile /usr/local/httpd/.htpasswd
+AuthUserFile /neteye/shared/httpd/.htpasswd 
 AuthName "Authorization to Icinga2 Agent configs"
 AuthType Basic
 

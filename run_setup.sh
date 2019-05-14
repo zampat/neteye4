@@ -6,7 +6,7 @@ GIT_MONITORING_TEMPLATES="https://github.com/zampat/icinga2-monitoring-templates
 ICINGA2_AGENT_VERSION="2.10.4"
 ITOA_TELEGRAF_AGENT_VERSION="1.10.2"
 
-NETEYESHARE_ROOT_PATH="/neteye/shared/neteyeshare"
+NETEYESHARE_ROOT_PATH="/neteye/shared/httpd/neteyeshare"
 NETEYESHARE_MONITORING="${NETEYESHARE_ROOT_PATH}/monitoring"
 NETEYESHARE_ITOA="${NETEYESHARE_ROOT_PATH}/itoa"
 
