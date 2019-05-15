@@ -29,6 +29,7 @@ MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 # Icinga2 Agents
 #
 ./scripts/020_get_icinga2_agents.sh ${NETEYESHARE_MONITORING} ${ICINGA2_AGENT_VERSION}
+./scripts/021_get_icinga2_agent_nix.sh ${NETEYESHARE_MONITORING} ${ICINGA2_AGENT_VERSION}
 
 
 # NetEye 4 default configurations

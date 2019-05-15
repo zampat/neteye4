@@ -12,8 +12,8 @@ then
    echo "[i] Installing Icinga Monitoring Agent Version $ICINGA2_AGENT_VERSION for Microsoft"
    wget https://packages.icinga.com/windows/Icinga2-v$ICINGA2_AGENT_VERSION-x86_64.msi -O ${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2-v$ICINGA2_AGENT_VERSION-x86_64.msi
    wget https://packages.icinga.com/windows/Icinga2-v$ICINGA2_AGENT_VERSION-x86.msi -O ${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2-v$ICINGA2_AGENT_VERSION-x86.msi
-else
-   echo "[ ] Icinga2 agent already installed"
+#else
+#   echo "[ ] Icinga2 agent already installed"
 fi
 
 
