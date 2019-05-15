@@ -4,11 +4,13 @@
 GIT_MONITORING_TEMPLATES="https://github.com/zampat/icinga2-monitoring-templates.git"
 
 ICINGA2_AGENT_VERSION="2.10.4"
+# Define in file directly! SAFED_WIN_VERSION="1_10_1-1"
 ITOA_TELEGRAF_AGENT_VERSION="1.10.2"
 
 NETEYESHARE_ROOT_PATH="/neteye/shared/neteyeshare"
 NETEYESHARE_MONITORING="${NETEYESHARE_ROOT_PATH}/monitoring"
 NETEYESHARE_ITOA="${NETEYESHARE_ROOT_PATH}/itoa"
+NETEYESHARE_LOG="${NETEYESHARE_ROOT_PATH}/log"
 
 ICINGA2_LIB_HOME_DIR="/usr/share/icingaweb2"
 ICINGA2_CONF_HOME_DIR="/neteye/shared/icingaweb2/conf"
@@ -68,3 +70,7 @@ MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 # Synchronize contents for itoa
 ./scripts/070_synch_itoa.sh ${NETEYESHARE_ITOA} 
 ./scripts/071_get_telegraf_agents.sh ${NETEYESHARE_ITOA} ${ITOA_TELEGRAF_AGENT_VERSION}
+
+# Log Manager setup
+./scripts/101_synch_log.sh ${NETEYESHARE_LOG}
+./scripts/102_get_log_agents.sh ${NETEYESHARE_LOG}
