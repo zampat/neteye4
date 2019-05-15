@@ -16,7 +16,7 @@ then
 
    cat >>$FILE_RESSOURCES <<EOM
 
-[ldap_bind.sample]
+[ldap_bind.sample (change also auth.>user and auth.>groups)]
 type = "ldap"
 hostname = "dc.mydomain.local"
 port = "389"
