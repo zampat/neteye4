@@ -7,6 +7,13 @@
       "type": "datasource",
       "pluginId": "influxdb",
       "pluginName": "InfluxDB"
+    },
+    {
+      "name": "VAR_COMMAND_NAME",
+      "type": "constant",
+      "label": "command_name",
+      "value": "check_interfaces",
+      "description": ""
     }
   ],
   "__requires": [
@@ -46,7 +53,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1551088614745,
+  "iteration": 1557923629582,
   "links": [],
   "panels": [
     {
@@ -217,9 +224,28 @@
   ],
   "schemaVersion": 16,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "network"
+  ],
   "templating": {
     "list": [
+      {
+        "current": {
+          "value": "${VAR_COMMAND_NAME}",
+          "text": "${VAR_COMMAND_NAME}"
+        },
+        "hide": 0,
+        "label": null,
+        "name": "command_name",
+        "options": [
+          {
+            "value": "${VAR_COMMAND_NAME}",
+            "text": "${VAR_COMMAND_NAME}"
+          }
+        ],
+        "query": "${VAR_COMMAND_NAME}",
+        "type": "constant"
+      },
       {
         "allValue": null,
         "current": {},
@@ -230,7 +256,7 @@
         "multi": true,
         "name": "hostname",
         "options": [],
-        "query": "SHOW TAG VALUES FROM interfaces WITH KEY=hostname",
+        "query": "SHOW TAG VALUES FROM $command_name WITH KEY=hostname",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -250,7 +276,7 @@
         "multi": true,
         "name": "Interfaces",
         "options": [],
-        "query": "SHOW TAG VALUES FROM interfaces WITH KEY=metric WHERE hostname =~ /$hostname/",
+        "query": "SHOW TAG VALUES FROM $command_name WITH KEY=metric WHERE hostname =~ /$hostname/",
         "refresh": 2,
         "regex": "(.*:):.*::\\w+",
         "sort": 0,
@@ -270,7 +296,7 @@
         "multi": true,
         "name": "Filter",
         "options": [],
-        "query": "SHOW TAG VALUES FROM interfaces WITH KEY=metric WHERE hostname =~ /$hostname/",
+        "query": "SHOW TAG VALUES FROM $command_name WITH KEY=metric WHERE hostname =~ /$hostname/",
         "refresh": 2,
         "regex": ".*::.*::(\\w+)",
         "sort": 0,
@@ -314,5 +340,5 @@
   "timezone": "",
   "title": "Interfaces Traffic",
   "uid": "gITkmapik",
-  "version": 11
+  "version": 2
 }
