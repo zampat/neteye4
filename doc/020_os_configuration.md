@@ -56,8 +56,9 @@ date.timezone="Europe/Rome"
 ```
 Set mail relay for Postfix
 ```
-[root@neteye ~]# cat /etc/postfix/main.cf…
+[root@neteye ~]# cat /etc/postfix/main.cf
 relayhost = [<SMTP Relay Server IP or FQDN>]
+[root@neteye ~]# systemctl restart postfix.service
 ```
 Ensure your system is up-to-date
 ```
