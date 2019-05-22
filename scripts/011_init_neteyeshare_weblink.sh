@@ -14,8 +14,8 @@ HTTP_PASSWORD=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo ''`
 if [ ! -f ${HTTP_PASSWD_FILE} ]
 then
 
-   echo "[+] 011: Setup of neteyeshare/: registragion in httpd and creation of new HTTP user: ${HTTP_USERNAME}."
-   echo "    Creating Folder ${HTTP_PASSWD_FOLDER}"
+   echo "[+] 011: Configuration of neteyeshare/: registragion of httpd alias and creation of new HTTP user: ${HTTP_USERNAME}."
+   echo "    Setup of authentication for user: ${HTTP_USERNAME} in: ${HTTP_PASSWD_FILE}"
    mkdir -p ${HTTP_PASSWD_FOLDER}
 
    # Create new httpd user with password to protect some folders
@@ -29,7 +29,7 @@ then
    echo ${HTTP_PASSWORD} >> ${PWD_SHARE_LOGIN} 
 
    echo "[!] Now please reload service httpd to activate new neteyeshare weblink"
-   echo "    systemctl restart httpd.service"
+   echo "    Hint: systemctl restart httpd.service"
    echo "  "
    echo "[i] The neteyeshare comes with no authentication and can be accessed on web via: https://neteye_fqdn/neteyeshare"
    echo "    Some configuration folders are protected by these credentials: (i.e. ./monitoring/agents/microsoft/icinga/configs/)"

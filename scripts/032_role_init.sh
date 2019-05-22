@@ -9,7 +9,7 @@ grep "viewer" $FILE_RESSOURCES > /dev/null 2>&1
 RES=$?
 if [ $RES -ne 0 ]
 then
-   echo "[i] Adding Roles to authentication management."
+   echo "[i] 032: Adding Roles to authentication management."
    cat >>$FILE_RESSOURCES <<EOM
 [viewer]
 permissions = "module/monitoring, monitoring/command/*, monitoring/command/schedule-check, monitoring/command/acknowledge-problem, monitoring/command/remove-acknowledgement, monitoring/command/comment/*, monitoring/command/comment/add, monitoring/command/downtime/*, monitoring/command/downtime/schedule, monitoring/command/process-check-result"
@@ -17,5 +17,5 @@ director/filter/hostgroups = "Hostgroup A, Hostgroup B"
 EOM
 
 else
-   echo "[ ] Default authentication Roles already exists."
+   echo "[ ] 032: Default authentication Roles already exists."
 fi

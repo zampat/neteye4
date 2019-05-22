@@ -10,7 +10,7 @@ grep "menu-item" $FILE_RESSOURCES > /dev/null 2>&1
 RES=$?
 if [ $RES -ne 0 ]
 then
-   echo "[i] Adding Navigation item for user root."
+   echo "[i] 031: Adding Navigation item for user root."
    mkdir -p $DIR_RESSOURCES
 
    cat >>$FILE_RESSOURCES <<EOM
@@ -25,5 +25,5 @@ EOM
    chown apache:icingaweb2 $FILE_RESSOURCES
 
 else
-   echo "[ ] Navigation item for user root already exists."
+   echo "[ ] 031: Navigation item for user root already exists."
 fi

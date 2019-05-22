@@ -38,5 +38,5 @@ use_ssl = "0"
 EOM
 
 else
-   echo "[ ] LDAP configuration in Icinga2 Ressources already exists."
+   echo "[ ] 030: LDAP configuration in Icinga2 Ressources already exists."
 fi

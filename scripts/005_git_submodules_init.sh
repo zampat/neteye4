@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "[ ] Initializing git submodules"
+echo "[i] 005: Initializing git submodules"
 #init provided submodules
 git submodule init
 
