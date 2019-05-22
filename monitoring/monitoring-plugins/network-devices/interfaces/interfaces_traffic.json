@@ -9,9 +9,9 @@
       "pluginName": "InfluxDB"
     },
     {
-      "name": "VAR_COMMAND_NAME",
+      "name": "VAR_CHECK_NAME",
       "type": "constant",
-      "label": "command_name",
+      "label": "check_name",
       "value": "check_interfaces",
       "description": ""
     }
@@ -53,7 +53,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1557923629582,
+  "iteration": 1558518125023,
   "links": [],
   "panels": [
     {
@@ -78,7 +78,7 @@
       "fill": 1,
       "gridPos": {
         "h": 10,
-        "w": 24,
+        "w": 6,
         "x": 0,
         "y": 1
       },
@@ -135,7 +135,7 @@
               "type": "fill"
             }
           ],
-          "measurement": "/^$command_name$/",
+          "measurement": "/^$check_name$/",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(\"state\") FROM \"interfaces\" WHERE (\"hostname\" = 'pbzsw001' AND \"service\" = 'Interfaces Traffic Gi2/0' AND \"metric\" =~ /GigabitEthernet2-0-10::check_snmp::inOctets/) AND $timeFilter GROUP BY time($__interval) fill(none)",
@@ -222,28 +222,27 @@
       }
     }
   ],
+  "refresh": false,
   "schemaVersion": 16,
   "style": "dark",
-  "tags": [
-    "network"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "value": "${VAR_COMMAND_NAME}",
-          "text": "${VAR_COMMAND_NAME}"
+          "value": "${VAR_CHECK_NAME}",
+          "text": "${VAR_CHECK_NAME}"
         },
-        "hide": 0,
+        "hide": 2,
         "label": null,
-        "name": "command_name",
+        "name": "check_name",
         "options": [
           {
-            "value": "${VAR_COMMAND_NAME}",
-            "text": "${VAR_COMMAND_NAME}"
+            "value": "${VAR_CHECK_NAME}",
+            "text": "${VAR_CHECK_NAME}"
           }
         ],
-        "query": "${VAR_COMMAND_NAME}",
+        "query": "${VAR_CHECK_NAME}",
         "type": "constant"
       },
       {
@@ -256,7 +255,7 @@
         "multi": true,
         "name": "hostname",
         "options": [],
-        "query": "SHOW TAG VALUES FROM $command_name WITH KEY=hostname",
+        "query": "SHOW TAG VALUES FROM $check_name WITH KEY=hostname",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -276,7 +275,7 @@
         "multi": true,
         "name": "Interfaces",
         "options": [],
-        "query": "SHOW TAG VALUES FROM $command_name WITH KEY=metric WHERE hostname =~ /$hostname/",
+        "query": "SHOW TAG VALUES FROM $check_name WITH KEY=metric WHERE hostname =~ /$hostname/",
         "refresh": 2,
         "regex": "(.*:):.*::\\w+",
         "sort": 0,
@@ -296,7 +295,7 @@
         "multi": true,
         "name": "Filter",
         "options": [],
-        "query": "SHOW TAG VALUES FROM $command_name WITH KEY=metric WHERE hostname =~ /$hostname/",
+        "query": "SHOW TAG VALUES FROM $check_name WITH KEY=metric WHERE hostname =~ /$hostname/",
         "refresh": 2,
         "regex": ".*::.*::(\\w+)",
         "sort": 0,
@@ -309,7 +308,7 @@
     ]
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -340,5 +339,5 @@
   "timezone": "",
   "title": "Interfaces Traffic",
   "uid": "gITkmapik",
-  "version": 2
+  "version": 1
 }
