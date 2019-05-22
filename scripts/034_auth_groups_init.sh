@@ -21,6 +21,7 @@ resource = "ldap_bind.local"
 user_backend = "ldap_bind.local"
 nested_group_search = "1"
 backend = "msldap"
+group_filter = "description=*"
 EOM
 
    #Adapt permissions for folder and file
