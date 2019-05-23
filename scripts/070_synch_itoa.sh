@@ -4,7 +4,7 @@
 # Synch ITOA agents and dashboards to local neteyeshare folder "itoa" 
 #
 
-# PluginsContribDir: i.e. /neteye/shared/neteyeshare/itoa
+# PluginsContribDir: i.e. /neteye/shared/httpd/neteyeshare/itoa
 NETEYESHARE_ITOA=$1
 
 #Define Variables

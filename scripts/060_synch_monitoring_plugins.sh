@@ -4,7 +4,7 @@
 # Synch all Monitoring Plugins from GIT folder "monitoring-plugins" to local neteyeshare folder.
 #
 
-# PluginsContribDir: i.e. /neteye/shared/neteyeshare/monitoring
+# PluginsContribDir: i.e. /neteye/shared/httpd/neteyeshare/monitoring
 NETEYESHARE_MONITORING=$1
 
 #Define Variables
