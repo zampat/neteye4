@@ -10,10 +10,10 @@ DST_ICINGAWEB2_ICONS_FOLDER="$1/public/img/icons"
 # Verify DST Folder exists
 if [ -d "${DST_ICINGAWEB2_ICONS_FOLDER}" ]
 then
-   echo "[i] Installing additional Icingaweb2 Host Icons (to ${DST_ICINGAWEB2_ICONS_FOLDER})"
+   echo "[i] 041: Installing additional Icingaweb2 Host Icons (to ${DST_ICINGAWEB2_ICONS_FOLDER})"
    /usr/bin/rsync -av ${SRC_GIT_ICONS_FOLDER}/* ${DST_ICINGAWEB2_ICONS_FOLDER}/
    echo "    Done: Host icons have been installed."
 
 else
-   echo "[-] Failed to identify Icingaweb2 Icons dir: ${DST_ICINGAWEB2_ICONS_FOLDER}"
+   echo "[-] 041: Failed to identify Icingaweb2 Icons dir: ${DST_ICINGAWEB2_ICONS_FOLDER}"
 fi

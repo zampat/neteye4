@@ -4,7 +4,7 @@
 # Synch ITOA agents and dashboards to local neteyeshare folder "itoa" 
 #
 
-# PluginsContribDir: i.e. /neteye/shared/neteyeshare/itoa
+# PluginsContribDir: i.e. /neteye/shared/httpd/neteyeshare/itoa
 NETEYESHARE_ITOA=$1
 
 #Define Variables
@@ -15,11 +15,11 @@ DST_ITOA_FOLDER="${NETEYESHARE_ITOA}/"
 # Verify DST Folder exists
 if [ -d "${DST_ITOA_FOLDER}" ]
 then
-   echo "[i] 070: Synchronizing itoa agents and dashboards (to ${DST_ITOA_FOLDER})"
+   echo "[+] 070: Synchronizing itoa agents and dashboards (to ${DST_ITOA_FOLDER})"
    /usr/bin/rsync -av ${SRC_GIT_ITOA_AGENTS_FOLDER} ${DST_ITOA_FOLDER}/
    /usr/bin/rsync -av ${SRC_GIT_ITOA_DASHBOARDS_FOLDER} ${DST_ITOA_FOLDER}/
 
 else
-   echo "[-] Abort installing itoa components. Folder does not exist: ${DST_MONIT_PLUGINS_FOLDER}"
+   echo "[-] 070: Abort installing itoa components. Folder does not exist: ${DST_MONIT_PLUGINS_FOLDER}"
 fi
 

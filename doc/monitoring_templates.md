@@ -7,11 +7,11 @@ The NetEye Template Library is a collection of service templates, host templates
 
 ## Installing the NetEye Template Library
 
-When installing the present "neteye4" repository (running run_setup.sh) the template library is copied to the local folder "neteyeshare". (Located in /neteye/shared/)
+When installing the present "neteye4" repository (running run_setup.sh) the template library is copied to the local folder "neteyeshare". (Located in /neteye/shared/httpd/)
 Here you find a script to perform the import of all template definitions into the Director. Simply execute "run_import.sh" to load all configurations into your monitoring configuration.
 
 ```
-# cd /neteye/shared/neteyeshare/monitoring/monitoring-templates/
+# cd /neteye/shared/httpd/neteyeshare/monitoring/monitoring-templates/
 # ./run_import.sh
 ```
 

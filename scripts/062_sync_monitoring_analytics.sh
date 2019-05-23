@@ -9,6 +9,6 @@ NETEYESHARE_MONITORING=$1
 #Copy files ./monitoring/analytics_dashboards/
 if [ ! -d ${NETEYESHARE_MONITORING}/analytics_dashboards/ ]
 then
-   echo "[ ] Copy analytics dashboards"
+   echo "[+] 062: Copy analytics dashboards into $NETEYESHARE_MONITORING"
    cp -r ./monitoring/analytics_dashboards $NETEYESHARE_MONITORING
 fi

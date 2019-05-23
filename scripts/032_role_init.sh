@@ -9,7 +9,7 @@ grep "viewer" $FILE_RESSOURCES > /dev/null 2>&1
 RES=$?
 if [ $RES -ne 0 ]
 then
-   echo "[i] Adding Roles to authentication management."
+   echo "[i] 032: Adding Roles to authentication management."
    cat >>$FILE_RESSOURCES <<EOM
 [monitoring_ro]
 permissions = "module/analytics, module/monitoring, module/neteye"
@@ -25,5 +25,5 @@ monitoring/filter/objects = "hostgroup_name=neteye servers"
 EOM
 
 else
-   echo "[ ] Default authentication Roles already exists."
+   echo "[ ] 032: Default authentication Roles already exists."
 fi

@@ -28,7 +28,7 @@ fi
 
 # Loop trough all Plugins
 # Register all prefixes of Plugins to copy here
-echo "[i] Run 052_install_nonproduct_monitoring_plugins.sh: Going to install NON-Product monitoring plugins into PluginsContribDir/"
+echo "[+] 052: install nonproduct monitoring plugins into PluginsContribDir/"
 
 ELEMENTS=( INTERFACES MEMORY )
 
@@ -50,4 +50,4 @@ do
 done
 
 
-echo "[i] Done 052_install_nonproduct_monitoring_plugins.sh: Copied all Non-Product monitoring plugins"
+echo "[i] 052: Done."

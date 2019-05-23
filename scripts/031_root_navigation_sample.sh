@@ -25,5 +25,5 @@ EOM
    chown -R apache:icingaweb2 $DIR_PREFERENCES
 
 else
-   echo "[ ] 031: Default navigation items already exists."
+   echo "[ ] 031: Navigation item for user root already exists."
 fi

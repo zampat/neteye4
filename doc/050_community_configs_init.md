@@ -20,7 +20,7 @@ systemctl restart httpd.service
 ```
 - Import all neteye monitoring templates in Icinga2 Director DB installed within the neteyeshare   
 ```
-cd /neteye/shared/neteyeshare/monitoring/monitoring-templates
+cd /neteye/shared/httpd/neteyeshare/monitoring/monitoring-templates
 ./run_import.sh
 ```
 
@@ -36,7 +36,7 @@ git pull
 ```
 To update the neteye4 monitoring template library at any later moment and inject templates to Director:
 ```
-cd /neteye/shared/neteyeshare/monitoring/monitoring-templates
+cd /neteye/shared/httpd/neteyeshare/monitoring/monitoring-templates
 git fetch
 git pull
 ./run_import.sh
