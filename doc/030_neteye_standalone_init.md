@@ -28,11 +28,15 @@ Assisted setup cares about:
 
 1. Verify neteye services are running
    Hint: Command to start/stop/check NetEye Services status
-- Start all NetEye services: neteye start
-- Stop all NetEye services: neteye stop
+- Stop and Start all NetEye services
 - Get the current status of NetEye services: neteye status
+```
+[root@neteye ~]# neteye stop
+[root@neteye ~]# neteye start
+[root@neteye ~]# neteye status
+```
 
-__HINT: You can anways use systemctl to interact with every single NetEye service in a Single Node Setup__
+__HINT: You can anways use systemctl to interact with every single NetEye service in a Single Node Setup. This does not apply on cluster environment__
 
 2. Now, login on NetEye web interface
 

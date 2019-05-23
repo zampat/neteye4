@@ -2,7 +2,8 @@
 
 #Define Variables
 # ARG1: ICINGA2_CONF_HOME_DIR="/neteye/shared/icingaweb2/conf"
-DIR_RESSOURCES="$1/preferences/root/"
+DIR_PREFERENCES="$1/preferences"
+DIR_RESSOURCES="$1/preferences/root"
 FILE_RESSOURCES="$1/preferences/root/menu.ini"
 
 # Check if a demo menu entry for fileshare exists
@@ -21,8 +22,7 @@ url = "../neteyeshare/"
 EOM
 
    #Adapt permissions for folder and file
-   chown apache:icingaweb2 $DIR_RESSOURCES
-   chown apache:icingaweb2 $FILE_RESSOURCES
+   chown -R apache:icingaweb2 $DIR_PREFERENCES
 
 else
    echo "[ ] 031: Navigation item for user root already exists."

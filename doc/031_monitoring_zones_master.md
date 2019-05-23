@@ -46,7 +46,9 @@ object Zone "master" {
 __Generate certificates for each icinga2 satellite__
 
 Note: Generate and sign certificates where icinga2-master service is running!
-Certificate creation for new endpoint and sign of it
+Certificate creation for new endpoint:
+- Create certificate for new hostname and .csr (signing request)
+- Sign certificate request with icings2-master service
 ```
 # cd /neteye/shared/icinga2/data/lib/icinga2/certs/
 # export icinga_node_name="neteye4vm1.yourdomain.local"
@@ -54,13 +56,9 @@ Certificate creation for new endpoint and sign of it
 # icinga2-master pki sign-csr --csr ${icinga_node_name}.csr --cert ${icinga_node_name}.crt
 ```
 
-Sign CSR (Certificate Signing Request):
-```
-# icinga2-master pki sign-csr --csr neteye4_trainer_master.csr --cert neteye4_trainer_master.crt
-```
 Validate Icinga2 configuration:
 ```
-# /usr/sbin/icinga2-master daemon –validate
+# /usr/sbin/icinga2-master daemon --validate
 ```
 
 See Problems from icinga2 log
