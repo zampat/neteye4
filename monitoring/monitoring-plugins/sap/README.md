@@ -34,11 +34,12 @@ wget https://github.com/SAP/PyRFC/blob/master/dist/pyrfc-1.9.93-cp36-cp36m-linux
 Setup a python3 virtualenv and install pyrfc project:
 ```
 cd /opt/neteye/
-virtualenv saprfc
+virtualenv-3.6 saprfc
 
 source saprfc/bin/activate
 (saprfc) [root@neteyedewzr neteye]#
 (saprfc) [root@neteyedewzr neteye]# pip3.6 freeze
 (saprfc) [root@neteyedewzr neteye]# pip3.6 install pyrfc-1.9.93-cp36-cp36m-linux_x86_64.whl
+(saprfc) [root@neteyedewzr neteye]# deactivate
 ```
 
