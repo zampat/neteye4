@@ -80,7 +80,7 @@ __Attention: Json is not valid as long not completed all iterations!__
  
 1. Validate the json file
 ```
-# cat ap371pho_20190530_1430.json | jq
+# cat aix001.json | jq
 ```
  
 2. Create the influxdb database
@@ -92,7 +92,7 @@ create database njmon
 
 Then its working:
 
-[root@neteye4zapa nmon]# cat ap371pho_20190530_1430.json | python3 njmon_to_InfluxDB_injector_15.py
+[root@neteye4zapa nmon]# cat aix001.json | python3 njmon_to_InfluxDB_injector_15.py
 os_name:AIX os_base:AIX 7.1 os_long:AIX 7.1 TL4 sp5
 arch:POWER8
 mtm: 1234-AAA
