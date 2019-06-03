@@ -26,14 +26,19 @@ Requirement: install epel repo
 yum --enablerepo=epel install python36-pip.noarch python36-virtualenv.noarch
 ```
 
-Setup a python3 virtualenv:
+Get a copy of the [pyrfc project] ()
+```
+wget https://github.com/SAP/PyRFC/blob/master/dist/pyrfc-1.9.93-cp36-cp36m-linux_x86_64.whl
+``` 
+
+Setup a python3 virtualenv and install pyrfc project:
 ```
 cd /opt/neteye/
 virtualenv saprfc
 
 source saprfc/bin/activate
 (saprfc) [root@neteyedewzr neteye]#
-(saprfc) [root@neteyedewzr neteye]# pip freeze
-(saprfc) [root@neteyedewzr neteye]# pip install
+(saprfc) [root@neteyedewzr neteye]# pip3.6 freeze
+(saprfc) [root@neteyedewzr neteye]# pip3.6 install pyrfc-1.9.93-cp36-cp36m-linux_x86_64.whl
 ```
 
