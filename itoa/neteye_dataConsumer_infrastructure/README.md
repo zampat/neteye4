@@ -70,4 +70,4 @@ Enable and start telegraf collector service (example valid for NetEye 4)
 
 # Advanced topics
 
-[Setup of neteye itos as both local consumer and forwarder of performance data] (neteye_nats_proxy.md)
+[Setup of neteye itos as both local consumer and forwarder of performance data](neteye_nats_proxy.md)
