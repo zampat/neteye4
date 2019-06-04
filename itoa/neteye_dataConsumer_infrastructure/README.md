@@ -67,3 +67,7 @@ Enable and start telegraf collector service (example valid for NetEye 4)
 # systemctl status telegraf.service
 # systemctl enable telegraf.service
 ```
+
+# Advanced topics
+
+[Setup of neteye itos as both local consumer and forwarder of performance data] (neteye_nats_proxy.md)
