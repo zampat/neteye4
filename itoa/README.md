@@ -10,10 +10,10 @@ The architecture consits of infrastructure of:
 
 ## Performance data collecting agents
 
-We make use of telegraf agents and provide various configuration to collect data of interest from systems.
-The telegraf agents stream their data to a central collector (installed on NetEye). The agent is compatible with Windows, Linux/Unix.
+We make use of telegraf agents to collect performance data at high frequency. Various configuration samples are provided the telegraf agent, to collect performance data from Windows and Linux.
+Additional projects with connectors towards nats/influx are available too. Those configurations are under development (check out the various branches)
 
-[Agent setup & configuration](agents/)
+[Agent setup & configuration](agent_configurations/)
 
 ## Dashboards for Grafana
 Make use of suitable dashboards importable into Grafana. Great examples are provided by community.
@@ -21,7 +21,7 @@ Make use of suitable dashboards importable into Grafana. Great examples are prov
 
 ## NetEye: collector of streaming data and forwarder to database
 
-The collector service is provided as package for NetEye3 and NetEye4. You can [install the collector and find the relative how-to in the folder neteye_nats_collector](neteye_nats_collector/)
+The collector service is provided as package for NetEye3 and NetEye4. You can [install the collector and find the relative how-to in the folder neteye_nats_collector](neteye_dataConsumer_infrastructure/)
 
 
 
