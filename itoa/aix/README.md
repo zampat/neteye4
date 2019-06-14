@@ -45,7 +45,7 @@ i.e. /var/log/njmon/
 Perform a test run and verify output in output path:
 
 ```
-/usr/local/njmon/run_njmon_job.sh -s 10 -c 5 -m /var/log/njmon/ -f
+/usr/local/njmon/njmon_aix71_v21 -s 10 -c 5 -m /var/log/njmon/ -f
 ```
 
 Contents in output path:
@@ -63,7 +63,7 @@ drwxr-xr-x    6 bin      bin             256 Jun  6 13:58 ..
 The aim is to synchronize all performance datafiles to neteye via scp. For this the AIX system has to be trusted on NetEye.
 
 1. Create a user on NetEye
-2. Generate ssh key for this user
+2. Generate ssh key for this user on NetEye:
 ```
 # useradd -d /var/log/njmon njmon
 # su - njmon
@@ -78,10 +78,9 @@ On AIX as user executing the script (i.e. root):
 ssh-rsa AAAAB3NzaC1yc2....
 ```
 2. Allow this user (key) to login on NetEye as user "njmon"
-On NetEye:
+On NetEye add this public key to file ".ssh/authorized_hosts" in user home of njmon
 ```
-[root@tue-lx-neteye4 njmon]# su - njmon
--bash-4.2$ cat ~/.ssh/authorized_keys
+[root@tue-lx-neteye4 njmon]# cat /var/log/njmon/.ssh/authorized_keys
 ssh-rsa AAAAB3NzaC1yc2....
 ```
 3. Test ssh from AIX towards NetEye

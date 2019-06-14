@@ -9,7 +9,7 @@
 # 2019.06.14 Patrick Zambelli, Wuerth Phoenix
 #
 # NetEye Performance monitoring
-#0,5,10,15,20,25,30,35,40,45,50,55 * * * * njmon /usr/local/njmon/run_njmon_job.sh -s 10 -c 5 -m /var/log/njmon/ -f > /dev/null 2>&1
+#0,5,10,15,20,25,30,35,40,45,50,55 * * * * /usr/local/njmon/run_njmon_job.sh -s 10 -c 5 -m /var/log/njmon/ -f > /dev/null 2>&1
 #
 # prepare the ssh keytrust for user njmon with remote neteye system
 #
