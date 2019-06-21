@@ -47,7 +47,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1561049074173,
+  "iteration": 1561119070658,
   "links": [],
   "panels": [
     {
@@ -76,7 +76,7 @@
       "grid": {},
       "gridPos": {
         "h": 10,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 1
       },
@@ -102,7 +102,7 @@
       "points": false,
       "renderer": "flot",
       "repeat": "Metrics",
-      "repeatDirection": "h",
+      "repeatDirection": "v",
       "seriesOverrides": [
         {
           "alias": "/warning/",
@@ -131,6 +131,12 @@
           "groupBy": [
             {
               "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
                 "hostname"
               ],
               "type": "tag"
@@ -150,6 +156,10 @@
                   "value"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
               }
             ]
           ],
@@ -179,6 +189,12 @@
           "groupBy": [
             {
               "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
                 "hostname"
               ],
               "type": "tag"
@@ -198,6 +214,10 @@
                   "warn"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
               }
             ]
           ],
@@ -227,6 +247,12 @@
           "groupBy": [
             {
               "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
                 "hostname"
               ],
               "type": "tag"
@@ -246,6 +272,10 @@
                   "crit"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
               }
             ]
           ],
@@ -432,7 +462,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -464,5 +494,5 @@
   "timezone": "browser",
   "title": "Services by Host",
   "uid": "000000003",
-  "version": 1
+  "version": 2
 }
