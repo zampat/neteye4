@@ -8,7 +8,7 @@
 NETEYESHARE_ITOA=$1
 
 #Define Variables
-SRC_GIT_ITOA_AGENTS_FOLDER="./itoa/agents"
+SRC_GIT_ITOA_AGENTS_FOLDER="./itoa/agent_configurations"
 SRC_GIT_ITOA_DASHBOARDS_FOLDER="./itoa/dashboards"
 DST_ITOA_FOLDER="${NETEYESHARE_ITOA}/"
 

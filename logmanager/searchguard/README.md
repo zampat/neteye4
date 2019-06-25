@@ -21,10 +21,10 @@ https://docs.search-guard.com/latest/configuration-production#configuratin-backu
 
 Sample command call for NetEye to export all active configurations into a local folder:
 
-export ES_PATH_CONF=/neteye/local/elasticsearch/conf/
-export CERT_PATH=$ES_PATH_CONF/certs/
 
 ```
+export ES_PATH_CONF=/neteye/local/elasticsearch/conf/
+export CERT_PATH=$ES_PATH_CONF/certs/
 /bin/bash /usr/share/elasticsearch/plugins/search-guard-6/tools/sgadmin.sh -r  -icl -nhnv -cacert $CERT_PATH/root-ca.crt -cert $CERT_PATH/admin.crt.pem -key $CERT_PATH/private/admin.key.pem
 ```
 
