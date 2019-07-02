@@ -53,7 +53,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1558518125023,
+  "iteration": 1562073443490,
   "links": [],
   "panels": [
     {
@@ -78,17 +78,17 @@
       "fill": 1,
       "gridPos": {
         "h": 10,
-        "w": 6,
+        "w": 12,
         "x": 0,
         "y": 1
       },
       "id": 2,
       "legend": {
         "alignAsTable": true,
-        "avg": false,
-        "current": false,
+        "avg": true,
+        "current": true,
         "max": true,
-        "min": true,
+        "min": false,
         "show": true,
         "total": false,
         "values": true
@@ -138,8 +138,8 @@
           "measurement": "/^$check_name$/",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"state\") FROM \"interfaces\" WHERE (\"hostname\" = 'pbzsw001' AND \"service\" = 'Interfaces Traffic Gi2/0' AND \"metric\" =~ /GigabitEthernet2-0-10::check_snmp::inOctets/) AND $timeFilter GROUP BY time($__interval) fill(none)",
-          "rawQuery": false,
+          "query": "SELECT 8 *  derivative(mean(\"value\"), 1s) FROM /^$check_name$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Interfaces/ AND \"metric\" =~ /$Filter$/) AND $timeFilter GROUP BY time($__interval), \"metric\" fill(none)",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -155,8 +155,10 @@
                 "type": "mean"
               },
               {
-                "params": [],
-                "type": "difference"
+                "params": [
+                  "1s"
+                ],
+                "type": "derivative"
               }
             ]
           ],
@@ -200,7 +202,7 @@
       },
       "yaxes": [
         {
-          "format": "bps",
+          "format": "bytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -277,7 +279,7 @@
         "options": [],
         "query": "SHOW TAG VALUES FROM $check_name WITH KEY=metric WHERE hostname =~ /$hostname/",
         "refresh": 2,
-        "regex": "(.*:):.*::\\w+",
+        "regex": "(.*)::.*::\\w+",
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
