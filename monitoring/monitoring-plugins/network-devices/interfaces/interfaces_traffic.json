@@ -202,7 +202,7 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "format": "bps",
           "label": null,
           "logBase": 1,
           "max": null,
