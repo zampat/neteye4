@@ -7,8 +7,8 @@ SRC_GIT_AGENT_SCRIPTS_FOLDER="./monitoring/agents/microsoft/icinga"
 
 if [ ! -f "${FOLDER_MONITORING_AGENT_MICROSOFT}/icinga2-$ICINGA2_AGENT_VERSION-1.el6.icinga.x86_64.rpm" ]
 then
-   mkdir -p $FOLDER_MONITORING_AGENT_MICROSOFT
    echo "[i] 021: Installing Icinga Monitoring Agent Version $ICINGA2_AGENT_VERSION for RHEL 6"
+   mkdir -p $FOLDER_MONITORING_AGENT_MICROSOFT
    ICINGA2_CORE_FILE="icinga2-${ICINGA2_AGENT_VERSION}-1.el6.icinga.x86_64.rpm"
    ICINGA2_BIN_FILE="icinga2-bin-${ICINGA2_AGENT_VERSION}-1.el6.icinga.x86_64.rpm"
    ICINGA2_COMMON_FILE="icinga2-common-${ICINGA2_AGENT_VERSION}-1.el6.icinga.x86_64.rpm"
