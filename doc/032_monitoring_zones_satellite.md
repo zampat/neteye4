@@ -24,7 +24,7 @@ Note: Generate and sign certificates where icinga2-master service is running!
 ## Certificate creation for satellite node
 
 ```
-# cd /neteye/shared/icinga2/data/lib/icinga2/certs/
+# cd /neteye/local/icinga2/data/lib/icinga2/certs/
 # export icinga_node_name="neteye4vm1.yourdomain.local"
 # icinga2 pki new-cert --cn "${icinga_node_name}" --key "${icinga_node_name}.key" --cert "${icinga_node_name}.crt" --csr "${icinga_node_name}.csr"
 # icinga2-master pki sign-csr --csr ${icinga_node_name}.csr --cert ${icinga_node_name}.crt
@@ -149,5 +149,13 @@ object Zone "cluster-satellite" {
     }
 ```
 
+Now validate configuration and start icinga2 service
+Enable service for autostart in systemctl
+```
+# icinga2 daemon --validate
+# systemctl start icinga2.service
+# systemctl status icinga2.service
+# systemctl enable icinga2.service
+```
 
 [<<< Back to documentation overview <<<](./README.md)
