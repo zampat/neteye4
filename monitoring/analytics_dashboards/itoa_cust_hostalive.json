@@ -42,12 +42,12 @@
       }
     ]
   },
-  "description": "List by Commands, Services and Hosts",
+  "description": "ITOA Custom dashboard: Host variable defined from monitoring link",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1541515797680,
+  "iteration": 1562774825184,
   "links": [],
   "panels": [
     {
@@ -60,8 +60,8 @@
       },
       "id": 2,
       "panels": [],
-      "repeat": "Service",
-      "title": "$Service",
+      "repeat": "service_name",
+      "title": "$service_name",
       "type": "row"
     },
     {
@@ -75,7 +75,7 @@
       "fill": 1,
       "grid": {},
       "gridPos": {
-        "h": 7,
+        "h": 10,
         "w": 24,
         "x": 0,
         "y": 1
@@ -95,40 +95,57 @@
       "lines": true,
       "linewidth": 2,
       "links": [],
-      "minSpan": 8,
+      "minSpan": 4,
       "nullPointMode": "connected",
       "percentage": false,
-      "pointradius": 5,
+      "pointradius": 1,
       "points": false,
       "renderer": "flot",
-      "repeat": "Host",
-      "repeatDirection": "h",
-      "seriesOverrides": [],
+      "repeat": "Metrics",
+      "repeatDirection": "v",
+      "seriesOverrides": [
+        {
+          "alias": "/warning/",
+          "color": "#e5ac0e"
+        },
+        {
+          "alias": "/critical/",
+          "color": "#bf1b00"
+        },
+        {
+          "alias": "/warning|critical/",
+          "fill": 0
+        },
+        {
+          "alias": "/warning|critical/",
+          "legend": false
+        }
+      ],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "alias": "[[tag_metric]]",
+          "alias": "[[tag_hostname]]",
           "dsType": "influxdb",
           "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
             {
               "params": [
                 "hostname"
               ],
               "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
             }
           ],
-          "measurement": "/^$Command$/",
+          "measurement": "/^$command$/",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'pbzneteye4.wp.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+          "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
           "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
@@ -139,6 +156,114 @@
                   "value"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "hostname",
+              "operator": "=~",
+              "value": "/^$hostname$/"
+            },
+            {
+              "condition": "AND",
+              "key": "metric",
+              "operator": "=~",
+              "value": "/^$Metrics$/"
+            }
+          ]
+        },
+        {
+          "alias": "[[tag_hostname]] warning",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "hostname"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^$command$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "warn"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "hostname",
+              "operator": "=~",
+              "value": "/^$hostname$/"
+            },
+            {
+              "condition": "AND",
+              "key": "metric",
+              "operator": "=~",
+              "value": "/^$Metrics$/"
+            }
+          ]
+        },
+        {
+          "alias": "[[tag_hostname]] critical",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "hostname"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^$command$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+          "rawQuery": false,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "crit"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
               }
             ]
           ],
@@ -160,7 +285,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "$hostname",
+      "title": "$service_name: $Metrics",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -177,11 +302,11 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "bytes",
           "label": "",
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
@@ -202,53 +327,30 @@
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
-    "default"
+    "itoa_custom_dashboard"
   ],
   "templating": {
     "list": [
       {
-        "allFormat": "glob",
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ICINGA2-INFLUXDB}",
-        "hide": 0,
+        "current": {
+          "text": "hostalive",
+          "value": "hostalive"
+        },
+        "hide": 2,
         "includeAll": false,
         "label": "Command",
         "multi": false,
-        "multiFormat": "glob",
-        "name": "Command",
-        "options": [],
-        "query": "SHOW MEASUREMENTS",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allFormat": "glob",
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_ICINGA2-INFLUXDB}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Service",
-        "multi": true,
-        "multiFormat": "glob",
-        "name": "Service",
-        "options": [],
-        "query": "SHOW TAG VALUES FROM \"$Command\" WITH KEY = \"service\"",
-        "refresh": 2,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "name": "command",
+        "options": [
+          {
+            "selected": true,
+            "text": "hostalive",
+            "value": "hostalive"
+          }
+        ],
+        "query": "hostalive",
+        "type": "custom"
       },
       {
         "allFormat": "glob",
@@ -262,7 +364,7 @@
         "multiFormat": "glob",
         "name": "hostname",
         "options": [],
-        "query": "SHOW TAG VALUES FROM \"$Command\"  WITH KEY = \"hostname\"",
+        "query": "SHOW TAG VALUES FROM \"$command\"  WITH KEY = \"hostname\"",
         "refresh": 2,
         "regex": "",
         "sort": 1,
@@ -284,7 +386,7 @@
         "multiFormat": "glob",
         "name": "Metrics",
         "options": [],
-        "query": "SHOW TAG VALUES FROM \"$Command\"  WITH KEY = \"metric\"",
+        "query": "SHOW TAG VALUES FROM \"$command\"  WITH KEY = \"metric\"  WHERE hostname =~ /$hostname/",
         "refresh": 2,
         "regex": "",
         "sort": 1,
@@ -297,7 +399,7 @@
     ]
   },
   "time": {
-    "from": "now/w",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -327,7 +429,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Generic Services by Host",
-  "uid": "000000003",
-  "version": 19
+  "title": "Host: Hostalive",
+  "uid": "cus0000005",
+  "version": 1
 }
