@@ -26,6 +26,13 @@ chkconfig --add telegraf
 ```
 
 Remember to edit the /neteye/shared/telegraf/telegraf.conf file and put the Cisco WLC controller IP address and read SNMP community to access it.
+See lines:
+```
+[[inputs.snmp]]
+  agents = [ "PUT Cisco WLC IP address HERE" ]
+  version = 2
+  community = "public"
+```
 
 
 Start the telegraf service:
