@@ -1,0 +1,177 @@
+{
+    "Command": {
+        "check_sap_rfc": {
+            "arguments": {
+                "--sap_config_file": {
+                    "value": "$service.vars.sap_config_file$"
+                },
+                "-f": {
+                    "required": true,
+                    "value": "$service.vars.sap_function_name$"
+                },
+                "-k": {
+                    "required": true,
+                    "value": "$service.vars.sap_kpi$"
+                },
+                "-p": {
+                    "repeat_key": false,
+                    "required": true,
+                    "value": "$service.vars.sap_kpi_parameter$"
+                },
+                "-s": {
+                    "required": true,
+                    "value": "$service.vars.sap_sysid$"
+                }
+            },
+            "command": "PluginContribDir + \/saprfc\/old_perl_scripts\/sap_python_wrapper.sh",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "methods_execute": "PluginCheck",
+            "object_name": "check_sap_rfc",
+            "object_type": "object",
+            "timeout": null,
+            "vars": {},
+            "zone": null
+        }
+    },
+    "ServiceTemplate": {
+        "sap_controller_service_template": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_sap_rfc",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 10028,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10024,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10025,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10030,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10026,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10029,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic_service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "sap_controller_service_template",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "Datafield": {
+        "10028": {
+            "varname": "sap_config_file",
+            "caption": "SAP configuration file",
+            "description": "The path to the sap configuration file. It contains a table in csv format with the following information for each sap machine: <SID> <SYSNR> <MANDANT> <SAP-USER> <PASSWORD> [<ASHOST>] [<SAP-ROUTER-STRING>",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10028",
+            "settings": {}
+        },
+        "10024": {
+            "varname": "sap_function_name",
+            "caption": "SAP function name",
+            "description": "Function name of SAP",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10024",
+            "settings": {
+                "rename_vars": "y"
+            }
+        },
+        "10025": {
+            "varname": "sap_kpi",
+            "caption": "SAP KPI",
+            "description": "SAP key performance indicator (KPI)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10025",
+            "settings": {
+                "rename_vars": "y"
+            }
+        },
+        "10030": {
+            "varname": "sap_kpi_parameter",
+            "caption": "SAP KPI Parameter",
+            "description": "The KPI parameter for SAP. The format is the following one:\r\n\"<name>=<value1>;<value2>; <name>=;\"\r\n\r\nThe spaces are used to distinguish the different parameter, therefore no spaces are allowed\r\n",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10030",
+            "settings": {
+                "rename_vars": "y"
+            }
+        },
+        "10026": {
+            "varname": "sap_sysid",
+            "caption": "SAP sysid",
+            "description": "SAP sysid",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10026",
+            "settings": {
+                "rename_vars": "y"
+            }
+        },
+        "10029": {
+            "varname": "sap_timeout",
+            "caption": "SAP timeout",
+            "description": "SAP timeout for the calls",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeNumber",
+            "format": null,
+            "originalId": "10029",
+            "settings": {}
+        }
+    }
+}

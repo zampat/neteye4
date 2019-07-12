@@ -43,3 +43,13 @@ source saprfc/bin/activate
 (saprfc) [root@neteyedewzr neteye]# deactivate
 ```
 
+## Setup for Neteye Monitoring
+
+1. Import the basket into your neteye instance: it defines a service template `sap_controller_service_template` and a
+a command `check_sap_rfc`
+2. copy `sap_python_wrapper.sh` under `PluginContribDir + /saprfc/old_perl_scripts/"`
+3. copy `check_sap_python.py` under `/neteye/shared/monitoring/plugins/saprfc/old_perl_scripts/check_sap_rfc.py`
+
+
+
+
