@@ -13,6 +13,7 @@ To be called from monitoring service (custom variable within service template)
 
 - itoa_cust_hostalive.json         (itoa custom dashboard variable: cus0000005/host-hostalive
 - itoa_cust_diskspace_by_host.json (itoa custom dashboard variable: cus0000010/service-diskspace-by-host
+- itoa_cust_interfaces.json        (itoa custom dashboard variable: cus0000011/interfaces-traffic
 
 
 ### Standalone dashboards
