@@ -114,7 +114,24 @@ object Zone "cluster-satellite" {
     }
 ```
 
-Now validate configuration and start icinga2 service
+__Verify Firewall and Features__
+- Apply filewall rule to enable incoming connection on API port
+- Enable features: api checker mainlog
+- Verify API configuration, especially enable to accept configuration.
+```
+object ApiListener "api" {
+  bind_host = "0.0.0.0"
+  bind_port = 5664
+
+  accept_config = true
+  accept_commands = true
+}
+```
+- Test telnet on api port
+
+
+__Now validate configuration and start icinga2 service__
+
 Enable service for autostart in systemctl
 ```
 # icinga2 daemon --validate
