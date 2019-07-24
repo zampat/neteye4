@@ -34,10 +34,15 @@ Note2: In NetEye the service name for icinga2 master is: "icinga2-master"
 ```
 - Copy or SCP the generated certificates and the CA certificate to the Icinga2 satellite
 ```
-# scp -r ${icinga_node_name}.{crt,key} root@${icinga_node_name}:/neteye/local/icinga2/data/lib/icinga2/certs/
-# scp ca.crt root@${icinga_node_name}:/neteye/local/icinga2/data/lib/icinga2/certs/
+# scp -r ca.crt ${icinga_node_name}.{crt,key} root@${icinga_node_name}:/neteye/local/icinga2/data/lib/icinga2/certs/
 ```
-
+- On satellite set permissions
+```
+# cd /neteye/local/icinga2/data/lib/icinga2/certs
+# chown icinga:icinga *
+# chmod 600 *.key
+# chmod 644 *.crt
+```
 ### Configuration of icinga2: constants.conf
 
 **Constants.conf for icinga2**
