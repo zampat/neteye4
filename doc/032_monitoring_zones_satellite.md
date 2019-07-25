@@ -116,6 +116,11 @@ object Zone "cluster-satellite" {
 
 __Verify Firewall and Features__
 - Apply filewall rule to enable incoming connection on API port
+```
+# firewall-cmd --list-all
+# firewall-cmd --permanent --zone=public --add-port=5665/tcp
+# firewall-cmd --reload
+```
 - Enable features: api checker mainlog
 - Verify API configuration, especially enable to accept configuration.
 ```
