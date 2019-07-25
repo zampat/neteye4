@@ -123,8 +123,8 @@ __Verify Firewall and Features__
 ```
 - Enable features: api checker mainlog
 - Verify API configuration, especially enable to accept configuration.
+  Path: /neteye/local/icinga2/conf/icinga2/features-enabled/api.conf
 ```
-Content: /neteye/local/icinga2/conf/icinga2/features-enabled/api.conf
 object ApiListener "api" {
   bind_host = "0.0.0.0"
   bind_port = 5664
