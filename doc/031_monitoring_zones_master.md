@@ -27,7 +27,7 @@ __Breaking note:__ The local endpoint "icinga2-master.neteyelocal" is used by di
 
 
 
-__1. Leave existing endpoint in zones.conf and add the new hostname of master / relocative node __
+__1. Leave existing endpoint in zones.conf and add the new hostname of master / relocative node__
 ```
 #This is the new Endpoint
 object Endpoint "neteye4_trainer_master" {
