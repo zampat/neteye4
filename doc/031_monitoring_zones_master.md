@@ -74,5 +74,6 @@ Icinga Director -> Infrastructure -> Kickstart Wizard
 
 __5. Remove old Endpoint definition__
 Return to zones.conf and remove the old local endpoint "icinga2-master.neteyelocal" from zones conf.
+Now run Director Kickstart wizard to align as done in Step. 4.
 
 [<<< Back to documentation overview <<<](./README.md)
