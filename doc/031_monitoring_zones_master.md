@@ -23,14 +23,11 @@ const NodeName = "neteye4_trainer_master"
 const ZoneName = "master"
 ```
 
-__Breaking note:__ When removing an Endpoint from zones.conf while still using this endpoint name as Endpoint for Director or other monitoring orjects, you need FIRST to migrate those elements to the new endpoint before removing the old one. Therefore:
-1. leave old endpoint in zones.conf and add the new one 
-2. add new endpoint to zones.conf and generate certificates
-3. validate and reload Icinga2-master service
-4. Align Director and monitoring
-5. Remove old Endpoint definition
+__Breaking note:__ The local endpoint "icinga2-master.neteyelocal" is used by director api. Removing this will break connection and a manual re-configuration is required. To avoid this: ADD FIRST the new Endpoint, synchronize Director API and only THEN REMOVE the local endpont.
 
-__Define Endpoint and Zone in zones.conf__
+
+
+__1. Leave existing endpoint in zones.conf and add the new hostname of master / relocative node __
 ```
 #This is the new Endpoint
 object Endpoint "neteye4_trainer_master" {
@@ -43,7 +40,7 @@ object Zone "master" {
 }
 ```
 
-__Generate certificates for each icinga2 satellite__
+__2. Generate certificates for each icinga2 satellite__
 
 Note: Generate and sign certificates where icinga2-master service is running!
 Certificate creation for new endpoint:
@@ -56,7 +53,7 @@ Certificate creation for new endpoint:
 # icinga2-master pki sign-csr --csr ${icinga_node_name}.csr --cert ${icinga_node_name}.crt
 ```
 
-Validate Icinga2 configuration:
+__3. Validate and reload Icinga2-master:__
 ```
 # /usr/sbin/icinga2-master daemon --validate
 ```
@@ -71,7 +68,11 @@ Restart icinga2-master service
 # systemctl restart icinga2-master.service
 ```
 
+__4. Align Director and monitoring__
 Synchronize Director to Icinga2 Infrastructure defining now the new Endpoint name
 Icinga Director -> Infrastructure -> Kickstart Wizard
+
+__5. Remove old Endpoint definition__
+Return to zones.conf and remove the old local endpoint "icinga2-master.neteyelocal" from zones conf.
 
 [<<< Back to documentation overview <<<](./README.md)
