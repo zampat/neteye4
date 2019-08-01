@@ -47,7 +47,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1562774825184,
+  "iteration": 1564669532670,
   "links": [],
   "panels": [
     {
@@ -61,7 +61,7 @@
       "id": 2,
       "panels": [],
       "repeat": "service_name",
-      "title": "$service_name",
+      "title": "$hostname",
       "type": "row"
     },
     {
@@ -79,6 +79,160 @@
         "w": 24,
         "x": 0,
         "y": 1
+      },
+      "id": 4,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "minSpan": 4,
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "repeatDirection": "v",
+      "seriesOverrides": [
+        {
+          "alias": "/warning/",
+          "color": "#e5ac0e"
+        },
+        {
+          "alias": "/critical/",
+          "color": "#bf1b00"
+        },
+        {
+          "alias": "/warning|critical/",
+          "fill": 0
+        },
+        {
+          "alias": "/warning|critical/",
+          "legend": false
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "[[tag_hostname]]",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "hostname"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^$command$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "hostname",
+              "operator": "=~",
+              "value": "/^$hostname$/"
+            },
+            {
+              "condition": "AND",
+              "key": "metric",
+              "operator": "=~",
+              "value": "/^$Metrics$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "$hostname: RTA no Thresholds",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_ICINGA2-INFLUXDB}",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 11
       },
       "id": 1,
       "legend": {
@@ -285,7 +439,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "$service_name: $Metrics",
+      "title": "$hostname: $Metrics",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -302,7 +456,7 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "format": "percent",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -431,5 +585,5 @@
   "timezone": "browser",
   "title": "Host: Hostalive",
   "uid": "cus0000005",
-  "version": 1
+  "version": 2
 }
