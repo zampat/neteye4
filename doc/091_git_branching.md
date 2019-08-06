@@ -18,6 +18,11 @@ Define a new branch or switch to an existing one
 ```
 git checkout -b branch_patch_123
 ```
+If branch is does not reside on local repository and you need to fetch from remote repo:
+```
+# git fetch origin
+# git checkout -b <branch_name> origin/<branch_name>
+```
 
 Now change files and commit those changes into branch:
 ```
