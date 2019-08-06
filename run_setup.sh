@@ -72,6 +72,12 @@ MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 ./scripts/070_synch_itoa.sh ${NETEYESHARE_ITOA} 
 ./scripts/071_get_telegraf_agents.sh ${NETEYESHARE_ITOA} ${ITOA_TELEGRAF_AGENT_VERSION}
 
+# Cluster Synchronizations
+# -Synchronize /neteye/shared/monitoring/plugins
+# -Synchronize various monititroing configuration files and folders 
+./scripts/090_clusterSynch_PluginContribDir.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
+./scripts/091_clusterSynch_monitoringConfigs.sh
+
 # Log Manager setup
 # ./scripts/101_synch_log.sh ${NETEYESHARE_LOG}
 ./scripts/102_get_log_agents.sh ${NETEYESHARE_LOG}

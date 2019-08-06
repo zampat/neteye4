@@ -4,6 +4,7 @@
 # Copy NON-product monitoring plugins into PluginsContribDir/ folder
 #
 
+# MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
 MONITORING_PLUGINS_CONTRIB_DIR="$1"
 DATE=`date +%Y%m%d`
 
