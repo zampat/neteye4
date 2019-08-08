@@ -17,6 +17,7 @@ ICINGA2_CONF_HOME_DIR="/neteye/shared/icingaweb2/conf"
 
 MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
 MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
+MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/shared/monitoring/configs"
 
 
 # Init submodules
@@ -61,6 +62,8 @@ MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 # Activate Plugins in PluginsContribDir/
 ./scripts/052_install_nonproduct_monitoring_plugins.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
 ./scripts/053_install_product_monitoring_plugins_before_release.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
+#Create configuration files for monitoring plugins
+./scripts/055_install_monitoring_plugin_configs.sh ${MONITORING_PLUGINS_CONTRIB_CONFIG_DIR}
 
 # Synchronize content for neteyeshare
 ./scripts/060_synch_monitoring_plugins.sh $NETEYESHARE_MONITORING
