@@ -79,6 +79,7 @@ MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/shared/monitoring/configs"
 # -Synchronize /neteye/shared/monitoring/plugins
 # -Synchronize various monititroing configuration files and folders 
 ./scripts/090_clusterSynch_PluginContribDir.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
+./scripts/090_clusterSynch_PluginContribDir.sh ${MONITORING_PLUGINS_CONTRIB_CONFIG_DIR}
 ./scripts/091_clusterSynch_monitoringConfigs.sh
 
 # Log Manager setup
