@@ -1,0 +1,15 @@
+output {
+  if [type] == "beats" {
+    elasticsearch {
+      hosts => "elasticsearch.neteyelocal:9200"
+      manage_template => false
+      index => "beats-%{+YYYY.MM.dd}"
+      document_type => "%{[@metadata][type]}"
+      ssl => true
+      cacert => "/neteye/shared/logstash/conf/certs/root-ca.crt"
+      ssl_certificate_verification => true
+      user => logstash
+      password => "my secret generated password"
+    }
+  }
+}

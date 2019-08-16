@@ -1,0 +1,7 @@
+input {
+  beats {
+    port => 5044
+    type => "beats"
+  }
+}
+
