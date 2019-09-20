@@ -18,7 +18,16 @@ then
 
 [ldap_bind.sample (change also auth.>user and auth.>groups)]
 type = "ldap"
-hostname = "dc.mydomain.local"
+hostname = "mydomain.lan"
+port = "389"
+encryption = "none"
+root_dn = "dc=mydomain,dc=local"
+bind_dn = "ldapRO@mydomain.local"
+bind_pw = "password"
+
+[ldap_multiple_DCs]
+type = "ldap"
+hostname = "ldap://dc1.mydomain.local:389 ldap://dc2.mydomain.local:389"
 port = "389"
 encryption = "none"
 root_dn = "dc=mydomain,dc=local"
