@@ -3,7 +3,7 @@
 # Original author: Michele Santuari
 #
 # Extension: Mirko Bez (mirko.bez <at> wuerth-phoenix.com)
-# Add command line options to make the tool flexible and usable also in icinga.
+# Add command line options to make the tool flexible and usable also in a pure icinga/elasticsearch environment.
 #
 
 #
@@ -15,7 +15,7 @@
 # index.
 # If you want to extend the capabilities of the user, please define a new role
 # (e.g., a role that can access other fields on-demand) and assign it to
-# the searchguard user.
+# the selected user.
 # It is possible to specify the certificate and private key to use to connect
 # to elasticsearch.
 #
@@ -56,37 +56,12 @@ function build_curl_command() {
 }
 
 
-function help() {
-  # Print the help message and exit
-  echo "$1: check if elasticsearch index is actually receiving data."
-  echo -e "\t Usage: $1 [OPTION]..."
-  echo ""
-  echo -e "\t-c, --critical-threshold (int): the critical threshold (default: "
-  echo -e "\t-w, --warning-threshold (int): the warning threshold"
-  echo -e "\t--threshold-format (str): the unit of measure for the thresholds \
-one of 'days', 'hours', 'minutes','seconds' (default 'hours')"
-  echo -e "\t--index-date-format (str): index date format (e.g., 'yyyy-MM-dd') compliant \
-to elasticsearch date formats"
-  echo -e "\t--index-static-name (str): the base name of the index (e.g., 'logstash', 'winlogbeat')"
-  echo -e "\t--ingested-time-field (str): the name of the field to use (e.g., '@timestamp', 'event.created') default: @timestamp"
-  echo -e "\t--index-creation-interval (str): it specifies whenever a new index is created (e.g., d = daily, M = monthly)"
-
-  echo -e "\t--es-host (str): the elasticsearch host or ip (default: 'elasticsearch.neteyelocal')"
-  echo -e "\t--es-port (int): the elasticsearch port (default: 9200)"
-  echo -e "\t--es-protocol (str): the protocol used to connect to elasticsearch (default: 'https')"
-  echo -e "\t-u, --searchguard-user (str): searchguard user"
-  echo -e "\t--output-date-format (str): the output date format compatible with 'date' command (default: '+%A %Y.%m.%d %H:%M:%S %Z')"
-  echo -e "\t--curl-command-path (str): path to a curl executable to use"
-  echo -e "\t--curl-cert (str): path to the client's certificate (check: man curl for details)"
-  echo -e "\t--curl-key (str): path to the private key of the client (check: man curl for details)"
-}
 
 
 # Default Values that can be overwritten by options
 WARNING_THRESHOLD=2
 CRITICAL_THRESHOLD=4
 INDEX_STATIC_NAME="logstash"
-SEARCHGUARD_USER=NeteyeElasticCheck
 INGESTED_TIME_FIELD="@timestamp"
 OUTPUT_DATE_FORMAT="+%A %Y.%m.%d %H:%M:%S %Z"
 ES_HOST="elasticsearch.neteyelocal"
@@ -97,14 +72,40 @@ INDEX_DATE_FORMAT="yyyy.MM.dd"
 INDEX_CREATION_INTERVAL="d"
 CURL_COMMAND_PATH="/usr/share/neteye/scripts/searchguard/sg_neteye_curl.sh"
 CURL_CERT=""
-CURL_KEY=""
+CURL_PRIVATE_KEY=""
+
+
+
+function help() {
+  # Print the help message and exit
+  echo "$1: check if elasticsearch index is actually receiving data."
+  echo -e "\t Usage: $1 [OPTION]..."
+  echo ""
+  echo -e "\t-c, --critical-threshold (int): the critical threshold (default: ${CRITICAL_THRESHOLD})"
+  echo -e "\t-w, --warning-threshold (int): the warning threshold (default: ${WARNING_THRESHOLD})"
+  echo -e "\t--threshold-format (str): the unit of measure for the thresholds \
+one of 'days', 'hours', 'minutes','seconds' (default ${THRESHOLD_FORMAT})"
+  echo -e "\t--index-date-format (str): index date format (e.g., ${INDEX_DATE_FORMAT}) compliant \
+to elasticsearch date formats"
+  echo -e "\t--index-static-name (str): the static name of the index (default: ${INDEX_STATIC_NAME})"
+  echo -e "\t--ingested-time-field (str): the name of the field to use (default: ${INGESTED_TIME_FIELD})"
+  echo -e "\t--index-creation-interval (str): it specifies whenever a new index is created (e.g., d = daily, M = monthly) (default ${INDEX_CREATION_INTERVAL})"
+  echo -e "\t--es-host (str): the elasticsearch host or ip (default: ${ES_HOST})"
+  echo -e "\t--es-port (int): the elasticsearch port (default: ${ES_PORT})"
+  echo -e "\t--es-protocol (str): the protocol used to connect to elasticsearch (default: ${ES_PROTOCOL})"
+  echo -e "\t--output-date-format (str): the output date format compatible with 'date' command (default: '${OUTPUT_DATE_FORMAT}')"
+  echo -e "\t--curl-command-path (str): path to a curl executable to use (default: ${CURL_COMMAND_PATH}"
+  echo -e "\t--curl-cert (str): path to the client's certificate (check: man curl for details) (default: ${CURL_CERT}"
+  echo -e "\t--curl-key (str): path to the private key of the client (check: man curl for details) (default: ${CURL_PRIVATE_KEY}"
+}
+
 
 # Retrieving the command line options. Each shift, discard one argument.
 while [[ $# -gt 0 ]]
 do
   key="$1"
 
-  case $key in
+  case ${key} in
       "-c"|"--critical-threshold")
       CRITICAL_THRESHOLD="$2"
       shift
@@ -155,13 +156,9 @@ do
       shift
       shift
       ;;
-      "-u"|"--searchguard-user")
-      SEARCHGUARD_USER="$2"
-      shift
-      shift
-      ;;
       "-h"|"--help")
       help ${PROGRAM_NAME}
+      exit 2
       ;;
       "--curl-command-path")
       CURL_COMMAND_PATH="$2"
@@ -174,7 +171,7 @@ do
       shift
       ;;
       "--curl-key")
-      CURL_KEY="$2"
+      CURL_PRIVATE_KEY="$2"
       shift
       shift
       ;;
@@ -185,6 +182,8 @@ do
       ;;
   esac
 done
+
+
 
 #
 # Translate threshold from ${THRESHOLD_FORMAT} to seconds to allow flexibility
@@ -213,8 +212,10 @@ case ${THRESHOLD_FORMAT} in
     ;;
 esac
 
+
+
 # Building the curl base command
-CURL_BASE_COMMAND=$(build_curl_command "${CURL_COMMAND_PATH}" "${CURL_CERT}" "${CURL_KEY}")
+CURL_BASE_COMMAND=$(build_curl_command "${CURL_COMMAND_PATH}" "${CURL_CERT}" "${CURL_PRIVATE_KEY}")
 
 # Building index name based on today's date
 # ref: https://www.elastic.co/guide/en/elasticsearch/reference/current/date-math-index-names.html
@@ -245,7 +246,7 @@ EXIT_CODE="$?"
 LOG_TIMESTAMP=$(echo "$JSON" | jq -r ".hits.hits | .[] | .[\"_source\"] | .[\"${INGESTED_TIME_FIELD}\"]")
 
 if [[ "${EXIT_CODE}" -ne 0 ]] || [[ -z "${LOG_TIMESTAMP}" ]]; then
-  echo "Not able to collect data for today's '${INDEX_STATIC_NAME}' indices"
+  echo "Not able to collect data neither for '${INDEX_STATIC_NAME}' nor for '${OLD_INDEX_NAME}' indices"
   echo "Request to Elastic APIs exits with code ${EXIT_CODE} and timestamp '${INGESTED_TIME_FIELD}' is not extracted"
   echo "JSON_RESPONSE: ${JSON}"
   exit 3
