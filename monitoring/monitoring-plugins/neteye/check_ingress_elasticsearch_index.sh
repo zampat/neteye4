@@ -23,19 +23,7 @@
 readonly PROGRAM_NAME=$(basename "$0")
 
 
-function check_threshold() {
-  local LOG_TIMESTAMP=$1
-  local LOG_TIMESTAMP_SEC=$2
-  local SECONDS_AGO=$3
-  local SECONDS=$4
-  local EXIT_STATUS_ON_MATCH=$5
 
-  if [[ "${LOG_TIMESTAMP_SEC}" -le "${SECONDS_AGO}" ]]; then
-    echo "Index ${INDEX_STATIC_NAME} is not collecting logs since ${SECONDS} ${THRESHOLD_STRING} ago"
-    echo "Last log is: ${LOG_TIMESTAMP}"
-    exit "${EXIT_STATUS_ON_MATCH}"
-  fi
-}
 
 function build_curl_command() {
   local COMMAND=$1
@@ -53,6 +41,13 @@ function build_curl_command() {
   fi
 
   echo "${COMMAND}"
+}
+
+build_performance_data() {
+    TIME_DIFF=$1
+    WARNING_THRESHOLD_SEC=$2
+    CRITICAL_THRESHOLD_SEC=$3
+    echo "elapsed_time_since_last_log=${TIME_DIFF}s;${WARNING_THRESHOLD_SEC};${CRITICAL_THRESHOLD_SEC};;"
 }
 
 
@@ -189,22 +184,27 @@ done
 # Translate threshold from ${THRESHOLD_FORMAT} to seconds to allow flexibility
 # in the definition
 #
-THRESHOLD_STRING="seconds"
 
 case ${THRESHOLD_FORMAT} in
   "d"|"days")
-    CRITICAL_THRESHOLD=$((CRITICAL_THRESHOLD*86400))
-    WARNING_THRESHOLD=$((WARNING_THRESHOLD*86400))
+    CRITICAL_THRESHOLD_SEC=$((CRITICAL_THRESHOLD*86400))
+    WARNING_THRESHOLD_SEC=$((WARNING_THRESHOLD*86400))
+    THRESHOLD_FORMAT="days"
     ;;
   "h"|"hours")
-    CRITICAL_THRESHOLD=$((CRITICAL_THRESHOLD*3600))
-    WARNING_THRESHOLD=$((WARNING_THRESHOLD*3600))
+    CRITICAL_THRESHOLD_SEC=$((CRITICAL_THRESHOLD*3600))
+    WARNING_THRESHOLD_SEC=$((WARNING_THRESHOLD*3600))
+    THRESHOLD_FORMAT="hours"
     ;;
   "m"|"minutes")
-    CRITICAL_THRESHOLD=$((CRITICAL_THRESHOLD*60))
-    WARNING_THRESHOLD=$((WARNING_THRESHOLD*60))
+    CRITICAL_THRESHOLD_SEC=$((CRITICAL_THRESHOLD*60))
+    WARNING_THRESHOLD_SEC=$((WARNING_THRESHOLD*60))
+    THRESHOLD_FORMAT="minutes"
     ;;
   "s"|"seconds")
+    CRITICAL_THRESHOLD_SEC=$((CRITICAL_THRESHOLD))
+    WARNING_THRESHOLD_SEC=$((WARNING_THRESHOLD))
+    THRESHOLD_FORMAT="seconds"
     ;;
   *)
     "Unsupported threshold format '${THRESHOLD_FORMAT}': Available options are days, hours, minutes, seconds (or their abbreviations d, h, m, s)"
@@ -245,20 +245,29 @@ EXIT_CODE="$?"
 
 LOG_TIMESTAMP=$(echo "$JSON" | jq -r ".hits.hits | .[] | .[\"_source\"] | .[\"${INGESTED_TIME_FIELD}\"]")
 
+
 if [[ "${EXIT_CODE}" -ne 0 ]] || [[ -z "${LOG_TIMESTAMP}" ]]; then
-  echo "Not able to collect data neither for '${INDEX_STATIC_NAME}' nor for '${OLD_INDEX_NAME}' indices"
+  echo "CHECK UNKNOWN - Not able to collect data neither for '${INDEX_STATIC_NAME}' nor for '${OLD_INDEX_NAME}' indices"
   echo "Request to Elastic APIs exits with code ${EXIT_CODE} and timestamp '${INGESTED_TIME_FIELD}' is not extracted"
   echo "JSON_RESPONSE: ${JSON}"
   exit 3
 fi
 
 LOG_TIMESTAMP_SEC=$(date -u +%s -d "${LOG_TIMESTAMP}")
-WARNING_THRESHOLD_AGO=$(date -u +%s -d "${WARNING_THRESHOLD} ${THRESHOLD_STRING} ago")
-CRITICAL_THRESHOLD_AGO=$(date -u +%s -d "${CRITICAL_THRESHOLD} ${THRESHOLD_STRING} ago")
 
-check_threshold "${LOG_TIMESTAMP}" "${LOG_TIMESTAMP_SEC}" "${CRITICAL_THRESHOLD_AGO}" "${CRITICAL_THRESHOLD}" 2
-check_threshold "${LOG_TIMESTAMP}" "${LOG_TIMESTAMP_SEC}" "${WARNING_THRESHOLD_AGO}" "${WARNING_THRESHOLD}" 1
 TIME_DIFF="$(($(date +%s)-LOG_TIMESTAMP_SEC))"
 
-echo "CHECK OK - last log dated \"$(date "${OUTPUT_DATE_FORMAT}" -d "${LOG_TIMESTAMP}")\" | elapsed_time_since_last_log=${TIME_DIFF}s;${WARNING_THRESHOLD};${CRITICAL_THRESHOLD};;"
-exit 0
+
+PERFORMANCE_DATA=$(build_performance_data ${TIME_DIFF} ${WARNING_THRESHOLD_SEC} ${CRITICAL_THRESHOLD_SEC})
+DATE_OUTPUT=$(date "${OUTPUT_DATE_FORMAT}" -d "${LOG_TIMESTAMP}")
+
+if [[ ${TIME_DIFF} -gt ${CRITICAL_THRESHOLD_SEC} ]]; then
+    echo "CHECK CRITICAL - last log dated \"${DATE_OUTPUT}\". Index '${INDEX_STATIC_NAME}' is not collecting log since more than ${CRITICAL_THRESHOLD} ${THRESHOLD_FORMAT} | ${PERFORMANCE_DATA}"
+    exit 2
+elif [[ ${TIME_DIFF} -gt ${WARNING_THRESHOLD_SEC} ]]; then
+    echo "CHECK WARNING - last log dated \"${DATE_OUTPUT}\". Index '${INDEX_STATIC_NAME}' is not collecting log since more than ${WARNING_THRESHOLD} ${THRESHOLD_FORMAT} | ${PERFORMANCE_DATA}"
+    exit 1
+else
+    echo "CHECK OK - last log dated \"${DATE_OUTPUT}\" | ${PERFORMANCE_DATA}"
+    exit 0
+fi
