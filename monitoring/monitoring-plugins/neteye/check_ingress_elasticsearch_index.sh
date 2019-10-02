@@ -20,7 +20,7 @@
 # to elasticsearch.
 #
 
-readonly PROGRAM_NAME=$(basename $0)
+readonly PROGRAM_NAME=$(basename "$0")
 
 
 function check_threshold() {
@@ -52,7 +52,7 @@ function build_curl_command() {
     COMMAND="${COMMAND} --key ${KEY}"
   fi
 
-  echo ${COMMAND}
+  echo "${COMMAND}"
 }
 
 
@@ -157,7 +157,7 @@ do
       shift
       ;;
       "-h"|"--help")
-      help ${PROGRAM_NAME}
+      help "${PROGRAM_NAME}"
       exit 2
       ;;
       "--curl-command-path")
@@ -193,16 +193,16 @@ THRESHOLD_STRING="seconds"
 
 case ${THRESHOLD_FORMAT} in
   "d"|"days")
-    CRITICAL_THRESHOLD=$((${CRITICAL_THRESHOLD}*86400))
-    WARNING_THRESHOLD=$((${WARNING_THRESHOLD}*86400))
+    CRITICAL_THRESHOLD=$((CRITICAL_THRESHOLD*86400))
+    WARNING_THRESHOLD=$((WARNING_THRESHOLD*86400))
     ;;
   "h"|"hours")
-    CRITICAL_THRESHOLD=$((${CRITICAL_THRESHOLD}*3600))
-    WARNING_THRESHOLD=$((${WARNING_THRESHOLD}*3600))
+    CRITICAL_THRESHOLD=$((CRITICAL_THRESHOLD*3600))
+    WARNING_THRESHOLD=$((WARNING_THRESHOLD*3600))
     ;;
   "m"|"minutes")
-    CRITICAL_THRESHOLD=$((${CRITICAL_THRESHOLD}*60))
-    WARNING_THRESHOLD=$((${WARNING_THRESHOLD}*60))
+    CRITICAL_THRESHOLD=$((CRITICAL_THRESHOLD*60))
+    WARNING_THRESHOLD=$((WARNING_THRESHOLD*60))
     ;;
   "s"|"seconds")
     ;;
@@ -239,7 +239,7 @@ JSON_PAYLOAD="{
   ]
 }"
 
-JSON=$(${CURL_BASE_COMMAND} -XGET ${URL} -H 'Content-Type: application/json' -d "$JSON_PAYLOAD")
+JSON=$(${CURL_BASE_COMMAND} -XGET "${URL}" -H 'Content-Type: application/json' -d "$JSON_PAYLOAD")
 
 EXIT_CODE="$?"
 
@@ -258,7 +258,7 @@ CRITICAL_THRESHOLD_AGO=$(date -u +%s -d "${CRITICAL_THRESHOLD} ${THRESHOLD_STRIN
 
 check_threshold "${LOG_TIMESTAMP}" "${LOG_TIMESTAMP_SEC}" "${CRITICAL_THRESHOLD_AGO}" "${CRITICAL_THRESHOLD}" 2
 check_threshold "${LOG_TIMESTAMP}" "${LOG_TIMESTAMP_SEC}" "${WARNING_THRESHOLD_AGO}" "${WARNING_THRESHOLD}" 1
-TIME_DIFF="$(($(date +%s)-${LOG_TIMESTAMP_SEC}))"
+TIME_DIFF="$(($(date +%s)-LOG_TIMESTAMP_SEC))"
 
-echo "CHECK OK - last log dated \"$(date "${OUTPUT_DATE_FORMAT}" -d ${LOG_TIMESTAMP})\" | elapsed_time_since_last_log=${TIME_DIFF}s;${WARNING_THRESHOLD};${CRITICAL_THRESHOLD};;"
+echo "CHECK OK - last log dated \"$(date "${OUTPUT_DATE_FORMAT}" -d "${LOG_TIMESTAMP}")\" | elapsed_time_since_last_log=${TIME_DIFF}s;${WARNING_THRESHOLD};${CRITICAL_THRESHOLD};;"
 exit 0
