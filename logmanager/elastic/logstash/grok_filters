@@ -4,6 +4,8 @@
 - [Grok Tutorials](https://qbox.io/blog/logstash-grok-filter-tutorial-patterns)
 - [Grok Files supported by Logstash](https://github.com/logstash-plugins/logstash-patterns-core/blob/master/patterns/firewalls)
 
+- [Grok test and matcher](http://grokconstructor.appspot.com/do/match)
+
 Simple parser example where I want to extract "wanted" into the field "match":
  this is my wanted text.
  Grok filter:
