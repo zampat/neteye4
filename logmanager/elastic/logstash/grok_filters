@@ -1,0 +1,5 @@
+# Creating logstash 
+
+- [Grok Plugin on Elastic.co - logstash](https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html)
+- [Grok Tutorials](https://qbox.io/blog/logstash-grok-filter-tutorial-patterns)
+- [Grok Files supported by Logstash](https://github.com/logstash-plugins/logstash-patterns-core/blob/master/patterns/firewalls)
