@@ -1,0 +1,6 @@
+CLEANUP_HOURS=360
+CLEANUP_OK_HOURS=24
+ALYVIX_LOGDIR=/neteye/shared/httpd/alyvix-reports
+# Remote directories to cleanup
+# ALYVIX_EXTERNAL_DIRS="/cifs/<remote-server-dir1> /cifs/<remote-server-dir2> ..."
+ALYVIX_EXTERNAL_DIRS=""

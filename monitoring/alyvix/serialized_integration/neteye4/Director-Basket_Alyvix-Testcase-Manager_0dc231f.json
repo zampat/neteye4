@@ -1,0 +1,584 @@
+{
+    "Command": {
+        "run_alyvix_testcase": {
+            "arguments": {
+                "-AlyvixPybotPath": {
+                    "value": "$alyvix_pybotpath$",
+                    "order": "5"
+                },
+                "-AppendHTMLLink": {
+                    "set_if": "$alyvix_addhtmllinks$",
+                    "skip_key": true,
+                    "value": "-AppendHTMLLink",
+                    "order": "14"
+                },
+                "-LinkBaseURL": {
+                    "set_if": "$alyvix_addhtmllinks$",
+                    "value": "$alyvix_linkbaseurl$",
+                    "order": "15"
+                },
+                "-PSCPPath": {
+                    "set_if": "$alyvix_uploadreports$",
+                    "value": "$alyvix_pscppath$",
+                    "order": "13"
+                },
+                "-Password": {
+                    "set_if": "$alyvix_uploadreports$",
+                    "value": "$alyvix_reportsserverpassword$",
+                    "order": "11"
+                },
+                "-RemoteReportsPath": {
+                    "set_if": "$alyvix_uploadreports$",
+                    "value": "$alyvix_remotereportspath$",
+                    "order": "12"
+                },
+                "-ReportServerName": {
+                    "set_if": "$alyvix_uploadreports$",
+                    "value": "$alyvix_reportsservername$",
+                    "order": "9"
+                },
+                "-ReportsPath": {
+                    "required": true,
+                    "value": "$alyvix_reportspath$",
+                    "order": "4"
+                },
+                "-ReportsRetentionHours": {
+                    "value": "$alyvix_retentiondays$",
+                    "order": "8"
+                },
+                "-ReportsSaveMode": {
+                    "value": "$alyvix_reportssavemode$",
+                    "order": "7"
+                },
+                "-RobotFilePath": {
+                    "required": true,
+                    "value": "$alyvix_robotfilepath$",
+                    "order": "3"
+                },
+                "-TestCaseMaxDuration": {
+                    "value": "$alyvix_testcaseduration$",
+                    "order": "6"
+                },
+                "-TestCaseName": {
+                    "required": true,
+                    "value": "$alyvix_testcasename$",
+                    "order": "2"
+                },
+                "-Username": {
+                    "set_if": "$alyvix_uploadreports$",
+                    "value": "$alyvix_reportsserverusername$",
+                    "order": "10"
+                },
+                "-file": {
+                    "required": true,
+                    "value": "$alyvix_powershellscript$",
+                    "order": "1"
+                }
+            },
+            "command": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -ExecutionPolicy ByPass",
+            "disabled": false,
+            "fields": [
+                {
+                    "datafield_id": 804,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 805,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 806,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 807,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 808,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 809,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 810,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 811,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 812,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 813,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 814,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 815,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 816,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 817,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 818,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 819,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [],
+            "methods_execute": "PluginCheck",
+            "object_name": "run_alyvix_testcase",
+            "object_type": "object",
+            "timeout": "300",
+            "vars": {
+                "alyvix_linkbaseurl": "\/alyvix-reports\/",
+                "alyvix_powershellscript": "C:\\Scripts\\Run-AlyvixRobot.ps1",
+                "alyvix_pscppath": "C:\\Program Files\\PuTTY\\pscp.exe",
+                "alyvix_pybotpath": "C:\\Python27\\Scripts\\alyvix_pybot.bat",
+                "alyvix_remotereportspath": "\/neteye\/shared\/httpd\/alyvix-reports",
+                "alyvix_reportspath": "C:\\NetEye\\Logs",
+                "alyvix_reportssavemode": "ByDate",
+                "alyvix_retentionhours": 24
+            },
+            "zone": null
+        },
+        "run_serialized_services": {
+            "arguments": {
+                "-H": {
+                    "value": "$icinga_server$"
+                },
+                "-c": {
+                    "value": "$local_cache_filename$"
+                },
+                "-f": {
+                    "value": "$host.name$"
+                },
+                "-p": {
+                    "value": "$icinga_api_password$"
+                },
+                "-u": {
+                    "value": "$icinga_api_username$"
+                }
+            },
+            "command": "PluginContribDir + \/run_serialized_services.py",
+            "disabled": false,
+            "fields": [
+                {
+                    "datafield_id": 821,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 822,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 823,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 824,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [],
+            "methods_execute": "PluginCheck",
+            "object_name": "run_serialized_services",
+            "object_type": "object",
+            "timeout": null,
+            "vars": {},
+            "zone": null
+        }
+    },
+    "ServiceTemplate": {
+        "Agent_Win_Alyvix_Testcase": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "run_alyvix_testcase",
+            "check_interval": "900",
+            "check_period": null,
+            "check_timeout": "180",
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": false,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 804,
+                    "is_required": "n",
+                    "var_filter": "service.vars.alyvix_uploadreports=true"
+                },
+                {
+                    "datafield_id": 805,
+                    "is_required": "n",
+                    "var_filter": "service.vars.alyvix_addhtmllinks=true"
+                },
+                {
+                    "datafield_id": 807,
+                    "is_required": "n",
+                    "var_filter": "service.vars.alyvix_uploadreports=true"
+                },
+                {
+                    "datafield_id": 809,
+                    "is_required": "n",
+                    "var_filter": "service.vars.alyvix_uploadreports=true"
+                },
+                {
+                    "datafield_id": 812,
+                    "is_required": "n",
+                    "var_filter": "service.vars.alyvix_uploadreports=true"
+                },
+                {
+                    "datafield_id": 813,
+                    "is_required": "n",
+                    "var_filter": "service.vars.alyvix_uploadreports=true"
+                },
+                {
+                    "datafield_id": 814,
+                    "is_required": "n",
+                    "var_filter": "service.vars.alyvix_uploadreports=true"
+                },
+                {
+                    "datafield_id": 815,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 819,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic_agent"
+            ],
+            "max_check_attempts": "1",
+            "notes": null,
+            "notes_url": null,
+            "object_name": "Agent_Win_Alyvix_Testcase",
+            "object_type": "template",
+            "retry_interval": "300",
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "alyvix_addhtmllinks": true,
+                "alyvix_remotereportspath": "\/alyvix-reports",
+                "alyvix_reportsservername": "192.168.1.20",
+                "alyvix_reportsserverpassword": "Alyvix.1234",
+                "alyvix_reportsserverusername": "alyvix",
+                "alyvix_retentionhours": 12,
+                "alyvix_testcaseduration": "300",
+                "alyvix_uploadreports": true
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "Agent_Win_Alyvix_Serialized_Testcase": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "run_alyvix_testcase",
+            "check_interval": null,
+            "check_period": "24x7",
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "Agent_Win_Alyvix_Testcase",
+                "serialized_service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "Agent_Win_Alyvix_Serialized_Testcase",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": true,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "DataList": {
+        "Alyvix Reports Save Modes": {
+            "list_name": "Alyvix Reports Save Modes",
+            "owner": "root",
+            "originalId": "706",
+            "entries": [
+                {
+                    "entry_name": "ByDate",
+                    "entry_value": "Save by date",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "Last",
+                    "entry_value": "Only keep last report",
+                    "format": "string",
+                    "allowed_roles": null
+                }
+            ]
+        }
+    },
+    "Datafield": {
+        "804": {
+            "varname": "alyvix_addhtmllinks",
+            "caption": "Add HTML links to report",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "804",
+            "settings": {}
+        },
+        "805": {
+            "varname": "alyvix_linkbaseurl",
+            "caption": "HTML Links base URL",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "805",
+            "settings": {}
+        },
+        "806": {
+            "varname": "alyvix_powershellscript",
+            "caption": "Powershell Wrapper Script",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "806",
+            "settings": {}
+        },
+        "807": {
+            "varname": "alyvix_pscppath",
+            "caption": "PSCP Path",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "807",
+            "settings": {}
+        },
+        "808": {
+            "varname": "alyvix_pybotpath",
+            "caption": "Path to Alyvix Pybot",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "808",
+            "settings": {}
+        },
+        "809": {
+            "varname": "alyvix_remotereportspath",
+            "caption": "Remote Reports Server save path",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "809",
+            "settings": {}
+        },
+        "810": {
+            "varname": "alyvix_reportspath",
+            "caption": "Local reports save path",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "810",
+            "settings": {}
+        },
+        "811": {
+            "varname": "alyvix_reportssavemode",
+            "caption": "Reports save mode",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeDatalist",
+            "format": null,
+            "originalId": "811",
+            "settings": {
+                "data_type": "string",
+                "datalist": "Alyvix Reports Save Modes"
+            }
+        },
+        "812": {
+            "varname": "alyvix_reportsservername",
+            "caption": "Remote Reports Server name",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "812",
+            "settings": {}
+        },
+        "813": {
+            "varname": "alyvix_reportsserverpassword",
+            "caption": "Remote Reports Server password",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "813",
+            "settings": {
+                "rename_vars": "y"
+            }
+        },
+        "814": {
+            "varname": "alyvix_reportsserverusername",
+            "caption": "Remote Reports Server username",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "814",
+            "settings": {
+                "rename_vars": "y"
+            }
+        },
+        "815": {
+            "varname": "alyvix_retentionhours",
+            "caption": "Reports retention hours",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeNumber",
+            "format": null,
+            "originalId": "815",
+            "settings": {
+                "rename_vars": "y"
+            }
+        },
+        "816": {
+            "varname": "alyvix_robotfilepath",
+            "caption": "Path to Testcase Robot file",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "816",
+            "settings": {}
+        },
+        "817": {
+            "varname": "alyvix_testcaseduration",
+            "caption": "Testcase duration (seconds)",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "817",
+            "settings": {}
+        },
+        "818": {
+            "varname": "alyvix_testcasename",
+            "caption": "Testcase name",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "818",
+            "settings": {}
+        },
+        "819": {
+            "varname": "alyvix_uploadreports",
+            "caption": "Upload Reports to Remote Server",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "819",
+            "settings": {}
+        },
+        "821": {
+            "varname": "icinga_api_password",
+            "caption": "API User Password",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "821",
+            "settings": {}
+        },
+        "822": {
+            "varname": "icinga_api_username",
+            "caption": "API User Username",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "822",
+            "settings": {}
+        },
+        "823": {
+            "varname": "icinga_server",
+            "caption": "Icinga Server Name",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "823",
+            "settings": {}
+        },
+        "824": {
+            "varname": "local_cache_filename",
+            "caption": "Local Cache Filename",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "824",
+            "settings": {}
+        }
+    }
+}
