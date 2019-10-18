@@ -11,6 +11,7 @@ import time
 import requests
 import urllib3
 
+#logging.basicConfig(level=logging.DEBUG)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-H", action="store", dest="icinga_server")
@@ -318,7 +319,7 @@ def wait_for_running_service_to_end(local_services_list, icinga_services_list):
 
 #Return the first service in the list having started attribute set to false
 def get_startable_service(services_list):
-    for service_name in services_list:
+    for service_name in sorted(services_list):
         service = services_list[service_name]
         if (service.started == False):
             return service

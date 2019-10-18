@@ -4,38 +4,44 @@
             "arguments": {
                 "-AlyvixPybotPath": {
                     "value": "$alyvix_pybotpath$",
-                    "order": "5"
+                    "order": "6"
                 },
                 "-AppendHTMLLink": {
                     "set_if": "$alyvix_addhtmllinks$",
+                    "set_if_format": "string",
                     "skip_key": true,
                     "value": "-AppendHTMLLink",
-                    "order": "14"
+                    "order": "15"
                 },
                 "-LinkBaseURL": {
                     "set_if": "$alyvix_addhtmllinks$",
+                    "set_if_format": "string",
                     "value": "$alyvix_linkbaseurl$",
-                    "order": "15"
+                    "order": "16"
                 },
                 "-PSCPPath": {
                     "set_if": "$alyvix_uploadreports$",
+                    "set_if_format": "string",
                     "value": "$alyvix_pscppath$",
-                    "order": "13"
+                    "order": "14"
                 },
                 "-Password": {
                     "set_if": "$alyvix_uploadreports$",
+                    "set_if_format": "string",
                     "value": "$alyvix_reportsserverpassword$",
-                    "order": "11"
+                    "order": "12"
                 },
                 "-RemoteReportsPath": {
                     "set_if": "$alyvix_uploadreports$",
+                    "set_if_format": "string",
                     "value": "$alyvix_remotereportspath$",
-                    "order": "12"
+                    "order": "13"
                 },
                 "-ReportServerName": {
                     "set_if": "$alyvix_uploadreports$",
+                    "set_if_format": "string",
                     "value": "$alyvix_reportsservername$",
-                    "order": "9"
+                    "order": "10"
                 },
                 "-ReportsPath": {
                     "required": true,
@@ -43,21 +49,26 @@
                     "order": "4"
                 },
                 "-ReportsRetentionHours": {
-                    "value": "$alyvix_retentiondays$",
-                    "order": "8"
+                    "value": "$alyvix_retentionhours$",
+                    "order": "9"
                 },
                 "-ReportsSaveMode": {
                     "value": "$alyvix_reportssavemode$",
-                    "order": "7"
+                    "order": "8"
                 },
                 "-RobotFilePath": {
                     "required": true,
                     "value": "$alyvix_robotfilepath$",
+                    "order": "5"
+                },
+                "-SingleTestCase": {
+                    "required": false,
+                    "value": "$alyvix_singletestcase$",
                     "order": "3"
                 },
                 "-TestCaseMaxDuration": {
                     "value": "$alyvix_testcaseduration$",
-                    "order": "6"
+                    "order": "7"
                 },
                 "-TestCaseName": {
                     "required": true,
@@ -66,8 +77,9 @@
                 },
                 "-Username": {
                     "set_if": "$alyvix_uploadreports$",
+                    "set_if_format": "string",
                     "value": "$alyvix_reportsserverusername$",
-                    "order": "10"
+                    "order": "11"
                 },
                 "-file": {
                     "required": true,
@@ -144,6 +156,11 @@
                     "var_filter": null
                 },
                 {
+                    "datafield_id": 825,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
                     "datafield_id": 817,
                     "is_required": "y",
                     "var_filter": null
@@ -166,7 +183,7 @@
             "timeout": "300",
             "vars": {
                 "alyvix_linkbaseurl": "\/alyvix-reports\/",
-                "alyvix_powershellscript": "C:\\Scripts\\Run-AlyvixRobot.ps1",
+                "alyvix_powershellscript": "C:\\Neteye\\Scripts\\Run-AlyvixRobot.ps1",
                 "alyvix_pscppath": "C:\\Program Files\\PuTTY\\pscp.exe",
                 "alyvix_pybotpath": "C:\\Python27\\Scripts\\alyvix_pybot.bat",
                 "alyvix_remotereportspath": "\/neteye\/shared\/httpd\/alyvix-reports",
@@ -367,6 +384,176 @@
             "vars": {},
             "volatile": null,
             "zone": null
+        },
+        "passive_service": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": null,
+            "check_interval": "86400",
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": false,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": true,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "service_attribute_template"
+            ],
+            "max_check_attempts": "1",
+            "notes": null,
+            "notes_url": null,
+            "object_name": "passive_service",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "serializable": true
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "service_attribute_template": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": null,
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "service_attribute_template",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        },
+        "serialized_service": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": null,
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "passive_service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "serialized_service",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "serializable": true
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "serialized_services_scheduler": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "run_serialized_services",
+            "check_interval": "60",
+            "check_period": null,
+            "check_timeout": "30",
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic_service"
+            ],
+            "max_check_attempts": "1",
+            "notes": null,
+            "notes_url": null,
+            "object_name": "serialized_services_scheduler",
+            "object_type": "template",
+            "retry_interval": "60",
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
         }
     },
     "DataList": {
@@ -515,6 +702,15 @@
             "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
             "format": null,
             "originalId": "816",
+            "settings": {}
+        },
+        "825": {
+            "varname": "alyvix_singletestcase",
+            "caption": "Single Test to run",
+            "description": "If you want to run just one test inside a suite give the name of the Test inside the suite",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "825",
             "settings": {}
         },
         "817": {

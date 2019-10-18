@@ -47,6 +47,11 @@ param(
     )]
     [string]$TestCaseName,
 
+    [Parameter(ParameterSetName="TestCase",                         Mandatory=$false)]
+    [Parameter(ParameterSetName="TestCase-UploadReport",            Mandatory=$false)]
+    [Parameter(ParameterSetName="TestCase-UploadReport-AppendLink", Mandatory=$false)]
+    [string]$SingleTestCase,
+
     [Parameter(ParameterSetName="TestCase",                         Mandatory=$true)]
     [Parameter(ParameterSetName="TestCase-UploadReport",            Mandatory=$true)]
     [Parameter(ParameterSetName="TestCase-UploadReport-AppendLink", Mandatory=$true)]
@@ -218,7 +223,11 @@ function CreateAlyvixProcessInfoData($RobotFilePath, $AlyvixPybotPath, $CurrentT
     $AlyvixProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
 
     $AlyvixProcessInfo.FileName  = $AlyvixPybotPath
-    $AlyvixProcessInfo.Arguments = $RobotFilePath,"--outputdir",$CurrentTestCaseReportPath
+	if ($SingleTestCase) {
+		$AlyvixProcessInfo.Arguments = $RobotFilePath,"--test",$SingleTestCase,"--outputdir",$CurrentTestCaseReportPath
+	} else {
+		$AlyvixProcessInfo.Arguments = $RobotFilePath,"--outputdir",$CurrentTestCaseReportPath
+	}
     $AlyvixProcessInfo.RedirectStandardError  = $true
     $AlyvixProcessInfo.RedirectStandardOutput = $true
     $AlyvixProcessInfo.UseShellExecute        = $false
@@ -381,6 +390,7 @@ function CheckParameterSetName() {
         "TestCase" {
             Write-Verbose "Run Testcase"
             Write-Verbose "TestCaseName         : $TestCaseName"
+            Write-Verbose "SingelTestCase       : $SingleTestCase"
             Write-Verbose "RobotFilePath        : $RobotFilePath"
             Write-Verbose "ReportsPath          : $ReportsPath"
             Write-Verbose "AlyvixPybotPath      : $AlyvixPybotPath"
@@ -392,6 +402,7 @@ function CheckParameterSetName() {
         "TestCase-UploadReport" {
             Write-Verbose "Run Testcase and upload data"
             Write-Verbose "TestCaseName         : $TestCaseName"
+            Write-Verbose "SingelTestCase       : $SingleTestCase"
             Write-Verbose "RobotFilePath        : $RobotFilePath"
             Write-Verbose "ReportsPath          : $ReportsPath"
             Write-Verbose "AlyvixPybotPath      : $AlyvixPybotPath"
@@ -408,6 +419,7 @@ function CheckParameterSetName() {
         "TestCase-UploadReport-AppendLink" {
             Write-Verbose "Run Testcase, append link to reports and upload data"
             Write-Verbose "TestCaseName         : $TestCaseName"
+            Write-Verbose "SingelTestCase       : $SingleTestCase"
             Write-Verbose "RobotFilePath        : $RobotFilePath"
             Write-Verbose "ReportsPath          : $ReportsPath"
             Write-Verbose "AlyvixPybotPath      : $AlyvixPybotPath"
