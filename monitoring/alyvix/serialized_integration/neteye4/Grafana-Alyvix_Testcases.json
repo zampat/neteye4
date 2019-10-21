@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 1,
-  "iteration": 1571233644416,
+  "iteration": 1571641839016,
   "links": [],
   "panels": [
     {
@@ -66,7 +66,7 @@
         {
           "alias": "OK",
           "bars": true,
-          "color": "rgb(223, 244, 220)",
+          "color": "#96D98D",
           "legend": false,
           "points": false,
           "stack": false,
@@ -75,7 +75,7 @@
         {
           "alias": "WARNING",
           "bars": true,
-          "color": "rgb(241, 236, 190)",
+          "color": "#FADE2A",
           "legend": false,
           "points": false,
           "stack": false,
@@ -84,7 +84,7 @@
         {
           "alias": "CRITICAL",
           "bars": true,
-          "color": "rgb(241, 184, 191)",
+          "color": "#F2495C",
           "legend": false,
           "points": false,
           "stack": false,
@@ -120,10 +120,11 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "run_alyvix_testcase",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT 1-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 0) AND $timeFilter GROUP BY time(1m) fill(none)",
+          "query": "SELECT 1-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 0) AND $timeFilter GROUP BY time($__interval) fill(none)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -171,10 +172,11 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "run_alyvix_testcase",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT 2-last(state) as st FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"st\" = 1) AND $timeFilter GROUP BY time(1m) fill(none)",
+          "query": "SELECT 2-last(state) as st FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"st\" = 1) AND $timeFilter GROUP BY time(10m) fill(none)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -222,10 +224,11 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "run_alyvix_testcase",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT 3-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 2) AND $timeFilter GROUP BY time(1m) fill(none)",
+          "query": "SELECT 3-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 2) AND $timeFilter GROUP BY time(10m) fill(none)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -273,10 +276,11 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "run_alyvix_testcase",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT 4-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 3) AND $timeFilter GROUP BY time(1m) fill(none)",
+          "query": "SELECT 4-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 3) AND $timeFilter GROUP BY time(10m) fill(none)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -447,7 +451,7 @@
       "renderer": "flot",
       "repeat": null,
       "repeatDirection": "v",
-      "repeatIteration": 1571233644416,
+      "repeatIteration": 1571641839016,
       "repeatPanelId": 2,
       "scopedVars": {
         "service": {
@@ -460,7 +464,7 @@
         {
           "alias": "OK",
           "bars": true,
-          "color": "rgb(223, 244, 220)",
+          "color": "#96D98D",
           "legend": false,
           "points": false,
           "stack": false,
@@ -469,7 +473,7 @@
         {
           "alias": "WARNING",
           "bars": true,
-          "color": "rgb(241, 236, 190)",
+          "color": "#FADE2A",
           "legend": false,
           "points": false,
           "stack": false,
@@ -478,7 +482,7 @@
         {
           "alias": "CRITICAL",
           "bars": true,
-          "color": "rgb(241, 184, 191)",
+          "color": "#F2495C",
           "legend": false,
           "points": false,
           "stack": false,
@@ -514,10 +518,11 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "run_alyvix_testcase",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT 1-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 0) AND $timeFilter GROUP BY time(1m) fill(none)",
+          "query": "SELECT 1-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 0) AND $timeFilter GROUP BY time($__interval) fill(none)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -565,10 +570,11 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "run_alyvix_testcase",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT 2-last(state) as st FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"st\" = 1) AND $timeFilter GROUP BY time(1m) fill(none)",
+          "query": "SELECT 2-last(state) as st FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"st\" = 1) AND $timeFilter GROUP BY time(10m) fill(none)",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -616,10 +622,11 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "run_alyvix_testcase",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT 3-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 2) AND $timeFilter GROUP BY time(1m) fill(none)",
+          "query": "SELECT 3-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 2) AND $timeFilter GROUP BY time(10m) fill(none)",
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -667,10 +674,11 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "run_alyvix_testcase",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT 4-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 3) AND $timeFilter GROUP BY time(1m) fill(none)",
+          "query": "SELECT 4-last(state) FROM \"run_alyvix_testcase\" WHERE (\"hostname\" =~ /^$host$/ AND \"service\" =~ /^$service$/ AND \"state\" = 3) AND $timeFilter GROUP BY time(10m) fill(none)",
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -815,8 +823,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "tags": [],
           "text": "viju-win10-alyv.workgroup",
           "value": "viju-win10-alyv.workgroup"
         },
@@ -842,9 +848,10 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
           "text": "All",
-          "value": "$__all"
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "icinga2-influxdb",
         "definition": "show tag values from run_alyvix_testcase with key=\"service\" where hostname =~ /$host/",
@@ -868,7 +875,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -899,5 +906,5 @@
   "timezone": "",
   "title": "Alyvix Testcases",
   "uid": "CT3qf5oZz",
-  "version": 17
+  "version": 21
 }
