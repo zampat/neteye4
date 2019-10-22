@@ -24,8 +24,12 @@ Solution 1: Replace the provided nats configuration file **stan.conf** in:
 Solution 2: Patch the nats configuration file **stan.conf** with provided changes
 a) enable listening of nats on *ALL* interfaces on port 4222
 ```
-NetEye 3/4: 
-# patch /etc/nats/stan.conf < ./stan_enablePublicListener.conf.diff
+NetEye 3: 
+# export NATSCONF="/etc/nats/stan.conf"
+NetEye 4: 
+# export NATSCONF="/neteye/shared/nats/conf/stan.conf"
+
+# patch $NATSCONF < ./stan_enablePublicListener.conf.diff
 ```
 
 Enable and start nats streaming service (example valid for NetEye 4)
