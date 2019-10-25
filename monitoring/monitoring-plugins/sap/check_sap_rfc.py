@@ -226,10 +226,7 @@ def main():
 
     (output_string) = prepare_icinga_output(result)
     status = get_check_status(result)
-    if status != 0:
-        print(raw_result)
-    else:
-        print(output_string)
+    print(output_string)
     sys.exit(status)
 
 
