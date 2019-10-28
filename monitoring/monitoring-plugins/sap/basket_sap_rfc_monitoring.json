@@ -14,9 +14,11 @@
                     "value": "$service.vars.sap_kpi$"
                 },
                 "-p": {
-                    "repeat_key": false,
                     "required": true,
-                    "value": "$service.vars.sap_kpi_parameter$"
+                    "value": {
+                        "type": "Function",
+                        "body": "host_name = macro(\"$host.name$\");\r\nservice_name = macro(\"$service.name$\");\r\npattern = \"SAP_KPI_\";\r\n\/\/ Extract exactly this service in variable s\r\nvar my_filter = function(s) use(host_name, service_name) { s.name == service_name && s.host_name == host_name }\r\ns = get_objects(Service).filter(my_filter)[0];\r\n\/\/ extract all variables that begins with sap_kpi_<SAP_VARIABLE>, e.g., sap_kpi_it_upper_threshold\r\nsap_kpi_parameters = s.vars.keys().filter(v => v.upper().find(\"SAP_KPI_\") == 0);\r\n\/\/ extract <SAP_VARIABLE> --> IT_UPPER_THRESHOLD\r\nsap_kpi_keys = sap_kpi_parameters.map(x => x.upper().replace(\"SAP_KPI_\", \"\"));\r\n\/\/ extract the value of the variables\r\nvar my_fun = function(x) use(s) { s.vars[x] } \r\nsap_kpi_values = sap_kpi_parameters.map(my_fun);\r\n\/\/\r\nresult = \"\";\r\nfor (i in range(0, len(sap_kpi_parameters))) {\r\n    key = sap_kpi_keys[i];\r\n    value = sap_kpi_values[i];\r\n    value_type = typeof(value).name;\r\n    if (value_type == \"String\" || value_type == \"Number\") {\r\n        result = result + key + \"=\" + value.to_string() + \"; \";\r\n    } else if (value_type == \"Boolean\") {\r\n        if (value) {\r\n            result = result +  key + \"=X; \";\r\n        } else {\r\n            result = result +  key + \"=; \";\r\n        }\r\n    } else if (value_type == \"Array\") {\r\n        result = key + \"=\";\r\n        for (x in range(0, len(value) - 1)) {\r\n            result = result + value[x].to_string() + \",\";\r\n        }\r\n        result = result + value[len(value) - 1].to_string() + \" \";\r\n    } else {\r\n        log(key + \" \" + typeof(value).name + \" Not yet supported \");\r\n    } \r\n}\r\nreturn result;"
+                    }
                 },
                 "-s": {
                     "required": true,
@@ -71,11 +73,6 @@
                     "var_filter": null
                 },
                 {
-                    "datafield_id": 10030,
-                    "is_required": "y",
-                    "var_filter": null
-                },
-                {
                     "datafield_id": 10026,
                     "is_required": "y",
                     "var_filter": null
@@ -105,7 +102,106 @@
             "template_choice": null,
             "use_agent": null,
             "use_var_overrides": null,
-            "vars": {},
+            "vars": {
+                "sap_config_file": "\/neteye\/shared\/monitoring\/plugins\/saprfc\/old_perl_scripts\/nag_sap.cfg",
+                "sap_function_name": "\/WRP\/NEMO_CENTRAL",
+                "sap_sysid": "$host.name$"
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "sap_controller_service_wpsta": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_sap_rfc",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 10028,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10024,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10025,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10038,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10033,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10034,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10032,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10036,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10026,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10029,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "sap_controller_service_template"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "sap_controller_service_wpsta",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "sap_kpi": "WPSTA"
+            },
             "volatile": null,
             "zone": null
         }
@@ -142,17 +238,6 @@
                 "rename_vars": "y"
             }
         },
-        "10030": {
-            "varname": "sap_kpi_parameter",
-            "caption": "SAP KPI Parameter",
-            "description": "The KPI parameter for SAP. The format is the following one:\r\n\"<name>=<value1>;<value2>; <name>=;\"\r\n\r\nThe spaces are used to distinguish the different parameter, therefore no spaces are allowed\r\n",
-            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
-            "format": null,
-            "originalId": "10030",
-            "settings": {
-                "rename_vars": "y"
-            }
-        },
         "10026": {
             "varname": "sap_sysid",
             "caption": "SAP sysid",
@@ -172,6 +257,59 @@
             "format": null,
             "originalId": "10029",
             "settings": {}
+        },
+        "10038": {
+            "varname": "sap_kpi_it_appservers",
+            "caption": "SAP IT APPSERVERS",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeArray",
+            "format": null,
+            "originalId": "10038",
+            "settings": {}
+        },
+        "10033": {
+            "varname": "sap_kpi_it_critical_value",
+            "caption": "SAP critical value",
+            "description": "SAP Critical Value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeNumber",
+            "format": null,
+            "originalId": "10033",
+            "settings": {
+                "rename_vars": "y"
+            }
+        },
+        "10034": {
+            "varname": "sap_kpi_it_upper_threshold",
+            "caption": "SAP Upper Threshold",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "10034",
+            "settings": {
+                "rename_vars": "y"
+            }
+        },
+        "10032": {
+            "varname": "sap_kpi_it_warning_value",
+            "caption": "SAP warning threshold",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeNumber",
+            "format": null,
+            "originalId": "10032",
+            "settings": {
+                "rename_vars": "y"
+            }
+        },
+        "10036": {
+            "varname": "sap_kpi_it_workprocess_type",
+            "caption": "SAP Workprocess Type",
+            "description": "SAP Workprocess Type",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10036",
+            "settings": {
+                "rename_vars": "y"
+            }
         }
     }
 }
