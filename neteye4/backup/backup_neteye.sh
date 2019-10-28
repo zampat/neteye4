@@ -125,7 +125,8 @@ fi
 
 BKDIRS="$BKDIRS $BACKUPDIR/rpm-fulllist.txt $BACKUPDIR/cluster_services_status.txt $BACKUPDIR/standalone_services_status.txt $dirs_to_add"
 
-$ECHO tar ${EXCLOPTS} ${TAROPTS} -czf $BACKUPDIR/$BKNAME $BKDIRS 2>&1 | grep -v "tar: Removing leading" | grep -v "socket ignored" | grep -v "file changed as we read" | grep -v "Cannot stat: No such file or directory" | grep -v "File removed before we read it" | grep -v "Error exit delayed from previous errors" | grep -v "Exiting with failure status due to previous errors"
+#$ECHO tar ${EXCLOPTS} ${TAROPTS} -czf $BACKUPDIR/$BKNAME $BKDIRS 2>&1 | grep -v "tar: Removing leading" | grep -v "socket ignored" | grep -v "file changed as we read" | grep -v "Cannot stat: No such file or directory" | grep -v "File removed before we read it" | grep -v "Error exit delayed from previous errors" | grep -v "Exiting with failure status due to previous errors"
+$ECHO tar ${EXCLOPTS} ${TAROPTS} -Pczf $BACKUPDIR/$BKNAME $BKDIRS --warning=no-file-changed
 
 if [ "$NETBACKUPDIR" != "NONE" ]
 then
