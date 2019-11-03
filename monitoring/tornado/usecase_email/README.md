@@ -110,6 +110,18 @@ Line in archive file:
 
 
 
+Configure the API permissions for the Icinga2 executor:
+icinga2_client_executor.toml
+
+Tracing the collected message:
+Get from logs the received log file the received json message, write it into a file and pass it to the "tornado-send-event" command:
+
+```
+echo '{"type":"email","created_ms":1572456429212,"payload":{"date":1572456429,"subject":"SAP IDOC Error","from":"root <root@neteye4osmc.zampat.lab>","attachments":[],"to":"eventgw@localhost.zampat.lab","cc":"","body":"Tax code 541 may only contain one assignment line (Message no. FF173) while creating Sample document (T.Code F-01).\n\n"}}' > received_message.json
+
+# tornado-send-event ./received_message.json
+```
+
 
 
 
