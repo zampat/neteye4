@@ -191,8 +191,14 @@ QUEUE_EVENTS_COUNT=$(echo "${QUEUE_OUTPUT}" | jq -r ".events_count")
 QUEUE_SIZE=$(echo "${QUEUE_OUTPUT}" | jq -r ".queue_size_in_bytes")
 QUEUE_MAX_SIZE=$(echo "${QUEUE_OUTPUT}" | jq -r ".max_queue_size_in_bytes")
 
-# Print also leading 0's
-PERCENTAGE=$(echo $(bc <<< "scale = 3; 100*$QUEUE_SIZE / $QUEUE_MAX_SIZE") | awk '{printf "%.3f", $1 }')
+# Avoid division by 0
+if [[ ${QUEUE_MAX_SIZE} -eq 0 ]];
+then
+    PERCENTAGE=0
+else
+    # Print also leading 0's
+    PERCENTAGE=$(echo $(bc <<< "scale = 3; 100*$QUEUE_SIZE / $QUEUE_MAX_SIZE") | awk '{printf "%.3f", $1 }')
+fi
 
 MESSAGE="Queue of type '${QUEUE_TYPE}' in pipeline '${PIPELINE_NAME}' contains ${QUEUE_EVENTS_COUNT} events. \
 Totally, ~$(from_bytes_to_target "${QUEUE_SIZE}" "${OUTPUT_FORMAT}") ${OUTPUT_FORMAT} of \
