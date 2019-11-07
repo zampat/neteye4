@@ -91,6 +91,7 @@ OUTPUT_FORMAT="MiB"
 LOGSTASH_HOST="localhost"
 LOGSTASH_PORT="9600"
 LOGSTASH_PROTOCOL="http"
+LOGSTASH_VERSION="auto"
 PIPELINE_NAME="main"
 THRESHOLD_FORMAT="percentage"
 CURL_COMMAND_PATH="/usr/bin/curl"
@@ -98,6 +99,8 @@ CURL_CERT=""
 CURL_PRIVATE_KEY=""
 WARNING_ON_NUMBER=0
 CRITICAL_ON_NUMBER=0
+
+
 
 
 
@@ -113,6 +116,7 @@ one of 'percentage, MB, GB' (default ${THRESHOLD_FORMAT})"
   echo -e "\t--logstash-host (str): the elasticsearch host or ip (default: ${LOGSTASH_HOST})"
   echo -e "\t--logstash-port (int): the elasticsearch port (default: ${LOGSTASH_PORT})"
   echo -e "\t--logstash-protocol (str): the protocol used to connect to elasticsearch (default: ${LOGSTASH_PROTOCOL})"
+  echo -e "\t--logstash-version (int|str): Major Logstash version (supported options: 6, 7, 'auto'). 'auto' tries to autodetect the version (default: 'autodetect')"
   echo -e "\t--curl-command-path (str): path to a curl executable to use (default: '${CURL_COMMAND_PATH}')"
   echo -e "\t--curl-cert (str): path to the client's certificate (check: man curl for details) (default: '${CURL_CERT}')"
   echo -e "\t--curl-key (str): path to the private key of the client (check: man curl for details) (default: ${CURL_PRIVATE_KEY}')"
@@ -156,6 +160,8 @@ do
       WARNING_ON_NUMBER="$2"; shift; shift;;
       "--critical-on-number")
       CRITICAL_ON_NUMBER="$2"; shift; shift;;
+      "--logstash-version")
+      LOGSTASH_VERSION="$2"; shift; shift;;
       *)    # unknown option
         echo "Unknown parameter $key: $2"
         help
@@ -167,8 +173,11 @@ done
 check_threshold_existence "${WARNING_THRESHOLD}" "${CRITICAL_THRESHOLD}"
 check_threshold_existence "${WARNING_ON_NUMBER}" "${CRITICAL_ON_NUMBER}"
 
+# Getting LOGSTASH VERSION:
+BASE_URL="${LOGSTASH_PROTOCOL}://${LOGSTASH_HOST}:${LOGSTASH_PORT}/"
+
 # Building the url
-URL="${LOGSTASH_PROTOCOL}://${LOGSTASH_HOST}:${LOGSTASH_PORT}/_node/stats/pipelines"
+URL="${BASE_URL}/_node/stats/pipelines"
 
 PIPELINE_OUTPUT=$("${CURL_COMMAND_PATH}" -s -X GET "${URL}")
 
@@ -186,10 +195,44 @@ if [[ -z "${QUEUE_OUTPUT}" ]]; then
     exit ${UNKNOWN}
 fi
 
-QUEUE_TYPE=$(echo "${QUEUE_OUTPUT}" | jq -r ".type")
-QUEUE_EVENTS_COUNT=$(echo "${QUEUE_OUTPUT}" | jq -r ".events_count")
-QUEUE_SIZE=$(echo "${QUEUE_OUTPUT}" | jq -r ".queue_size_in_bytes")
-QUEUE_MAX_SIZE=$(echo "${QUEUE_OUTPUT}" | jq -r ".max_queue_size_in_bytes")
+
+if [[ "${LOGSTASH_VERSION}" == "auto" ]]; then
+    BASIC_INFO=$("${CURL_COMMAND_PATH}" -s -X GET "${BASE_URL}")
+
+    EXIT_CODE="$?"
+
+    if [[ "${EXIT_CODE}" -ne 0 ]]; then
+      echo "CHECK UNKNOWN - Not able to collect basic info for. ${URL} seems to be not reachable"
+      exit ${UNKNOWN}
+    fi
+
+    LOGSTASH_VERSION=$(echo ${BASIC_INFO} | jq -r ".version" | sed  "s/\([0-9]\)\.[0-9]\.[0-9]/\1/")
+fi
+
+case "${LOGSTASH_VERSION}" in
+  6)
+    QUEUE_TYPE=$(echo "${QUEUE_OUTPUT}" | jq -r ".type")
+    QUEUE_EVENTS_COUNT=$(echo "${QUEUE_OUTPUT}" | jq -r ".events")
+    QUEUE_SIZE=$(echo "${QUEUE_OUTPUT}" | jq -r ".capacity.queue_size_in_bytes")
+    QUEUE_MAX_SIZE=$(echo "${QUEUE_OUTPUT}" | jq -e -r ".capacity.max_queue_size_in_bytes")
+    LAST_STATUS=$?
+    ;;
+  7)
+    QUEUE_TYPE=$(echo "${QUEUE_OUTPUT}" | jq -r ".type")
+    QUEUE_EVENTS_COUNT=$(echo "${QUEUE_OUTPUT}" | jq -r ".events_count")
+    QUEUE_SIZE=$(echo "${QUEUE_OUTPUT}" | jq -r ".queue_size_in_bytes")
+    QUEUE_MAX_SIZE=$(echo "${QUEUE_OUTPUT}" | jq -r ".max_queue_size_in_bytes")
+    LAST_STATUS=$?
+    ;;
+  *)
+    echo "CHECK UNKNOWN - Unsupported logstash version '${LOGSTASH_VERSION}'. Version supported 6.x and 7.x"
+    exit ${UNKNOWN}
+esac
+
+if [[ "${LAST_STATUS}" -ne 0 ]]; then
+    echo "CHECK UNKNOWN - Logstash version ${LOGSTASH_VERSION} was chose/detected but the format do not comply with \
+         the expected one."
+fi
 
 # Avoid division by 0
 if [[ ${QUEUE_MAX_SIZE} -eq 0 ]];
