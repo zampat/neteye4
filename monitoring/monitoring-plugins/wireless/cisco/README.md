@@ -40,4 +40,4 @@ Start the telegraf service:
 service telegraf start
 ```
 
-Now you can import the included sample Dashboards into Grafana to disply the collected data
+Now you can import the included sample Dashboards into Grafana to display the collected data

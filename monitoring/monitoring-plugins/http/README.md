@@ -6,7 +6,7 @@ To monitor web service with kerberos authentication, a dedicated curl check allo
 - a provided keytab file providing the krb principal
 - the feature the initialize the ticket grant
 - the call of the web service
-- a comparision of provided http string
+- a comparison of provided http string
 - destroy of kerberos ticket
 
 ### Setup and configuration
@@ -58,12 +58,12 @@ KVNO Principal
    1 user_neteye_kerberos@mydomain.lan
 ``` 
 
-Test of kerberos ticket generation via kinit:
+Test of kerberos ticket generation via `kinit`:
 ```
 # kinit -t /root/kerberos/keytab_neteye user_neteye_kerberos@mydomain.lan -V
 ```
 
-Provide credentials related to machine name in [netrc file format](https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html). Place the file '.netrc' in the home path i.e /var/log/nagios/ with the following syntax:
+Provide credentials related to machine name in [netrc file format](https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html). Place the file `.netrc` in the home path i.e /var/log/nagios/ with the following syntax:
 ```
 machine <fqdn> login <the user> password <the password> 
 ```

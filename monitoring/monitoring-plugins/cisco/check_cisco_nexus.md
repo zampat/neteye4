@@ -17,11 +17,11 @@ yum --enablerepo=neteye install perl-Switch.noarch
 Manufacturer: Cisco
 Branch: Nexus Series
 Monitoring: Memory usage
-Plugin: check_cisco_nexus_mem.pl
+Plugin: `check_cisco_nexus_mem.pl`
 
 ## Cisco Nexus Hardware
 
 Manufacturer: Cisco
 Branch: Nexus Series
 Monitoring: Hardware health
-Plugin: check_cisco_nexus_hardware.pl
+Plugin: `check_cisco_nexus_hardware.pl`

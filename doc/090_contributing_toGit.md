@@ -1,6 +1,6 @@
 # Contributing to this repository
 
-__General Info:__ Updates to files provided this or external repositories should alwasy be promoted as pull requests. According the community culture this facilitates the integration and helps to keep track of the incremental improvements.
+__General Info:__ Updates to files provided this or external repositories should always be promoted as pull requests. According the community culture this facilitates the integration and helps to keep track of the incremental improvements.
 
 __Overview:__
 1. Requirements

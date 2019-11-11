@@ -4,23 +4,24 @@ In the cluster, next to the icinga2-master service managed by the cluster softwa
 The configuration of the master zone is therefore extended by another zone, containing the Icinga2 satellites. You can enable one on each cluster node. Services may co-exists with icinga2-master service, using a different port.
 
 Overview:
-icinga2-master: managed by cluster service, relocates witin cluster, uses port 5665 for communication
-icinga2: managed by local systemctl, provies monitoring on local node, uses port 5664 for communication
+icinga2-master: managed by cluster service, relocates within cluster, uses port 5665 for communication
+icinga2: managed by local systemctl, provides monitoring on local node, uses port 5664 for communication
 
 ## Zoning architecture
 
+```
 zone: master
 endpoints: icinga2-master
 
 zone: cluster-satellite
 endpoints: neteye4vm1.mydomain.local, neteye4vm2.mydomain.local, ... 
 parent zone: master
-
+```
 
 # Generate certificates for each icinga2 satellite
 Note: Generate and sign certificates where icinga2-master service is running!
 [Concepts about creating the certificates on the master](https://icinga.com/docs/icinga2/snapshot/doc/06-distributed-monitoring/#create-ca-on-the-master)
-Note2: In NetEye the service name for icinga2 master is: "icinga2-master"
+Note 2: In NetEye the service name for icinga2 master is: "icinga2-master"
 
 ## Certificate creation for satellite node
 
@@ -115,15 +116,15 @@ object Zone "cluster-satellite" {
 ```
 
 __Verify Firewall and Features__
-- Apply filewall rule to enable incoming connection on API port
+- Apply firewall rules to enable incoming connection on API port
 ```
 # firewall-cmd --list-all
 # firewall-cmd --permanent --zone=public --add-port=5665/tcp
 # firewall-cmd --reload
 ```
-- Enable features: api checker mainlog
+- Enable features: `api checker mainlog`
 - Verify API configuration, especially enable to accept configuration.
-  Path: /neteye/local/icinga2/conf/icinga2/features-enabled/api.conf
+  Path: `/neteye/local/icinga2/conf/icinga2/features-enabled/api.conf`
 ```
 object ApiListener "api" {
   bind_host = "0.0.0.0"
@@ -138,7 +139,7 @@ object ApiListener "api" {
 
 __Now validate configuration and start icinga2 service__
 
-Enable service for autostart in systemctl
+Enable service for automatic start in systemctl
 ```
 # icinga2 daemon --validate
 # systemctl start icinga2.service

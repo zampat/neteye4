@@ -6,7 +6,7 @@ This configuration allows the setup of a NetEye as both, data consumer and forwa
 
 ### 1. Enable local nats server to forward data stream to local telegraf consumer
 
-Edit stan.conf:
+Edit `stan.conf`:
 ```
   routes = [
     nats-route://route_user:password!@neteye-remote.mydomain:4244

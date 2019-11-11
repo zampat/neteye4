@@ -2,16 +2,22 @@
 
 ## What is under backup:
 - All active Databases
-- All configurations, log files and datafiles of standalone neteye services
-- All configurations, log files and datafiles of cluster neteye services
-- Allow to include/exclue additional paths 
+- All configurations, log files and data files of standalone neteye services
+- All configurations, log files and data files of cluster neteye services
+- Allow to include/exclude additional paths 
 
 ## Requirement for backup on remote cifs mount
-yum install cifs-utils
 
-## Register remote mountpoint
+```
+yum install cifs-utils
+```
+
+## Register remote mount point
+
+```
 vi /etc/fstab
 //mydomain.lan/Backups/NetEye4   /cifs/NetEye     cifs    defaults,auto,username=neteye,password=secret,dom=mydomain.lan,file_mode=0666,dir_mode=0777   0       0
+```
 
 ## Install this backup script:
 ```

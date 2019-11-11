@@ -1,9 +1,9 @@
 
 # NetEye ITOA Software and Configurations overview
 
-IT operations analytics (ITOA) provides a solution to collect and archive performance data from various sources. The frequency of collection can be high and the contents indexed within a timeseries database.
+IT operations analytics (ITOA) provides a solution to collect and archive performance data from various sources. The frequency of collection can be high and the contents indexed within a time series database.
 
-The architecture consits of infrastructure of:
+The architecture consists of infrastructure of:
 1. Performance data collecting agents
 2. Dashboards for Grafana
 3. NetEye: collector of streaming data and forwarder to database

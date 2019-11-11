@@ -1,14 +1,15 @@
 # Neteye Configurations and Template Library Setup
 
-Open source library of monitoring templates for Icinga2. Those templates work in addtion to the Icinga2 Template Library (ITL) and can be [installed from repository](https://github.com/zampat/icinga2-monitoring-templates)
+Open source library of monitoring templates for Icinga2. Those templates work in addition to the Icinga2 Template Library (ITL) and can be [installed from repository](https://github.com/zampat/icinga2-monitoring-templates)
 
-With the provided steps contens of the present repository and the monitoring templates libary are installed.
+With the provided steps, the content of the present repository and the monitoring templates library are installed.
 
 ## Installation and setup
 
 - Clone the present repository to a local drive on neteye
-- Start the deployment of provided scripts and fetch ressources from third-party repositories by running the run_setup.sh.
+- Start the deployment of provided scripts and fetch resources from third-party repositories by running the run_setup.sh.
   For Details on [actions performed by run_setup.sh see documentation](../scripts/)
+
 ```
 mkdir /tmp/ns/
 cd /tmp/ns
@@ -18,6 +19,7 @@ cd neteye4
 
 systemctl restart httpd.service
 ```
+
 - Import all neteye monitoring templates in Icinga2 Director DB installed within the neteyeshare   
 ```
 cd /neteye/shared/httpd/neteyeshare/monitoring/monitoring-templates

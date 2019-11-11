@@ -1,0 +1,6 @@
+# Vi gitignore
+*.swp
+*.swo
+.*.un~
+*~
+# 

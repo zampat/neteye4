@@ -25,19 +25,28 @@ neteye01]:/elastic-data# curl http://localhost:9200/_cluster/health?pretty=true
 
 ## Backup and Restore
 
-https://www.elastic.co/blog/introducing-snapshot-restore
+[Reference blog post about snapshot and restore](https://www.elastic.co/blog/introducing-snapshot-restore).
 
-/data/backup/elastic_snapshot
+
+```/data/backup/elastic_snapshot```
 
 Define Backup path in elastic Configuration:
+
+```
 [root@neteye_ZAPA elastic_backup]# cat /etc/elasticsearch/etc/elasticsearch.yml | grep repo
 path.repo: /data/backup/elastic_backup
+```
 
 Register Backup:
+```
 curl -XPUT 'http://localhost:9200/_snapshot/elastic_backup' -d '{  "type": "fs",  "settings": {    "location": "/data/backup/elastic_snapshot",    "compress": true  }}'
-
+```
 Run Backup
+```
 curl -XPUT "localhost:9200/_snapshot/elastic_backup/snapshot_1?wait_for_completion=true"
+```
 
 Remove a snapshot:
+```
 curl -XDELETE "localhost:9200/_snapshot/elastic_backup/snapshot_1?pretty"
+```

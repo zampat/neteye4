@@ -1,23 +1,23 @@
 
-# check_nwc_health for NetEye 4
+# Check NWC health for NetEye 4
 
 ## Importing Service Templates
 
-Execute: service_template-nwc_health.sh 
-Templates created: service_template-nwc_health.png
+Execute: `service_template-nwc_health.sh`:
+It creates the following templates: ![Template Created](service_template-nwc_health.png)
 
 
 ## Setup and configuration 
 
-neteye4_path: /neteye/shared/monitoring/plugins
+`neteye4_path: /neteye/shared/monitoring/plugins`
 
 For Neteye 4 the plugins is installed within its path by running the install script of the neteye share project. 
 
 Cache Paths to create:
 - NetEye 4:
-  make cache files cluster compatible: /neteye/shared/monitoring/cache/check_nwc_health
+  make cache files cluster compatible: `/neteye/shared/monitoring/cache/check_nwc_health`
 - NetEye 3:
-  make cache files cluster compatible: /var/cache/nagios
+  make cache files cluster compatible: `/var/cache/nagios`
 
 
 ## Compiling of script:

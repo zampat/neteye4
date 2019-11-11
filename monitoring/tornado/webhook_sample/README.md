@@ -1,4 +1,4 @@
-# Tornado Testcase Overview
+# Tornado Test case Overview
 
 - Enable the Tornado webhook collector to collect incoming events via Rest API
   - A JSON-formatted curl call allows us to send payload into tornado for matching via defined rules and possible action execution

@@ -1,6 +1,6 @@
 # Monitoring Zones and Endpoints configuration: Master node
 
-NetEye comes with a default Endpoint name, that does not correstpond to your FQDN. This is a problem when deploying Agents not able to resolve that name.
+NetEye comes with a default Endpoint name, that does not correspond to your FQDN. This is a problem when deploying Agents not able to resolve that name.
 Therefore we need to:
 - change the name of the Endpoint
 - Generate the certificates
@@ -23,7 +23,7 @@ const NodeName = "neteye4_trainer_master"
 const ZoneName = "master"
 ```
 
-__Breaking note:__ The local endpoint "icinga2-master.neteyelocal" is used by director api. Removing this will break connection and a manual re-configuration is required. To avoid this: ADD FIRST the new Endpoint, synchronize Director API and only THEN REMOVE the local endpont.
+__Breaking note:__ The local endpoint "icinga2-master.neteyelocal" is used by director api. Removing this will break connection and a manual re-configuration is required. To avoid this: ADD FIRST the new Endpoint, synchronize Director API and only THEN REMOVE the local endpoint.
 
 
 
@@ -44,8 +44,8 @@ __2. Generate certificates for each icinga2 satellite__
 
 Note: Generate and sign certificates where icinga2-master service is running!
 Certificate creation for new endpoint:
-- Create certificate for new hostname and .csr (signing request)
-- Sign certificate request with icings2-master service
+- Create certificate for new hostname and `.csr` (signing request)
+- Sign certificate request with icinga2-master service
 ```
 # cd /neteye/shared/icinga2/data/lib/icinga2/certs/
 # export icinga_node_name="neteye4vm1.yourdomain.local"
