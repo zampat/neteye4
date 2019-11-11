@@ -20,7 +20,7 @@ The present community repository for NetEye 4 provides default configurations, m
   Initialize an Apache Alias with authentication for neteyeshare access via https
 
 - `020_get_icinga2_agents.sh`
-  Fetch Icinga2 Agents from packages.icinga.org and store in /neteye/shared/httpd/neteyeshare/monitoring/agents/
+  Fetch Icinga2 Agents from https://packages.icinga.org and store in /neteye/shared/httpd/neteyeshare/monitoring/agents/
 
 - `030_ressources_init.sh`
   Define sample Resource for LDAP bind.

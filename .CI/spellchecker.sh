@@ -3,6 +3,15 @@ SCRIPT_DIR=$(dirname "${0}")
 SCRIPT_NAME=$(basename "${0}")
 BASEDIR="./"
 TOTAL_ERRORS=0
+
+# Check if hunspell is installed
+hunspell --help  >  /dev/null 2>&1
+if [[ "$?" -eq 127 ]];
+then 
+	echo "You need to install hunspell and hunspell-en to run this script"
+	exit 127
+fi
+
 export DICPATH="${SCRIPT_DIR}/dict"
 for FILE_NAME in $(find "${BASEDIR}" -name "*.md");
 do
@@ -14,14 +23,14 @@ do
         ERRORS=$(echo "${OUTPUT}" | grep -v "^\s*$" | wc -l);
         TOTAL_ERRORS=$((TOTAL_ERRORS + ERRORS))
         if [[ "$ERRORS" -ne 0 ]]; then
-            echo "${FILE_NAME} errors: '$(echo "${OUTPUT}" | tr "\n" ", " | rev | cut -c3- | rev)'";
+            echo "${FILE_NAME} errors: $(echo "${OUTPUT}" | tr "\n" " ")";
         fi;
         rm "${FILE_NAME}.html"
     fi;
 done
 echo "Total Errors: ${TOTAL_ERRORS}"
 
-if [[ "${TOTAL_ERRORS}" -eq 0 ]]; then
+if [[ "${TOTAL_ERRORS}" -ne 0 ]]; then
     echo "If you are sure one or more words are not spelling errors,"
     echo "feel free to add them to the dictionary under ${DICPATH}/neteye_dict.dic."
     echo "N.B. Add the words to the list in alphabetical order and update the first line of the file" 

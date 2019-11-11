@@ -43,11 +43,11 @@ The number of Criticals, distinguishing between INCIDENT (not handled), Acknowle
 Resized image with higher zoom level:
 
 
-These metrics are exported as performance data and can be therefore be used to create intuitive visualizations in NetEye’s Analytics module:
+These metrics are exported as performance data and can be therefore be used to create intuitive visualizations in NetEye's Analytics module:
 
 
 
-This leads to the creation of Business Services via NetEye ‘s BP modules and Status Dashboards like this:
+This leads to the creation of Business Services via NetEye's BP modules and Status Dashboards like this:
 
 
 
