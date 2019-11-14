@@ -12,9 +12,9 @@ Some analytics dashboards require the [setup on NetEye of the ITOA streaming dat
 To be called from monitoring service (custom variable within service template)
 __Note: since NetEye v 4.7 the URL must specify the alias "d" and you need to prefix "../d/"__
 
-- itoa_cust_hostalive.json         (itoa custom dashboard variable: cus0000005/host-hostalive
-- itoa_cust_diskspace_by_host.json (itoa custom dashboard variable: cus0000010/service-diskspace-by-host
-- itoa_cust_interfaces.json        (itoa custom dashboard variable: cus0000011/interfaces-traffic
+- itoa_cust_hostalive.json         (itoa custom dashboard variable: ../d/cus0000005/host-hostalive
+- itoa_cust_diskspace_by_host.json (itoa custom dashboard variable: ../d/cus0000010/service-diskspace-by-host
+- itoa_cust_interfaces.json        (itoa custom dashboard variable: ../d/cus0000011/interfaces-traffic
 
 
 ### Standalone dashboards
