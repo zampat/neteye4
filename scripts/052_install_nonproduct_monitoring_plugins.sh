@@ -42,6 +42,14 @@ do
    # Check if Plugin already exists. If yes: backup first
    if [ -f ${MONITORING_PLUGINS_CONTRIB_DIR}/${!PLUGIN_FILE} ]
    then
+	#Verify if existing version is already up-to-date
+	diff ${MONITORING_PLUGINS_CONTRIB_DIR}/${!PLUGIN_FILE} ${!PLUGIN_SRC} > /dev/null
+	RES=$?
+	if [ $RES -eq 0 ]
+	then
+	   continue
+	fi
+
         #echo "[+] Creating Backup of ${!PLUGIN_FILE}"
         cp --force ${MONITORING_PLUGINS_CONTRIB_DIR}/${!PLUGIN_FILE} ${MONITORING_PLUGINS_CONTRIB_DIR}/${!PLUGIN_FILE}.${DATE}_bak
    fi

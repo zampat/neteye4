@@ -35,8 +35,16 @@ for PLUGIN in ${ELEMENTS[@]}
 do
    PLUGIN_SRC=$PLUGIN\_SRC
    PLUGIN_FILE=$PLUGIN\_FILE
-   echo "[+] Copying Monitoring Plugin ${!PLUGIN_FILE} from git to Plugins contrib dir: ${MONITORING_PLUGINS_CONTRIB_DIR}"
 
+   #Verify if existing version is already up-to-date
+   diff ${MONITORING_PLUGINS_CONTRIB_DIR}/${!PLUGIN_FILE} ${!PLUGIN_SRC} > /dev/null
+   RES=$?
+   if [ $RES -eq 0 ]
+   then
+      continue
+   fi
+
+   echo "[+] Copying Monitoring Plugin ${!PLUGIN_FILE} from git to Plugins contrib dir: ${MONITORING_PLUGINS_CONTRIB_DIR}"
    # Check if Plugin already exists. If yes: backup first
    if [ -f ${MONITORING_PLUGINS_CONTRIB_DIR}/${!PLUGIN_FILE} ]
    then
