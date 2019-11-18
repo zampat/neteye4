@@ -22,6 +22,7 @@ MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/shared/monitoring/configs"
 
 # Init submodules
 ./scripts/005_git_submodules_init.sh
+./scripts/006_icinga_setup_configurations.sh
 
 # Init share folder structure and WEB link
 #

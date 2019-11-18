@@ -17,6 +17,7 @@ __Note: since NetEye v 4.7 the URL must specify the alias "d" and you need to pr
 - `itoa_cust_interfaces.json`        (itoa custom dashboard variable: `cus0000011/interfaces-traffic`
 
 
+
 ### Standalone dashboards
 - generic_services_by_host.json Choose single command, single service and multiple Host. For each host a new graph is shown.
 - [End User Monitoring - Alyvix](alyvix/)
