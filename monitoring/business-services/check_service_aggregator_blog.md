@@ -18,7 +18,7 @@ Here’s a simplified schema of the monitoring architecture of Alyvix robots col
 From the introduction above we can distinguish 2 main topics for this project:
 
 Can I reliably identify a major IT incident for a provided service – thus excluding topical problems on the network, or even the incident of an Alyvix robot ?
-(VM failure, accidental testcase failure)
+(VM failure, accidental test case failure)
 Provide an IT support team with views of the building, floor, and department levels
 Item #2 can be solved by creating the appropriate Analytics dashboards that I will show later.  For item #1 a new logic would be needed, because the traditional Business Process (BP) logic with its AND, OR, and N-OR aggregators does not provide the necessary logic.
 
@@ -43,11 +43,11 @@ The number of Criticals, distinguishing between INCIDENT (not handled), Acknowle
 Resized image with higher zoom level:
 
 
-These metrics are exported as performance data and can be therefore be used to create intuitive visualizations in NetEye’s Analytics module:
+These metrics are exported as performance data and can be therefore be used to create intuitive visualizations in NetEye's Analytics module:
 
 
 
-This leads to the creation of Business Services via NetEye ‘s BP modules and Status Dashboards like this:
+This leads to the creation of Business Services via NetEye's BP modules and Status Dashboards like this:
 
 
 
@@ -59,15 +59,19 @@ NetEye 3.x: /usr/lib64/nagios/plugins/local (create it if it does not exist)
 NetEye 4.x: /neteye/shared/monitoring/plugins
 Call syntax of Plugin: check_service_aggregator.sh
 
+```
 check_service_aggregator.sh -s SERVICE_NAME [-w MAX_NUM_OF_INCIDENTS] [-c MAX_NUM_OF_INCIDENTS] [-W MIN_NUM_OF_OK] [-C MIN_NUM_OF_OK]
+```
 Advice for using livestatus on NetEye 4:  The path is different than NetEye 3, but you can already find the appropriate line to uncomment for NetEye 4: Go to line 86 and comment out that line used by NetEye 3.
 
 Usage example:
 
+```
 [root@neteye local]# ./check_service_aggregator.sh -s PING -w 1 -c 2 -W 1 -C 2
  WARNING: Unhandled incidents count 1 reaches/exceeds limit of 1 for service "PING". Num.of aggregated services: 4.
- OK: 3. Criticals: 1, UNHANDLED: 1, ACKNOWLEDGED: 0, IN DOWNTIME: 0, status SOFT: 0 | ok_services=3;1;2 critical_incidents=1;1;2 critical_acknowleged=0;; critical_downtime=0;;
+ OK: 3. Criticals: 1, UNHANDLED: 1, ACKNOWLEDGED: 0, IN DOWNTIME: 0, status SOFT: 0 | ok_services=3;1;2 critical_incidents=1;1;2 critical_acknowledged=0;; critical_downtime=0;;
  Service PING on HOST HOST A has status: OK
  Service PING on HOST HOST B has status: OK
  Service PING on HOST HOST C has status: CRITICAL (Incident!)
  Service PING on HOST neteye has status: OK
+```

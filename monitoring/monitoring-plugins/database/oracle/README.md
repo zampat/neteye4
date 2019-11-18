@@ -5,9 +5,10 @@
 ## Configuration and setup
 
 - Install compiled plugin check_oracle_health in PluginContribDir
-- Install [neteye monitoring template library](../../../../doc/030_neteye_template_library.md) and make use of service tempalte "generic_oracle_health" 
-- Install pre-requisites for running the plugin:
+- Install [neteye monitoring template library](../../../../doc/030_neteye_template_library.md) and make use of service template "generic_oracle_health" 
+- Install prerequisites for running the plugin:
 **Legal note: The oracle client is a proprietary client of Oracle Inc. You need to comply and accept the license agreement and you can downloaded it from the download area as registered Oracle user.**
+
 ```
 oracle-instantclient18.5-basic-18.5.0.0.0-3.x86_64
 oracle-instantclient18.5-sqlplus-18.5.0.0.0-3.x86_64

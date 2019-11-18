@@ -2,7 +2,7 @@
 
 ## Alyvix Performance Overview
 
-Provides a selection of all Alyvix services and related hosts and allows to compare same testcases with performance data collected from various alyvix installations
+Provides a selection of all Alyvix services and related hosts and allows to compare same test cases with performance data collected from various alyvix installations
 - Select Service
 - For each Host a column is added
 
@@ -13,7 +13,7 @@ Preview:
 
 # Alyvix measurement Performance comparison
 
-Import file for NetEye 3: [AAlyvix_Performance_comparison_neteye3.json](Alyvix_Performance_comparison_neteye3.json)
+Import file for NetEye 3: [Alyvix_Performance_comparison_neteye3.json](Alyvix_Performance_comparison_neteye3.json)
 
 ![Alyvix_Performance_comparison.png](Alyvix_Performance_comparison.png)!
 
@@ -21,7 +21,7 @@ Import file for NetEye 3: [AAlyvix_Performance_comparison_neteye3.json](Alyvix_P
 ## Alyvix Troubleshooting view
 
 Provides a detailed view of performance data from Alyvix collected via ITOA streaming architecture. [For setup see ITOA](../../../itoa/).
-For each selected testcase a details view (with dots indicating the timestamp) is shown. For each available collector Alyvix, an additional column is shown.
+For each selected test case a details view (with dots indicating the timestamp) is shown. For each available collector Alyvix, an additional column is shown.
 
 Setup: 
 - Import alyvix_troubleshooting_view.json into NetEye ITOA/Grafana.

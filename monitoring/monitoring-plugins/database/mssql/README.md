@@ -1,10 +1,10 @@
 # Monitoring Microsoft SQL Server
 
-Monitoring of SQL Server availability, ressource usage and provided databases is best done by [community-based check_mssql_health.](https://labs.consol.de/nagios/check_mssql_health/)
+Monitoring of SQL Server availability, resource usage and provided databases is best done by [community-based check_mssql_health.](https://labs.consol.de/nagios/check_mssql_health/)
 
 ## Preparation of freetds on NetEye
 
-Enable the default SQL Server verion in freetds. [See related freetds documentation](http://www.freetds.org/userguide/freetdsconf.htm)
+Enable the default SQL Server version in freetds. [See related freetds documentation](http://www.freetds.org/userguide/freetdsconf.htm)
 Define in /etc/freetds.conf: *Note: This is valid for both NetEye 3 and 4.*
 ```
 [global]
@@ -26,7 +26,7 @@ Copy the file "check_mssql_health.neteye3" to /usr/lib64/nagios/plugins/
 
 [General Plugin documentation is found here](https://labs.consol.de/nagios/check_mssql_health/)
 
-**NetEye 3:** A dedicated Monarch Profile is installed automatically and imporable in section "profiles"
+**NetEye 3:** A dedicated Monarch Profile is installed automatically and importable in section "profiles"
 
 **NetEye 4:** Default service templates are installed when [installing the monitoring template library for NetEye 4](../../../../doc/monitoring_templates.md)
 
@@ -34,7 +34,7 @@ Copy the file "check_mssql_health.neteye3" to /usr/lib64/nagios/plugins/
 
 SQL query requiring encryption:
 
-Note the "$" in the table name of "[Complex table$nB Scheduler Job Log]"
+Note the "$" in the table name of `[Complex table$nB Scheduler Job Log]`
 
 ```
 # echo "SELECT right(DATEDIFF(minute, GETutcDATE(), max([Start Date_Time])),1 )as 'DIFF' from [NB8RT_PROD].[dbo].[Complex table\$nB Scheduler Job Log] (nolock) where [Start Date_Time] > DATEADD(day, -1, GETutcDATE()) and [Scheduler ID] = '| ./check_mssql_health.pl --mode encode
@@ -47,7 +47,7 @@ OK - running schedulers:: 0 | 'running'=0;100;150;;
 
 ### Building a new version of the Plugin-script
 
-1. Get lastest version from [project portal](https://labs.consol.de/nagios/check_mssql_health/#download)
+1. Get latest version from [project portal](https://labs.consol.de/nagios/check_mssql_health/#download)
 2. Untar into a local folder
 3. Compile according your NetEye environment
    - Define cluster compatible cache file paths

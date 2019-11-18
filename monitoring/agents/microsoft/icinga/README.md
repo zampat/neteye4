@@ -4,8 +4,9 @@ Deployment of Icinga2 Agent using the Director Self-Service API.
 
 ## Preparing the PowerShell install script
 
-Copy the Icinga2Agent.psm1.default file to Icinga2Agent.ps1
+Copy the `Icinga2Agent.psm1.default` file to `Icinga2Agent.ps1`.
 Add at the bottom of the section containing the token used by self-service API (Generate in host template tab "Agent":
+
 ```
 exit Icinga2AgentModule `
     -DirectorUrl       'https://neteye.mydomain/neteye/director/' `
@@ -13,8 +14,10 @@ exit Icinga2AgentModule `
     -IgnoreSSLErrors `
     -RunInstaller
 ```
-Download the Icinga2Agent.ps1 and execute the powershell script in administrative session:
+
+Download the `Icinga2Agent.ps1` and execute the powershell script in administrative session:
 Note: Adjust execution policy if needed
+
 ```
 > Set-ExecutionPolicy Unrestricted
 > Icinga2Agent.ps1

@@ -1,12 +1,12 @@
 
 # Installation of NetEye data streaming architecture for ITOA
 
-Here you find instructions for configuring the streaming server listining for incoming data and the forwarder into the database.
+Here you find instructions for configuring the streaming server listening for incoming data and the forwarder into the database.
 
 
 ## Install streaming server
 
-The straming server "nats-straming-server" is installed and configured to listen on all interfaces for incoming data.
+The streaming server "nats-streaming-server" is installed and configured to listen on all interfaces for incoming data.
 
 1. Install the package (valid for NetEye 3 and NetEye 4)
 ```
@@ -17,11 +17,11 @@ yum --enablerepo=neteye install nats-streaming-server
 
 Enable Nats input listener on all interfaces
 
-Solution 1: Replace the provided nats configuration file **stan.conf** in:
-- NetEye 3: /etc/nats/stan.conf
-- NetEye 4: /neteye/shared/nats/conf/stan.conf
+Solution 1: Replace the provided nats configuration file `stan.conf` in:
+- NetEye 3: `/etc/nats/stan.conf`
+- NetEye 4: `/neteye/shared/nats/conf/stan.conf`
 
-Solution 2: Patch the nats configuration file **stan.conf** with provided changes
+Solution 2: Patch the nats configuration file `stan.conf` with provided changes
 a) enable listening of nats on *ALL* interfaces on port 4222
 ```
 NetEye 3: 
@@ -74,4 +74,4 @@ Enable and start telegraf collector service (example valid for NetEye 4)
 
 # Advanced topics
 
-[Setup of neteye itos as both local consumer and forwarder of performance data](neteye_nats_proxy.md)
+[Setup of neteye itoa as both local consumer and forwarder of performance data](neteye_nats_proxy.md)

@@ -13,4 +13,4 @@ See: jvm.options.diff
 Logging Options
 
 See: log4j2.properties.diff
-[Loggin configuration](https://www.elastic.co/guide/en/elasticsearch/reference/master/logging.html)
+[Logging configuration](https://www.elastic.co/guide/en/elasticsearch/reference/master/logging.html)

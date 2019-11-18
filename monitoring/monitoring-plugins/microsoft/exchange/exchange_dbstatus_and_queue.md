@@ -1,4 +1,4 @@
-# Check vor Exchange monitoring
+# Check for Exchange monitoring
 
 - Exchange Databases
 - Queue

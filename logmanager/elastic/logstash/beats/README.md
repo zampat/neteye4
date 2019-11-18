@@ -11,9 +11,9 @@ Online resource for downloading latest version:
 https://www.elastic.co/de/downloads/beats/filebeat
 
 ## 2. Install filebeat
-•	Unzip contents into local program files folder i.e. c:\program files\filebeat\
+•	Unzip contents into local program files folder i.e. `c:\program files\filebeat\`
 •	Register service. (Administrative powershell required)
-Execute .\ install-service-filebeat.ps1
+Execute `.\install-service-filebeat.ps1`
 
 ## 3. Configure filebeat
 

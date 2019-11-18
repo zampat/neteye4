@@ -54,4 +54,4 @@ cp startup/systemd/unifi-poller.service /etc/systemd/system/
 sudo systemctl start unifi-poller
 ```
 
-Thanks to the Author of the Project unifi-poller: [davidnewhall](https://github.com/davidnewhall)
+Thanks to the Author of the Project unifi-poller: [David Newhall II](https://github.com/davidnewhall)

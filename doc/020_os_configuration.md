@@ -47,7 +47,7 @@ search <domain>
 nameserver <DNS Server 1 IP>
 nameserver <DNS Server 2 IP>
 ```
-Update system’s and php.ini time zone
+Update system’s and `php.ini` time zone
 ```
 [root@neteye ~]# timedatectl set-timezone Europe/Rome
 [root@neteye ~]# timezone=`timedatectl status | grep "Time zone" | cut -d : -f 2 | tr -d '[:space:]' | cut -d "(" -f 1`; echo "date.timezone=\"$timezone\"" > /etc/opt/rh/rh-php71/php.d/30-timezone.ini

@@ -1,6 +1,6 @@
-# ITOA dashbords in Grafana
+# ITOA dashboards in Grafana
 
-## Telegraf dashobards
+## Telegraf dashboards
 
 - Linux / Unix:
 [Community dashboard for basic os performance data from telegraf](https://grafana.com/dashboards/5955)

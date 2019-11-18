@@ -1,6 +1,6 @@
 # NetEye system setup – Assisted Setup
 
-Ensure MariaDB, InfluxDN and Grafana services are up and running
+Ensure MariaDB, InfluxDB and Grafana services are up and running
 ```
 [root@neteye ~]# systemctl start mariadb.service influxdb.service grafana-server.service
 ```
@@ -36,7 +36,7 @@ Assisted setup cares about:
 [root@neteye ~]# neteye status
 ```
 
-__HINT: You can anways use systemctl to interact with every single NetEye service in a Single Node Setup. This does not apply on cluster environment__
+__HINT: You can always use systemctl to interact with every single NetEye service in a Single Node Setup. This does not apply on cluster environment__
 
 2. Now, login on NetEye web interface
 

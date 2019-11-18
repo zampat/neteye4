@@ -1,13 +1,14 @@
-Usage of check_logfiles:
+Usage of `check_logfiles`:
 
 
-Usage :
-
+- Usage :
+```
 'C:\Program Files\ICINGA2\/sbin/check_logfiles.exe' '-f' 'C:\Program Files\ICINGA2\sbin\check_logfiles.cfg'
+```
 
+- Command definition:
 
-Command definition:
-
+```
 object CheckCommand "logfile_windows" {
     import "plugin-check-command"
     command = [ PluginDir + "/check_logfiles.exe" ]
@@ -19,5 +20,5 @@ object CheckCommand "logfile_windows" {
         }
     }
 }
-
+```
 

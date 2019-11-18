@@ -6,4 +6,4 @@ All these files are property of Cisco Systems, Inc. and are Copyright (c) protec
 All files can be found on the public FTP site:
 [ftp://ftp.cisco.com/pub/mibs](ftp://ftp.cisco.com/pub/mibs)
 
-For your confort, we syncronized the relevant MIB files in this folder
+For your comfort, we synchronized the relevant MIB files in this folder

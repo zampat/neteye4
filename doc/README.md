@@ -2,11 +2,11 @@
 
 ## NetEye 4 setup how-to
 
-__Preparative steps__
+__Preparatory steps__
 - [setup the OS of a fresh standalone NetEye 4](/doc/020_os_configuration.md)
 
 __NetEye 4 Master or Standalone node__
-- [Initialize the NetEye 4 ressources (Standalone)](/doc/030_neteye_standalone_init.md)
+- [Initialize the NetEye 4 resources (Standalone)](/doc/030_neteye_standalone_init.md)
 - [Configure monitoring zoning architecture](/doc/031_monitoring_zones_master.md)
 
 __NetEye 4 Satellites or Cluster node__
