@@ -9,12 +9,13 @@ Some analytics dashboards require the [setup on NetEye of the ITOA streaming dat
 ## Provided Dashboards 
 
 ### ITOA custom dashboards
-To be called from monitoring service (custom variable within service template)
+To be integrated as ITOA custom bashboard into monitoring view, the relative url to the dashboard must be configured
+__Details for the configuration in NetEye 4 user guide, chapter "ITOA" > "Custom Dashboards for Hosts and Services".__
 __Note: since NetEye v 4.7 the URL must specify the alias "d" and you need to prefix "../d/"__
 
-- `itoa_cust_hostalive.json`         [Preview](./itoa_cust_hostalive.png) (itoa custom dashboard path: `../d/cus0000005/host-hostalive`
-- `itoa_cust_diskspace_by_host.json` [Preview](./itoa_cust_diskspace_by_host.png) (itoa custom dashboard variable: `../d/cus0000010/service-diskspace-by-host`
-- `itoa_cust_interfaces.json`        [Preview](./itoa_cust_interfaces.png) (itoa custom dashboard variable: `../d/cus0000011/interfaces-traffic`
+- `itoa_cust_hostalive.json`         [Preview](./itoa_cust_hostalive.png) (url: `../d/cus0000005/host-hostalive`
+- `itoa_cust_diskspace_by_host.json` [Preview](./itoa_cust_diskspace_by_host.png) (url: `../d/cus0000010/service-diskspace-by-host`
+- `itoa_cust_interfaces.json`        [Preview](./itoa_cust_interfaces.png) (url: `../d/cus0000011/interfaces-traffic`
 
 
 
