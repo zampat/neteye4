@@ -2,6 +2,7 @@
 
 In the cluster, next to the icinga2-master service managed by the cluster software, an additional Icinga2 satellite can be configured as "worker" on the local node.
 The configuration of the master zone is therefore extended by another zone, containing the Icinga2 satellites. You can enable one on each cluster node. Services may co-exists with icinga2-master service, using a different port.
+__If the satellite is operating on a dedicated host, then you can use the standard 5665 port.__
 
 Overview:
 icinga2-master: managed by cluster service, relocates within cluster, uses port 5665 for communication
