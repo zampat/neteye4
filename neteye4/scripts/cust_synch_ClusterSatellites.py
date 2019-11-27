@@ -6,10 +6,13 @@
 #
 
 import subprocess
+import os
 
 # Python3 code to iterate over a list 
 hosts = ["neteye02p", "neteye03p", "neteye04p"] 
-files = ["/neteye/local/icinga2/conf/icinga2/conf.d/service_apply.conf",
+files = ["/etc/hosts",
+	 "/etc/pki/tls/certs/*.crt",
+	 "/etc/pki/tls/private/*.key",
          "/neteye/shared/monitoring"] 
    
 remote_commands = ["icinga2 daemon --validate && systemctl reload icinga2"
@@ -19,12 +22,26 @@ remote_commands = ["icinga2 daemon --validate && systemctl reload icinga2"
 # Using for loop 
 def synch_files(hosts,files):
 
-   for host in hosts: 
+   for dst_host in hosts: 
        for file in files: 
-          print ("Sending " + file + " to " + host) 
+
+	  # Distinguish between file or folder
+	  if os.path.isfile(file):
+             print ("Sending file:" + file + " to " + dst_host) 
+             rsynccmd  = 'rsync -av ' + file + ' ' + dst_host + ':' + file
+
+	  elif os.path.isdir(file):
+	     dst_path = os.path.abspath(os.path.join("..", os.path.dirname(file)));
+
+             print ("Sending directory:" + file + " to dst path: " + dst_path + " on host: " + dst_host) 
+             rsynccmd  = 'rsync -av ' + file + ' ' + dst_host + ':' + dst_path
+
+	  else:
+	     dst_path = os.path.dirname(file)
+             print ("Sending file:" + file + " to  dst path: " + dst_path + " on host: " + dst_host) 
+             rsynccmd  = 'rsync -av ' + file + ' ' + dst_host + ':' + dst_path
 
           # assemble rsync commandline and run it
-          rsynccmd  = 'rsync -av ' + file + ' ' + host + ':' + file
           print ("Run command: " + rsynccmd)
           rsyncproc = subprocess.Popen(rsynccmd,
                                        shell=True,
@@ -46,16 +63,15 @@ def synch_files(hosts,files):
           exitcode = rsyncproc.wait()
 
 
-
 # Restart remote servcies
 def run_remote_commands(hosts,remote_commands):
 
-   for host in hosts:
+   for dst_host in hosts:
       for cmd in remote_commands:
 
 	  # assemble ssh commandline and run it
-          run_cmd  = 'ssh ' + host + ' \'' + cmd + '\''
-          print ("Would run remote command: " + run_cmd + " on host: " + host)
+          run_cmd  = 'ssh ' + dst_host + ' \'' + cmd + '\''
+          print ("Would run remote command: " + run_cmd + " on host: " + dst_host)
 
           ssh_proc = subprocess.Popen(run_cmd,
                                        shell=True,
