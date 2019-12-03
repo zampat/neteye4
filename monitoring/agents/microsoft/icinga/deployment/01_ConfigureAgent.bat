@@ -16,16 +16,22 @@ SET PARENTZONE=cluster-satellite
 SET ICINGA_AGENT_URL=https://neteye4.mydomain/neteyeshare/monitoring/agents/microsoft/icinga/
 SET ICINGA_AGENT_FILE=Icinga2-v2.10.5-x86_64.msi
 
-:: NO configuration beyond this line
-SET ICINGADATADIR=C:\ProgramData\icinga2
-SET ICINGABINDIR=C:\Program Files\ICINGA2\sbin
 
 :: Sample host values
 SET AGENTNAME=%ComputerName%
 
+:: NO configuration beyond this line
+SET ICINGADATADIR=C:\ProgramData\icinga2
+SET ICINGABINDIR=C:\Program Files\ICINGA2\sbin
+
+::Temp files folder
+SET USERHOME=%USERPROFILE%\AppData\Local\Temp
+
 
 :: Optional: passing computer name and/or ticket via argument
-::SET AGENTNAME=%1
+IF NOT [%1]==[] (
+	SET AGENTNAME=%1
+)
 ::SET AGENTTICKET=%2
 
 
@@ -39,7 +45,7 @@ IF [%AGENTNAME%]==[] (
      goto end
 ) ELSE (
      Goto getAgent
- )
+)
 
 :getAgent
 if exist "%CD%\%ICINGA_AGENT_FILE%" (
@@ -72,7 +78,18 @@ if exist "%CD%\%ICINGA_AGENT_FILE%" (
  
 :getTicket
 
-call winhttpjs.bat "https://neteye4.mydomain/neteye/director/host/ticket?name=%AGENTNAME%" -header header.txt -user director_ro -password secret -method GET -reportfile neteyeticket.txt
+::#Powershell to generate authentication token
+::$authentication_pair = "director_ro:secret"
+::$bytes = [System.Text.Encoding]::ASCII.GetBytes($authentication_pair)
+::$base64 = [System.Convert]::ToBase64String($bytes)
+::
+::$basicAuthValue = "Basic $base64"
+::$headers = @{ Authorization = $basicAuthValue; 'Accept' = 'application/json'}
+::echo $headers
+powershell -command "Invoke-WebRequest -Uri https://p-neteye4-lc.rtl2.de/neteye/director/host/ticket?name=%AGENTNAME% -Method 'POST' -Headers @{Authorization = 'Basic ZGlyZWN0b3Jfcm86c2VjcmV0'; 'Accept' = 'application/json'} -OutFile %CD%\ticket.txt"
+
+pause
+
 
 for /f %%i in ('FINDSTR Status neteyeticket.txt') do SET CURL_STATUS=%%i
 for /f %%i in ('FINDSTR Response neteyeticket.txt') do SET CURL_RESPONSE=%%i
