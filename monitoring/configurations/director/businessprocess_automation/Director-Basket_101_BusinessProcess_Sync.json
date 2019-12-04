@@ -91,7 +91,7 @@
             "job_name": "101: BP Module Import",
             "job_class": "Icinga\\Module\\Director\\Job\\ImportJob",
             "disabled": "n",
-            "run_interval": "60",
+            "run_interval": "900",
             "originalId": "1015",
             "timeperiod": "24x7",
             "settings": {
@@ -103,7 +103,7 @@
             "job_name": "101: BP Module Sync",
             "job_class": "Icinga\\Module\\Director\\Job\\SyncJob",
             "disabled": "n",
-            "run_interval": "60",
+            "run_interval": "900",
             "originalId": "1016",
             "timeperiod": "24x7",
             "settings": {
