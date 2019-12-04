@@ -1,0 +1,115 @@
+{
+    "ImportSource": {
+        "101: BP Module Sync": {
+            "description": null,
+            "key_column": "key",
+            "modifiers": [
+                {
+                    "description": null,
+                    "priority": "1",
+                    "property_name": "host",
+                    "provider_class": "Icinga\\Module\\Director\\PropertyModifier\\PropertyModifierCombine",
+                    "settings": {
+                        "pattern": "BusinessServices"
+                    },
+                    "target_property": "host"
+                },
+                {
+                    "description": null,
+                    "priority": "2",
+                    "property_name": "name",
+                    "provider_class": "Icinga\\Module\\Director\\PropertyModifier\\PropertyModifierCombine",
+                    "settings": {
+                        "pattern": "${host}!${name}"
+                    },
+                    "target_property": "key"
+                }
+            ],
+            "originalId": "1011",
+            "provider_class": "Icinga\\Module\\Businessprocess\\ProvidedHook\\Director\\ImportSource",
+            "settings": {
+                "config": "rtl2"
+            },
+            "source_name": "101: BP Module Sync"
+        }
+    },
+    "SyncRule": {
+        "101: BP Module Sync": {
+            "description": null,
+            "filter_expression": null,
+            "object_type": "service",
+            "originalId": "1012",
+            "properties": [
+                {
+                    "destination_field": "object_name",
+                    "filter_expression": null,
+                    "merge_policy": "override",
+                    "priority": "1",
+                    "source": "101: BP Module Sync",
+                    "source_expression": "${name}"
+                },
+                {
+                    "destination_field": "host",
+                    "filter_expression": null,
+                    "merge_policy": "override",
+                    "priority": "2",
+                    "source": "101: BP Module Sync",
+                    "source_expression": "${host}"
+                },
+                {
+                    "destination_field": "import",
+                    "filter_expression": null,
+                    "merge_policy": "override",
+                    "priority": "3",
+                    "source": "101: BP Module Sync",
+                    "source_expression": "generic_business_process"
+                },
+                {
+                    "destination_field": "vars.icingacli_businessprocess_config",
+                    "filter_expression": null,
+                    "merge_policy": "merge",
+                    "priority": "4",
+                    "source": "101: BP Module Sync",
+                    "source_expression": "rtl2"
+                },
+                {
+                    "destination_field": "vars.icingacli_businessprocess_process",
+                    "filter_expression": null,
+                    "merge_policy": "override",
+                    "priority": "5",
+                    "source": "101: BP Module Sync",
+                    "source_expression": "${name}"
+                }
+            ],
+            "purge_existing": "y",
+            "rule_name": "101: BP Module Sync",
+            "update_policy": "ignore"
+        }
+    },
+    "DirectorJob": {
+        "101: BP Module Import": {
+            "job_name": "101: BP Module Import",
+            "job_class": "Icinga\\Module\\Director\\Job\\ImportJob",
+            "disabled": "n",
+            "run_interval": "60",
+            "originalId": "1015",
+            "timeperiod": "24x7",
+            "settings": {
+                "run_import": "y",
+                "source": "101: BP Module Sync"
+            }
+        },
+        "101: BP Module Sync": {
+            "job_name": "101: BP Module Sync",
+            "job_class": "Icinga\\Module\\Director\\Job\\SyncJob",
+            "disabled": "n",
+            "run_interval": "60",
+            "originalId": "1016",
+            "timeperiod": "24x7",
+            "settings": {
+                "apply_changes": true,
+                "rule": "101: BP Module Sync"
+            }
+        }
+    }
+}
