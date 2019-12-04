@@ -1,11 +1,15 @@
 @echo on
-
-
 :: Script to install Icinga2 AGENT. File will be downloaded from NetEye 4 web-share
+::  
+:: Instructions:
+:: 1. Configure the parent endpoint(s) and the parent zone
+:: 2. Define NetEye / Icinga2 Url for downloading Agent 
+:: 3. Define NetEye / Icinga2 Url for retrieving the Agent Ticket
+:: 4. Generate Base64 encoded credentials, for authenticatin to API
+:: 5. Enjoy
 
-:: Parameters: 
+:: Optional Parameters: 
 ::%1: Agentname
-::%2: AgentTicket
 
 :: Configure this section
 :: Set constants for your neteye4 environment
@@ -13,7 +17,10 @@ SET PARENTNAME="neteye4-a.mydomain"
 SET PARENTNAME2="neteye4-b.mydomain"
 SET PARENTZONE=cluster-satellite
 
-SET ICINGA_AGENT_URL=https://neteye4.mydomain/neteyeshare/monitoring/agents/microsoft/icinga/
+SET ICINGA_HOST_URL=https://neteye4-cl.mydomain
+SET ICINGA_AGENT_URL=%ICINGA_HOST_URL%/neteyeshare/monitoring/agents/microsoft/icinga/
+SET ICINGA_TICKETAPI_URL=%ICINGA_HOST_URL%/neteye/director/host/ticket
+
 SET ICINGA_AGENT_FILE=Icinga2-v2.10.5-x86_64.msi
 
 
@@ -36,7 +43,6 @@ IF NOT [%1]==[] (
 
 
 ::Start of code
-
 @FOR /F %%s IN ('powershell -command "(get-item env:'AGENTNAME').Value.ToLower()"') DO @set AGENTNAME=%%s
 
 IF [%AGENTNAME%]==[] (
@@ -48,19 +54,19 @@ IF [%AGENTNAME%]==[] (
 )
 
 :getAgent
-if exist "%CD%\%ICINGA_AGENT_FILE%" (
+if exist "%USERHOME%\%ICINGA_AGENT_FILE%" (
     echo "Icinga2 Agent msi had already been downloaded. Proceeding with install..."
 ) else (
     echo "Icinga2 Agent msi needs to be downloaded. Downloading now..."
-	call winhttpjs.bat "%ICINGA_AGENT_URL%%ICINGA_AGENT_FILE%" -method GET -saveTo %CD%\%ICINGA_AGENT_FILE%
+	powershell -command "Invoke-WebRequest -Uri %ICINGA_AGENT_URL%%ICINGA_AGENT_FILE% -Method 'GET' -OutFile %USERHOME%\%ICINGA_AGENT_FILE%"
 )
 goto installIcingaAgent
 
 :installIcingaAgent
-if exist "%CD%\%ICINGA_AGENT_FILE%" (
+if exist "%USERHOME%\%ICINGA_AGENT_FILE%" (
 	if not exist "%ICINGABINDIR%\icinga2.exe" (
-		echo "Installing Icinga2 Agent now: msiexec /i %CD%\%ICINGA_AGENT_FILE% /quiet"
-		msiexec /i %CD%\%ICINGA_AGENT_FILE% /quiet
+		echo "Installing Icinga2 Agent now: msiexec /i %USERHOME%\%ICINGA_AGENT_FILE% /quiet"
+		msiexec /i %USERHOME%\%ICINGA_AGENT_FILE% /quiet
 		timeout /t 30
 		echo "Installing Icinga2 Agent now: msiexec /i %ICINGABINDIR%\NSCP.msi /quiet /norestart"
 		msiexec /i "%ICINGABINDIR%\NSCP.msi" /quiet /norestart
@@ -84,37 +90,13 @@ if exist "%CD%\%ICINGA_AGENT_FILE%" (
 ::$base64 = [System.Convert]::ToBase64String($bytes)
 ::
 ::$basicAuthValue = "Basic $base64"
+::echo "BasicAuthValue: $basicAuthValue"
 ::$headers = @{ Authorization = $basicAuthValue; 'Accept' = 'application/json'}
-::echo $headers
-powershell -command "Invoke-WebRequest -Uri https://p-neteye4-lc.rtl2.de/neteye/director/host/ticket?name=%AGENTNAME% -Method 'POST' -Headers @{Authorization = 'Basic ZGlyZWN0b3Jfcm86c2VjcmV0'; 'Accept' = 'application/json'} -OutFile %CD%\ticket.txt"
+powershell -command "Invoke-WebRequest -Uri %ICINGA_TICKETAPI_URL%?name=%AGENTNAME% -Method 'POST' -Headers @{Authorization = 'Basic ZGlyZWN0b3Jfcm86cWpaMmJYamZiNHFEVkhZU0VjSFpuWg=='; 'Accept' = 'application/json'} -OutFile %USERHOME%\ticket.txt"
 
-pause
-
-
-for /f %%i in ('FINDSTR Status neteyeticket.txt') do SET CURL_STATUS=%%i
-for /f %%i in ('FINDSTR Response neteyeticket.txt') do SET CURL_RESPONSE=%%i
-
-echo The CURL_STATUS: %CURL_STATUS%
-echo The CURL_RESPONSE: %CURL_RESPONSE%
-
-::Search for CURL status: 200
-set "search=^.*200.*$"
-setlocal enableDelayedExpansion
-echo(!%CURL_STATUS%!|findstr /r /c:"!search!" >nul && (
-  echo "Curl Status: 200. Proceeding ...."
-  rem any commands can go here
-) || (
-  echo "Curl Status is %CURL_STATUS%. Ticket for host '%AGENTNAME%' could not be retrieved. Stop."
-  goto end
-) 
-
-
-for /f "tokens=2 delims=:" %%a in ("%CURL_RESPONSE%") do (
-  set AGENTTICKET=%%a
-)
+set /p AGENTTICKET=< %USERHOME%\ticket.txt
 
 echo "Start to register host %AGENTNAME% with Ticket: %AGENTTICKET%"
-
 
 if exist "%ICINGABINDIR%\icinga2.exe" (
     echo "Icinga2 Agent is installed. Going to configure agent now ...."
