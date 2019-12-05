@@ -13,6 +13,7 @@ hosts = ["neteye02p", "neteye03p", "neteye04p"]
 files = ["/etc/hosts",
 	 "/etc/pki/tls/certs/*.crt",
 	 "/etc/pki/tls/private/*.key",
+	 "/etc/my.cnf.d/neteye.cnf",
          "/neteye/shared/monitoring"] 
    
 remote_commands = ["icinga2 daemon --validate && systemctl reload icinga2"
