@@ -53,45 +53,6 @@ diff -ruN /usr/share/icingaweb2/modules/businessprocess_orig/library/Businesspro
 +    }
 +}
 +
-diff -ruN /usr/share/icingaweb2/modules/businessprocess_orig/library/Businessprocess/Storage/Storage.php /usr/share/icingaweb2/modules/businessprocess/library/Businessprocess/Storage/Storage.php
---- /usr/share/icingaweb2/modules/businessprocess_orig/library/Businessprocess/Storage/Storage.php	2019-11-09 19:34:36.830248285 +0100
-+++ /usr/share/icingaweb2/modules/businessprocess/library/Businessprocess/Storage/Storage.php	2019-11-09 19:35:33.418385954 +0100
-@@ -2,6 +2,7 @@
- 
- namespace Icinga\Module\Businessprocess\Storage;
- 
-+use Icinga\Application\Config;
- use Icinga\Data\ConfigObject;
- use Icinga\Module\Businessprocess\BpConfig;
- use Icinga\Module\Businessprocess\Metadata;
-@@ -9,6 +10,11 @@
- abstract class Storage
- {
-     /**
-+     * @var static
-+     */
-+    protected static $instance;
-+
-+    /**
-      * @var ConfigObject
-      */
-     protected $config;
-@@ -27,6 +33,15 @@
-     {
-     }
- 
-+    public static function getInstance()
-+    {
-+        if (static::$instance === null) {
-+            static::$instance = new static(Config::module('businessprocess')->getSection('global'));
-+        }
-+
-+        return static::$instance;
-+    }
-+
-     /**
-      * All processes readable by the current user
-      *
 diff -ruN /usr/share/icingaweb2/modules/businessprocess_orig/run.php /usr/share/icingaweb2/modules/businessprocess/run.php
 --- /usr/share/icingaweb2/modules/businessprocess_orig/run.php	2019-11-09 19:34:48.827277620 +0100
 +++ /usr/share/icingaweb2/modules/businessprocess/run.php	2019-11-09 19:24:41.355075346 +0100
