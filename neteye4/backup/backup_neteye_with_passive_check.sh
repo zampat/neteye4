@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# To correctly execute the passive check you need to create a new API user with at least these permissions:
+# To correctly execute this script you need to create a new service template (look at Director-Basket_PassiveMonitoring.json) and a new API user with this permissions:
 #
 #[root@neteye4 ~]# cat /neteye/shared/icinga2/conf/icinga2/conf.d/api-users.conf
 #/**
