@@ -1,0 +1,103 @@
+diff -ruN /usr/share/icingaweb2/modules/businessprocess_orig/library/Businessprocess/ProvidedHook/Director/ImportSource.php /usr/share/icingaweb2/modules/businessprocess/library/Businessprocess/ProvidedHook/Director/ImportSource.php
+--- /usr/share/icingaweb2/modules/businessprocess_orig/library/Businessprocess/ProvidedHook/Director/ImportSource.php	1970-01-01 01:00:00.000000000 +0100
++++ /usr/share/icingaweb2/modules/businessprocess/library/Businessprocess/ProvidedHook/Director/ImportSource.php	2019-11-09 19:37:13.517598343 +0100
+@@ -0,0 +1,51 @@
++<?php
++
++namespace Icinga\Module\Businessprocess\ProvidedHook\Director;
++
++use Icinga\Module\Businessprocess\Storage\LegacyStorage;
++use Icinga\Module\Director\Hook\ImportSourceHook;
++use Icinga\Module\Director\Web\Form\QuickForm;
++
++class ImportSource extends ImportSourceHook
++{
++    public function getName()
++    {
++        return 'Business Processes';
++    }
++
++    public static function getDefaultKeyColumnName()
++    {
++        return 'name';
++    }
++
++    public function fetchData()
++    {
++        $storage = LegacyStorage::getInstance();
++        $config = $storage->loadProcess($this->getSetting('config'));
++        $result = [];
++        foreach ($config->getRootNodes() as $node) {
++            $result[] = (object) [
++                'name'  => $node->getName(),
++                'alias' => $node->getAlias(),
++            ];
++        }
++
++        return $result;
++    }
++
++    public function listColumns()
++    {
++        return ['name', 'alias'];
++    }
++
++    public static function addSettingsFormFields(QuickForm $form)
++    {
++        $storage = LegacyStorage::getInstance();
++        $form->addElement('select', 'config', [
++            'label'        => $form->translate('Configuration'),
++            'required'     => true,
++            'multiOptions' => $form->optionalEnum($storage->listProcesses()),
++        ]);
++    }
++}
++
+diff -ruN /usr/share/icingaweb2/modules/businessprocess_orig/library/Businessprocess/Storage/Storage.php /usr/share/icingaweb2/modules/businessprocess/library/Businessprocess/Storage/Storage.php
+--- /usr/share/icingaweb2/modules/businessprocess_orig/library/Businessprocess/Storage/Storage.php	2019-11-09 19:34:36.830248285 +0100
++++ /usr/share/icingaweb2/modules/businessprocess/library/Businessprocess/Storage/Storage.php	2019-11-09 19:35:33.418385954 +0100
+@@ -2,6 +2,7 @@
+ 
+ namespace Icinga\Module\Businessprocess\Storage;
+ 
++use Icinga\Application\Config;
+ use Icinga\Data\ConfigObject;
+ use Icinga\Module\Businessprocess\BpConfig;
+ use Icinga\Module\Businessprocess\Metadata;
+@@ -9,6 +10,11 @@
+ abstract class Storage
+ {
+     /**
++     * @var static
++     */
++    protected static $instance;
++
++    /**
+      * @var ConfigObject
+      */
+     protected $config;
+@@ -27,6 +33,15 @@
+     {
+     }
+ 
++    public static function getInstance()
++    {
++        if (static::$instance === null) {
++            static::$instance = new static(Config::module('businessprocess')->getSection('global'));
++        }
++
++        return static::$instance;
++    }
++
+     /**
+      * All processes readable by the current user
+      *
+diff -ruN /usr/share/icingaweb2/modules/businessprocess_orig/run.php /usr/share/icingaweb2/modules/businessprocess/run.php
+--- /usr/share/icingaweb2/modules/businessprocess_orig/run.php	2019-11-09 19:34:48.827277620 +0100
++++ /usr/share/icingaweb2/modules/businessprocess/run.php	2019-11-09 19:24:41.355075346 +0100
+@@ -2,4 +2,5 @@
+ 
+ $this->provideHook('monitoring/HostActions');
+ $this->provideHook('monitoring/ServiceActions');
++$this->provideHook('director/ImportSource');
+ //$this->provideHook('director/shipConfigFiles');
