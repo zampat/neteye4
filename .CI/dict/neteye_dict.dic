@@ -17,6 +17,7 @@ Autosetup
 backend
 Backend
 BP
+BusinessProcess
 centos
 CentOS
 centos6
@@ -40,6 +41,7 @@ criticals
 Criticals
 cron
 Cron
+CSR
 dashboarding
 Dashboarding
 diff
@@ -155,6 +157,7 @@ mssql
 MSSQL
 mysql
 MYSQL
+MySQL
 nagios
 Nagios
 nagvis
@@ -258,6 +261,7 @@ socio
 Socio
 scp
 SCP
+SMS
 snmp
 SNMP
 sql

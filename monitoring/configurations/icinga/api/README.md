@@ -18,10 +18,10 @@ Get all services:
 ```
 # curl -k -s -G -u root:0123456789abcdefc 'https://localhost:5665/v1/objects/services' | jq
 ```
-Read a specific service with secial characters or spaces
+Read a specific service with special characters or spaces
 ```
 # curl -k -s -G -u root:0123456789abcdefc 'https://localhost:5665/v1/objects/services' --data-urlencode 'service=myhost.lan!Processor_Interrupts/sec'
 ```
 ### Get event streams via post
-[Icinga API Event Strams](https://icinga.com/docs/icinga2/latest/doc/12-icinga2-api/#icinga2-api-clients-event-streams)
+[Icinga API Event Streams](https://icinga.com/docs/icinga2/latest/doc/12-icinga2-api/#icinga2-api-clients-event-streams)
 

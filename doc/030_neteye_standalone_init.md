@@ -1,4 +1,4 @@
-# NetEye system setup – Assisted Setup
+# NetEye system setup - Assisted Setup
 
 Ensure MariaDB, InfluxDB and Grafana services are up and running
 ```
@@ -42,7 +42,7 @@ __HINT: You can always use systemctl to interact with every single NetEye servic
 
 __HINT: Credentials for Web-UI are generated and stored at /root/.pwd_icingaweb2_root__
 
-__HINT2: HTTPS certificate for Web Server is self-signed. You can create a CSR to be signed by your organization.__
+__HINT 2: HTTPS certificate for Web Server is self-signed. You can create a CSR to be signed by your organization.__
 [Many tutorials are available online like this](https://www.thomas-krenn.com/de/wiki/Openssl_Multi-Domain_CSR_erstellen)
 
 
