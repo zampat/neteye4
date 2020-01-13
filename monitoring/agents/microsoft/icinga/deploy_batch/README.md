@@ -39,7 +39,7 @@ curl -k -H 'Accept: application/json' -u director:secret 'https://localhost/nete
 
 ### Install Icinga2 Agent and configure it
 
-- Install the Icinga2 Agent via setup msi
+- Install the Icinga2 Agent via setup `.msi`
 - Place Icinga2 parent certificate in C:\ProgramData\icinga2\var\lib\icinga2/certs/
 - Configure Agent via node setup
 
