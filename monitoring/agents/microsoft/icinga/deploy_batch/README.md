@@ -3,12 +3,12 @@
 This section provides a script for windows to automate the configuration of a Windows Icinga2 Agent. The approach is to contact Icinga2 via API, retrieve the Ticket for a host and configure the Icinga2 agent automatically. Prerequisite is to define the host in Director in advance.
 
 - Have a look at the configurations to change in script
-- Run the script in administrative cmd 
+- Run the script in administrative `cmd` 
 
 
 ```
 C:\Users\user\Downloads\icinga2_agent_deploy>01_ConfigureAgent.bat
-"Icinga2 Agent msi had already been downloaded. Proceeding with install..."
+"Icinga2 Agent `.msi` had already been downloaded. Proceeding with install..."
 "Icinga2 Agent already installed"
 "Start to register host <hostname> with Ticket: "f3610648cf18978cfc8f93768fbe69c2d2012f2a""
 "Icinga2 Agent is installed. Going to configure agent now ...."
