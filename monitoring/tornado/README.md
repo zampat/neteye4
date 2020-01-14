@@ -7,5 +7,5 @@
 
 ## Configure Tornado rules
 
-[Configure a simple tornado rule to archive incoming events](tornado_rule_simple.md)
-[Extend tornado rule by Icinga2 action](tornado_rule_icinga.md)
+- [Configure a simple tornado rule to archive incoming events](tornado_rule_simple.md)
+- [Extend tornado rule by Icinga2 action](tornado_rule_icinga.md)
