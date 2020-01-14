@@ -2,7 +2,7 @@
 
 ## Email collector
 
-Configure a procmail command for an event gateway user i.e. eventgw
+Configure a `procmail` command for an event gateway user i.e. `eventgw`
 ```
 # cat /home/eventgw/.procmailrc
 SHELL=/bin/sh

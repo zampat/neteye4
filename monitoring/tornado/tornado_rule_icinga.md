@@ -4,7 +4,7 @@ Having completed the setup and a simple archive rule, we can extend this concept
 
 Assume having a host "event_results" and a passive service "test event status"
 
-- copy previous rule into a new file with HIGHER number ie. 002- and 003-
+- copy previous rule into a new file with HIGHER number i.e. 002- and 003-
 - define action of type icinga and filter for desired host/service
 
 ### Define rule action
