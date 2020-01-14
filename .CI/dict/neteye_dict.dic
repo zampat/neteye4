@@ -264,6 +264,8 @@ SCP
 SMS
 snmp
 SNMP
+SNMPTRAP
+snmptrap
 sql
 SQL
 ssl
