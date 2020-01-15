@@ -38,7 +38,7 @@ yum install nagios-plugins-users nagios-plugins-load nagios-plugins-disk nagios-
 running
 # firewall-cmd --list-all | grep -i 5665
   ports: 5665/tcp 514/tcp 514/udp 
-
+```
 - If port 5665 is not open, a rule must be created as follows:
 ```
 firewall-cmd --add-port 5665/tcp --permanent 
