@@ -5,10 +5,10 @@
 #
 
 # Requirements Check
-RES=` icingacli director service show generic_service --json --no-defaults`
+RES=` icingacli director service show generic-service --json --no-defaults`
 if [[ $RES =~ "does not exist" ]]
 then
-   echo "Prerequisite failure: Service Template 'generic_service' does not exists. Abort import."
+   echo "Prerequisite failure: Service Template 'generic-service' does not exists. Abort import."
    exit 0
 fi
 
@@ -22,7 +22,7 @@ then
 {
     "check_command": "nrpe",
     "imports": [
-        "generic_service"
+        "generic-service"
     ],
     "object_name": "generic_nrpe_noSSL",
     "object_type": "template",
