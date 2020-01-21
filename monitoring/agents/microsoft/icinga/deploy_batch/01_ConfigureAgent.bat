@@ -25,11 +25,12 @@ SET ICINGA_AGENT_FILE=Icinga2-v2.10.5-x86_64.msi
 
 
 :: Sample host values
-SET AGENTNAME=%ComputerName%
+SET AGENTNAME="%ComputerName%.%USERDNSDOMAIN%"
 
 :: NO configuration beyond this line
 SET ICINGADATADIR=C:\ProgramData\icinga2
 SET ICINGABINDIR=C:\Program Files\ICINGA2\sbin
+SET NSCLIENTBINDIR=C:\Program Files\NSClient++
 
 ::Temp files folder
 SET USERHOME=%USERPROFILE%\AppData\Local\Temp
@@ -68,14 +69,17 @@ if exist "%USERHOME%\%ICINGA_AGENT_FILE%" (
 		echo "Installing Icinga2 Agent now: msiexec /i %USERHOME%\%ICINGA_AGENT_FILE% /quiet"
 		msiexec /i %USERHOME%\%ICINGA_AGENT_FILE% /quiet
 		timeout /t 30
-		echo "Installing Icinga2 Agent now: msiexec /i %ICINGABINDIR%\NSCP.msi /quiet /norestart"
-		msiexec /i "%ICINGABINDIR%\NSCP.msi" /quiet /norestart
-		timeout /t 30
-		goto getTicket
 	) else (
 		echo "Icinga2 Agent already installed"
-		goto getTicket
 	)
+	if not exist "%NSCLIENTBINDIR%\nscp.exe" (
+		echo "NSClient++ is not installed. Installing now: msiexec /i %ICINGABINDIR%\NSCP.msi /quiet /norestart"
+		msiexec /i "%ICINGABINDIR%\NSCP.msi" /quiet /norestart
+		timeout /t 30
+	) else (
+		echo "NSClient++ Agent already installed"
+	)
+	goto getTicket
 ) else (
 	echo "Icinga2 Agent msi not found"
 	goto end
@@ -85,6 +89,7 @@ if exist "%USERHOME%\%ICINGA_AGENT_FILE%" (
 :getTicket
 
 ::#Powershell to generate authentication token
+:: NetEye role settings: enable module "director" with "module access","api" and "hosts".
 ::$authentication_pair = "director_ro:secret"
 ::$bytes = [System.Text.Encoding]::ASCII.GetBytes($authentication_pair)
 ::$base64 = [System.Convert]::ToBase64String($bytes)
