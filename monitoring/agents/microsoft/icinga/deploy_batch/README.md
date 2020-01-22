@@ -6,7 +6,7 @@ This section provides a script for windows to automate the configuration of a Wi
 - Create a neteye user. The associated role provides access to module "Director" with Permissions: a) "General Module Access", b) "director/api" and c) "director/hosts"
 - Configure the neteye user and password with the script. Make use of the commented code to generate with powershell the encoded https credentials.
 - Adjust in script the neteye 4 hostname, the agent's endpoint and zone settings
-- Verify if all setps are required for you needs and adapt script to your needs
+- Verify if all steps are required and adapt script to your needs
 - Run the script in administrative `CMD` 
 
 
