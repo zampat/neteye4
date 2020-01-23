@@ -6,7 +6,8 @@
 :: 2. Define NetEye / Icinga2 Url for downloading Agent 
 :: 3. Define NetEye / Icinga2 Url for retrieving the Agent Ticket
 :: 4. Generate Base64 encoded credentials, for authenticatin to API
-:: 5. Enjoy
+:: 5. Verify filrewall rule to be created
+:: 6. Enjoy
 
 :: Optional Parameters: 
 ::%1: Agentname
@@ -125,7 +126,9 @@ timeout /t 10
 SC START icinga2
 
 
-
+:configureFirewallRule
+::  Register a suitable firewall rule
+netsh advfirewall firewall add rule name="NetEye Icinga2 Agent" dir=in action=allow program="%ProgramFiles%\ICINGA2\sbin\icinga2.exe" enable=yes protocol=TCP localport=5665
 
 :end
 echo "End of Icinga2 configuration script."
