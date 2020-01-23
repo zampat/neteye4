@@ -1,6 +1,6 @@
-# Configuration of Icinga2 module fileshipper
+# Configuration of Icinga2 module `fileshipper`
 
-- fileshipper is distributed in NetEye 4 core
+- `fileshipper` is distributed in NetEye 4 core
 - verify that module is enabled
 - define a path where to store import files 
 - define a global configuration file
