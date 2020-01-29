@@ -124,6 +124,10 @@ __Verify Firewall and Features__
 # firewall-cmd --reload
 ```
 - Enable features: `api checker mainlog`
+```
+icinga2 feature enable api
+icinga2 feature disable notification
+```
 - Verify API configuration, especially enable to accept configuration.
   Path: `/neteye/local/icinga2/conf/icinga2/features-enabled/api.conf`
 ```
