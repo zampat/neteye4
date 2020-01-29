@@ -102,12 +102,12 @@ Path: /neteye/shared/icinga2/conf/icinga2/zones.d/cluster.conf
 ```
 object Endpoint "neteye4vm1.mydomain.local" {
         host = "neteye4vm1.mydomain.local"
-        port = 5664
+        port = 5665
 }
 
 object Endpoint "neteye4vm2.mydomain.local" {
         host = "neteye4vm2.mydomain.local"
-        port = 5664
+        port = 5665
 }
 
 object Zone "cluster-satellite" {
@@ -129,10 +129,12 @@ __Verify Firewall and Features__
 ```
 object ApiListener "api" {
   bind_host = "0.0.0.0"
-  bind_port = 5664
+  bind_port = 5665
 
   accept_config = true
   accept_commands = true
+  
+  ticket_salt = TicketSalt
 }
 ```
 - Test telnet on api port
