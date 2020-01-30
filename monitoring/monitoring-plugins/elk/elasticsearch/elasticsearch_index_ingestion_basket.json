@@ -1,0 +1,377 @@
+{
+    "Command": {
+        "check_elasticsearch_index_ingestion": {
+            "arguments": {
+                "--critical-threshold": {
+                    "description": "The critical threshold",
+                    "value": "$service.vars.elk_threshold_critical$"
+                },
+                "--curl-cert": {
+                    "description": " path to the client's certificate (check: man curl for details) ",
+                    "value": "$service.vars.elk_curl_certificate$"
+                },
+                "--curl-command-path": {
+                    "description": " path to a curl executable to use (default: \/usr\/share\/neteye\/scripts\/searchguard\/sg_neteye_curl.sh)",
+                    "value": "$service.vars.elk_curl_command$"
+                },
+                "--curl-key": {
+                    "description": " path to the private key of the client (check: man curl for details) ",
+                    "value": "$service.vars.elk_curl_key$"
+                },
+                "--es-host": {
+                    "description": "the elasticsearch host or ip (default: elasticsearch.neteyelocal)",
+                    "value": "$http_vhost$"
+                },
+                "--es-port": {
+                    "description": " the elasticsearch port (default: 9200)",
+                    "value": "$http_port$"
+                },
+                "--es-protocol": {
+                    "description": "Protocol used to connect to elsaticsearch",
+                    "value": {
+                        "type": "Function",
+                        "body": "use_ssl=macro(\"$http_ssl$\");\r\nif (use_ssl) {\r\n   return \"https\";\r\n} else {\r\n   return \"http\";\r\n}"
+                    }
+                },
+                "--index-creation-interval": {
+                    "description": "it specifies whenever a new index is created (e.g., d = daily, M = monthly) (default d)",
+                    "value": "$service.vars.elk_index_creation_interval$"
+                },
+                "--index-date-format": {
+                    "description": "index date format (e.g., yyyy.MM.dd) compliant to elasticsearch date formats",
+                    "value": "$service.vars.elk_date_format$"
+                },
+                "--index-static-name": {
+                    "description": "the static name of the index (default: logstash)",
+                    "value": "$service.vars.elk_index_static_name$"
+                },
+                "--ingested-time-field": {
+                    "description": "the name of the field to use (default: @timestamp)",
+                    "value": "$service.vars.elk_time_field$"
+                },
+                "--output-date-format": {
+                    "description": "the output date format compatible with 'date' command (default: '+%A %Y.%m.%d %H:%M:%S %Z')",
+                    "value": "$service.vars.elk_output_date_format$"
+                },
+                "--threshold-format": {
+                    "description": "Threshold format: the unit of measure for the thresholds one of 'days', 'hours', 'minutes','seconds' (default hours)",
+                    "value": "$service.vars.elk_threshold_format$"
+                },
+                "--timeout": {
+                    "description": "Timeout for the elasticsearch connection",
+                    "value": "$http_timeout$"
+                },
+                "--warning-threshold": {
+                    "description": "Warning Threshold",
+                    "value": "$service.vars.elk_threshold_warning$"
+                }
+            },
+            "command": "PluginContribDir + \/check_elasticsearch_index_ingestion.sh",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "check_elasticsearch_index_ingestion",
+            "object_type": "object",
+            "timeout": null,
+            "vars": {},
+            "zone": null
+        }
+    },
+    "ServiceTemplate": {
+        "generic_elasticsearch_index_ingestion": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_elasticsearch_index_ingestion",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 10026,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10027,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10028,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10029,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10030,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10031,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10032,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10033,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10034,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 197,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 190,
+                    "is_required": "y",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 199,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 206,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic_service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "generic_elasticsearch_index_ingestion",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "http_ssl": true
+            },
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "DataList": {
+        "ELK_date_units": {
+            "list_name": "ELK_date_units",
+            "owner": "root",
+            "originalId": "10006",
+            "entries": [
+                {
+                    "entry_name": "M",
+                    "entry_value": "months",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "Y",
+                    "entry_value": "years",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "d",
+                    "entry_value": "days",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "h",
+                    "entry_value": "hours",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "m",
+                    "entry_value": "minutes",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "s",
+                    "entry_value": "seconds",
+                    "format": "string",
+                    "allowed_roles": null
+                }
+            ]
+        }
+    },
+    "Datafield": {
+        "10026": {
+            "varname": "elk_curl_certificate",
+            "caption": "ELK curl certificate",
+            "description": "Path to the curl certificate to use (the certificate establishes the user used to perform the check)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10026",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "10027": {
+            "varname": "elk_curl_command",
+            "caption": "ELK curl command",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10027",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "10028": {
+            "varname": "elk_date_format",
+            "caption": "ELK date format",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10028",
+            "settings": {
+                "rename_vars": "y",
+                "visibility": "visible"
+            }
+        },
+        "10029": {
+            "varname": "elk_index_creation_interval",
+            "caption": "ELK index creation interval",
+            "description": " specifies whenever a new index is created (e.g., daily)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeDatalist",
+            "format": null,
+            "originalId": "10029",
+            "settings": {
+                "behavior": "strict",
+                "data_type": "string",
+                "datalist": "ELK_date_units"
+            }
+        },
+        "10030": {
+            "varname": "elk_index_static_name",
+            "caption": "ELK Index Static Name",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10030",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "10031": {
+            "varname": "elk_threshold_critical",
+            "caption": "ELK critical threshold",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeNumber",
+            "format": null,
+            "originalId": "10031",
+            "settings": {}
+        },
+        "10032": {
+            "varname": "elk_threshold_format",
+            "caption": "ELK Threshold Format",
+            "description": "the unit of measure for the thresholds one of 'days', 'hours', 'minutes','seconds' (default hours)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeDatalist",
+            "format": null,
+            "originalId": "10032",
+            "settings": {
+                "behavior": "strict",
+                "data_type": "string",
+                "datalist": "ELK_date_units"
+            }
+        },
+        "10033": {
+            "varname": "elk_threshold_warning",
+            "caption": "ELK warning Threshold",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeNumber",
+            "format": null,
+            "originalId": "10033",
+            "settings": {}
+        },
+        "10034": {
+            "varname": "elk_time_field",
+            "caption": "ELK time field",
+            "description": "Field used for time",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10034",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "197": {
+            "varname": "http_port",
+            "caption": "HTTP Port",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeNumber",
+            "format": null,
+            "originalId": "197",
+            "settings": {}
+        },
+        "190": {
+            "varname": "http_ssl",
+            "caption": "HTTP use SSL",
+            "description": "Activates -S",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "190",
+            "settings": {}
+        },
+        "199": {
+            "varname": "http_timeout",
+            "caption": "HTTP Timeout",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeNumber",
+            "format": null,
+            "originalId": "199",
+            "settings": {}
+        },
+        "206": {
+            "varname": "http_vhost",
+            "caption": "HTTP virtual host",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "206",
+            "settings": {}
+        }
+    }
+}
