@@ -2,6 +2,9 @@
 
 ## Setup of tornado
 
+Setup Tornado packages as indicated in NetEye user guide "Installing Additional Modules". Once done continue configuring the daemon and collectors:
+
+
 [Setup tornado collectors email, snmptrap, webhook](tornado_setup.md)
 
 

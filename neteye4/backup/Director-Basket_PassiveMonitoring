@@ -73,7 +73,7 @@
             "icon_image": null,
             "icon_image_alt": null,
             "imports": [
-                "generic_service"
+                "generic-service"
             ],
             "max_check_attempts": "1",
             "notes": null,
@@ -126,7 +126,7 @@
             "icon_image": null,
             "icon_image_alt": null,
             "imports": [
-                "generic_service"
+                "generic-service"
             ],
             "max_check_attempts": "1",
             "notes": null,
