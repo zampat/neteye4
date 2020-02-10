@@ -10,12 +10,14 @@ import os
 
 # Python3 code to iterate over a list 
 hosts = ["neteye02p", "neteye03p", "neteye04p"] 
-files = ["/etc/hosts",
-	 "/etc/pki/tls/certs/*.crt",
-	 "/etc/pki/tls/private/*.key",
-	 "/etc/my.cnf.d/neteye.cnf",
-         "/neteye/shared/monitoring"] 
-   
+system_files = ["/etc/hosts",
+         "/etc/pki/tls/certs/*.crt",
+         "/etc/pki/tls/private/*.key"
+        ]
+files = ["/neteye/shared/monitoring",
+         "/neteye/local/icinga2/conf/icinga2/conf.d/dependency*"
+        ]
+
 remote_commands = ["icinga2 daemon --validate && systemctl reload icinga2"
     ]
 
