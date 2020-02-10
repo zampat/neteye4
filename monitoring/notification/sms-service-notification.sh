@@ -104,16 +104,13 @@ for P in LONGDATETIME HOSTNAME HOSTDISPLAYNAME SERVICENAME SERVICEDISPLAYNAME SE
 done
 
 ## Build the message's subject
-SUBJECT="[$NOTIFICATIONTYPE] $SERVICEDISPLAYNAME on $HOSTDISPLAYNAME is $SERVICESTATE!"
+SUBJECT="NetEye [$NOTIFICATIONTYPE] $SERVICEDISPLAYNAME on $HOSTDISPLAYNAME is $SERVICESTATE!"
 
 ## Build the notification message
-NOTIFICATION_MESSAGE=`cat << EOF
-$SERVICEDISPLAYNAME on $HOSTNAME is $SERVICESTATE!
-When:    $LONGDATETIME
-Service: $SERVICENAME
-Host:    $HOSTNAME
-EOF
-`
+
+#NOTIFICATION_MESSAGE="When: $LONGDATETIME Service: $SERVICENAME Host: $HOSTNAME  Value: $SERVICEOUTPUT"
+NOW=$(date +%H:%M" "%d-%b-%Y)
+NOTIFICATION_MESSAGE="When: $NOW - $SERVICEOUTPUT"
 
 ## Check whether IPv4 was specified.
 if [ -n "$HOSTADDRESS" ] ; then
@@ -162,6 +159,9 @@ fi
 #  fi
 #
 #else
-  /usr/bin/printf "%b" "$NOTIFICATION_MESSAGE" \
-  | $SMSBIN $USERMOBILE "$SUBJECT" 
+  #/usr/bin/printf "%b" "$NOTIFICATION_MESSAGE" | $SMSBIN $USERMOBILE "$SUBJECT"
+  # modificato da VALU 25-06-2019 ##
+/usr/bin/printf "%b" "" | $SMSBIN $USERMOBILE "$SUBJECT $NOTIFICATION_MESSAGE"
 #fi
+# copia i messaggi in un file di log - VALU 25-06-2019 #
+ /usr/bin/printf "%b" "$SUBJECT $USERMOBILE  $NOTIFICATION_MESSAGE \n \n" >> /tmp/sms-temp.log
