@@ -2,7 +2,7 @@
 :: Define the Powershell script(s)  to copy to remote host1
 :: Define the list of remote hosts to install and configure agent
 
-SET AgentInstallPS=neteye_agent_deployment_mainova.ps1
+SET AgentInstallPS=install_icinga2_agent.ps1
 SET AgentInstallPSM="Icinga2Agent.psm1"
 
 for %%h in (
