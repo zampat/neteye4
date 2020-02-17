@@ -25,7 +25,11 @@ SERVICENAME="NetEye local backup"
 API_USER="passivecheck"
 API_PWD="MYSERCUREPASSWORD"
 NETEYE_API_ACTION="https://neteye4.mydomain.tld:5665/v1/actions/process-check-result"
-
+ZIP_COMMAND="gzip"
+if hash pigz 2>/dev/null; then
+        ZIP_COMMAND="pigz -p 40"
+fi
+	
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin
 
 if [ -e /etc/sysconfig/neteye-backup.conf ]
@@ -153,7 +157,9 @@ then
 fi
 
 #$ECHO tar ${EXCLOPTS} ${TAROPTS} -czf $BACKUPDIR/$BKNAME $BKDIRS 2>&1 | grep -v "tar: Removing leading" | grep -v "socket ignored" | grep -v "file changed as we read" | grep -v "Cannot stat: No such file or directory" | grep -v "File removed before we read it" | grep -v "Error exit delayed from previous errors" | grep -v "Exiting with failure status due to previous errors"
-$ECHO tar ${EXCLOPTS} ${TAROPTS} -Pczf $BACKUPDIR/$BKNAME $BKDIRS --warning=no-file-changed
+#$ECHO tar ${EXCLOPTS} ${TAROPTS} -Pczf $BACKUPDIR/$BKNAME $BKDIRS --warning=no-file-changed
+$ECHO tar ${EXCLOPTS} ${TAROPTS} -cP $BKDIRS --warning=no-file-changed | $ZIP_COMMAND > $BACKUPDIR/$BKNAME 2>&1
+
 ret_tar=$?
 
 if [ "$NETBACKUPDIR" != "NONE" ]
