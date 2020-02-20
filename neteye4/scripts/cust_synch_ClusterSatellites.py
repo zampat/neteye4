@@ -121,7 +121,9 @@ def run_remote_commands(hosts,remote_commands):
 
 if args.files is True:
     synch_files(hosts,files)
-elif args.remote_commands is True:
+
+if args.remote_commands is True:
     run_remote_commands(hosts,remote_commands)
-#elif args.system_files is True:
+    
+#if args.system_files is True:
 #    xxxxxxx
