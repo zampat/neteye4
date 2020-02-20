@@ -39,7 +39,7 @@ remote_commands = ["icinga2 daemon --validate && systemctl reload icinga2"
 def synch_files(hosts,files):
 
    for dst_host in hosts: 
-       for file in argument: 
+       for file in files: 
 
 	  # Distinguish between file or folder
 	  if os.path.isfile(file):
