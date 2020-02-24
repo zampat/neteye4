@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# To correctly execute this script you need to create a new service template (look at Director-Basket_PassiveMonitoring.json) and a new API user with this permissions:
+# To correctly execute this script with passive check, you need to create a new service template (look at Director-Basket_PassiveMonitoring.json) and a new API user with this permissions:
 #
 #[root@neteye4 ~]# cat /neteye/shared/icinga2/conf/icinga2/conf.d/api-users.conf
 #/**
@@ -138,7 +138,9 @@ else
 					echo "mysqldump --single-transaction --quick --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-quote-names --skip-extended-insert $i $j | $ZIP_COMMAND  >$BACKUPDIR/db/$i/$j.sql.gz"
 				done
 		fi
-	done 2>&1 | grep -v "Warning: Skipping the data of table mysql.event"
+	#done 2>&1 | grep -v "Warning: Skipping the data of table mysql.event"
+	done
+ret_mysql=$?
 fi # BRST - END CHECK MYSQL RUN
 
 # Extra Information
@@ -173,6 +175,7 @@ fi
 #$ECHO tar ${EXCLOPTS} ${TAROPTS} -c $BKDIRS | $ZIP_COMMAND > $BACKUPDIR/$BKNAME 2>&1 | grep -v "tar: Removing leading" | grep -v "socket ignored" | grep -v "file changed as we read" | grep -v "Cannot stat: No such file or directory" | grep -v "File removed before we read it" | grep -v "Error exit delayed from previous errors" | grep -v "Exiting with failure status due to previous errors"
 
 $ECHO tar ${EXCLOPTS} ${TAROPTS} -cP $BKDIRS --warning=no-file-changed | $ZIP_COMMAND > $BACKUPDIR/$BKNAME 2>&1 
+ret_tar=$?
 
 if [ "$NETBACKUPDIR" != "NONE" ]
 then
@@ -199,6 +202,8 @@ then
 	fi
 
 $ECHO cp $BACKUPDIR/$BKNAME $NETBACKUPDIR
+ret_remote_copy=$?
+
 $ECHO umount $NETBACKUPDIR > /dev/null 2>&1
 fi
 
