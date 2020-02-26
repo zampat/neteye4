@@ -2,10 +2,11 @@ dist: xenial
 git:
   submodules: false
 
-before_install: 
+before_install:
 - sudo apt update -y
 - sudo apt install python3 python3-pip python3-virtualenv hunspell myspell-en-us -y
-- virtualenv spell_pve && source spell_pve/bin/activate && pip install mistune && deactivate
+- virtualenv ci_pve && ci_pve/bin/pip install mistune pyyaml
 
 script:
-- source spell_pve/bin/activate && ./.CI/spellchecker.sh && deactivate
+- ./ci_pve/bin/python ./.CI/check_yaml.py "."
+- source ./ci_pve/bin/activate && ./.CI/spellchecker.sh && deactivate
