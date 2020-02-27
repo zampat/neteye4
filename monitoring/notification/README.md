@@ -1,17 +1,17 @@
+# SMS notification for neteye4
 
-# HTML Email notification for NetEye
-
-Run script `clone_and_patch_repo.sh` to clone and patch the repo for NetEye
-
-
-For NetEye 3:
-Install the script in home folder of Plugins and define notification command:
-
+- home path of SMS module: /neteye/local/smsd/
+- grant permissions to icinga user on spool folders
 ```
-mkdir /usr/lib/nagios/plugins/contrib/
-cp -r Nagios-Responsive-HTML-Email-Notifications /usr/lib/nagios/plugins/contrib/
+chown icinga:icinga -R /neteye/local/smsd/data/spool
 ```
-
-# SMS notification via email over NetEye3
-
-Have a look at n3email_2_n4sms.md
+- diff /usr/bin/smssend with provided file
+- restore provided basket
+```
+icingacli director basket restore < Director-Basket_SMS_Notification.json
+```
+- install SMS notification script in /neteye/shared/icinga2/conf/icinga2/scripts/
+```
+cp sms-host-notification.sh sms-service-notification.sh /neteye/shared/icinga2/conf/icinga2/scripts/
+chmod 755 /neteye/shared/icinga2/conf/icinga2/scripts/sms-*
+```

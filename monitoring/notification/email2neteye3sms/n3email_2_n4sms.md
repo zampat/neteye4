@@ -1,6 +1,6 @@
-# How to to send sms from neteye 4 via neteye 3 eventhandler
+# How to to send SMS from neteye 4 via neteye 3 eventhandler
 
-## Enable sendmail on neteye 3
+## Enable `sendmail` on neteye 3
 https://www.ghacks.net/2009/06/05/make-sendmail-accept-mail-from-external-sources/
 
 In /etc/mail/sendmail.mc change

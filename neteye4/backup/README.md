@@ -9,7 +9,7 @@
 ## Requirement for backup on remote cifs mount
 
 ```
-yum install cifs-utils
+yum install cifs-utils pigz
 ```
 
 ## Register remote mount point

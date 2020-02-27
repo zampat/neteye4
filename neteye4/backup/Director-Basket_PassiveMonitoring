@@ -1,0 +1,214 @@
+{
+    "ExternalCommand": {
+        "dummy": {
+            "arguments": [],
+            "command": null,
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "dummy",
+            "object_type": "external_object",
+            "timeout": "60",
+            "vars": {
+                "dummy_state": 0,
+                "dummy_text": "Check was successful."
+            },
+            "zone": null
+        },
+        "passive": {
+            "arguments": [],
+            "command": null,
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "passive",
+            "object_type": "external_object",
+            "timeout": "60",
+            "vars": {
+                "dummy_state": 3,
+                "dummy_text": "No Passive Check Result Received."
+            },
+            "zone": null
+        }
+    },
+    "ServiceTemplate": {
+        "generic_passive_service_without_freshness": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "dummy",
+            "check_interval": "86400",
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": false,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 708,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 709,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-service"
+            ],
+            "max_check_attempts": "1",
+            "notes": null,
+            "notes_url": null,
+            "object_name": "generic_passive_service_without_freshness",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        },
+        "generic_passive_service_with_freshness": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "passive",
+            "check_interval": "600",
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 708,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 709,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-service"
+            ],
+            "max_check_attempts": "1",
+            "notes": null,
+            "notes_url": null,
+            "object_name": "generic_passive_service_with_freshness",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        },
+        "neteye local backup": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": null,
+            "check_interval": "86400",
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic_passive_service_with_freshness"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "neteye local backup",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "Datafield": {
+        "708": {
+            "varname": "dummy_state",
+            "caption": "Dummy state",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeDatalist",
+            "format": null,
+            "originalId": "708",
+            "settings": {
+                "behavior": "strict",
+                "data_type": "string",
+                "datalist": "Dummy state"
+            }
+        },
+        "709": {
+            "varname": "dummy_text",
+            "caption": "Dummy text",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "709",
+            "settings": {
+                "visibility": "visible"
+            }
+        }
+    }
+}

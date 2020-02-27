@@ -71,4 +71,4 @@ fi
 
 
 #Define Status for Service
-curl -k -s -u root:974a00c8931bbaac -H 'Accept: application/json' -X POST 'https://localhost:5665/v1/actions/process-check-result' -d '{ "type": "Service", "filter": "host.name==\"tornado_lab\" && service.name==\"'${SERVICE}'\"", "exit_status": '${STATUS}', "plugin_output": "'${OUTPUT}'", "performance_data": [ "'${PERFDATA}'", "perf1=1" ], "check_source": "pbzneteye4.wp.lan", "pretty": true }'
+curl -k -s -u root:974a00c8931bbaac -H 'Accept: application/json' -X POST 'https://localhost:5665/v1/actions/process-check-result' -d '{ "type": "Service", "filter": "host.name==\"tornado_lab\" && service.name==\"'${SERVICE}'\"", "exit_status": '${STATUS}', "plugin_output": "'${OUTPUT}'", "performance_data": [ "'${PERFDATA}'", "perf1=1" ], "check_source": "neteye.mydomain.lan", "pretty": true }'

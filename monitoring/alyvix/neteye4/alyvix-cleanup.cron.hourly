@@ -1,0 +1,56 @@
+#!/bin/sh
+#
+
+#
+# Start only where icinga-master process is active and NO cluster
+#
+! ls /etc/neteye-cluster >/dev/null 2>&1 || df /neteye/shared/icinga2 | grep /neteye/shared/icinga2 >/dev/null || exit 0
+
+TMPFILE=$(mktemp)
+trap 'rm -f $TMPFILE; exit 1' 1 2 15
+trap 'rm -f $TMPFILE' 0
+
+if [ -e /etc/sysconfig/alyvix ]
+then
+        . /etc/sysconfig/alyvix
+fi
+
+if [ -z "$CLEANUP_HOURS" ]
+then
+        CLEANUP_HOURS=720
+fi
+
+if [ -z "$CLEANUP_OK_HOURS" ]
+then
+        CLEANUP_OK_HOURS=96
+fi
+
+if [ -z "$ALYVIX_LOGDIR" ]
+then
+        ALYVIX_LOGDIR=/neteye/shared/httpd/alyvix-reports
+fi
+
+if [ ! -d "$ALYVIX_LOGDIR" ]
+then
+        exit 0
+fi
+
+touch -d "$CLEANUP_OK_HOURS hours ago" $TMPFILE
+for d in "$ALYVIX_LOGDIR" $ALYVIX_EXTERNAL_DIRS
+do
+    ls $d >/dev/nul
+    if [ -d "$d" ]
+    then
+        /usr/sbin/tmpwatch -m -f --nosymlinks $CLEANUP_HOURS "$d"
+        for j in $(find $d -name output.xml ! -newer $TMPFILE)
+        do
+            if grep 'fail="0".*All Tests' $j >/dev/null
+            then
+                dname=$(dirname $j)
+                rm -rf $dname
+            fi
+        done
+    fi
+done
+
+exit 0

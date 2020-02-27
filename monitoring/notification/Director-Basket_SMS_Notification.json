@@ -1,0 +1,193 @@
+{
+    "Command": {
+        "sms-host-notification": {
+            "arguments": {
+                "-6": {
+                    "value": "$notification_address6$"
+                },
+                "-4": {
+                    "value": "$notification_address$"
+                },
+                "-b": {
+                    "value": "$notification_author$"
+                },
+                "-c": {
+                    "value": "$notification_comment$"
+                },
+                "-d": {
+                    "required": true,
+                    "value": "$notification_date$"
+                },
+                "-f": {
+                    "description": "Set from address. Requires GNU mailutils (Debian\/Ubuntu) or mailx (RHEL\/SUSE)",
+                    "value": "$notification_from$"
+                },
+                "-i": {
+                    "value": "$notification_icingaweb2url$"
+                },
+                "-l": {
+                    "required": true,
+                    "value": "$notification_hostname$"
+                },
+                "-n": {
+                    "required": true,
+                    "value": "$notification_hostdisplayname$"
+                },
+                "-o": {
+                    "required": true,
+                    "value": "$notification_hostoutput$"
+                },
+                "-r": {
+                    "required": true,
+                    "value": "$notification_sms_number$"
+                },
+                "-s": {
+                    "required": true,
+                    "value": "$notification_hoststate$"
+                },
+                "-t": {
+                    "required": true,
+                    "value": "$notification_type$"
+                },
+                "-v": {
+                    "value": "$notification_logtosyslog$"
+                }
+            },
+            "command": "\/neteye\/shared\/icinga2\/conf\/icinga2\/scripts\/sms-host-notification.sh",
+            "disabled": false,
+            "fields": [
+                {
+                    "datafield_id": 1106,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginNotification",
+            "object_name": "sms-host-notification",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {
+                "notification_address": "$address$",
+                "notification_address6": "$address6$",
+                "notification_author": "$notification.author$",
+                "notification_comment": "$notification.comment$",
+                "notification_date": "$icinga.long_date_time$",
+                "notification_hostdisplayname": "$host.display_name$",
+                "notification_hostname": "$host.name$",
+                "notification_hostoutput": "$host.output$",
+                "notification_hoststate": "$host.state$",
+                "notification_type": "$notification.type$",
+                "notification_useremail": "$user.email$"
+            },
+            "zone": null
+        },
+        "sms-service-notification": {
+            "arguments": {
+                "-6": {
+                    "value": "$notification_address6$"
+                },
+                "-4": {
+                    "value": "$notification_address$"
+                },
+                "-b": {
+                    "value": "$notification_author$"
+                },
+                "-c": {
+                    "value": "$notification_comment$"
+                },
+                "-d": {
+                    "required": true,
+                    "value": "$notification_date$"
+                },
+                "-e": {
+                    "required": true,
+                    "value": "$notification_servicename$"
+                },
+                "-f": {
+                    "description": "Set from address. Requires GNU mailutils (Debian\/Ubuntu) or mailx (RHEL\/SUSE)",
+                    "value": "$notification_from$"
+                },
+                "-i": {
+                    "value": "$notification_icingaweb2url$"
+                },
+                "-l": {
+                    "required": true,
+                    "value": "$notification_hostname$"
+                },
+                "-n": {
+                    "required": true,
+                    "value": "$notification_hostdisplayname$"
+                },
+                "-o": {
+                    "required": true,
+                    "value": "$notification_serviceoutput$"
+                },
+                "-r": {
+                    "required": true,
+                    "value": "$notification_sms_number$"
+                },
+                "-s": {
+                    "required": true,
+                    "value": "$notification_servicestate$"
+                },
+                "-t": {
+                    "required": true,
+                    "value": "$notification_type$"
+                },
+                "-u": {
+                    "required": true,
+                    "value": "$notification_servicedisplayname$"
+                },
+                "-v": {
+                    "value": "$notification_logtosyslog$"
+                }
+            },
+            "command": "\/neteye\/shared\/icinga2\/conf\/icinga2\/scripts\/sms-service-notification.sh",
+            "disabled": false,
+            "fields": [
+                {
+                    "datafield_id": 1106,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginNotification",
+            "object_name": "sms-service-notification",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {
+                "notification_address": "$address$",
+                "notification_address6": "$address6$",
+                "notification_author": "$notification.author$",
+                "notification_comment": "$notification.comment$",
+                "notification_date": "$icinga.long_date_time$",
+                "notification_hostdisplayname": "$host.display_name$",
+                "notification_hostname": "$host.name$",
+                "notification_servicedisplayname": "$service.display_name$",
+                "notification_servicename": "$service.name$",
+                "notification_serviceoutput": "$service.output$",
+                "notification_servicestate": "$service.state$",
+                "notification_type": "$notification.type$",
+                "notification_useremail": "$user.email$"
+            },
+            "zone": null
+        }
+    },
+    "Datafield": {
+        "1106": {
+            "varname": "notification_sms_number",
+            "caption": "Notification SMS Number",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "1106",
+            "settings": {
+                "visibility": "visible"
+            }
+        }
+    }
+}

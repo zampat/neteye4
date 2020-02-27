@@ -16,7 +16,9 @@ autosetup
 Autosetup
 backend
 Backend
+baseurl
 BP
+BusinessProcess
 centos
 CentOS
 centos6
@@ -28,6 +30,7 @@ cifs
 CIFS
 cisco
 CISCO
+cmd
 conf
 Conf
 config
@@ -38,8 +41,10 @@ cpu
 CPU
 criticals
 Criticals
+CRM
 cron
 Cron
+CSR
 dashboarding
 Dashboarding
 diff
@@ -50,6 +55,8 @@ DRBD
 DSL
 elasticsearch
 Elasticsearch
+enablerepo
+epel
 esx
 ESX
 et
@@ -70,8 +77,11 @@ Github
 GitHub
 GNU
 GPG
+gpgcheck
+gpgkey
 grafana
 Grafana
+grep
 gui
 GUI
 hostname
@@ -155,6 +165,7 @@ mssql
 MSSQL
 mysql
 MYSQL
+MySQL
 nagios
 Nagios
 nagvis
@@ -181,6 +192,7 @@ Newhall
 NIC
 nrpe
 NRPE
+ntp
 NWC
 offline
 Offline
@@ -214,6 +226,7 @@ Postfix
 powershell
 Powershell
 PowerShell
+procs
 programmatically
 Programmatically
 PSU
@@ -227,6 +240,7 @@ repositoring
 Repositoring
 resized
 Resized
+RHEL
 RHEL6
 RHEL7
 RHEL8
@@ -258,8 +272,11 @@ socio
 Socio
 scp
 SCP
+SMS
 snmp
 SNMP
+SNMPTRAP
+snmptrap
 sql
 SQL
 ssl
@@ -274,6 +291,7 @@ systemctl
 systemd
 systemD
 SystemD
+tcp
 telegraf
 Telegraf
 TheHive
@@ -284,6 +302,7 @@ timestamp
 Timestamp
 TLS
 TODO
+udp
 ui
 UI
 uncomment
