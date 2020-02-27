@@ -1,41 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_ICINGA2-INFLUXDB",
-      "label": "icinga2-influxdb",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    },
-    {
-      "name": "VAR_CHECK_NAME",
-      "type": "constant",
-      "label": "check_name",
-      "value": "check_interfaces",
-      "description": ""
-    }
-  ],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "5.2.4"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": "5.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "5.0.0"
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -52,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1562073443490,
+  "id": 40,
+  "iteration": 1582821169702,
   "links": [],
   "panels": [
     {
@@ -66,6 +29,13 @@
       "id": 4,
       "panels": [],
       "repeat": "hostname",
+      "scopedVars": {
+        "hostname": {
+          "selected": true,
+          "text": "",
+          "value": ""
+        }
+      },
       "title": "$hostname",
       "type": "row"
     },
@@ -74,11 +44,11 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_ICINGA2-INFLUXDB}",
+      "datasource": "icinga2-influxdb",
       "fill": 1,
       "gridPos": {
         "h": 10,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 1
       },
@@ -97,12 +67,25 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {},
       "percentage": false,
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "repeat": "Interfaces",
       "repeatDirection": "h",
+      "scopedVars": {
+        "Interfaces": {
+          "selected": true,
+          "text": "GigabitEthernet1-0-1",
+          "value": "GigabitEthernet1-0-1"
+        },
+        "hostname": {
+          "selected": true,
+          "text": "",
+          "value": ""
+        }
+      },
       "seriesOverrides": [
         {
           "alias": "/.*out.*/",
@@ -185,6 +168,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "$Interfaces",
       "tooltip": {
@@ -225,32 +209,39 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 16,
+  "schemaVersion": 18,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "value": "${VAR_CHECK_NAME}",
-          "text": "${VAR_CHECK_NAME}"
+          "text": "check_interfaces",
+          "value": "check_interfaces"
         },
         "hide": 2,
         "label": null,
         "name": "check_name",
         "options": [
           {
-            "value": "${VAR_CHECK_NAME}",
-            "text": "${VAR_CHECK_NAME}"
+            "selected": false,
+            "text": "",
+            "value": ""
           }
         ],
-        "query": "${VAR_CHECK_NAME}",
+        "query": "",
+        "skipUrlSync": false,
         "type": "constant"
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ICINGA2-INFLUXDB}",
+        "current": {
+          "selected": true,
+          "text": "",
+          "value": ""
+        },
+        "datasource": "icinga2-influxdb",
+        "definition": "SHOW TAG VALUES FROM $check_name WITH KEY=hostname",
         "hide": 0,
         "includeAll": false,
         "label": null,
@@ -260,6 +251,7 @@
         "query": "SHOW TAG VALUES FROM $check_name WITH KEY=hostname",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
@@ -269,8 +261,16 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ICINGA2-INFLUXDB}",
+        "current": {
+          "selected": true,
+          "tags": [],
+          "text": "GigabitEthernet1-0-1",
+          "value": [
+            "GigabitEthernet1-0-1"
+          ]
+        },
+        "datasource": "icinga2-influxdb",
+        "definition": "",
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -280,6 +280,7 @@
         "query": "SHOW TAG VALUES FROM $check_name WITH KEY=metric WHERE hostname =~ /$hostname/",
         "refresh": 2,
         "regex": "(.*)::.*::\\w+",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
@@ -289,8 +290,15 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ICINGA2-INFLUXDB}",
+        "current": {
+          "text": "inOctets + outOctets",
+          "value": [
+            "inOctets",
+            "outOctets"
+          ]
+        },
+        "datasource": "icinga2-influxdb",
+        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": null,
@@ -300,6 +308,7 @@
         "query": "SHOW TAG VALUES FROM $check_name WITH KEY=metric WHERE hostname =~ /$hostname/",
         "refresh": 2,
         "regex": ".*::.*::(\\w+)",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
@@ -340,6 +349,6 @@
   },
   "timezone": "",
   "title": "Interfaces Traffic",
-  "uid": "gITkmapik",
-  "version": 1
+  "uid": "cus0000011",
+  "version": 2
 }
