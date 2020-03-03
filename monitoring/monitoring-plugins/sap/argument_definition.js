@@ -40,7 +40,7 @@ for (i in range(0, len(sap_kpi_parameters))) {
         for (x in range(0, len(value) - 1)) {
             result = result + value[x].to_string() + ",";
         }
-        result = result + value[len(value) - 1].to_string() + " ";
+        result = result + value[len(value) - 1].to_string() + "; ";
     } else {
         log(key + " " + typeof(value).name + " Not yet supported ");
     }
