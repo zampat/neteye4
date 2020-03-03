@@ -12,8 +12,7 @@ host_name = macro("$host.name$");
 service_name = macro("$service.name$");
 pattern = "SAP_KPI_";
 // Extract exactly this service in variable s
-var my_filter = function(s) use(host_name, service_name) { s.name == service_name && s.host_name == host_name }
-s = get_objects(Service).filter(my_filter)[0];
+var s = get_service(host_name, service_name);
 // extract all variables that begins with sap_kpi_<SAP_VARIABLE>, e.g., sap_kpi_it_upper_threshold
 sap_kpi_parameters = s.vars.keys().filter(v => v.upper().find("SAP_KPI_") == 0);
 // extract <SAP_VARIABLE> --> IT_UPPER_THRESHOLD
