@@ -28,6 +28,8 @@
 # and when it becomes a subroutine there is no such thing as the current directory or the same directory as this script
 # eg $0 becomes /usr/sbin/p1.pl no matter where you install this script
 my $conf_file='/etc/check_wmi_plus/check_wmi_plus.conf';
+# Suggested NetEye 4 conf path:
+# my $conf_file='/neteye/shared/monitoring/configs/wmi/etc/check_wmi_plus/check_wmi_plus.conf';
 
 # we are looking for the dir where utils.pm is located. This is normally installed as part of Nagios
 use lib "/usr/lib/nagios/plugins";
