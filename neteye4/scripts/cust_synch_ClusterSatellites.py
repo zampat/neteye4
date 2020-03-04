@@ -7,15 +7,30 @@
 
 import subprocess
 import os
+import argparse
+
+# Arguments
+
+parser = argparse.ArgumentParser(description="Arguments")
+parser.add_argument('--system-files', '-s', dest='system_files', help='Synch System Files', action='store_true')
+parser.add_argument('--files', '-f', dest='files', help='Synch Files', action='store_true')
+parser.add_argument('--remote-command', '-r', dest='remote_commands', help='Run Remote Command', action='store_true')
+
+args=parser.parse_args()
+
+
+
 
 # Python3 code to iterate over a list 
 hosts = ["neteye02p", "neteye03p", "neteye04p"] 
-files = ["/etc/hosts",
-	 "/etc/pki/tls/certs/*.crt",
-	 "/etc/pki/tls/private/*.key",
-	 "/etc/my.cnf.d/neteye.cnf",
-         "/neteye/shared/monitoring"] 
-   
+system_files = ["/etc/hosts",
+         "/etc/pki/tls/certs/*.crt",
+         "/etc/pki/tls/private/*.key"
+        ]
+files = ["/neteye/shared/monitoring",
+         "/neteye/local/icinga2/conf/icinga2/conf.d/dependency*"
+        ]
+
 remote_commands = ["icinga2 daemon --validate && systemctl reload icinga2"
     ]
 
@@ -99,7 +114,16 @@ def run_remote_commands(hosts,remote_commands):
 ########################
 
 #Synchronize files to all hosts
-synch_files(hosts,files)
+#synch_files(hosts,files)
 
 #Run command on all hosts
-run_remote_commands(hosts,remote_commands)
+#run_remote_commands(hosts,remote_commands)
+
+if args.files is True:
+    synch_files(hosts,files)
+
+if args.remote_commands is True:
+    run_remote_commands(hosts,remote_commands)
+    
+#if args.system_files is True:
+#    xxxxxxx

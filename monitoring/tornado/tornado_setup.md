@@ -2,6 +2,21 @@
 
 ## Email collector
 
+Configure `procmail` to accept emails for host. If hostname does not correspond to result from `hostnamectl` register the fqdn in main.cf of postfix:
+```
+# cat /etc/postfix/main.cf
+...
+# INTERNET HOST AND DOMAIN NAMES
+#
+# The myhostname parameter specifies the internet hostname of this
+# mail system. The default is to use the fully-qualified domain name
+# from gethostname(). $myhostname is used as a default value for many
+# other configuration parameters.
+#
+myhostname = cluster_neteye.mydomain.lan
+...
+```
+
 Configure a `procmail` command for an event gateway user i.e. `eventgw`
 ```
 # cat /home/eventgw/.procmailrc

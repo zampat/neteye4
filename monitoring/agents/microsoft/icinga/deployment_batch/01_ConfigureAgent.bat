@@ -11,6 +11,7 @@
 
 :: Optional Parameters: 
 ::%1: Agentname
+::%1: Ticket ba92d84a03eeee31114fbef585f8a3e29853cd99
 
 :: Configure this section
 :: Set constants for your neteye4 environment
@@ -26,7 +27,8 @@ SET ICINGA_AGENT_FILE=Icinga2-v2.10.5-x86_64.msi
 
 
 :: Sample host values
-SET AGENTNAME="%ComputerName%.%USERDNSDOMAIN%"
+SET AGENTNAME="%ComputerName%"
+::SET AGENTNAME="%ComputerName%.%USERDNSDOMAIN%"
 
 :: NO configuration beyond this line
 SET ICINGADATADIR=C:\ProgramData\icinga2
@@ -39,9 +41,10 @@ SET USERHOME=%USERPROFILE%\AppData\Local\Temp
 
 :: Optional: passing computer name and/or ticket via argument
 IF NOT [%1]==[] (
-	SET AGENTNAME=%1
+::	SET AGENTNAME=%1
+	SET AGENTTICKET=%1
 )
-::SET AGENTTICKET=%2
+
 
 
 ::Start of code
@@ -52,39 +55,44 @@ IF [%AGENTNAME%]==[] (
      echo "Impossible to discover hostname"
      goto end
 ) ELSE (
-     Goto getAgent
+     Goto installIcingaAgent
 )
 
-:getAgent
-if exist "%USERHOME%\%ICINGA_AGENT_FILE%" (
-    echo "Icinga2 Agent msi had already been downloaded. Proceeding with install..."
-) else (
-    echo "Icinga2 Agent msi needs to be downloaded. Downloading now..."
-	powershell -command "Invoke-WebRequest -Uri %ICINGA_AGENT_URL%%ICINGA_AGENT_FILE% -Method 'GET' -OutFile %USERHOME%\%ICINGA_AGENT_FILE%"
-)
-goto installIcingaAgent
 
 :installIcingaAgent
-if exist "%USERHOME%\%ICINGA_AGENT_FILE%" (
-	if not exist "%ICINGABINDIR%\icinga2.exe" (
-		echo "Installing Icinga2 Agent now: msiexec /i %USERHOME%\%ICINGA_AGENT_FILE% /quiet"
-		msiexec /i %USERHOME%\%ICINGA_AGENT_FILE% /quiet
-		timeout /t 30
-	) else (
-		echo "Icinga2 Agent already installed"
-	)
-	if not exist "%NSCLIENTBINDIR%\nscp.exe" (
-		echo "NSClient++ is not installed. Installing now: msiexec /i %ICINGABINDIR%\NSCP.msi /quiet /norestart"
-		msiexec /i "%ICINGABINDIR%\NSCP.msi" /quiet /norestart
-		timeout /t 30
-	) else (
-		echo "NSClient++ Agent already installed"
-	)
-	goto getTicket
-) else (
-	echo "Icinga2 Agent msi not found"
-	goto end
+if not exist %USERHOME% (
+	mkdir %USERHOME%
 )
+
+if not exist "%ICINGABINDIR%\icinga2.exe" (
+	
+	echo "Icinga2 Agent is not installed yet. Going to download required %ICINGA_AGENT_FILE% file to %USERHOME%."
+	if exist "%USERHOME%\%ICINGA_AGENT_FILE%" (
+		echo "Icinga2 Agent msi had already been downloaded. Proceeding with install..."
+	) else (
+		echo "Icinga2 Agent msi needs to be downloaded. Downloading now..."
+		powershell -command "Invoke-WebRequest -Uri %ICINGA_AGENT_URL%%ICINGA_AGENT_FILE% -Method 'GET' -OutFile %USERHOME%\%ICINGA_AGENT_FILE%"
+	)
+		
+	if not exist "%USERHOME%\%ICINGA_AGENT_FILE%" (
+		echo "Error downloading required %ICINGA_AGENT_FILE% file. Abort."
+	)
+		
+	echo "Installing Icinga2 Agent now: msiexec /i %USERHOME%\%ICINGA_AGENT_FILE% /quiet"
+	msiexec /i %USERHOME%\%ICINGA_AGENT_FILE% /quiet
+	timeout /t 30
+) else (
+	echo "Icinga2 Agent already installed"
+)
+
+if not exist "%NSCLIENTBINDIR%\nscp.exe" (
+	echo "NSClient++ is not installed. Installing now: msiexec /i %ICINGABINDIR%\NSCP.msi /quiet /norestart"
+	msiexec /i "%ICINGABINDIR%\NSCP.msi" /quiet /norestart
+	timeout /t 30
+) else (
+	echo "NSClient++ Agent already installed"
+)
+goto getTicket
 
  
 :getTicket
@@ -98,9 +106,13 @@ if exist "%USERHOME%\%ICINGA_AGENT_FILE%" (
 ::$basicAuthValue = "Basic $base64"
 ::echo "BasicAuthValue: $basicAuthValue"
 ::$headers = @{ Authorization = $basicAuthValue; 'Accept' = 'application/json'}
-powershell -command "Invoke-WebRequest -Uri %ICINGA_TICKETAPI_URL%?name=%AGENTNAME% -Method 'POST' -Headers @{Authorization = 'Basic ZGlyZWN0b3Jfcm86cWpaMmJYamZiNHFEVkhZU0VjSFpuWg=='; 'Accept' = 'application/json'} -OutFile %USERHOME%\ticket.txt"
 
-set /p AGENTTICKET=< %USERHOME%\ticket.txt
+:: Skip Ticket fetch if passed via argument
+IF [%AGENTTICKET%]==[] (
+	powershell -command "Invoke-WebRequest -Uri %ICINGA_TICKETAPI_URL%?name=%AGENTNAME% -Method 'POST' -Headers @{Authorization = 'Basic ZGlyZWN0b3Jfcm86c2VjcmV0'; 'Accept' = 'application/json'} -OutFile %USERHOME%\ticket.txt"
+
+	set /p AGENTTICKET=< %USERHOME%\ticket.txt
+)
 
 echo "Start to register host %AGENTNAME% with Ticket: %AGENTTICKET%"
 

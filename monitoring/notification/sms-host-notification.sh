@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Copyright (C) 2012-2018 Icinga Development Team (https://icinga.com/)
-# Except of function urlencode which is Copyright (C) by Brian White (brian@aljex.com) used under MIT license 
+# Except of function urlencode which is Copyright (C) by Brian White (brian@aljex.com) used under MIT license
 
 PROG="`basename $0`"
 ICINGA2HOST="`hostname`"
@@ -92,33 +92,30 @@ shift $((OPTIND - 1))
 
 ## Keep formatting in sync with mail-service-notification.sh
 for P in LONGDATETIME HOSTNAME HOSTDISPLAYNAME HOSTOUTPUT HOSTSTATE USERMOBILE NOTIFICATIONTYPE ; do
-	eval "PAR=\$${P}"
+        eval "PAR=\$${P}"
 
-	if [ ! "$PAR" ] ; then
-		Error "Required parameter '$P' is missing."
-	fi
+        if [ ! "$PAR" ] ; then
+                Error "Required parameter '$P' is missing."
+        fi
 done
 
 ## Build the message's subject
-SUBJECT="[$NOTIFICATIONTYPE] Host $HOSTDISPLAYNAME is $HOSTSTATE!"
+SUBJECT="NetEye [$NOTIFICATIONTYPE] Host $HOSTDISPLAYNAME is $HOSTSTATE!"
 
 ## Build the notification message
-NOTIFICATION_MESSAGE=`cat << EOF
-$HOSTNAME is $HOSTSTATE!
-When:    $LONGDATETIME
-EOF
-`
+NOW=$(date +%H:%M" "%d-%b-%Y)
+NOTIFICATION_MESSAGE="When: $NOW  Value: $HOSTOUTPUT"
 
 ## Check whether IPv4 was specified.
 if [ -n "$HOSTADDRESS" ] ; then
   NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
-IPv4:	 $HOSTADDRESS"
+IPv4:    $HOSTADDRESS"
 fi
 
 ## Check whether IPv6 was specified.
 if [ -n "$HOSTADDRESS6" ] ; then
   NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
-IPv6:	 $HOSTADDRESS6"
+IPv6:    $HOSTADDRESS6"
 fi
 
 ### Check whether author and comment was specified.
@@ -156,6 +153,9 @@ fi
 #  fi
 #
 #else
-  /usr/bin/printf "%b" "$NOTIFICATION_MESSAGE" \
-  | $SMSBIN $USERMOBILE "$SUBJECT" 
+  #/usr/bin/printf "%b" "$NOTIFICATION_MESSAGE"  | $SMSBIN $USERMOBILE "$SUBJECT"
+  # modificato da VALU - 25-06-2019 ###
+/usr/bin/printf "%b" " "  | $SMSBIN $USERMOBILE "$SUBJECT $NOTIFICATION_MESSAGE"
 #fi
+# copia i messaggi in un file di log - LV 21-06-2019-
+ /usr/bin/printf "%b" "$SUBJECT $USERMOBILE $NOTIFICATION_MESSAGE \n \n" >> /tmp/sms-temp.log

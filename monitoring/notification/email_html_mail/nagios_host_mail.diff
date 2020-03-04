@@ -1,0 +1,47 @@
+--- Nagios-Responsive-HTML-Email-Notifications.orig/php-html-email/nagios_host_mail	2019-01-15 15:00:42.425507833 +0100
++++ Nagios-Responsive-HTML-Email-Notifications/php-html-email/nagios_host_mail	2019-01-15 15:00:08.127150906 +0100
+@@ -164,7 +164,7 @@
+ /* Build the Nagios alert/notification, email body/content */
+ /* NONE HTML EMAIL CONTENT */
+ $message = '
+-***** Nagios *****
++***** NetEye *****
+ 
+ Notification Type: ' .$f_notify_type. '
+ Hostname: ' .$f_host_name. '
+@@ -188,7 +188,7 @@
+ <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+ <head>
+     <meta charset="utf-8">
+-    <meta name="description" content="Nagios Email Notification Alert">
++    <meta name="description" content="NetEye Email Notification Alert">
+     <meta name="viewport" content="width=device-width">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="x-apple-disable-message-reformatting">
+@@ -429,6 +429,7 @@
+                 </tbody>
+               <td style="font-size:16px;vertical-align:top;">&nbsp;</td>
+             </table>
++	    <!-- Do not show Altert subject and color again
+             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;-webkit-border-bottom-right-radius: 25px;-webkit-border-bottom-left-radius: 25px;-moz-border-bottom-right-radius: 25px;-moz-border-bottom-left-radius: 25px;border-bottom-right-radius: 25px;border-bottom-left-radius: 25px;">
+               <tbody>
+                 <tr>
+@@ -443,6 +444,7 @@
+                 </tr>
+               </tbody>
+             </table>
++	    -->
+ 					</td>
+ 				</tr>
+ 			</table>
+@@ -479,8 +481,8 @@
+ $mail->Host = 'localhost';	// Specify main and backup SMTP servers
+ $mail->SMTPAuth = false; // Enable SMTP authentication
+ 
+-$mail->From = 'nagios@localhost.com';
+-$mail->FromName = 'Nagios';
++$mail->From = 'neteye.monitoring@neteye.local';
++$mail->FromName = 'NetEye';
+ $mail->addAddress($f_to); // Add a recipient + Name is optional "$mail->addAddress('joe@example.net', 'Joe User');"
+ $mail->isHTML(true); // Set email format to HTML
+ $mail->WordWrap = 50; // Set word wrap to 50 characters

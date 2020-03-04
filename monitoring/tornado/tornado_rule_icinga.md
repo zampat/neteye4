@@ -4,8 +4,13 @@ Having completed the setup and a simple archive rule, we can extend this concept
 
 Assume having a host "event_results" and a passive service "test event status"
 
+- define an api user role for tornado
 - copy previous rule into a new file with HIGHER number i.e. 002- and 003-
 - define action of type icinga and filter for desired host/service
+
+### Define Icinga2 API user
+
+Define a new api user with suitable permissions.
 
 ### Define rule action
 
