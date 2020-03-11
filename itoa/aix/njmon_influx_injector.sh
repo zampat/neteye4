@@ -16,7 +16,19 @@
 NJMON_PERFDATA_PATH="/var/log/njmon"
 NJMON_BIN_PATH="/usr/local/njmon"
 
-ARCHIVE_PERFDATA_RETENTION="2"
+#Archive duration in days
+ARCHIVE_PERFDATA_RETENTION="1"
+
+# Verify if another process already running
+PS_CNT=`/usr/bin/ps aux | grep -v grep | grep njmon_influx_injector.sh | wc -l`
+if [ ${PS_CNT} -gt 2 ]
+then
+   echo "Another /usr/local/njmon/njmon_influx_injector.sh is already running. Abort this start now ..."
+   echo `/usr/bin/ps aux | grep -v grep | grep njmon_influx_injector.sh`
+   echo "Another /usr/local/njmon/njmon_influx_injector.sh is already running. Abort this start now ..." >> ${NJMON_PERFDATA_PATH}/njmon_influx_injector.log 
+   exit 1
+fi
+
 
 # Activate virtualenv, execute command, deactivate virtualenv
 source ${NJMON_BIN_PATH}/influxdb/bin/activate
