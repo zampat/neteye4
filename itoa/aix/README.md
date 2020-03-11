@@ -27,8 +27,9 @@ https://sourceforge.net/projects/nmon/files/
 Pre-comiled Binary approach:
 - Unzip njmon_aix_binaries_v21.zip and place binary for suitable AIX version 6.x or 7.x
 - Define Path for Program code: /usr/local/njmon/
-- Place njmon binary: i.e. /usr/local/njmon/njmon_aix71_v21
+- Place njmon binary and executable (755): i.e. /usr/local/njmon/njmon_aix71_v22
 - Place job run script and set execution rights (755): i.e. /usr/local/njmon/run_njmon_job.sh
+- Create output folder for njmon job. Default: /usr/local/njmon. Checkin run_njmon_job.sh
 
 ```
 # ls -la /usr/local/njmon/
