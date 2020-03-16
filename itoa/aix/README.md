@@ -29,7 +29,7 @@ Pre-comiled Binary approach:
 - Define Path for Program code: /usr/local/njmon/
 - Place njmon binary and executable (755): i.e. /usr/local/njmon/njmon_aix71_v22
 - Place job run script and set execution rights (755): i.e. /usr/local/njmon/run_njmon_job.sh
-- Create output folder for njmon job. Default: /usr/local/njmon. Checkin run_njmon_job.sh
+- Create output folder for njmon job. Default: /var/log/njmon. Checkin run_njmon_job.sh
 
 ```
 # ls -la /usr/local/njmon/

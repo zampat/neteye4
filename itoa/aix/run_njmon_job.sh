@@ -28,6 +28,7 @@ POLL_CYCLES="28"
 
 #Default paths
 PERFDATA_PATH="/var/log/njmon/"
+NJMON_BIN="/usr/local/njmon/njmon_aix722_v21"
 ARCHIVE_PERFDATA_PATH="/tmp/njmon"
 ARCHIVE_PERFDATA_RETENTION="2"
 
@@ -53,4 +54,4 @@ find ${ARCHIVE_PERFDATA_PATH}/ -mtime +${ARCHIVE_PERFDATA_RETENTION} -type f -na
 
 
 # Run job with following frequency
-/usr/local/njmon/njmon_aix71_v21 -s ${POLL_FREQUENCY} -c ${POLL_CYCLES} -m ${PERFDATA_PATH} -f > /dev/null 2>&1
+${NJMON_BIN} -s ${POLL_FREQUENCY} -c ${POLL_CYCLES} -m ${PERFDATA_PATH} -f > /dev/null 2>&1
