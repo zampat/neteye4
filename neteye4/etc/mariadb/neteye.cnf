@@ -1,0 +1,23 @@
+[mysqld]
+innodb_adaptive_hash_index=0
+max_allowed_packet                      = 64M 
+max-connect-errors                      = 1000000
+tmp_table_size                          = 2G
+max_heap_table_size                     = 2G
+max-connections                         = 200
+open-files-limit                        = 65535
+table-definition-cache                  = 4096
+table-open-cache                        = 4096
+innodb-flush-method                     = O_DIRECT
+innodb-log-files-in-group               = 2
+innodb_log_file_size                    = 1GB      
+innodb-flush-log-at-trx-commit          = 2
+innodb-file-per-table                   = 1
+innodb_buffer_pool_size                 = 32GB
+innodb_log_buffer_size                  = 4M
+innodb_sort_buffer_size                 = 16000000
+sort_buffer_size                        = 32M
+innodb_thread_concurrency               = 0 
+
+
+
