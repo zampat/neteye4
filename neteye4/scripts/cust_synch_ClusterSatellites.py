@@ -8,6 +8,7 @@
 import subprocess
 import os
 import argparse
+import sys
 
 # Arguments
 
@@ -19,6 +20,25 @@ parser.add_argument('--remote-command', '-r', dest='remote_commands', help='Run 
 args=parser.parse_args()
 
 
+
+def helpOption():
+
+    print("\nERROR  No arguments ERROR\n")
+    print("cust_synch_ClusterSatellites.py [-h] [--system-files] [--files] [--remote-command]")
+    print("--system-files / -s      Synch System Files")
+    #print("--files / -f            Synch Files")
+    print("--remote-command / -r    Run Remote Command\n")
+    print("\nExample:\n")
+    print("python cust_synch_ClusterSatellites.py -s")
+    print("python cust_synch_ClusterSatellites.py -r\n")
+
+
+
+
+# The list of command line arguments passed to a Python script. argv[0] is the script name. So:
+if len(sys.argv) == 1:
+    helpOption()
+    sys.exit(1)
 
 
 # Python3 code to iterate over a list 
