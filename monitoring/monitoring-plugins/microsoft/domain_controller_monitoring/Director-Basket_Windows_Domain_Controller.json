@@ -1,0 +1,867 @@
+{
+    "Command": {
+        "check_ldap": {
+            "arguments": {
+                "-3": {
+                    "description": "Use LDAP protocol version 3",
+                    "set_if": "$ldap_v3$"
+                },
+                "-2": {
+                    "description": "Use LDAP protocol version 2",
+                    "set_if": "$ldap_v2$"
+                },
+                "-C": {
+                    "description": "Number of found entries to result in critical status (optional)",
+                    "value": "$ldap_critical_entries$"
+                },
+                "-D": {
+                    "description": "ldap bind DN (if required)",
+                    "value": "$ldap_bind$"
+                },
+                "-H": {
+                    "description": "Host name, IP Address, or unix socket (must be an absolute path)",
+                    "value": "$host.address$"
+                },
+                "-P": {
+                    "description": "ldap password (if required)",
+                    "value": "$ldap_pass$"
+                },
+                "-S": {
+                    "description": "use ldaps (ldap v2 ssl method). this also sets the default port to 636",
+                    "set_if": "$ldap_ssl$"
+                },
+                "-T": {
+                    "description": "use starttls mechanism introduced in protocol version 3",
+                    "set_if": "$ldap_starttls$"
+                },
+                "-W": {
+                    "description": "Number of found entries to result in warning status (optional)",
+                    "value": "$ldap_warning_entries$"
+                },
+                "-a": {
+                    "description": "ldap attribute to search (default: \"(objectclass=*)\"",
+                    "value": "$ldap_attr$"
+                },
+                "-b": {
+                    "description": "ldap base (eg. ou=my unit, o=my org, c=at",
+                    "required": true,
+                    "value": "$ldap_base$"
+                },
+                "-c": {
+                    "description": "Response time to result in critical status (seconds)",
+                    "value": "$ldap_critical$"
+                },
+                "-p": {
+                    "description": "Port number (default: 389)",
+                    "value": "$ldap_port$"
+                },
+                "-t": {
+                    "description": "Seconds before connection times out (default: 10)",
+                    "value": "$ldap_timeout$"
+                },
+                "-v": {
+                    "description": "Show details for command-line debugging",
+                    "set_if": "$ldap_verbose$"
+                },
+                "-w": {
+                    "description": "Response time to result in warning status (seconds)",
+                    "value": "$ldap_warning$"
+                }
+            },
+            "command": "check_ldap",
+            "disabled": false,
+            "fields": [
+                {
+                    "datafield_id": 10011,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10012,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10013,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10014,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10015,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "check_ldap",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {
+                "check_address": {
+                    "arguments": [],
+                    "deprecated": false,
+                    "name": "<anonymous>",
+                    "side_effect_free": false,
+                    "type": "Function"
+                },
+                "check_ipv4": false,
+                "check_ipv6": false,
+                "ldap_address": "$check_address$",
+                "ldap_timeout": 10,
+                "ldap_v2": true,
+                "ldap_v3": false,
+                "ldap_verbose": false
+            },
+            "zone": null
+        },
+        "check_ntp_time": {
+            "arguments": {
+                "-6": {
+                    "description": "Use IPv6 connection",
+                    "set_if": "$ntp_ipv6$"
+                },
+                "-4": {
+                    "description": "Use IPv4 connection",
+                    "set_if": "$ntp_ipv4$"
+                },
+                "-H": {
+                    "description": "Host name, IP Address, or unix socket (must be an absolute path)",
+                    "value": "$host.address$"
+                },
+                "-c": {
+                    "description": "Offset to result in critical status (seconds)",
+                    "value": "$ntp_critical$"
+                },
+                "-o": {
+                    "description": "Expected offset of the ntp server relative to local server (seconds)",
+                    "value": "$ntp_timeoffset$"
+                },
+                "-p": {
+                    "description": "Port number (default: 123)",
+                    "value": "$ntp_port$"
+                },
+                "-q": {
+                    "description": "Returns UNKNOWN instead of CRITICAL if offset cannot be found",
+                    "set_if": "$ntp_quiet$"
+                },
+                "-t": {
+                    "description": "Seconds before connection times out (default: 10)",
+                    "value": "$ntp_timeout$"
+                },
+                "-w": {
+                    "description": "Offset to result in warning status (seconds)",
+                    "value": "$ntp_warning$"
+                }
+            },
+            "command": "check_ntp_time",
+            "disabled": false,
+            "fields": [
+                {
+                    "datafield_id": 10016,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10018,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10017,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "check_ntp_time",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {
+                "check_address": {
+                    "arguments": [],
+                    "deprecated": false,
+                    "name": "<anonymous>",
+                    "side_effect_free": false,
+                    "type": "Function"
+                },
+                "check_ipv4": "$ntp_ipv4$",
+                "check_ipv6": "$ntp_ipv6$",
+                "ntp_address": "$check_address$"
+            },
+            "zone": null
+        }
+    },
+    "ServiceTemplate": {
+        "LDAP": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_ldap",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "LDAP",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "ldap_address": "$host.address$",
+                "ldap_attr": "(&(objectClass=user)(samaccountname=neteye))",
+                "ldap_base": "dc=mydomain,dc=local",
+                "ldap_bind": "neteye@mydomain.local",
+                "ldap_pass": "MYPASSWORD",
+                "ldap_port": "389"
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "LDAP: Global Catalog": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_ldap",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "LDAP"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "LDAP: Global Catalog",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "ldap_address": "$host.address$",
+                "ldap_port": "3268"
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "DNS": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "dns",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "DNS",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "dns_lookup": "$host.address$",
+                "dns_server": "$host.address$"
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "DNS www.google.com": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "dns",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "DNS www.google.com",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "dns_lookup": "www.google.com",
+                "dns_server": "$host.address$"
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "NTP: offset check": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_ntp_time",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "NTP: offset check",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "ntp_address": "$host.address$",
+                "ntp_critical": "1",
+                "ntp_warning": "1"
+            },
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "ServiceSet": {
+        "Windows Agent Domain Controller": {
+            "assign_filter": null,
+            "description": "Windows Agent Domain Controller",
+            "object_name": "Windows Agent Domain Controller",
+            "object_type": "template",
+            "services": {
+                "LDAP": {
+                    "action_url": null,
+                    "apply_for": null,
+                    "assign_filter": null,
+                    "check_command": null,
+                    "check_interval": null,
+                    "check_period": null,
+                    "check_timeout": null,
+                    "command_endpoint": null,
+                    "disabled": false,
+                    "display_name": null,
+                    "enable_active_checks": null,
+                    "enable_event_handler": null,
+                    "enable_flapping": null,
+                    "enable_notifications": null,
+                    "enable_passive_checks": null,
+                    "enable_perfdata": null,
+                    "event_command": null,
+                    "fields": [],
+                    "flapping_threshold_high": null,
+                    "flapping_threshold_low": null,
+                    "groups": [],
+                    "host": null,
+                    "icon_image": null,
+                    "icon_image_alt": null,
+                    "imports": [
+                        "LDAP"
+                    ],
+                    "max_check_attempts": null,
+                    "notes": null,
+                    "notes_url": null,
+                    "object_name": "LDAP",
+                    "object_type": "object",
+                    "retry_interval": null,
+                    "service_set": null,
+                    "template_choice": null,
+                    "use_agent": null,
+                    "use_var_overrides": null,
+                    "vars": {},
+                    "volatile": null,
+                    "zone": null
+                },
+                "LDAP: Global Catalog": {
+                    "action_url": null,
+                    "apply_for": null,
+                    "assign_filter": null,
+                    "check_command": null,
+                    "check_interval": null,
+                    "check_period": null,
+                    "check_timeout": null,
+                    "command_endpoint": null,
+                    "disabled": false,
+                    "display_name": null,
+                    "enable_active_checks": null,
+                    "enable_event_handler": null,
+                    "enable_flapping": null,
+                    "enable_notifications": null,
+                    "enable_passive_checks": null,
+                    "enable_perfdata": null,
+                    "event_command": null,
+                    "fields": [],
+                    "flapping_threshold_high": null,
+                    "flapping_threshold_low": null,
+                    "groups": [],
+                    "host": null,
+                    "icon_image": null,
+                    "icon_image_alt": null,
+                    "imports": [
+                        "LDAP: Global Catalog"
+                    ],
+                    "max_check_attempts": null,
+                    "notes": null,
+                    "notes_url": null,
+                    "object_name": "LDAP: Global Catalog",
+                    "object_type": "object",
+                    "retry_interval": null,
+                    "service_set": null,
+                    "template_choice": null,
+                    "use_agent": null,
+                    "use_var_overrides": null,
+                    "vars": {},
+                    "volatile": null,
+                    "zone": null
+                },
+                "DNS Internal": {
+                    "action_url": null,
+                    "apply_for": null,
+                    "assign_filter": null,
+                    "check_command": null,
+                    "check_interval": null,
+                    "check_period": null,
+                    "check_timeout": null,
+                    "command_endpoint": null,
+                    "disabled": false,
+                    "display_name": null,
+                    "enable_active_checks": null,
+                    "enable_event_handler": null,
+                    "enable_flapping": null,
+                    "enable_notifications": null,
+                    "enable_passive_checks": null,
+                    "enable_perfdata": null,
+                    "event_command": null,
+                    "fields": [],
+                    "flapping_threshold_high": null,
+                    "flapping_threshold_low": null,
+                    "groups": [],
+                    "host": null,
+                    "icon_image": null,
+                    "icon_image_alt": null,
+                    "imports": [
+                        "DNS"
+                    ],
+                    "max_check_attempts": null,
+                    "notes": null,
+                    "notes_url": null,
+                    "object_name": "DNS Internal",
+                    "object_type": "object",
+                    "retry_interval": null,
+                    "service_set": null,
+                    "template_choice": null,
+                    "use_agent": null,
+                    "use_var_overrides": null,
+                    "vars": {},
+                    "volatile": null,
+                    "zone": null
+                },
+                "DNS www.google.com": {
+                    "action_url": null,
+                    "apply_for": null,
+                    "assign_filter": null,
+                    "check_command": null,
+                    "check_interval": null,
+                    "check_period": null,
+                    "check_timeout": null,
+                    "command_endpoint": null,
+                    "disabled": false,
+                    "display_name": null,
+                    "enable_active_checks": null,
+                    "enable_event_handler": null,
+                    "enable_flapping": null,
+                    "enable_notifications": null,
+                    "enable_passive_checks": null,
+                    "enable_perfdata": null,
+                    "event_command": null,
+                    "fields": [],
+                    "flapping_threshold_high": null,
+                    "flapping_threshold_low": null,
+                    "groups": [],
+                    "host": null,
+                    "icon_image": null,
+                    "icon_image_alt": null,
+                    "imports": [
+                        "DNS www.google.com"
+                    ],
+                    "max_check_attempts": null,
+                    "notes": null,
+                    "notes_url": null,
+                    "object_name": "DNS www.google.com",
+                    "object_type": "object",
+                    "retry_interval": null,
+                    "service_set": null,
+                    "template_choice": null,
+                    "use_agent": null,
+                    "use_var_overrides": null,
+                    "vars": {},
+                    "volatile": null,
+                    "zone": null
+                },
+                "NTP: offset check": {
+                    "action_url": null,
+                    "apply_for": null,
+                    "assign_filter": null,
+                    "check_command": null,
+                    "check_interval": null,
+                    "check_period": null,
+                    "check_timeout": null,
+                    "command_endpoint": null,
+                    "disabled": false,
+                    "display_name": null,
+                    "enable_active_checks": null,
+                    "enable_event_handler": null,
+                    "enable_flapping": null,
+                    "enable_notifications": null,
+                    "enable_passive_checks": null,
+                    "enable_perfdata": null,
+                    "event_command": null,
+                    "fields": [],
+                    "flapping_threshold_high": null,
+                    "flapping_threshold_low": null,
+                    "groups": [],
+                    "host": null,
+                    "icon_image": null,
+                    "icon_image_alt": null,
+                    "imports": [
+                        "NTP: offset check"
+                    ],
+                    "max_check_attempts": null,
+                    "notes": null,
+                    "notes_url": null,
+                    "object_name": "NTP: offset check",
+                    "object_type": "object",
+                    "retry_interval": null,
+                    "service_set": null,
+                    "template_choice": null,
+                    "use_agent": null,
+                    "use_var_overrides": null,
+                    "vars": {},
+                    "volatile": null,
+                    "zone": null
+                },
+                "Agent_Win_Service_ADWS": {
+                    "action_url": null,
+                    "apply_for": null,
+                    "assign_filter": null,
+                    "check_command": null,
+                    "check_interval": null,
+                    "check_period": null,
+                    "check_timeout": null,
+                    "command_endpoint": null,
+                    "disabled": false,
+                    "display_name": null,
+                    "enable_active_checks": null,
+                    "enable_event_handler": null,
+                    "enable_flapping": null,
+                    "enable_notifications": null,
+                    "enable_passive_checks": null,
+                    "enable_perfdata": null,
+                    "event_command": null,
+                    "fields": [],
+                    "flapping_threshold_high": null,
+                    "flapping_threshold_low": null,
+                    "groups": [],
+                    "host": null,
+                    "icon_image": null,
+                    "icon_image_alt": null,
+                    "imports": [
+                        "windows-generic-service"
+                    ],
+                    "max_check_attempts": null,
+                    "notes": null,
+                    "notes_url": null,
+                    "object_name": "Agent_Win_Service_ADWS",
+                    "object_type": "object",
+                    "retry_interval": null,
+                    "service_set": null,
+                    "template_choice": null,
+                    "use_agent": null,
+                    "use_var_overrides": null,
+                    "vars": {
+                        "service_win_service": [
+                            "ADWS"
+                        ]
+                    },
+                    "volatile": null,
+                    "zone": null
+                },
+                "Agent_Win_Service_NTDS": {
+                    "action_url": null,
+                    "apply_for": null,
+                    "assign_filter": null,
+                    "check_command": null,
+                    "check_interval": null,
+                    "check_period": null,
+                    "check_timeout": null,
+                    "command_endpoint": null,
+                    "disabled": false,
+                    "display_name": null,
+                    "enable_active_checks": null,
+                    "enable_event_handler": null,
+                    "enable_flapping": null,
+                    "enable_notifications": null,
+                    "enable_passive_checks": null,
+                    "enable_perfdata": null,
+                    "event_command": null,
+                    "fields": [],
+                    "flapping_threshold_high": null,
+                    "flapping_threshold_low": null,
+                    "groups": [],
+                    "host": null,
+                    "icon_image": null,
+                    "icon_image_alt": null,
+                    "imports": [
+                        "windows-generic-service"
+                    ],
+                    "max_check_attempts": null,
+                    "notes": null,
+                    "notes_url": null,
+                    "object_name": "Agent_Win_Service_NTDS",
+                    "object_type": "object",
+                    "retry_interval": null,
+                    "service_set": null,
+                    "template_choice": null,
+                    "use_agent": null,
+                    "use_var_overrides": null,
+                    "vars": {
+                        "service_win_service": [
+                            "NTDS"
+                        ]
+                    },
+                    "volatile": null,
+                    "zone": null
+                },
+                "Agent_Win_Service_kdc": {
+                    "action_url": null,
+                    "apply_for": null,
+                    "assign_filter": null,
+                    "check_command": null,
+                    "check_interval": null,
+                    "check_period": null,
+                    "check_timeout": null,
+                    "command_endpoint": null,
+                    "disabled": false,
+                    "display_name": null,
+                    "enable_active_checks": null,
+                    "enable_event_handler": null,
+                    "enable_flapping": null,
+                    "enable_notifications": null,
+                    "enable_passive_checks": null,
+                    "enable_perfdata": null,
+                    "event_command": null,
+                    "fields": [],
+                    "flapping_threshold_high": null,
+                    "flapping_threshold_low": null,
+                    "groups": [],
+                    "host": null,
+                    "icon_image": null,
+                    "icon_image_alt": null,
+                    "imports": [
+                        "windows-generic-service"
+                    ],
+                    "max_check_attempts": null,
+                    "notes": null,
+                    "notes_url": null,
+                    "object_name": "Agent_Win_Service_kdc",
+                    "object_type": "object",
+                    "retry_interval": null,
+                    "service_set": null,
+                    "template_choice": null,
+                    "use_agent": null,
+                    "use_var_overrides": null,
+                    "vars": {
+                        "service_win_service": [
+                            "kdc"
+                        ]
+                    },
+                    "volatile": null,
+                    "zone": null
+                }
+            }
+        }
+    },
+    "Datafield": {
+        "10011": {
+            "varname": "ldap_attr",
+            "caption": "ldap_attr",
+            "description": "ldap attribute to search (default: \"(objectclass=*)\"",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10011",
+            "settings": {}
+        },
+        "10012": {
+            "varname": "ldap_base",
+            "caption": "ldap_base",
+            "description": "ldap base (eg. ou=my unit, o=my org, c=at",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10012",
+            "settings": {}
+        },
+        "10013": {
+            "varname": "ldap_bind",
+            "caption": "ldap_bind",
+            "description": "ldap bind DN (if required)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10013",
+            "settings": {}
+        },
+        "10014": {
+            "varname": "ldap_pass",
+            "caption": "ldap_pass",
+            "description": "ldap password (if required)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10014",
+            "settings": {}
+        },
+        "10015": {
+            "varname": "ldap_port",
+            "caption": "ldap_port",
+            "description": "Port number (default: 389)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10015",
+            "settings": {}
+        },
+        "10016": {
+            "varname": "ntp_address",
+            "caption": "ntp_address",
+            "description": "Host name, IP Address, or unix socket (must be an absolute path)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10016",
+            "settings": {}
+        },
+        "10018": {
+            "varname": "ntp_critical",
+            "caption": "ntp_critical",
+            "description": "Offset to result in critical status (seconds)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10018",
+            "settings": {}
+        },
+        "10017": {
+            "varname": "ntp_warning",
+            "caption": "ntp_warning",
+            "description": "Offset to result in warning status (seconds)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10017",
+            "settings": {}
+        }
+    }
+}
