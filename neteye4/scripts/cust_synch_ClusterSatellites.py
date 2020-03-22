@@ -8,17 +8,38 @@
 import subprocess
 import os
 import argparse
+import sys
 
 # Arguments
 
 parser = argparse.ArgumentParser(description="Arguments")
-parser.add_argument('--system-files', '-s', dest='system_files', help='Synch System Files', action='store_true')
-parser.add_argument('--files', '-f', dest='files', help='Synch Files', action='store_true')
+parser.add_argument('--system-files', '-s', dest='system_files', help='Synch System Files for ex. /etc/hosts', action='store_true')
+parser.add_argument('--files', '-f', dest='files', help='Synch Files for ex. Monitoring Plugins', action='store_true')
 parser.add_argument('--remote-command', '-r', dest='remote_commands', help='Run Remote Command', action='store_true')
 
 args=parser.parse_args()
 
 
+
+def helpOption():
+
+    print("\nERROR  No arguments ERROR\n")
+    print("cust_synch_ClusterSatellites.py [-h] [--system-files] [--files] [--remote-command]")
+    print("--system-files / -s      Synch System Files for ex. /etc/hosts")
+    print("--files / -f             Synch Files for ex. Monitoring Plugins")
+    print("--remote-command / -r    Run Remote Command\n")
+    print("\nExample:\n")
+    print("python cust_synch_ClusterSatellites.py -s")
+    print("python cust_synch_ClusterSatellites.py -f")
+    print("python cust_synch_ClusterSatellites.py -r\n")
+
+
+
+
+# The list of command line arguments passed to a Python script. argv[0] is the script name. So:
+if len(sys.argv) == 1:
+    helpOption()
+    sys.exit(1)
 
 
 # Python3 code to iterate over a list 
@@ -124,6 +145,6 @@ if args.files is True:
 
 if args.remote_commands is True:
     run_remote_commands(hosts,remote_commands)
-    
-#if args.system_files is True:
-#    xxxxxxx
+
+if args.system_files is True:
+    synch_files(hosts,system_files)
