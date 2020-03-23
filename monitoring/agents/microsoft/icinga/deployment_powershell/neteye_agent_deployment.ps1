@@ -21,27 +21,27 @@ param(
 )
 
 ##### Settings regarding connection to NetEye hosts #####
-[bool]$avoid_https_requests = $TRUE 
+[bool]$avoid_https_requests = $FALSE 
 
 ##### Actions to perform ####
 
 # Required in case of invalid HTTPS Server certificate. Then all required files need to be provided in work directory.
-[bool]$action_uninstall_Icinga2_agent = $FALSE
+[bool]$action_uninstall_Icinga2_agent = $TRUE
 [bool]$action_install_Icinga2_agent = $TRUE
 
 
-[bool]$action_install_OCS_agent = $FALSE
+[bool]$action_install_OCS_agent = $TRUE
 
 
 
 ##### Other customizings and settings ####
 # If variable is set the corresponding action is started.
-
+[string]$url_icinga2agent_path = "https://${neteye4host}/neteyeshare/monitoring/agents/microsoft/icinga"
 # The icinga2 service users is overriden.
 [string]$icinga2agent_service_name = "LocalSystem"
 
 # Download extra Plugins if String is filled with values
-[string]$url_mon_extra_plugins = "$url_icinga2agent_path/monitoring_plugins/monitoring_plugins.zip"
+[string]$url_mon_extra_plugins = "${url_icinga2agent_path}/monitoring_plugins/monitoring_plugins.zip"
 
 # Fetch custom nsclient.ini
 [string]$url_icinga2agent_nsclient_ini = "${url_icinga2agent_path}/configs/nsclient.ini"
@@ -54,7 +54,6 @@ param(
 
 [string]$log_file = "${workpath}\neteye_agent_deployment.log"
 
-[string]$url_icinga2agent_path = "https://${neteye4host}/neteyeshare/monitoring/agents/microsoft/icinga"
 [string]$url_icinga2agent_psm = "${url_icinga2agent_path}/deployment_scripts/Icinga2Agent.psm1"
 
 [string]$url_neteye4director = "https://${neteye4host}/neteye/director/"
@@ -105,7 +104,7 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
 
     if (-not $avoid_https_requests){
 
-        Write-Host "Going to download $url_icinga2agent_psm ...."
+        Write-Host "Going to download $url_icinga2agent_psm .... -OutFile $icinga2agent_psm1_file"
         Invoke-WebRequest -Uri $url_icinga2agent_psm -OutFile $icinga2agent_psm1_file
     } else {
         Write-Host "Offline mode: Avoid to download $url_icinga2agent_psm."
@@ -136,14 +135,26 @@ if ( $action_uninstall_Icinga2_agent -eq $TRUE ){
 # Section: Install Icinga2 Agent via PowerShell Module
 if ( $action_install_Icinga2_agent -eq $TRUE ){
 
+    #Sample to override the host address by hostname fqdn in lowercase format
+    $json = @{ "address"="&fqdn.lowerCase&"; "display_name"= "&hostname.lowerCase&"};
+
     # Perform the setup of Icinga2 Agent via PowerShell module
-    $module_call = "-DirectorUrl $url_neteye4director -DirectorAuthToken $director_token -IcingaServiceUser $icinga2agent_service_name -NSClientEnableFirewall = $TRUE -NSClientEnableService = $TRUE -IgnoreSSLErrors -RunInstaller"
+    $module_call = "-DirectorUrl $url_neteye4director -DirectorAuthToken $director_token -IcingaServiceUser $icinga2agent_service_name -NSClientEnableFirewall -NSClientEnableService -RunInstaller -DirectorHostObject $json"
+
     echo "Invoking Icinga2Agent setup with parameters: $module_call" | Out-File -FilePath "$log_file" -Append
     Write-Host "Invoking Icinga2Agent setup with parameters: $module_call"
 
-    Icinga2AgentModule -DirectorUrl $url_neteye4director -DirectorAuthToken $director_token -IcingaServiceUser $icinga2agent_service_name -NSClientEnableFirewall = $TRUE -NSClientEnableService = $TRUE -IgnoreSSLErrors -RunInstaller
+    Icinga2AgentModule -DirectorUrl $url_neteye4director -DirectorAuthToken $director_token -IcingaServiceUser $icinga2agent_service_name -NSClientEnableFirewall -NSClientEnableService -RunInstaller -DirectorHostObject $json
 
-    # EXperimental
+    #Available parameters:
+    #Icinga2AgentModule `
+    #-DirectorUrl       $url_neteye4director `
+    #-DirectorAuthToken $director_token `
+    #-RunInstaller `
+    #-DirectorHostObject $json `
+    #-IgnoreSSLErrors
+
+    # Experimental
     # IF defined: Override the Icinga2 Agent service user logOn
     #if ($icinga2agent_service_name.Length -gt 1){
     #
