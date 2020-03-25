@@ -30,7 +30,8 @@ POLL_CYCLES="28"
 PERFDATA_PATH="/var/log/njmon/"
 NJMON_BIN="/usr/local/njmon/njmon_aix722_v21"
 ARCHIVE_PERFDATA_PATH="/tmp/njmon"
-ARCHIVE_PERFDATA_RETENTION="2"
+# Retention in minutes
+ARCHIVE_PERFDATA_RETENTION="60"
 
 #Start of program execution
 if [ ! -d ${ARCHIVE_PERFDATA_PATH} ]
@@ -49,8 +50,8 @@ else
 fi
 
 #Cleanup process to remove old files from tmp archive
-find ${ARCHIVE_PERFDATA_PATH}/ -mtime +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.json" -exec rm {} \;
-find ${ARCHIVE_PERFDATA_PATH}/ -mtime +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.err" -exec rm {} \;
+find ${ARCHIVE_PERFDATA_PATH}/ -mmin +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.json" -exec rm {} \;
+find ${ARCHIVE_PERFDATA_PATH}/ -mmin +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.err" -exec rm {} \;
 
 
 # Run job with following frequency
