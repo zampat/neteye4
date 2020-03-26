@@ -9,11 +9,8 @@ __Advice: the following how-to is work in progress and subject to further change
 
 ## Overview of related projects
 
-Project site:
-http://nmon.sourceforge.net/pmwiki.php?n=Site.Njmon
-
-Project site on sourceforge:
-https://sourceforge.net/projects/nmon/files/
+- [Project site:](http://nmon.sourceforge.net/pmwiki.php?n=Site.Njmon)
+- Project site on [sourceforge:](https://sourceforge.net/projects/nmon/files/)
 
 
 ## Software from OSS repositories
@@ -25,11 +22,11 @@ https://sourceforge.net/projects/nmon/files/
 ## Setup AIX data grabber
 
 Precomiled binary approach:
-- Unzip njmon_aix_binaries_v21.zip and place binary for suitable AIX version 6.x or 7.x
-- Define Path for Program code: /usr/local/njmon/
-- Place Njmon binary and executable (755): i.e. /usr/local/njmon/njmon_aix71_v22
-- Place job run script and set execution rights (755): i.e. /usr/local/njmon/run_njmon_job.sh
-- Create output folder for Njmon job. Default: /var/log/njmon. This path is defined in: run_njmon_job.sh
+- Unzip `njmon_aix_binaries_v21.zip` and place binary for suitable AIX version 6.x or 7.x
+- Define Path for Program code: `/usr/local/njmon/`
+- Place Njmon binary and executable (755): i.e. `/usr/local/njmon/njmon_aix71_v22`
+- Place job run script and set execution rights (755): i.e. `/usr/local/njmon/run_njmon_job.sh`
+- Create output folder for Njmon job. Default: /var/log/njmon. This path is defined in: `run_njmon_job.sh`
 
 ```
 # ls -la /usr/local/njmon/
@@ -81,7 +78,7 @@ ssh-rsa AAAAB3NzaC1yc2....
 2. Allow this user (key) to login on NetEye as user `njmon`
 On NetEye add this public key to file ".ssh/authorized_hosts" in user home of `njmon`
 ```
-[root@tue-lx-neteye4 njmon]# cat /var/log/njmon/.ssh/authorized_keys
+# cat /var/log/njmon/.ssh/authorized_keys
 ssh-rsa AAAAB3NzaC1yc2....
 ```
 3. Test ssh from AIX towards NetEye
@@ -153,7 +150,7 @@ serial_no: 21D6D17
 ## Configure job
 
 1. Define directory for scripts: i.e./usr/local/njmon/
-2. Place njmon_to_InfluxDB_injector_15.py from above mentioned project
+2. Place `njmon_to_InfluxDB_injector_15.py` from above mentioned project
 3. Place njmon_influx_injector.sh and set execution rights
 ```
 [root@tue-lx-neteye4 njmon]# ll /usr/local/njmon/
@@ -167,7 +164,7 @@ Define in njmon_influx_injector.sh your path variables:
 NJMON_PERFDATA_PATH: create folder and chown to user njmon to allow any remote AIX writing
 
 Configure processing job:
-1. Define Crontab to process njmon_influx_injector.sh
+1. Define cronjob to process `njmon_influx_injector.sh`
 ```
 # crontab -l
 # AIX Performance data injector
