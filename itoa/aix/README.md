@@ -19,17 +19,17 @@ https://sourceforge.net/projects/nmon/files/
 ## Software from OSS repositories
 
 - AIX Collector binaries: [njmon_aix_binaries_v21.zip](https://sourceforge.net/projects/nmon/files/njmon_aix_binaries_v21.zip/download)
-- Converter fo Json file to inject performance data to influxdb: [njmon_to_InfluxDB_injector_15.py](https://sourceforge.net/projects/nmon/files/njmon_to_InfluxDB_injector_15.py/download)
+- Converter for Json file to inject performance data to influxdb: [njmon_to_InfluxDB_injector_15.py](https://sourceforge.net/projects/nmon/files/njmon_to_InfluxDB_injector_15.py/download)
 - [Sample Grafana dashboard](https://sourceforge.net/projects/nmon/files/Grafana_Template_for_njmon_AIX_v3-1548086037850.json/download)
 
-## Setup AIX data grapper
+## Setup AIX data grabber
 
-Pre-comiled Binary approach:
+Precomiled binary approach:
 - Unzip njmon_aix_binaries_v21.zip and place binary for suitable AIX version 6.x or 7.x
 - Define Path for Program code: /usr/local/njmon/
-- Place njmon binary and executable (755): i.e. /usr/local/njmon/njmon_aix71_v22
+- Place Njmon binary and executable (755): i.e. /usr/local/njmon/njmon_aix71_v22
 - Place job run script and set execution rights (755): i.e. /usr/local/njmon/run_njmon_job.sh
-- Create output folder for njmon job. Default: /var/log/njmon. Checkin run_njmon_job.sh
+- Create output folder for Njmon job. Default: /var/log/njmon. This path is defined in: run_njmon_job.sh
 
 ```
 # ls -la /usr/local/njmon/
@@ -40,7 +40,7 @@ drwxr-xr-x    5 root     system          256 Jun  6 13:51 ..
 -rwxr-xr-x    1 root     system          862 Jun  6 16:34 run_njmon_job.sh
 ```
 
-Ajust the output and archive path for collected perfdata in run_njmon_job.sh
+Adjust the output and archive path for collected perfdata in run_njmon_job.sh
 i.e. /var/log/njmon/
 
 Perform a test run and verify output in output path:
@@ -61,7 +61,7 @@ drwxr-xr-x    6 bin      bin             256 Jun  6 13:58 ..
 
 ### Setup of ssh key trust towards neteye
 
-The aim is to synchronize all performance datafiles to neteye via scp. For this the AIX system has to be trusted on NetEye.
+The aim is to synchronize all performance data-files (.json) to neteye via scp. For this the AIX system has to be trusted on NetEye.
 
 1. Create a user on NetEye
 2. Generate ssh key for this user on NetEye:
@@ -71,15 +71,15 @@ The aim is to synchronize all performance datafiles to neteye via scp. For this 
 # ssh-keygen -t rsa
 ```
 
-Now trust the ssh key of your AIX system on NetEye, to allow login as user "njmon"
+Now trust the ssh key of your AIX system on NetEye, to allow login as user `njmon`
 1. Get ssh public key from AIX user executing the script run_njmon_job.sh
 On AIX as user executing the script (i.e. root):
 ```
 # cat .ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2....
 ```
-2. Allow this user (key) to login on NetEye as user "njmon"
-On NetEye add this public key to file ".ssh/authorized_hosts" in user home of njmon
+2. Allow this user (key) to login on NetEye as user `njmon`
+On NetEye add this public key to file ".ssh/authorized_hosts" in user home of `njmon`
 ```
 [root@tue-lx-neteye4 njmon]# cat /var/log/njmon/.ssh/authorized_keys
 ssh-rsa AAAAB3NzaC1yc2....
@@ -141,14 +141,14 @@ create database njmon
 ```
 
 IF everything is working:
-
-[root@neteye4zapa nmon]# cat aix001.json | python3 njmon_to_InfluxDB_injector_15.py
+```
+# cat aix001.json | python3 njmon_to_InfluxDB_injector_15.py
 os_name:AIX os_base:AIX 7.1 os_long:AIX 7.1 TL4 sp5
 arch:POWER8
 mtm: 1234-AAA
 serial_no: 21D6D17
 {'host': 'aix001', 'os': 'AIX 7.1 TL4 sp5', 'os_name': 'AIX', 'os_base': 'AIX 7.1', 'architecture': 'POWER8', 'serial_no': 'abcdefg, 'mtm': '1234-AAA'}
-
+```
 
 ## Configure job
 

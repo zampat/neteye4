@@ -3,6 +3,7 @@ aggregator
 Aggregator
 aggregators
 Aggregators
+AIX
 al
 alyvix
 Alyvix
@@ -47,6 +48,8 @@ Cron
 CSR
 dashboarding
 Dashboarding
+DateTime
+DB2
 diff
 dir
 DNS
@@ -190,6 +193,7 @@ netrc
 Netrc
 Newhall
 NIC
+Njmon
 nrpe
 NRPE
 ntp
@@ -319,6 +323,7 @@ userbase
 Userbase
 username
 Username
+virtualenv
 VM
 VMware
 VMWare
