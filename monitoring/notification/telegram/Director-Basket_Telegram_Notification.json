@@ -1,0 +1,243 @@
+{
+    "Command": {
+        "telegram-host-notification": {
+            "arguments": {
+                "-6": {
+                    "value": "$notification_address6$"
+                },
+                "-4": {
+                    "value": "$notification_address$"
+                },
+                "-b": {
+                    "value": "$notification_author$"
+                },
+                "-c": {
+                    "value": "$notification_comment$"
+                },
+                "-d": {
+                    "required": true,
+                    "value": "$notification_date$"
+                },
+                "-i": {
+                    "value": "$notification_icingaweb2url$"
+                },
+                "-l": {
+                    "required": true,
+                    "value": "$notification_hostname$"
+                },
+                "-n": {
+                    "required": true,
+                    "value": "$notification_hostdisplayname$"
+                },
+                "-o": {
+                    "required": true,
+                    "value": "$notification_hostoutput$"
+                },
+                "-p": {
+                    "required": true,
+                    "value": "$telegram_bot$"
+                },
+                "-q": {
+                    "required": true,
+                    "value": "$telegram_chat_id$"
+                },
+                "-r": {
+                    "required": true,
+                    "value": "$telegram_bot_token$"
+                },
+                "-s": {
+                    "required": true,
+                    "value": "$notification_hoststate$"
+                },
+                "-t": {
+                    "required": true,
+                    "value": "$notification_type$"
+                },
+                "-v": {
+                    "value": "$notification_logtosyslog$"
+                }
+            },
+            "command": "\/neteye\/shared\/monitoring\/plugins\/icinga2-notification-telegram\/host-by-telegram.sh",
+            "disabled": false,
+            "fields": [
+                {
+                    "datafield_id": 10104,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10105,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10106,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginNotification",
+            "object_name": "telegram-host-notification",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {
+                "notification_address": "$address$",
+                "notification_address6": "$address6$",
+                "notification_author": "$notification.author$",
+                "notification_comment": "$notification.comment$",
+                "notification_date": "$icinga.long_date_time$",
+                "notification_hostdisplayname": "$host.display_name$",
+                "notification_hostname": "$host.name$",
+                "notification_hostoutput": "$host.output$",
+                "notification_hoststate": "$host.state$",
+                "notification_type": "$notification.type$",
+                "notification_useremail": "$user.email$",
+                "telegram_bot": "YOUR_TELEGRAM_BOT_NAME",
+                "telegram_bot_token": "YOUR_TELEGRAM_BOT_TOKEN 12345678:XXXXXXXX-yyyyyyyyyyyyyyyyyyy",
+                "telegram_chat_id": "YOUR_CHAT_ID -12345678"
+            },
+            "zone": null
+        },
+        "telegram-service-notification": {
+            "arguments": {
+                "-6": {
+                    "value": "$notification_address6$"
+                },
+                "-4": {
+                    "value": "$notification_address$"
+                },
+                "-b": {
+                    "value": "$notification_author$"
+                },
+                "-c": {
+                    "value": "$notification_comment$"
+                },
+                "-d": {
+                    "required": true,
+                    "value": "$notification_date$"
+                },
+                "-e": {
+                    "required": true,
+                    "value": "$notification_servicename$"
+                },
+                "-i": {
+                    "value": "$notification_icingaweb2url$"
+                },
+                "-l": {
+                    "required": true,
+                    "value": "$notification_hostname$"
+                },
+                "-n": {
+                    "required": true,
+                    "value": "$notification_hostdisplayname$"
+                },
+                "-o": {
+                    "required": true,
+                    "value": "$notification_serviceoutput$"
+                },
+                "-p": {
+                    "required": true,
+                    "value": "$telegram_bot$"
+                },
+                "-q": {
+                    "required": true,
+                    "value": "$telegram_chat_id$"
+                },
+                "-r": {
+                    "required": true,
+                    "value": "$telegram_bot_token$"
+                },
+                "-s": {
+                    "required": true,
+                    "value": "$notification_servicestate$"
+                },
+                "-t": {
+                    "required": true,
+                    "value": "$notification_type$"
+                },
+                "-u": {
+                    "required": true,
+                    "value": "$notification_servicedisplayname$"
+                },
+                "-v": {
+                    "value": "$notification_logtosyslog$"
+                }
+            },
+            "command": "\/neteye\/shared\/monitoring\/plugins\/icinga2-notification-telegram\/service-by-telegram.sh",
+            "disabled": false,
+            "fields": [
+                {
+                    "datafield_id": 10104,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10105,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10106,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginNotification",
+            "object_name": "telegram-service-notification",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {
+                "notification_address": "$address$",
+                "notification_address6": "$address6$",
+                "notification_author": "$notification.author$",
+                "notification_comment": "$notification.comment$",
+                "notification_date": "$icinga.long_date_time$",
+                "notification_hostdisplayname": "$host.display_name$",
+                "notification_hostname": "$host.name$",
+                "notification_servicedisplayname": "$service.display_name$",
+                "notification_servicename": "$service.name$",
+                "notification_serviceoutput": "$service.output$",
+                "notification_servicestate": "$service.state$",
+                "notification_type": "$notification.type$",
+                "notification_useremail": "$user.email$",
+                "telegram_bot": "YOUR_TELEGRAM_BOT_NAME",
+                "telegram_bot_token": "YOUR_TELEGRAM_BOT_TOKEN 12345678:XXXXXXXX-yyyyyyyyyyyyyyyyyyy",
+                "telegram_chat_id": "YOUR_CHAT_ID -12345678"
+            },
+            "zone": null
+        }
+    },
+    "Datafield": {
+        "10104": {
+            "varname": "telegram_bot",
+            "caption": "telegram_bot",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10104",
+            "settings": {}
+        },
+        "10105": {
+            "varname": "telegram_bot_token",
+            "caption": "telegram_bot_token",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10105",
+            "settings": {}
+        },
+        "10106": {
+            "varname": "telegram_chat_id",
+            "caption": "telegram_chat_id",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10106",
+            "settings": {}
+        }
+    }
+}
