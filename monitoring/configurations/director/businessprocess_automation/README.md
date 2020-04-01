@@ -9,5 +9,5 @@ Apply the provided patch:
 
 ## Create Import Definition and Synchronization-Rule for Director
 
-Import provided Basket
-Director-Basket_Automation_BusinessProcess.json
+Import provided Basket: [Director-Basket_Automation_BusinessProcess.json](https://github.com/zampat/icinga2-monitoring-templates/tree/master/baskets/import_automation)
+This Basket file is locate in project [icinga2-monitoring-templates](https://github.com/zampat/icinga2-monitoring-templates)

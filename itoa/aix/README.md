@@ -10,18 +10,18 @@ __Advice: the following how-to is work in progress and subject to further change
 ## Overview of related projects
 
 - [Project site:](http://nmon.sourceforge.net/pmwiki.php?n=Site.Njmon)
-- Project site on [sourceforge:](https://sourceforge.net/projects/nmon/files/)
+- Project site on ["sourceforge":](https://sourceforge.net/projects/nmon/files/)
 
 
 ## Software from OSS repositories
 
-- AIX Collector binaries: [njmon_aix_binaries_v21.zip](https://sourceforge.net/projects/nmon/files/njmon_aix_binaries_v21.zip/download)
-- Converter for Json file to inject performance data to influxdb: [njmon_to_InfluxDB_injector_15.py](https://sourceforge.net/projects/nmon/files/njmon_to_InfluxDB_injector_15.py/download)
+- AIX Collector binaries: ["njmon_aix_binaries_v21.zip"](https://sourceforge.net/projects/nmon/files/njmon_aix_binaries_v21.zip/download)
+- Converter for Json file to inject performance data to influxdb: ["njmon_to_InfluxDB_injector_15.py"](https://sourceforge.net/projects/nmon/files/njmon_to_InfluxDB_injector_15.py/download)
 - [Sample Grafana dashboard](https://sourceforge.net/projects/nmon/files/Grafana_Template_for_njmon_AIX_v3-1548086037850.json/download)
 
 ## Setup AIX data grabber
 
-Precomiled binary approach:
+Compiled binary approach:
 - Unzip `njmon_aix_binaries_v21.zip` and place binary for suitable AIX version 6.x or 7.x
 - Define Path for Program code: `/usr/local/njmon/`
 - Place Njmon binary and executable (755): i.e. `/usr/local/njmon/njmon_aix71_v22`
@@ -149,7 +149,7 @@ serial_no: 21D6D17
 
 ## Configure job
 
-1. Define directory for scripts: i.e./usr/local/njmon/
+1. Define directory for scripts: i.e.`/usr/local/njmon/`
 2. Place `njmon_to_InfluxDB_injector_15.py` from above mentioned project
 3. Place njmon_influx_injector.sh and set execution rights
 ```
@@ -161,7 +161,7 @@ drwxr-xr-x. 5 root root   82 Jun  6 15:14 influxdb
 ```
 
 Define in njmon_influx_injector.sh your path variables:
-NJMON_PERFDATA_PATH: create folder and chown to user njmon to allow any remote AIX writing
+NJMON_PERFDATA_PATH: create folder and `chown` to user njmon to allow any remote AIX writing
 
 Configure processing job:
 1. Define cronjob to process `njmon_influx_injector.sh`
