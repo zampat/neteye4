@@ -4,6 +4,3 @@
 
 https://exchange.icinga.com/algbaer/check_ilo2_health/releases
 
-***In addition the Basket***
-
-
