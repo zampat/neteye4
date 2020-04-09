@@ -1,0 +1,322 @@
+{
+    "Command": {
+        " check_ilo2_health": {
+            "arguments": {
+                "-3": {
+                    "description": "support for iLO3|4",
+                    "set_if": "$ilo_support$",
+                    "set_if_format": "string"
+                },
+                "-H": {
+                    "description": "ILO Host Address",
+                    "value": "$ilo_address$"
+                },
+                "-a": {
+                    "description": "check fan redundancy (only some models)",
+                    "set_if": "$ilo_redundancy_fan$",
+                    "set_if_format": "string"
+                },
+                "-b": {
+                    "description": "temperature output with location",
+                    "set_if": "$ilo_temperature$",
+                    "set_if_format": "string"
+                },
+                "-c": {
+                    "description": "check drive bays (only some models)",
+                    "set_if": "$ilo_drive$",
+                    "set_if_format": "string"
+                },
+                "-d": {
+                    "description": "add PerfParse compatible temperature output.",
+                    "set_if": "$ilo_perfparse$",
+                    "set_if_format": "string"
+                },
+                "-g": {
+                    "description": "Display additional infos like firmware version and servername. May need increased timeout.",
+                    "set_if": "$ilo_info$",
+                    "set_if_format": "string"
+                },
+                "-o": {
+                    "description": "check power redundancy (only some models)",
+                    "set_if": "$ilo_redundancy_power$",
+                    "set_if_format": "string"
+                },
+                "-p": {
+                    "description": "Password",
+                    "value": "$ilo_password$"
+                },
+                "-t": {
+                    "description": "Timeout",
+                    "value": "$ilo_timeout$"
+                },
+                "-u": {
+                    "description": "Username",
+                    "value": "$ilo_user$"
+                }
+            },
+            "command": "PluginContribDir + \/check_ilo2_health.pl",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": " check_ilo2_health",
+            "object_type": "object",
+            "timeout": null,
+            "vars": {},
+            "zone": null
+        }
+    },
+    "HostTemplate": {
+        "generic-hardware-hp": {
+            "accept_config": null,
+            "action_url": null,
+            "address": null,
+            "address6": null,
+            "api_key": null,
+            "check_command": null,
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 10024,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "has_agent": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [],
+            "master_should_connect": null,
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "generic-hardware-hp",
+            "object_type": "template",
+            "retry_interval": null,
+            "template_choice": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "ServiceTemplate": {
+        "generic-ilo2-health": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": " check_ilo2_health",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": false,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 10017,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10023,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10020,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10018,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10015,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10019,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10014,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10016,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10022,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10021,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-active-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "generic-ilo2-health",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "Datafield": {
+        "10024": {
+            "varname": "ilo_address",
+            "caption": "ILO Address",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10024",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "10017": {
+            "varname": "ilo_drive",
+            "caption": "ILO Drive",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "10017",
+            "settings": {}
+        },
+        "10023": {
+            "varname": "ilo_info",
+            "caption": "ILO Info",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "10023",
+            "settings": {}
+        },
+        "10020": {
+            "varname": "ilo_password",
+            "caption": "ILO Password",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10020",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "10018": {
+            "varname": "ilo_perfparse",
+            "caption": "ILO Perparse Temperature",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "10018",
+            "settings": {}
+        },
+        "10015": {
+            "varname": "ilo_redundancy_fan",
+            "caption": "ILO Redundancy Fan",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "10015",
+            "settings": {}
+        },
+        "10019": {
+            "varname": "ilo_redundancy_power",
+            "caption": "ILO Redundancy Power",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "10019",
+            "settings": {}
+        },
+        "10014": {
+            "varname": "ilo_support",
+            "caption": "Ilo Support",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "10014",
+            "settings": {}
+        },
+        "10016": {
+            "varname": "ilo_temperature",
+            "caption": "ILO Temperature",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "10016",
+            "settings": {}
+        },
+        "10022": {
+            "varname": "ilo_timeout",
+            "caption": "ILO Timeout",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10022",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "10021": {
+            "varname": "ilo_user",
+            "caption": "ILO User",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10021",
+            "settings": {
+                "visibility": "visible"
+            }
+        }
+    }
+}
