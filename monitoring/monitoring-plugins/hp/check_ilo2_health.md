@@ -1,4 +1,6 @@
-## Check hardware health of HP Proliant Servers by querying the iLO2|3|4 Management Controller ##
+# HP Hardware Monitoring
+
+## Check hardware health of HP `Proliant` Servers by querying the `iLO2/3/4` Management Controller
 
 ***To Download the script:***
 
