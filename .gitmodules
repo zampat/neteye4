@@ -7,3 +7,6 @@
 [submodule "itoa/dashboards/GrafanaWindowsHostDashboard"]
 	path = itoa/dashboards/GrafanaWindowsHostDashboard
 	url = https://github.com/ManDevOps/GrafanaWindowsHostDashboard
+[submodule "monitoring/notification/telegram/notification_commands"]
+	path = monitoring/notification/telegram/notification_commands
+	url = https://github.com/sysadmama/icinga2-notification-telegram.git
