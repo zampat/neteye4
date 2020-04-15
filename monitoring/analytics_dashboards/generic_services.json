@@ -34,8 +34,8 @@
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "edw01p.mainova-ag.de",
-          "value": "edw01p.mainova-ag.de"
+          "text": "hostname",
+          "value": "hostname"
         }
       },
       "title": "$service: $Metrics",
@@ -89,8 +89,8 @@
         },
         "hostname": {
           "selected": true,
-          "text": "edw01p.mainova-ag.de",
-          "value": "edw01p.mainova-ag.de"
+          "text": "hostname",
+          "value": "hostname"
         }
       },
       "seriesOverrides": [
@@ -468,8 +468,8 @@
         },
         "hostname": {
           "selected": true,
-          "text": "edw01p.mainova-ag.de",
-          "value": "edw01p.mainova-ag.de"
+          "text": "hostname",
+          "value": "hostname"
         }
       },
       "seriesOverrides": [
@@ -847,8 +847,8 @@
         },
         "hostname": {
           "selected": true,
-          "text": "edw01p.mainova-ag.de",
-          "value": "edw01p.mainova-ag.de"
+          "text": "hostname",
+          "value": "hostname"
         }
       },
       "seriesOverrides": [
@@ -1242,9 +1242,9 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "text": "edw01p.mainova-ag.de",
+          "text": "hostname",
           "value": [
-            "edw01p.mainova-ag.de"
+            "hostname"
           ]
         },
         "datasource": "icinga2-influxdb",
@@ -1329,5 +1329,5 @@
   "timezone": "browser",
   "title": "generic services",
   "uid": "cust000010",
-  "version": 4
+  "version": 1
 }
