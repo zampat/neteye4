@@ -14,9 +14,10 @@ __Details for the configuration in NetEye 4 user guide, chapter "ITOA" > "Custom
 __Note: since NetEye v 4.7 the URL must specify the alias "d" and you need to prefix "../d/"__
 
 - `itoa_cust_hostalive.json`         [Preview](./itoa_cust_hostalive.png) (url: `../d/cus0000005/host-hostalive`
-- `itoa_cust_diskspace.json`         [Preview](./itoa_cust_diskspace.png) (url: `../d/cus0000010/service-diskspace`
+- `generic_services.json` 	     [Preview](./itoa_cust_diskspace.png) (url: `../d/cus0000010/generic_services`
 - `itoa_cust_cpu.json` 	             [Preview](./itoa_cust_diskspace.png) (url: `../d/cus0000020/service-cpu`
 - `itoa_cust_memory.json` 	     [Preview](./itoa_cust_diskspace.png) (url: `../d/cus0000030/service-memory`
+- `itoa_cust_diskspace.json`         [Preview](./itoa_cust_diskspace.png) (url: `../d/cus0000040/service-diskspace`
 - `itoa_cust_interfaces.json`        [Preview](./itoa_cust_interfaces.png) (url: `../d/cus0000011/interfaces-traffic`
 
 

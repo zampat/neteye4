@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 20,
-  "iteration": 1586963343449,
+  "id": 23,
+  "iteration": 1586968317285,
   "links": [],
   "panels": [
     {
@@ -34,8 +34,8 @@
       "scopedVars": {
         "hostname": {
           "selected": true,
-          "text": "neteye01p",
-          "value": "neteye01p"
+          "text": "edw01p.mainova-ag.de",
+          "value": "edw01p.mainova-ag.de"
         }
       },
       "title": "$service: $Metrics",
@@ -83,14 +83,14 @@
       "repeatDirection": "h",
       "scopedVars": {
         "Metrics": {
-          "selected": true,
-          "text": "/",
-          "value": "/"
+          "selected": false,
+          "text": "C:_",
+          "value": "C:_"
         },
         "hostname": {
           "selected": true,
-          "text": "neteye01p",
-          "value": "neteye01p"
+          "text": "edw01p.mainova-ag.de",
+          "value": "edw01p.mainova-ag.de"
         }
       },
       "seriesOverrides": [
@@ -398,7 +398,7 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "format": "none",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -434,7 +434,7 @@
         "x": 8,
         "y": 1
       },
-      "id": 5,
+      "id": 3,
       "legend": {
         "alignAsTable": true,
         "avg": true,
@@ -458,18 +458,18 @@
       "renderer": "flot",
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1586963343449,
+      "repeatIteration": 1586968317285,
       "repeatPanelId": 1,
       "scopedVars": {
         "Metrics": {
-          "selected": true,
-          "text": "/boot",
-          "value": "/boot"
+          "selected": false,
+          "text": "D:_",
+          "value": "D:_"
         },
         "hostname": {
           "selected": true,
-          "text": "neteye01p",
-          "value": "neteye01p"
+          "text": "edw01p.mainova-ag.de",
+          "value": "edw01p.mainova-ag.de"
         }
       },
       "seriesOverrides": [
@@ -812,408 +812,6 @@
         "w": 8,
         "x": 16,
         "y": 1
-      },
-      "id": 6,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": true,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "maxPerRow": 6,
-      "nullPointMode": "connected",
-      "options": {},
-      "percentage": false,
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "repeat": null,
-      "repeatDirection": "h",
-      "repeatIteration": 1586963343449,
-      "repeatPanelId": 1,
-      "scopedVars": {
-        "Metrics": {
-          "selected": true,
-          "text": "/data",
-          "value": "/data"
-        },
-        "hostname": {
-          "selected": true,
-          "text": "neteye01p",
-          "value": "neteye01p"
-        }
-      },
-      "seriesOverrides": [
-        {
-          "alias": "/warning/",
-          "color": "#e5ac0e"
-        },
-        {
-          "alias": "/critical/",
-          "color": "#bf1b00"
-        },
-        {
-          "alias": "/warning|critical|Total/",
-          "fill": 0
-        },
-        {
-          "alias": "/warning|critical|Total/",
-          "legend": false
-        },
-        {
-          "alias": "/Total/",
-          "color": "#8AB8FF",
-          "linewidth": 1
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] Free",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        },
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] warning",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "warn"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        },
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] critical",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "crit"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        },
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] Total",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "max"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "$hostname: $service: $Metrics",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "bytes",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 11
-      },
-      "id": 3,
-      "panels": [],
-      "repeat": null,
-      "repeatIteration": 1586963343449,
-      "repeatPanelId": 2,
-      "scopedVars": {
-        "hostname": {
-          "selected": true,
-          "text": "neteye02p",
-          "value": "neteye02p"
-        }
-      },
-      "title": "$service: $Metrics",
-      "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "icinga2-influxdb",
-      "editable": true,
-      "error": false,
-      "fill": 1,
-      "grid": {},
-      "gridPos": {
-        "h": 10,
-        "w": 8,
-        "x": 0,
-        "y": 12
       },
       "id": 4,
       "legend": {
@@ -1237,781 +835,20 @@
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
-      "repeat": "Metrics",
+      "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1586963343449,
+      "repeatIteration": 1586968317285,
       "repeatPanelId": 1,
-      "repeatedByRow": true,
       "scopedVars": {
         "Metrics": {
-          "selected": true,
-          "text": "/",
-          "value": "/"
+          "selected": false,
+          "text": "c:_",
+          "value": "c:_"
         },
         "hostname": {
           "selected": true,
-          "text": "neteye02p",
-          "value": "neteye02p"
-        }
-      },
-      "seriesOverrides": [
-        {
-          "alias": "/warning/",
-          "color": "#e5ac0e"
-        },
-        {
-          "alias": "/critical/",
-          "color": "#bf1b00"
-        },
-        {
-          "alias": "/warning|critical|Total/",
-          "fill": 0
-        },
-        {
-          "alias": "/warning|critical|Total/",
-          "legend": false
-        },
-        {
-          "alias": "/Total/",
-          "color": "#8AB8FF",
-          "linewidth": 1
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] Free",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        },
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] warning",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "warn"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        },
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] critical",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "crit"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        },
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] Total",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "max"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "$hostname: $service: $Metrics",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "bytes",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "icinga2-influxdb",
-      "editable": true,
-      "error": false,
-      "fill": 1,
-      "grid": {},
-      "gridPos": {
-        "h": 10,
-        "w": 8,
-        "x": 8,
-        "y": 12
-      },
-      "id": 7,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": true,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "maxPerRow": 6,
-      "nullPointMode": "connected",
-      "options": {},
-      "percentage": false,
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "repeat": null,
-      "repeatDirection": "h",
-      "repeatIteration": 1586963343449,
-      "repeatPanelId": 4,
-      "repeatedByRow": true,
-      "scopedVars": {
-        "Metrics": {
-          "selected": true,
-          "text": "/boot",
-          "value": "/boot"
-        },
-        "hostname": {
-          "selected": true,
-          "text": "neteye02p",
-          "value": "neteye02p"
-        }
-      },
-      "seriesOverrides": [
-        {
-          "alias": "/warning/",
-          "color": "#e5ac0e"
-        },
-        {
-          "alias": "/critical/",
-          "color": "#bf1b00"
-        },
-        {
-          "alias": "/warning|critical|Total/",
-          "fill": 0
-        },
-        {
-          "alias": "/warning|critical|Total/",
-          "legend": false
-        },
-        {
-          "alias": "/Total/",
-          "color": "#8AB8FF",
-          "linewidth": 1
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] Free",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        },
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] warning",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "warn"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        },
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] critical",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "crit"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        },
-        {
-          "alias": "[[tag_hostname]] [[tag_metric]] Total",
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "hostname"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "metric"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^$command$/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM /^$command$/ WHERE (\"hostname\" =~ /^$hostname$/ AND \"metric\" =~ /^$Metrics/ AND \"service\" =~ /^$service$/) AND $timeFilter GROUP BY time($__interval), \"hostname\"",
-          "rawQuery": false,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "max"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "hostname",
-              "operator": "=~",
-              "value": "/^$hostname$/"
-            },
-            {
-              "condition": "AND",
-              "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
-            },
-            {
-              "condition": "AND",
-              "key": "service",
-              "operator": "=~",
-              "value": "/^$service$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "$hostname: $service: $Metrics",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "bytes",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "icinga2-influxdb",
-      "editable": true,
-      "error": false,
-      "fill": 1,
-      "grid": {},
-      "gridPos": {
-        "h": 10,
-        "w": 8,
-        "x": 16,
-        "y": 12
-      },
-      "id": 8,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": true,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "maxPerRow": 6,
-      "nullPointMode": "connected",
-      "options": {},
-      "percentage": false,
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "repeat": null,
-      "repeatDirection": "h",
-      "repeatIteration": 1586963343449,
-      "repeatPanelId": 4,
-      "repeatedByRow": true,
-      "scopedVars": {
-        "Metrics": {
-          "selected": true,
-          "text": "/data",
-          "value": "/data"
-        },
-        "hostname": {
-          "selected": true,
-          "text": "neteye02p",
-          "value": "neteye02p"
+          "text": "edw01p.mainova-ag.de",
+          "value": "edw01p.mainova-ag.de"
         }
       },
       "seriesOverrides": [
@@ -2343,22 +1180,20 @@
   "refresh": false,
   "schemaVersion": 18,
   "style": "dark",
-  "tags": [
-    "itoa_custom_dashboard"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "NetEye diskspace",
-          "value": "NetEye diskspace"
+          "tags": [],
+          "text": "Agent Win Diskspace",
+          "value": "Agent Win Diskspace"
         },
         "datasource": "icinga2-influxdb",
         "definition": "SHOW TAG VALUES WITH KEY = \"service\"",
-        "hide": 2,
+        "hide": 0,
         "includeAll": false,
         "label": "Service",
         "multi": false,
@@ -2380,12 +1215,12 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "text": "disk",
-          "value": "disk"
+          "text": "disk-windows",
+          "value": "disk-windows"
         },
         "datasource": "icinga2-influxdb",
         "definition": "show measurements where service =~ /$service/",
-        "hide": 2,
+        "hide": 0,
         "includeAll": false,
         "label": "Command",
         "multi": false,
@@ -2407,12 +1242,9 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "selected": false,
-          "tags": [],
-          "text": "neteye01p + neteye02p",
+          "text": "edw01p.mainova-ag.de",
           "value": [
-            "neteye01p",
-            "neteye02p"
+            "edw01p.mainova-ag.de"
           ]
         },
         "datasource": "icinga2-influxdb",
@@ -2439,12 +1271,8 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "text": "/ + /boot + /data",
-          "value": [
-            "/",
-            "/boot",
-            "/data"
-          ]
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "icinga2-influxdb",
         "definition": "SHOW TAG VALUES FROM \"$command\"  WITH KEY = \"metric\"  WHERE service =~ /$service/ AND hostname =~ /$hostname/",
@@ -2499,7 +1327,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Service: Diskspace",
-  "uid": "cus0000040",
-  "version": 5
+  "title": "generic services",
+  "uid": "cust000010",
+  "version": 4
 }
