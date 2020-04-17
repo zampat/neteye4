@@ -1,0 +1,43 @@
+//
+// NetEye Functions to include to testcase
+//
+
+// Uncomment this if you don't want screenshots
+//_sahi.SKIP_SCREENSHOTS = true;
+
+// Global Varibales
+
+var $start_time = new Date();
+var $decrypted_text = {};
+
+function onScriptFailure($e) {
+	// Fail on Assert (default is to continue)
+	_logExceptionAsFailure($e);
+	_fail();
+}
+
+function onScriptEnd() {
+	if (!_sahi.SKIP_SCREENSHOTS) {
+		_focusWindow();
+		_takePageScreenShot();
+	}
+}
+
+function perfdataAdd($label) {
+  $end_time = new Date();
+  $time_diff = $end_time.getTime() - $start_time.getTime();
+  _log("PERFDATA:" + $label + ":" + $time_diff + ":");
+  $start_time = $end_time;
+}
+
+function userPassword($password) {
+  var $newpass = _execute("/usr/local/bin/decrypt_password '" + $password + "'", true);
+  return $newpass;
+}
+
+function setEncryptedValue($obj, $index) {
+  _maskLogs("setEncryptedValue");
+  _setValue($obj, $decrypted_text[$index]);
+  _unmaskLogs("setEncryptedValue");
+}
+

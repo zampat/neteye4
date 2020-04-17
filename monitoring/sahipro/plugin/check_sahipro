@@ -1,0 +1,651 @@
+#!/bin/bash
+#
+##################################################################################
+# Make a webtest using Sahi and Phantomjs check for success and if it took
+# too long and return it also with an URL to the Sahi Log.
+#
+# See help for more explanations!
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# you should have received a copy of the GNU General Public License
+# along with this program (or with Nagios);  if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA
+#
+# Author: Juergen Vigna <juergen.vigna@wuerth-phoenix.com>
+#
+##################################################################################
+
+JAVA_HOME=/usr/java/latest/jre
+
+PATH=$JAVA_HOME/bin:$PATH:/sbin:/bin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+export PATH
+
+PROGNAME=`/bin/basename $0`
+PROGPATH=`echo $0 | /bin/sed -e 's,[\\/][^\\/][^\\/]*$,,'`
+VERSION="1.1.0"
+PLUGINPATH=/usr/lib64/neteye/monitoring/plugins
+LIVESTATUS=/var/run/icinga2-master/icinga2/cmd/livestatus
+
+TMPFILE="/tmp/SahiPhantomjsTemp$$.log"
+OUTFILE="/tmp/SahiPhantomjsTemp$$.out"
+
+trap 'rm -f $TMPFILE $OUTFILE; exit 1' 1 2 15
+trap 'rm -f $TMPFILE $OUTFILE' 0
+
+if [ -f "$PROGPATH/utils.sh" ]
+then
+        . $PROGPATH/utils.sh
+elif [ -f "$PLUGINPATH/utils.sh" ]
+then
+        . $PLUGINPATH/utils.sh
+fi
+
+SAHI_HOME=/neteye/local/sahipro
+SAHILOGFILE=$TMPFILE
+SAHIHOST="localhost"
+SAHIPORT="9999"
+SAHITHREADS=5
+WEBURL="/sahipro"
+LOGBASE="/neteye/shared/httpd/sahipro"
+WARN=""
+CRIT=""
+PERFDATA=""
+TRAPHOST=""
+TRAPDISABLED=0
+TRAPCOMUNITY="public"
+BROWSER=phantomjs
+REMOTE_LOGBASE=""
+STARTURL=""
+TIMEOUT=200
+SERVICEATTEMPT=1
+MAXSERVICEATTEMPTS=1
+SERVICESTATETYPE="HARD"
+RETRIES=2
+PASSIVE=""
+ALLARGS=$@
+
+print_usage() {
+	echo "Make a webtest using Sahi and Phantomjs check for success and if it took"
+	echo "too long and return it also with an URL to the Sahi Log."
+	echo
+        echo "USAGE: $(basename $0) [-H <SAHI-HOST>] [-P <SAHI-PORT>] [-S <SAHI-HOME>] [-b <BROWSER>] [-B <LOGBASE>] [-L <LOGDIR>] [-R <REMOTE-LOGBASE>] [-W LOG-DIR-URL] [-T <THREADS>] [-w <warn-value>] [-c <crit-value] [-N TRAPHOST[:DISABLED[:COMUNITY]]] [-O SERVICEATTEMPT:MAXSERVICEATTEMPTS] [-U <startURL>] [-t <timeout-seconds>] [-r retry-count] [-p HOSTNAME:SERVICEDESC] -F <sah file|suite file>"
+        echo
+        echo "SAHI-HOST   ... host/ip where Sahi server is running (default: $SAHIHOST)"
+        echo "SAHI-PORT   ... tcp port on which Sahi server is running (default: $SAHIPORT)"
+        echo "SAHI_HOME   ... HOME directory of sahi (default: $SAHI_HOME)"
+	echo "BROWSER     ... browser to use defined sahi server configuration may be (ie,firefox,phantomjs,...) (default: $BROWSER)"
+	echo "LOGBASE     ... base directory where to write log files then generated (default: $LOGBASE)"
+	echo "LOGDIR      ... where to write all logs to (default: $LOGBASE/<generated>"
+	echo "REMOTE-LOGBASE ... the place where on the remote server the sahi log directory is mounted needed only if different from LOGBASE"
+	echo "LOG-DIR-URL ... where to connect over web to see the logs (default: $WEBURL)"
+	echo "THREADS     ... with how many treads run the test suite (default: $SAHITHREADS)"
+	echo "TRAPHOST    ... host to send the trap to, DISABLED can be 0 or >0, default not disabled=0,default COMUNITY=$TRAPCOMUNITY"
+	echo "                                      is sent if the SERVICEATTEMPT is lower than the MAXSERVICEATTEMPTS"
+	echo "LANG        ... to set your browser language use the right browser string f.ex.: phantomjs-it"
+	echo "retry-count ... how many retries before giving up (retry on non SUCCESS) (default: $RETRIES)"
+	echo "startURL    ... the weburl to start with (default: $STARTURL)"
+	echo "timeout-seconds ... seconds before killing the sahi java call and return"
+	echo "SERVICEATTEMPT/MAXSERVICEATTEMPTS ... used for sending traps. If this option is specified, no trap"
+	echo "HOSTNAME:SERVICEDESC ... run plugin in passive mode and return immediately"
+        echo
+        echo "Sahi sah file or suite file"
+        echo
+}
+
+pdata_init() {
+        ffile=$1
+	n=0
+        for i in $(grep "^perfdataAdd" $ffile | grep -v "function" | sed -e 's/.*(.*"\(.*\)".*/\1/g')
+        do
+		PDATA[$n]="$i"
+		PPERF[$n]="$i=0"
+		n=$(expr $n + 1)
+	done
+}
+
+pdata_set() {
+	label=$1
+	val=$2
+	pos=-1
+
+        tlen=${#PDATA[@]}
+        for ((i=0; i<${tlen}; i++));
+        do
+		if [ "${PDATA[$i]}" = "$label" ]
+		then
+			pos=$i
+		fi
+        done
+	if [ $pos -lt 0 ]
+	then
+		tlen=${#PDATA[@]}
+		PDATA[$tlen]="$label"
+		PPERF[$tlen]="$label=$val"
+	else
+		PPERF[$pos]="$label=$val"
+	fi
+}
+
+get_perfdata() {
+        if [ -z "$LOGDIR" ]
+        then
+                return
+        fi
+
+        bbase=$(basename "$SCRIPTS_PATH" .sah)
+        dfile=$(ls -1rt $LOGDIR/${bbase}*.html 2>/dev/null | tail -n 1)
+
+	if [ -z "$dfile" ]
+	then
+		return
+	fi
+
+        for i in $(grep "PERFDATA:" $dfile | grep -v "_log" | cut -d: -f2,3)
+        do
+                label=$(echo $i | cut -d: -f1)
+                val=$(echo $i | cut -d: -f2 | awk '{ print $1/1000 }')
+		pdata_set "$label" $val
+        done
+
+        tlen=${#PPERF[@]}
+        for ((i=0; i<${tlen}; i++));
+        do
+                PERFDATA="$PERFDATA ${PPERF[$i]}"
+        done
+}
+
+my_exit() {
+	STATE=$1
+	shift
+	if [ -z "$PASSIVE" ]
+	then
+		echo $@
+	else
+		STR="[$(date +%s)] PROCESS_SERVICE_CHECK_RESULT;$MONITORING_HOST;$MONITORING_SERVICE;$STATE;$@"
+		echo -e "COMMAND $STR\n" | /usr/bin/nc -U $LIVESTATUS
+	fi
+	exit $STATE
+}
+
+################################  MAIN PROGRAMM #####################################
+
+nn=0
+while test -n "$1"; do
+    case "$1" in
+        --help)
+            print_usage
+            exit $STATE_OK
+            ;;
+        -h)
+            print_usage
+            exit $STATE_OK
+            ;;
+        --version)
+            print_revision $PROGNAME $VERSION
+            exit $STATE_OK
+            ;;
+        -V)
+            print_revision $PROGNAME $VERSION
+            exit $STATE_OK
+            ;;
+        -H)
+            SAHIHOST=$2
+            shift
+            ;;
+        -P)
+            SAHIPORT=$2
+            shift
+            ;;
+        -S)
+            SAHI_HOME=$2
+            shift
+            ;;
+        -b)
+            BROWSER="$2"
+            shift
+            ;;
+        -B)
+            LOGBASE=$2
+            shift
+            ;;
+        -L)
+            LOGDIR=$2
+            shift
+            ;;
+        -R)
+            REMOTE_LOGBASE=$2
+            shift
+            ;;
+        -W)
+            WEBURL="$2"
+            shift
+            ;;
+        -T)
+            SAHITHREADS="$2"
+            shift
+            ;;
+        -F)
+            SAHIFILE="$2"
+            shift
+            ;;
+        -U)
+            STARTURL="$2"
+            shift
+            ;;
+        -w)
+            WARN="$2"
+            shift
+            ;;
+        -c)
+            CRIT="$2"
+            shift
+            ;;
+        -l)
+            BROWSER="phantomjs-$2"
+            shift
+            ;;
+        -t)
+            TIMEOUT=$2
+            shift
+            ;;
+        -r)
+            RETRIES=$2
+            shift
+            ;;
+        -N)
+            TRAPHOST=$(echo "$2" | cut -d: -f1)
+            T1=$(echo "$2" | cut -d: -f2)
+            if [ -n "$T1" -a "$T1" != "$TRAPHOST" ]
+            then
+                TRAPDISABLED="$T1"
+            fi
+            T2=$(echo "$2" | cut -d: -f3)
+            if [ -n "$T2" -a "$T2" != "$T1" ]
+            then
+                TRAPCOMUNITY="$T2"
+            fi
+            shift
+            ;;
+        -O)
+            SERVICEATTEMPT=$(echo "$2" | cut -d: -f1 | sed -e 's/[^0-9]//g')
+            MAXSERVICEATTEMPTS=$(echo "$2" | cut -d: -f2 | sed -e 's/[^0-9]//g')
+            if [ -z "$MAXSERVICEATTEMPTS" ]
+            then
+                MAXSERVICEATTEMPTS=$SERVICEATTEMPT
+            else
+                SERVICESTATETYPE=$(echo "$2" | cut -d: -f3)
+                if [ $SERVICESTATETYPE != "SOFT" -a $SERVICESTATETYPE != "HARD" ]
+                then
+                    SERVICESTATETYPE="HARD"
+                fi
+            fi
+            if [ -z "$SERVICEATTEMPT" ]
+            then
+                SERVICEATTEMPT=1
+            fi
+            if [ -z "$MAXSERVICEATTEMPTS" ]
+            then
+                MAXSERVICEATTEMPTS=1
+            fi
+            shift
+            ;;
+        -p)
+            if [ -z "$PASSIVE" ]
+            then
+                PASSIVE=$(echo "$2" | cut -d: -f1)
+                if [ "$PASSIVE" = "SAHIPASSIVE" ]
+                then
+                    MONITORING_HOST=$(echo "$2" | cut -d: -f2)
+                    MONITORING_SERVICE=$(echo "$2" | cut -d: -f3-)
+                else
+                    PASSIVE="START"
+                    MONITORING_HOST=$(echo "$2" | cut -d: -f1)
+                    MONITORING_SERVICE=$(echo "$2" | cut -d: -f2-)
+                fi
+            fi
+            shift
+            ;;
+        -*)
+            echo "Unknown argument: $1"
+            print_usage
+            exit $STATE_UNKNOWN
+            ;;
+    esac
+    shift
+done
+
+if [ -z "$SAHIFILE" ]
+then
+	echo "Please specify Testfile/suite to run"
+	exit $STATE_UNKNOWN
+fi
+
+if [ -z "$STARTURL" ]
+then
+	STARTURL="http://sahi.example.com/_s_/dyn/Driver_initialized?browserType=$BROWSER"
+fi
+
+export SAHI_HOME
+export USERDATA_DIR=$SAHI_HOME/userdata
+export START_URL=$STARTURL
+export THREADS=$SAHITHREADS
+export SINGLE_SESSION=false
+export BROWSER
+
+#
+# Try to find our sah script
+#
+if [ -e $USERDATA_DIR/scripts/$SAHIFILE -o -e $USERDATA_DIR/scripts/${SAHIFILE}.sah ]
+then
+	export SCRIPTS_PATH=$USERDATA_DIR/scripts/$SAHIFILE
+elif [ -e $USERDATA_DIR/scripts/sah/$SAHIFILE -o -e $USERDATA_DIR/scripts/sah/${SAHIFILE}.sah ]
+then
+	export SCRIPTS_PATH=$USERDATA_DIR/scripts/sah/$SAHIFILE
+elif [ -e $SAHIFILE ]
+then
+	export SCRIPTS_PATH=$SAHIFILE
+else
+	echo "UNKNOWN - $SAHIFILE not found!"
+	exit 3
+fi
+
+if ! $PLUGINPATH/check_tcp -H $SAHIHOST -p $SAHIPORT >/dev/null
+then
+	echo "UNKNOWN - Cannot connect to Sahi server port ($SAHIHOST:$SAHIPORT)"
+	exit 3
+fi
+
+if [ ! -e $SCRIPTS_PATH ]
+then
+	if [ -e ${SCRIPTS_PATH}.sah ]
+	then
+		SAHIFILE=${SAHIFILE}.sah
+		SCRIPTS_PATH=${SCRIPTS_PATH}.sah
+	else
+		echo "$SCRIPTS_PATH does not exist!"
+		exit $STATE_UNKNOWN
+	fi
+fi
+
+if [ "$PASSIVE" = "START" ]
+then
+	$0 -p "SAHIPASSIVE:$MONITORING_HOST:$MONITORING_SERVICE" $ALLARGS >/dev/null 2>&1 &
+	echo "OK - Started in passive mode"
+	exit 0
+fi
+
+SERVICENAME=$(basename "$SAHIFILE" .sah)
+
+if [ -n "$LOGDIR" ]
+then
+	dd=$(dirname $LOGDIR)
+	bb=$(basename $LOGDIR)
+	if [ -z "$dd" -o -z "$bb" ]
+	then
+		my_exit 3 "Wrong option <LogDir> ($LOGDIR)"
+	fi
+	if [ ! -d "$LOGDIR" ]
+	then
+		if [ ! -w "$dd" ]
+		then
+			my_exit 3 "Cannot create directory $dd ($LOGDIR)"
+		fi
+		mkdir "$dd/$bb"
+		if [ ! -d "$dd/$bb" ]
+		then
+			my_exit 3 "Cannot create directory $dd/$bb ($LOGDIR)"
+		fi
+	fi
+	LOGBASE=$dd
+	LOGPATH=$bb
+else
+	nn=$(basename $SCRIPTS_PATH .sah | sed -e 's/[^a-zA-Z0-9]//g')
+	LOGPATH=$(date +%Y%m%d)/$nn/$nn-$(date +%Y-%m-%d-%H-%M-%S-%N)
+	LOGDIR=$LOGBASE/$LOGPATH
+	mkdir -p "$LOGDIR" >/dev/null 2>&1
+	if [ ! -w "$LOGDIR" ]
+	then
+		my_exit 3 "Cannot create directory $LOGDIR"
+	fi
+fi
+
+if [ ! -d "$LOGDIR" -o ! -w "$LOGDIR" ]
+then
+	my_exit 3 "$LOGDIR is not writable"
+fi
+
+if [ -z "$REMOTE_LOGBASE" ]
+then
+	REMOTE_LOGBASE=$LOGBASE
+fi
+
+touch $LOGDIR/index.html
+chgrp -R sahi $LOGDIR 2>/dev/null
+chmod -R g+w  $LOGDIR 2>/dev/null
+
+#
+# Create our "NetEye" .sah file to support perfdataAdd function
+#
+cat /dev/null >$TMPFILE
+for i in $(grep ^//DECRYPT: $SCRIPTS_PATH)
+do
+	varname=$(echo $i | cut -d: -f2)
+	etext=$(echo $i | cut -d: -f3-)
+	dtext=$(decrypt_password $etext)
+	if [ -s $TMPFILE ]
+	then
+		echo -n ",'$varname':'$dtext'" >>$TMPFILE
+	else
+		echo -n "'$varname':'$dtext'" >$TMPFILE
+	fi
+done
+if [ -s $TMPFILE ]
+then
+	aa=$(cat $TMPFILE);
+	echo >$TMPFILE
+	echo "var \$decrypted_text = {$aa};" >>$TMPFILE
+	echo >>$TMPFILE
+fi
+
+sdir=$(dirname $SCRIPTS_PATH)
+sfile=$(basename $SCRIPTS_PATH)
+sfile_tmp=${sfile}_$$
+cat $SCRIPTS_PATH | sed -e 's#//perfdataAdd#perfdataAdd#g' >$LOGDIR/$sfile_tmp
+if [ -e ${sdir}/lib/neteye.sah ]
+then
+	cat ${sdir}/lib/neteye.sah $TMPFILE $LOGDIR/$sfile_tmp >$LOGDIR/$sfile
+	pdata_init "$LOGDIR/$sfile"
+	SCRIPT_FILE=$sfile
+elif [ -e ${sdir}/../lib/neteye.sah ]
+then
+	cat ${sdir}/../lib/neteye.sah $TMPFILE $LOGDIR/$sfile_tmp >$LOGDIR/$sfile
+	pdata_init "$LOGDIR/$sfile"
+	SCRIPT_FILE=$sfile
+else
+	cat $SCRIPTS_PATH >$LOGDIR/$sfile
+	SCRIPT_FILE=$sfile
+fi
+
+SCRIPTS_PATH=$LOGDIR/$SCRIPT_FILE
+
+BB=$(echo $BROWSER | cut -c1-9)
+if [ "$BB" = "phantomjs" ]
+then
+	sed -i 's#^//.*SKIP_SCREENSHOTS.*#_sahi.SKIP_SCREENSHOTS = true;#g' $LOGDIR/$SCRIPT_FILE
+fi
+
+d1=$(date +%s)
+SAHILOGFILE=$LOGDIR/sahi_debug.log
+#export CUSTOM_TAGS="-tags $(basename $SCRIPTS_PATH .sah)"
+#export CUSTOM_FIELDS=-customField customValue -anotherCustomField "another value"
+export LOGS_INFO=html:$REMOTE_LOGBASE/$LOGPATH
+
+
+n=$RETRIES
+while [ $n -gt 0 ]
+do
+	hostname >$SAHILOGFILE
+	/usr/bin/waitmax $TIMEOUT java -cp $SAHI_HOME/lib/ant-sahi.jar net.sf.sahi.test.TestRunner $CUSTOM_FIELDS -test $REMOTE_LOGBASE/$LOGPATH/$SCRIPT_FILE -browserType $BROWSER -logsInfo "$LOGS_INFO" -baseURL "$START_URL" -host $SAHIHOST -port $SAHIPORT -threads $SAHITHREADS -useSingleSession $SINGLE_SESSION -sendEmail false $CUSTOM_TAGS >>$SAHILOGFILE 2>&1
+	if grep "SUCCESS" $SAHILOGFILE >/dev/null 2>&1
+	then
+		n=0
+	else
+		n=$(expr $n - 1)
+	fi
+done
+
+d2=$(date +%s)
+
+for i in $LOGDIR/*.html
+do
+	sed -i "s#$REMOTE_LOGBASE/#$LOGBASE/#g" $i >/dev/null 2>&1
+	chmod g+rw $i
+done
+
+sahisid=$(grep sahisid $SAHILOGFILE | sed -e 's/.*&sahisid=\(.*\)/\1/g')
+if [ -z "$sahisid" ]
+then
+	sahisid=$(grep suiteId= $SAHILOGFILE | head -1 | cut -d= -f2-)
+fi
+if [ -n "$sahisid" -a -d "$LOGBASE/tmp/$sahisid" ]
+then
+	if [ -e $LOGBASE/tmp/$sahisid/sahiurl.png ]
+	then
+		cp $LOGBASE/tmp/$sahisid/sahiurl.png $LOGDIR/
+	elif [ "$BROWSER" = "phantomjs" ]
+	then
+		echo -e "<br><pre>SAHIURL.png not found in directory $sahisid</pre><br>" >>$LOGDIR/index.html
+	fi
+	rm -rf $LOGBASE/tmp/$sahisid
+elif [ "$BROWSER" = "phantomjs" -a ! -d "$LOGBASE/tmp/$sahisid" ]
+then
+	echo -e "<br><pre>Directory $sahisid not found</pre><br>" >>$LOGDIR/index.html
+fi
+
+if [ -s $LOGDIR/index.html ]
+then
+	if [ -e $LOGDIR/outfile.txt ]
+	then
+		echo -e "<br><pre>$(cat $LOGDIR/outfile.txt)</pre><br>" >>$LOGDIR/index.html
+	fi
+	screenshot=$(ls -1 $LOGDIR/images 2>/dev/null | tail -1)
+	if [ -e $LOGDIR/sahiurl.png ]
+	then
+		echo -e "<br><br><h1>Last navigation image ($(hostname))</h1><br><br>" >>$LOGDIR/index.html
+		echo -e '\n<img src="sahiurl.png">' >>$LOGDIR/index.html
+	elif [ -n "$screenshot" -a -e $LOGDIR/images/$screenshot ]
+	then
+		echo -e "<br><br><h1>Last navigation image ($(hostname))</h1><br><br>" >>$LOGDIR/index.html
+		echo -e "\n<img src='images/$screenshot'>" >>$LOGDIR/index.html
+	else
+		echo -e "<br><br><h1>Last navigation image not created ($(hostname))</h1><br><br>" >>$LOGDIR/index.html
+	fi
+	nn=$(basename $SCRIPTS_PATH .sah | sed -e 's/[^a-zA-Z0-9]//g')
+	URL="<a target='_blank' href='$WEBURL/$(date +%Y%m%d)/$nn/$(basename $LOGDIR)/index.html'>(Log)</a>"
+elif [ -s $SAHILOGFILE ]
+then
+	URL="<a target='_blank' href='$WEBURL/$(date +%Y%m%d)/$nn/$(basename $LOGDIR)/sahi_debug.log'>(DebugLog)</a>"
+else
+	URL="(Strange no index and no sahi-debug file)"
+fi
+
+for i in $(grep ^//HIDE: $SCRIPTS_PATH)
+do
+	hstr=$(echo $i | cut -d: -f2-)
+	sed -i "s/$hstr/XXXXX/g" $LOGDIR/*.html >/dev/null 2>&1
+done
+chmod g+rw $LOGDIR/*.html
+rm -f "$LOGDIR/$sfile" "$LOGDIR/$sfile_tmp"
+
+stmsg="OK"
+if grep "SUCCESS" $SAHILOGFILE >/dev/null 2>&1
+then
+	status=$STATE_OK
+	touch $LOGDIR/STATUS_OK
+elif grep "FAILURE" $SAHILOGFILE >/dev/null 2>&1
+then
+	status=$STATE_CRITICAL
+	stmsg="CRITICAL"
+	touch $LOGDIR/STATUS_CRITICAL
+else
+	TRAPDISABLED=1
+	status=$STATE_UNKNOWN
+	stmsg="UNKNOWN"
+	touch $LOGDIR/STATUS_UNKNOWN
+fi
+
+#
+# We do not set status here because we need to know if the navigation SUCCEDED
+#
+ttsta=$status
+dd=$(expr $d2 - $d1)
+
+if [ -n "$CRIT" -a $ttsta -eq $STATE_OK ]
+then
+	ttmsg=" and was inside time parameters"
+	if [ $dd -gt $CRIT ]
+	then
+		if [ -n "$WARN" ]
+		then
+			ttmsg=", but did take too long (${dd}s > ($WARN,$CRIT): CRITICAL"
+		else
+			ttmsg=", but did take too long (${dd}s > $CRIT: CRITICAL"
+		fi
+		ttsta=$STATE_CRITICAL
+		stmsg="CRITICAL"
+	fi
+fi
+
+if [ -n "$WARN" -a $ttsta -eq $STATE_OK ]
+then
+	ttmsg=" and was inside time parameters"
+	if [ $dd -gt $WARN ]
+	then
+		if [ -n "$CRIT" ]
+		then
+			ttmsg=", but did take too long (${dd}s > ($WARN,$CRIT)): WARNING"
+		else
+			ttmsg=", but did take too long (${dd}s > $WARN): WARNING"
+		fi
+		ttsta=$STATE_WARNING
+		if [ "$stmsg" = "OK" ]
+		then
+			stmsg="WARNING"
+		fi
+	fi
+fi
+
+get_perfdata
+PERFDATA="duration=$dd;$WARN;$CRIT;0$PERFDATA"
+
+if [ $status -eq $STATE_OK ]
+then
+	OUTMSG="$stmsg - SUCCESSFULL webtest$ttmsg $URL in ${dd} seconds|$PERFDATA"
+else
+	if [ "$SERVICESTATETYPE" = "SOFT" ]
+	then
+		SERVICEATTEMPT=$(expr $SERVICEATTEMPT + 1)
+	fi
+	if [ $SERVICEATTEMPT -lt $MAXSERVICEATTEMPTS ]
+	then
+		TRAPDISABLED=1
+	fi
+	OUTMSG="$stmsg - FAILURE in webtest$ttmsg $URL in ${dd} seconds|$PERFDATA"
+fi
+
+if [ -n "$TRAPHOST" -a "$TRAPDISABLED" = "0" ]
+then
+	/usr/bin/snmptrap -v 2c -c "$TRAPCOMUNITY" $TRAPHOST '' NAGIOS-NOTIFY-MIB::nSvcEvent nSvcHostname s "SAHI-WEBTEST" nSvcDesc s "$SERVICENAME" nSvcStateID i $ttsta nSvcOutput s "Navigation $stmsg" >/dev/null 2>&1
+fi
+
+my_exit $ttsta $OUTMSG

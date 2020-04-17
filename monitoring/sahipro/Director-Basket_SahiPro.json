@@ -1,0 +1,124 @@
+{
+    "Command": {
+        "check_sahipro": {
+            "arguments": {
+                "-F": {
+                    "description": "Sahi File or SuiteFile Name (also without .sah extention)",
+                    "value": "$sahi_scriptname$"
+                },
+                "-W": {
+                    "description": "Weburl for sahilogs",
+                    "value": "$sahi_weburl$"
+                },
+                "-b": {
+                    "description": "Browser Type (firefox, phantomjs, chromium, ...)",
+                    "value": "$sahi_browser$"
+                }
+            },
+            "command": "PluginContribDir + \/check_sahipro",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "check_sahipro",
+            "object_type": "object",
+            "timeout": "300",
+            "vars": {},
+            "zone": null
+        }
+    },
+    "ServiceTemplate": {
+        "generic-sahipro": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_sahipro",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 10106,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10107,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10108,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-agent"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "generic-sahipro",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "Datafield": {
+        "10106": {
+            "varname": "sahi_browser",
+            "caption": "Sahi Browser Type",
+            "description": "Browser Type (firefox, phantomjs, chromium, ...)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeDatalist",
+            "format": null,
+            "originalId": "10106",
+            "settings": {
+                "behavior": "strict",
+                "data_type": "string",
+                "datalist": "Sahi_Browsers"
+            }
+        },
+        "10107": {
+            "varname": "sahi_scriptname",
+            "caption": "Sahi Script Name",
+            "description": "Sahi File or SuiteFile Name (also without .sah extention)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10107",
+            "settings": {}
+        },
+        "10108": {
+            "varname": "sahi_weburl",
+            "caption": "Sahi WebURL",
+            "description": "Weburl for sahilogs",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10108",
+            "settings": {}
+        }
+    }
+}
