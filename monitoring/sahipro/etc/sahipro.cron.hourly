@@ -7,9 +7,9 @@ trap 'rm -f $TMPFILE' 0
 
 SAHI_LOGDIR=/neteye/shared/httpd/sahipro
 
-if [ -e /etc/sysconfig/sahipro ]
+if [ -e /neteye/local/sahipro/config/sysconfig.cfg ]
 then
-	. /etc/sysconfig/sahipro
+	. /neteye/local/sahipro/config/sysconfig.cfg
 fi
 
 if [ -z "$CLEANUP_HOURS" ]
