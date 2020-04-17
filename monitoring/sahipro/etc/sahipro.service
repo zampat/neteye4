@@ -1,0 +1,17 @@
+[Unit]
+Description=sahipro
+
+[Service]
+Type=simple
+User=sahi
+Group=sahi
+EnvironmentFile=-/etc/default/sahipro
+EnvironmentFile=-/neteye/local/sahipro/config/sysconfig.cfg
+ExecStart=/neteye/local/sahipro/userdata/bin/startsahi.sh
+Restart=always
+WorkingDirectory=/neteye/local/sahipro/userdata/bin
+Nice=19
+LimitNOFILE=16384
+
+[Install]
+WantedBy=multi-user.target
