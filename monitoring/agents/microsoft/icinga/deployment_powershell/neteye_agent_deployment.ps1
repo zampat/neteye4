@@ -17,28 +17,32 @@ param(
    [string]$neteye4host="neteye4n1",
    [string]$username = "configro",
    [string]$password = "PWTg4vKCB622C",
-   [string]$director_token = "4cab4937c05415d20b388c036f0ac5ef678ef872"
+   [string]$director_token = "4cab4937c05415d20b388c036f0ac5ef678ef872",
+
+   # The icinga2 service users is overriden.
+   [string]$icinga2agent_service_name = "LocalSystem",
+
+   # Download extra Plugins if String is filled with values
+   [bool]$action_extra_plugins = $FALSE,
+
+   # Fetch custom nsclient.ini
+   [bool]$action_custom_nsclient = $FALSE,
+
+   # Required in case of invalid HTTPS Server certificate. Then all required files need to be provided in work directory.
+   [bool]$action_uninstall_Icinga2_agent = $FALSE,
+   [bool]$action_install_Icinga2_agent = $TRUE,
+   
+   [bool]$action_install_OCS_agent = $FALSE,
+   ##### Settings regarding connection to NetEye hosts #####
+   [bool]$avoid_https_requests = $FALSE 
+
 )
-
-##### Settings regarding connection to NetEye hosts #####
-[bool]$avoid_https_requests = $FALSE 
-
-##### Actions to perform ####
-
-# Required in case of invalid HTTPS Server certificate. Then all required files need to be provided in work directory.
-[bool]$action_uninstall_Icinga2_agent = $TRUE
-[bool]$action_install_Icinga2_agent = $TRUE
-
-
-[bool]$action_install_OCS_agent = $TRUE
 
 
 
 ##### Other customizings and settings ####
 # If variable is set the corresponding action is started.
 [string]$url_icinga2agent_path = "https://${neteye4host}/neteyeshare/monitoring/agents/microsoft/icinga"
-# The icinga2 service users is overriden.
-[string]$icinga2agent_service_name = "LocalSystem"
 
 # Download extra Plugins if String is filled with values
 [string]$url_mon_extra_plugins = "${url_icinga2agent_path}/monitoring_plugins/monitoring_plugins.zip"
@@ -169,7 +173,7 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
 
 
 # Section: Download extra plugins from neteyeshare
-if ($url_mon_extra_plugins.Length -gt 1){
+if ( $action_extra_plugins -eq $TRUE ){
 
     $icinga2_monitoring_plugins_dst_path = "${workpath}\monitoring_plugins.zip"
 
@@ -230,7 +234,7 @@ elseif (Test-Path "C:\Program Files\NetEyeNSClient++") {
 
 
 # Section: Customize the nsclient++ installation
-if ($url_icinga2agent_nsclient_ini.Length -gt 1){
+if ( $action_custom_nsclient -eq $TRUE ){
 
     Write-host "Start nsclient++ customizing"
 
@@ -272,7 +276,7 @@ if ($url_icinga2agent_nsclient_ini.Length -gt 1){
 
 #
 # Section: Expand NSClient Plugins to NSClient\scripts
-If ($nsclient_installPath -ne $null) {
+If ( $action_extra_plugins -eq $TRUE ) {
 
     Write-Host "  -Expand Monitoring Plugins to NSClient++ install path"
 
@@ -288,11 +292,7 @@ If ($nsclient_installPath -ne $null) {
         Write-Host "  -Powershell is above 5.0 and Expand-Archive is supported"
         Expand-Archive $icinga2_monitoring_plugins_dst_path -DestinationPath "$nsclient_installPath\scripts" -Force
     }
-}else {
-    Write-Host "Error: NSClient++ Service is NOT installed"
-    Write-Host "  -ERROR: NSClient++ Service is NOT installed"
 }
-
 
 
 #
@@ -331,12 +331,12 @@ if ( $action_install_OCS_agent -eq $TRUE ){
 Write-Host "Terminating: clean of temp-directory"
 echo "clean temp-directory" | Out-File -FilePath "$log_file" -Append
 
-If (Test-Path $ocsagent_dst_file) {
+If ( $action_install_OCS_agent -eq $TRUE ) {
     Write-Host "Removing: $ocsagent_dst_file"
     Remove-Item $ocsagent_dst_file -Force
 }
 
-If (Test-Path $icinga2_monitoring_plugins_dst_path) {
+If ( $action_extra_plugins -eq $TRUE ) {
     Write-Host "Removing: $icinga2_monitoring_plugins_dst_path"
     Remove-Item $icinga2_monitoring_plugins_dst_path -Force
 }
