@@ -19,6 +19,10 @@ param(
    [string]$password = "PWTg4vKCB622C",
    [string]$director_token = "4cab4937c05415d20b388c036f0ac5ef678ef872",
 
+   # Add parent zone and ca server to run check from satellite
+   [string]$parent_zone = "Test Zone Satellite",
+   [string]$ca_server = "neteye4sat.neteyelocal",
+   
    # The icinga2 service users is overriden.
    [string]$icinga2agent_service_name = "LocalSystem",
 
@@ -148,7 +152,7 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
     echo "Invoking Icinga2Agent setup with parameters: $module_call" | Out-File -FilePath "$log_file" -Append
     Write-Host "Invoking Icinga2Agent setup with parameters: $module_call"
 
-    Icinga2AgentModule -DirectorUrl $url_neteye4director -DirectorAuthToken $director_token -IcingaServiceUser $icinga2agent_service_name -NSClientEnableFirewall -NSClientEnableService -RunInstaller -DirectorHostObject $json
+    Icinga2AgentModule -DirectorUrl $url_neteye4director -DirectorAuthToken $director_token -IcingaServiceUser $icinga2agent_service_name -ParentZone $parent_zone -CAServer $ca_server -NSClientEnableFirewall -NSClientEnableService -RunInstaller -DirectorHostObject $json
 
     #Available parameters:
     #Icinga2AgentModule `
