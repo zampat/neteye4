@@ -1,0 +1,85 @@
+<browserTypes>
+	<browserType> 
+		<name>firefox</name> 
+		<displayName>Firefox</displayName>
+		<icon>firefox.png</icon>
+		<path>/usr/bin/firefox</path>  
+		<options>--display=:99 -profile "$userDir/browser/ff/profiles/sahi$threadNo" -private-window -purgecaches -no-remote</options>  
+		<processName>firefox</processName> 
+		<capacity>5</capacity>  
+	</browserType>
+	
+	<browserType> 
+		<name>firefoxHL</name> 
+		<displayName>FirefoxHL</displayName>
+		<icon>firefox.png</icon>
+		<path>/usr/bin/firefox</path>  
+		<options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -private-window -purgecaches -no-remote -headless</options>  
+		<processName>firefox</processName> 
+		<capacity>5</capacity>  
+	</browserType>
+	
+	<browserType> 
+		<name>chrome</name>  
+		<displayName>Chrome</displayName>
+		<icon>chrome.png</icon>
+		<path>/usr/bin/chromium-browser</path>  
+		<options>--display=:99 --no-default-browser-check --no-first-run --user-data-dir=$userDir/browser/chrome/profiles/sahi$threadNo --proxy-server=127.0.0.1:$port --disable-popup-blocking --always-authorize-plugins --allow-outdated-plugins --enable-npapi --incognito</options>  
+		<processName>chrome</processName> 
+		<capacity>5</capacity>  
+	</browserType>	
+	
+	<browserType> 
+		<name>chromeHL</name>  
+		<displayName>ChromeHL</displayName>
+		<icon>chrome.png</icon>
+		<path>/usr/bin/chromium-browser</path>  
+		<options>--display=:99 --no-default-browser-check --no-first-run --user-data-dir=$userDir/browser/chrome/profiles/sahi$threadNo --proxy-server=127.0.0.1:$port --disable-popup-blocking --always-authorize-plugins --allow-outdated-plugins --enable-npapi --incognito --headless --disable-gpu --no-sandbox --remote-debugging-port=9222</options>  
+		<processName>chrome</processName> 
+		<capacity>5</capacity>  
+	</browserType>	
+	
+	<browserType> 
+		<name>phantomjs</name>  
+		<displayName>PhantomJS</displayName>
+		<icon>phantomjs.png</icon>
+		<path>/neteye/local/sahipro/ext/phantomjs/phantomjs.sh</path>  
+		<options>--ignore-ssl-errors=yes --debug=yes --proxy=localhost:9999 /neteye/local/sahipro/ext/phantomjs/sahi.js</options>  
+		<processName>phantomjs</processName> 
+		<capacity>40</capacity> 
+		<force>false</force> 
+	</browserType>	
+	
+	<browserType> 
+		<name>phantomjs-en</name>  
+		<displayName>PhantomJS-EN</displayName>
+		<icon>phantomjs.png</icon>
+		<path>/neteye/local/sahipro/ext/phantomjs/phantomjs.sh</path>  
+		<options>--ignore-ssl-errors=yes --debug=yes --proxy=localhost:9999 /neteye/local/sahipro/ext/phantomjs/sahi_en.js</options>  
+		<processName>phantomjs</processName> 
+		<capacity>40</capacity> 
+		<force>false</force> 
+	</browserType>	
+	
+	<browserType> 
+		<name>phantomjs-it</name>  
+		<displayName>PhantomJS-IT</displayName>
+		<icon>phantomjs.png</icon>
+		<path>/neteye/local/sahipro/ext/phantomjs/phantomjs.sh</path>  
+		<options>--ignore-ssl-errors=yes --debug=yes --proxy=localhost:9999 /neteye/local/sahipro/ext/phantomjs/sahi_it.js</options>  
+		<processName>phantomjs</processName> 
+		<capacity>40</capacity> 
+		<force>false</force> 
+	</browserType>	
+	
+	<browserType> 
+		<name>phantomjs-de</name>  
+		<displayName>PhantomJS-DE</displayName>
+		<icon>phantomjs.png</icon>
+		<path>/neteye/local/sahipro/ext/phantomjs/phantomjs.sh</path>  
+		<options>--ignore-ssl-errors=yes --debug=yes --proxy=localhost:9999 /neteye/local/sahipro/ext/phantomjs/sahi_de.js</options>  
+		<processName>phantomjs</processName> 
+		<capacity>40</capacity> 
+		<force>false</force> 
+	</browserType>	
+</browserTypes>

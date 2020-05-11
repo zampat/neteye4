@@ -1,0 +1,32 @@
+
+
+################## Added NetEye4 ########################
+# Specifies database type.
+# The inbuilt options are "mysql" and "h2", the default is "h2"
+# Change jdbc parameters accordingly
+#JDBC parameters for h2 database
+#db.type=h2
+#db.jdbc_url=jdbc:h2:/opt/neteye/sahipro/userdata/database/db0;AUTO_SERVER=FALSE;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE
+
+#JDBC parameters for mysql database
+#db.type=mysql
+#db.driver_name=com.mysql.jdbc.Driver
+#db.jdbc_url=jdbc:mysql://localhost/sahireports?allowMultiQueries=true&sessionVariables=sql_mode=NO_BACKSLASH_ESCAPES
+#db.user_name=sahi
+#db.password=sahi
+
+#
+# Extra Options added by NetEye
+#
+# Reduce timeout to 90 seconds
+script.max_cycles_for_page_load=600
+
+#
+# Retry on load error
+#
+proxy.failed_request_retry_count=3
+
+#
+# Uncomment this if you need this on first page load
+#
+#xhr.wait_ready_states=2,3

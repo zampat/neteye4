@@ -1,0 +1,105 @@
+#!/bin/sh
+#
+
+TMPFILE=$(mktemp)
+trap 'rm -f $TMPFILE; exit 1' 1 2 15
+trap 'rm -f $TMPFILE' 0
+
+SAHI_LOGDIR=/neteye/shared/httpd/sahipro
+
+if [ -e /neteye/local/sahipro/config/sysconfig.cfg ]
+then
+	. /neteye/local/sahipro/config/sysconfig.cfg
+fi
+
+if [ -z "$CLEANUP_HOURS" ]
+then
+	CLEANUP_HOURS=720
+fi
+
+if [ -z "$CLEANUP_OK_HOURS" ]
+then
+	CLEANUP_OK_HOURS=96
+fi
+
+if [ -z "$SAHI_HOME" ]
+then
+	SAHI_HOME=/neteye/local/sahipro
+fi
+
+#------------------------- FUNCTIONS -------------------------------------
+cleanup() {
+	DIR=$1
+
+	CLEANUP="yes"
+	return
+
+	#
+	# Always cleanup dir where neteye service is running
+	#
+	if /usr/lib/nagios/plugins/check_mysql >/dev/null
+	then
+		CLEANUP="yes"
+		return
+	fi
+	
+	#
+	# Don't cleanup if directory is in the neteye directory (NFS mount!)
+	#
+	if df -P $DIR | grep '/data/neteye$' >/dev/null
+	then
+		return
+	fi
+
+	CLEANUP="yes"
+}
+#-------------------------------------------------------------------------
+
+# Do not clean the tmp-directory
+touch $SAHI_LOGDIR/tmp
+for d in $SAHI_LOGDIR
+do
+    if [ -d "$d" ]; then
+        cleanup "$d"
+	if [ -n "$CLEANUP" ]
+	then
+		/usr/sbin/tmpwatch -m -f --nosymlinks $CLEANUP_HOURS "$d"
+	fi
+    fi
+done
+
+for d in ${SAHI_HOME}/userdata/temp ${SAHI_HOME}/userdata/logs/playback
+do
+    if [ -d "$d" ]; then
+        cleanup "$d"
+	if [ -n "$CLEANUP" ]
+	then
+		/usr/sbin/tmpwatch -m -f --nosymlinks $CLEANUP_OK_HOURS "$d"
+	fi
+    fi
+done
+
+cleanup "$SAHI_LOGDIR"
+if [ -n "$CLEANUP" ]
+then
+	touch -d "$CLEANUP_OK_HOURS hours ago" $TMPFILE
+	for d in $(find $SAHI_LOGDIR -name STATUS_OK ! -cnewer $TMPFILE)
+	do
+		dname=$(dirname $d)
+		rm -rf $dname
+	done
+fi
+
+#
+# Cleanup firefox sqllite db's
+#
+cleanup "${SAHI_HOME}/userdata/browser/ff"
+if [ -n "$CLEANUP" ]
+then
+	chown -R sahi:sahi ${SAHI_HOME}/userdata/browser/ff
+	if [ -d ${SAHI_HOME}/userdata/browser/ff/profiles ]
+	then
+		find ${SAHI_HOME}/userdata/browser/ff/profiles -maxdepth 2 -regextype posix-egrep -regex '.*/(cookies|healthreport|places|webappsstore).sqlite.*' -exec rm -f \{\} \;
+	fi
+fi
+exit 0
