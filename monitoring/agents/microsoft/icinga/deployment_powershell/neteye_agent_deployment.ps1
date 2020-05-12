@@ -9,7 +9,7 @@
 # - Ability to distribute additional monitoring plugins
 # - Ability to customize nsclient.ini
 # 
-# (C) 2019 - 2020 Patrick Zambelli, Würth Phoenix GmbH
+# (C) 2019 - 2020 Patrick Zambelli and contributors, Würth Phoenix GmbH
 #
 
 param(
@@ -335,12 +335,12 @@ if ( $action_install_OCS_agent -eq $TRUE ){
 Write-Host "Terminating: clean of temp-directory"
 echo "clean temp-directory" | Out-File -FilePath "$log_file" -Append
 
-If ( $action_install_OCS_agent -eq $TRUE ) {
+If (Test-Path $ocsagent_dst_file) {
     Write-Host "Removing: $ocsagent_dst_file"
     Remove-Item $ocsagent_dst_file -Force
 }
 
-If ( $action_extra_plugins -eq $TRUE ) {
+If (Test-Path $icinga2_monitoring_plugins_dst_path) {
     Write-Host "Removing: $icinga2_monitoring_plugins_dst_path"
     Remove-Item $icinga2_monitoring_plugins_dst_path -Force
 }
