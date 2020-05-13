@@ -1,8 +1,7 @@
 # Check_iDRAC
 
 https://github.com/dangmocrang/check_idrac
-
-Version 2.2rc4
+Version `2.2rc4`
 
 ## Features
 Check idrac 7 hardwares status via SNMP. Currently supports these hardware:
