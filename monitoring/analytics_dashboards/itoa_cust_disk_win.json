@@ -1,0 +1,2358 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "ITOA Custom dashboard: Host and Service variables defined from monitoring link",
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 74,
+    "iteration": 1589358501179,
+    "links": [],
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "panels": [],
+        "repeat": "Metrics",
+        "scopedVars": {
+          "Metrics": {
+            "selected": true,
+            "text": "C: used",
+            "value": "C: used"
+          }
+        },
+        "title": "$service_name: $Metrics",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "icinga2-influxdb",
+        "editable": true,
+        "error": false,
+        "fill": 1,
+        "grid": {},
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 0,
+          "y": 1
+        },
+        "id": 1,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "maxPerRow": 3,
+        "nullPointMode": "connected",
+        "options": {},
+        "percentage": false,
+        "pointradius": 1,
+        "points": false,
+        "renderer": "flot",
+        "repeat": "hostname",
+        "repeatDirection": "h",
+        "scopedVars": {
+          "Metrics": {
+            "selected": true,
+            "text": "C: used",
+            "value": "C: used"
+          },
+          "hostname": {
+            "selected": true,
+            "text": "myhost.domain.lan",
+            "value": "myhost.domain.lan"
+          }
+        },
+        "seriesOverrides": [
+          {
+            "alias": "/warning/",
+            "color": "#e5ac0e"
+          },
+          {
+            "alias": "/critical/",
+            "color": "#bf1b00"
+          },
+          {
+            "alias": "/warning|critical/",
+            "fill": 0
+          },
+          {
+            "alias": "/warning|critical/",
+            "legend": false
+          },
+          {
+            "alias": "/Total/",
+            "color": "#8AB8FF",
+            "linewidth": 1
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "[[tag_hostname]] Free",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] warning",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "warn"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] critical",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "crit"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] Total",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "max"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$hostname: $service_name: $Metrics",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "icinga2-influxdb",
+        "editable": true,
+        "error": false,
+        "fill": 1,
+        "grid": {},
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 8,
+          "y": 1
+        },
+        "id": 5,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "maxPerRow": 3,
+        "nullPointMode": "connected",
+        "options": {},
+        "percentage": false,
+        "pointradius": 1,
+        "points": false,
+        "renderer": "flot",
+        "repeat": null,
+        "repeatDirection": "h",
+        "repeatIteration": 1589358501179,
+        "repeatPanelId": 1,
+        "scopedVars": {
+          "Metrics": {
+            "selected": true,
+            "text": "C: used",
+            "value": "C: used"
+          },
+          "hostname": {
+            "selected": true,
+            "text": "myhost.domain.lan",
+            "value": "myhost.domain.lan"
+          }
+        },
+        "seriesOverrides": [
+          {
+            "alias": "/warning/",
+            "color": "#e5ac0e"
+          },
+          {
+            "alias": "/critical/",
+            "color": "#bf1b00"
+          },
+          {
+            "alias": "/warning|critical/",
+            "fill": 0
+          },
+          {
+            "alias": "/warning|critical/",
+            "legend": false
+          },
+          {
+            "alias": "/Total/",
+            "color": "#8AB8FF",
+            "linewidth": 1
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "[[tag_hostname]] Free",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] warning",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "warn"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] critical",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "crit"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] Total",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "max"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$hostname: $service_name: $Metrics",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "icinga2-influxdb",
+        "editable": true,
+        "error": false,
+        "fill": 1,
+        "grid": {},
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 16,
+          "y": 1
+        },
+        "id": 6,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "maxPerRow": 3,
+        "nullPointMode": "connected",
+        "options": {},
+        "percentage": false,
+        "pointradius": 1,
+        "points": false,
+        "renderer": "flot",
+        "repeat": null,
+        "repeatDirection": "h",
+        "repeatIteration": 1589358501179,
+        "repeatPanelId": 1,
+        "scopedVars": {
+          "Metrics": {
+            "selected": true,
+            "text": "C: used",
+            "value": "C: used"
+          },
+          "hostname": {
+            "selected": true,
+            "text": "myhost.domain.lan",
+            "value": "myhost.domain.lan"
+          }
+        },
+        "seriesOverrides": [
+          {
+            "alias": "/warning/",
+            "color": "#e5ac0e"
+          },
+          {
+            "alias": "/critical/",
+            "color": "#bf1b00"
+          },
+          {
+            "alias": "/warning|critical/",
+            "fill": 0
+          },
+          {
+            "alias": "/warning|critical/",
+            "legend": false
+          },
+          {
+            "alias": "/Total/",
+            "color": "#8AB8FF",
+            "linewidth": 1
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "[[tag_hostname]] Free",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] warning",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "warn"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] critical",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "crit"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] Total",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "max"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$hostname: $service_name: $Metrics",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 11
+        },
+        "id": 3,
+        "panels": [],
+        "repeat": null,
+        "repeatIteration": 1589358501179,
+        "repeatPanelId": 2,
+        "scopedVars": {
+          "Metrics": {
+            "selected": true,
+            "text": "D: used",
+            "value": "D: used"
+          }
+        },
+        "title": "$service_name: $Metrics",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "icinga2-influxdb",
+        "editable": true,
+        "error": false,
+        "fill": 1,
+        "grid": {},
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 0,
+          "y": 12
+        },
+        "id": 4,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "maxPerRow": 3,
+        "nullPointMode": "connected",
+        "options": {},
+        "percentage": false,
+        "pointradius": 1,
+        "points": false,
+        "renderer": "flot",
+        "repeat": "hostname",
+        "repeatDirection": "h",
+        "repeatIteration": 1589358501179,
+        "repeatPanelId": 1,
+        "repeatedByRow": true,
+        "scopedVars": {
+          "Metrics": {
+            "selected": true,
+            "text": "D: used",
+            "value": "D: used"
+          },
+          "hostname": {
+            "selected": true,
+            "text": "myhost.domain.lan",
+            "value": "myhost.domain.lan"
+          }
+        },
+        "seriesOverrides": [
+          {
+            "alias": "/warning/",
+            "color": "#e5ac0e"
+          },
+          {
+            "alias": "/critical/",
+            "color": "#bf1b00"
+          },
+          {
+            "alias": "/warning|critical/",
+            "fill": 0
+          },
+          {
+            "alias": "/warning|critical/",
+            "legend": false
+          },
+          {
+            "alias": "/Total/",
+            "color": "#8AB8FF",
+            "linewidth": 1
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "[[tag_hostname]] Free",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] warning",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "warn"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] critical",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "crit"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] Total",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "max"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$hostname: $service_name: $Metrics",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "icinga2-influxdb",
+        "editable": true,
+        "error": false,
+        "fill": 1,
+        "grid": {},
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 8,
+          "y": 12
+        },
+        "id": 7,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "maxPerRow": 3,
+        "nullPointMode": "connected",
+        "options": {},
+        "percentage": false,
+        "pointradius": 1,
+        "points": false,
+        "renderer": "flot",
+        "repeat": null,
+        "repeatDirection": "h",
+        "repeatIteration": 1589358501179,
+        "repeatPanelId": 4,
+        "repeatedByRow": true,
+        "scopedVars": {
+          "Metrics": {
+            "selected": true,
+            "text": "D: used",
+            "value": "D: used"
+          },
+          "hostname": {
+            "selected": true,
+            "text": "myhost.domain.lan",
+            "value": "myhost.domain.lan"
+          }
+        },
+        "seriesOverrides": [
+          {
+            "alias": "/warning/",
+            "color": "#e5ac0e"
+          },
+          {
+            "alias": "/critical/",
+            "color": "#bf1b00"
+          },
+          {
+            "alias": "/warning|critical/",
+            "fill": 0
+          },
+          {
+            "alias": "/warning|critical/",
+            "legend": false
+          },
+          {
+            "alias": "/Total/",
+            "color": "#8AB8FF",
+            "linewidth": 1
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "[[tag_hostname]] Free",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] warning",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "warn"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] critical",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "crit"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] Total",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "max"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$hostname: $service_name: $Metrics",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "icinga2-influxdb",
+        "editable": true,
+        "error": false,
+        "fill": 1,
+        "grid": {},
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 16,
+          "y": 12
+        },
+        "id": 8,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "maxPerRow": 3,
+        "nullPointMode": "connected",
+        "options": {},
+        "percentage": false,
+        "pointradius": 1,
+        "points": false,
+        "renderer": "flot",
+        "repeat": null,
+        "repeatDirection": "h",
+        "repeatIteration": 1589358501179,
+        "repeatPanelId": 4,
+        "repeatedByRow": true,
+        "scopedVars": {
+          "Metrics": {
+            "selected": true,
+            "text": "D: used",
+            "value": "D: used"
+          },
+          "hostname": {
+            "selected": true,
+            "text": "myhost.domain.lan",
+            "value": "myhost.domain.lan"
+          }
+        },
+        "seriesOverrides": [
+          {
+            "alias": "/warning/",
+            "color": "#e5ac0e"
+          },
+          {
+            "alias": "/critical/",
+            "color": "#bf1b00"
+          },
+          {
+            "alias": "/warning|critical/",
+            "fill": 0
+          },
+          {
+            "alias": "/warning|critical/",
+            "legend": false
+          },
+          {
+            "alias": "/Total/",
+            "color": "#8AB8FF",
+            "linewidth": 1
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "[[tag_hostname]] Free",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] warning",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "warn"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] critical",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "crit"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          },
+          {
+            "alias": "[[tag_hostname]] Total",
+            "dsType": "influxdb",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "hostname"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "/^$command$/",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+            "rawQuery": false,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "max"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "hostname",
+                "operator": "=~",
+                "value": "/^$hostname$/"
+              },
+              {
+                "condition": "AND",
+                "key": "metric",
+                "operator": "=~",
+                "value": "/^$Metrics$/"
+              },
+              {
+                "condition": "AND",
+                "key": "service",
+                "operator": "=~",
+                "value": "/^$service_name$/"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$hostname: $service_name: $Metrics",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 18,
+    "style": "dark",
+    "tags": [
+      "itoa_custom_dashboard"
+    ],
+    "templating": {
+      "list": [
+        {
+          "allFormat": "glob",
+          "allValue": null,
+          "current": {
+            "text": "nscp-local-disk",
+            "value": "nscp-local-disk"
+          },
+          "datasource": "icinga2-influxdb",
+          "definition": "show measurements",
+          "hide": 2,
+          "includeAll": false,
+          "label": "Command",
+          "multi": false,
+          "multiFormat": "glob",
+          "name": "command",
+          "options": [],
+          "query": "show measurements",
+          "refresh": 2,
+          "regex": ".*disk.*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allFormat": "glob",
+          "allValue": null,
+          "current": {
+            "text": "Agent_Win_Disk",
+            "value": "Agent_Win_Disk"
+          },
+          "datasource": "icinga2-influxdb",
+          "definition": "SHOW TAG VALUES FROM \"$command\" WITH KEY = \"service\"",
+          "hide": 2,
+          "includeAll": false,
+          "label": "Service",
+          "multi": false,
+          "multiFormat": "glob",
+          "name": "service_name",
+          "options": [],
+          "query": "SHOW TAG VALUES FROM \"$command\" WITH KEY = \"service\"",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allFormat": "glob",
+          "allValue": null,
+          "current": {
+            "text": "myhost.domain.lan + myhost.domain.lan + myhost.domain.lan",
+            "value": [
+              "myhost.domain.lan",
+              "myhost.domain.lan",
+              "myhost.domain.lan"
+            ]
+          },
+          "datasource": "icinga2-influxdb",
+          "definition": "",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Host",
+          "multi": true,
+          "multiFormat": "glob",
+          "name": "hostname",
+          "options": [],
+          "query": "SHOW TAG VALUES FROM \"$command\"  WITH KEY = \"hostname\" WHERE service =~ /$service_name/",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allFormat": "glob",
+          "allValue": null,
+          "current": {
+            "text": "C: used + D: used",
+            "value": [
+              "C: used",
+              "D: used"
+            ]
+          },
+          "datasource": "icinga2-influxdb",
+          "definition": "",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Metrics",
+          "multi": true,
+          "multiFormat": "glob",
+          "name": "Metrics",
+          "options": [],
+          "query": "SHOW TAG VALUES FROM \"$command\"  WITH KEY = \"metric\"  WHERE service =~ /$service_name/ AND hostname =~ /$hostname/",
+          "refresh": 2,
+          "regex": "/(.*used)/",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-90d",
+      "to": "now"
+    },
+    "timepicker": {
+      "now": true,
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "browser",
+    "title": "Service: Diskspace Windows",
+    "uid": "ivy2VvRMz",
+    "version": 7
+  }
