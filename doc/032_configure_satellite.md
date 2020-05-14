@@ -15,12 +15,13 @@ endpoints: neteye4vm1.mydomain.local
 parent zone: master
 ```
 
-# Generate certificates for each icinga2 satellite
+# Operations On Satellite (s) #
+## Generate certificates for each icinga2 satellite
 Note: Generate and sign certificates where icinga2-master service is running!
 [Concepts about creating the certificates on the master](https://icinga.com/docs/icinga2/snapshot/doc/06-distributed-monitoring/#create-ca-on-the-master)
 Note 2: In NetEye the service name for icinga2 master is: "icinga2-master"
 
-## Certificate creation for satellite node
+## Certificate creation for satellite node (s)
 
 - Connect to Host where icinga2 master service is running:
 - Generate the certificates:
