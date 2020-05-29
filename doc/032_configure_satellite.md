@@ -83,22 +83,23 @@ const TicketSalt = ""
 **Configuration of icinga2: Zones.conf**
 Path: /neteye/local/icinga2/conf/icinga2/zones.conf
 ```
-object Endpoint "master.domain.com" {
-        host = "neteye4vm1.mydomain.local"
+object Endpoint "icinga2-master" {
+        host = "icinga2-master"
         port = 5665
 }
 object Zone "master" {
-        endpoints = [ "master.domain.com" ]
-    }
+        endpoints = [ "icinga2-master" ]
+}
     
 object Endpoint "neteye4vm1.mydomain.local" {
         host = "neteye4vm1.mydomain.local"
         port = 5665
 }
+
 object Zone "satellite" {
         endpoints = [ "neteye4vm1.mydomain.local" ]
         parent = "master"
-    }
+}
 
 # Other global zones not shown here ...
 
@@ -110,6 +111,15 @@ Provide satellite zone configuration in zones.d/ include directory:
 Path: /neteye/shared/icinga2/conf/icinga2/zones.d/satellite.conf
 
 ```
+
+object Endpoint "icinga2-master" {
+
+}
+
+object Zone "master" {
+        endpoints = [ "icinga2-master" ]
+}
+
 object Endpoint "neteye4vm1.mydomain.local" {
         host = "neteye4vm1.mydomain.local"
         port = 5665
@@ -127,13 +137,13 @@ __Verify Firewall and Features__
 # firewall-cmd --permanent --zone=public --add-port=5665/tcp
 # firewall-cmd --reload
 ```
-**Satellite**
+## Satellite ##
 - Enable features on Satellite: `api checker mainlog`
 ```
 icinga2 feature enable api
 icinga2 feature disable notification
 ```
-**Satellite**
+## Satellite ##
 - Verify API configuration, especially enable to accept configuration.
   Path: `/neteye/local/icinga2/conf/icinga2/features-enabled/api.conf`
 ```
