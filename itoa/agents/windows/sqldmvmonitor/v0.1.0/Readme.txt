@@ -4,7 +4,7 @@ This README describes the prerequisits for installing the SQL DMV Monitor.
 It gives a overview of the possible installation options/parameters and describes the installation process providing some examples.
 
 
-The Installation process is diveded in 3 Phases. Before you install the SQL DMV Monitor and Tracing Service you have to :
+The Installation process is divided in 3 Phases. Before you install the SQL DMV Monitor and Tracing Service you have to :
 1) define the configuration file with the valid parameters(sqltrace.conf). 
 2) setup the SQL Server Instance with the required permissions and configurations 
 3) install the SQL DMV Monitoring and Tracing Service (DMVmonitor). 
