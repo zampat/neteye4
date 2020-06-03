@@ -1,4 +1,4 @@
-Copyright 2020 Würth Phoenix S.r.l.
+﻿Copyright 2020 Würth Phoenix S.r.l.
 
 This README describes the prerequisits for installing the SQL DMV Monitor. 
 It gives a overview of the possible installation options/parameters and describes the installation process providing some examples.
