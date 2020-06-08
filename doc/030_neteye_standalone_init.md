@@ -3,6 +3,7 @@
 Ensure MariaDB, InfluxDB and Grafana services are up and running
 ```
 [root@neteye ~]# systemctl start mariadb.service influxdb.service grafana-server.service
+[root@neteye ~]# systemctl enable mariadb.service influxdb.service grafana-server.service
 ```
 Run the secure installation script (start not running services i.e. influxdb, grafana):
 ```
