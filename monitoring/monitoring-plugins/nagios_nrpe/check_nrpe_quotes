@@ -1,0 +1,17 @@
+#! /bin/sh
+#
+TMPFILE=$(mktemp)
+trap 'rm -f $TMPFILE; exit 1' 1 2 15
+trap 'rm -f $TMPFILE' 0
+
+echo -n "/neteye/shared/monitoring/plugins/check_nrpe" >$TMPFILE
+
+for i in "$@"
+do
+	str=$(echo "$i" | tr '"' "'")
+	echo -n " \"$str\"" >>$TMPFILE
+done
+echo >>$TMPFILE
+
+sh $TMPFILE
+exit $?
