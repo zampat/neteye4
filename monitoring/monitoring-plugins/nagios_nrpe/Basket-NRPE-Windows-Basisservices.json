@@ -91,6 +91,33 @@
             "timeout": "60",
             "vars": {},
             "zone": null
+        },
+        "check_nrpe_windows_users": {
+            "arguments": {
+                "-H": {
+                    "description": "Hostname",
+                    "value": "$host.name$"
+                },
+                "-c": {
+                    "description": "Citrix CSV Critical",
+                    "value": "$critical_users$"
+                },
+                "-w": {
+                    "description": "Citrix CSV Warning",
+                    "value": "$warning_users$"
+                }
+            },
+            "command": "PluginContribDir + \/check_nrpe_windows_users",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "check_nrpe_windows_users",
+            "object_type": "object",
+            "timeout": null,
+            "vars": {},
+            "zone": null
         }
     },
     "ServiceTemplate": {
