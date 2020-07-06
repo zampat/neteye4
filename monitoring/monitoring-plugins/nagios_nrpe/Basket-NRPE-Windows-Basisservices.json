@@ -1,0 +1,614 @@
+{
+    "Command": {
+        "check_nrpe": {
+            "arguments": {
+                "-H": {
+                    "description": "Hostname\/address",
+                    "value": "$host.address$"
+                },
+                "-a": {
+                    "description": "NRPE Arguments",
+                    "repeat_key": false,
+                    "value": "$nrpe_arguments$",
+                    "order": "1"
+                },
+                "-c": {
+                    "description": "NRPE Command",
+                    "value": "$nrpe_command$"
+                },
+                "-n": {
+                    "description": "Do not use SSL",
+                    "set_if": "$nrpe_no_ssl$",
+                    "set_if_format": "string"
+                },
+                "-p": {
+                    "description": "NRPE Port",
+                    "value": "$nrpe_port$"
+                },
+                "-t": {
+                    "description": "NRPE Timeout",
+                    "value": "$nrpe_timeout$"
+                },
+                "-u": {
+                    "description": "Make socket timeouts return an UNKNOWN state instead of CRITICAL",
+                    "set_if": "$nrpe_timeout_unknown$",
+                    "set_if_format": "string"
+                }
+            },
+            "command": "PluginContribDir + \/check_nrpe",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "check_nrpe",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {},
+            "zone": null
+        },
+        "check_nrpe_quotes": {
+            "arguments": {
+                "-H": {
+                    "description": "Hostname\/address",
+                    "value": "$host.address$"
+                },
+                "-a": {
+                    "description": "NRPE Arguments",
+                    "repeat_key": false,
+                    "value": "$nrpe_arguments$",
+                    "order": "1"
+                },
+                "-c": {
+                    "description": "NRPE Command",
+                    "value": "$nrpe_command$"
+                },
+                "-n": {
+                    "description": "Do not use SSL",
+                    "set_if": "$nrpe_no_ssl$"
+                },
+                "-p": {
+                    "description": "NRPE Port",
+                    "value": "$nrpe_port$"
+                },
+                "-t": {
+                    "description": "NRPE Timeout",
+                    "value": "$nrpe_timeout$"
+                },
+                "-u": {
+                    "description": "Make socket timeouts return an UNKNOWN state instead of CRITICAL",
+                    "set_if": "$nrpe_timeout_unknown$"
+                }
+            },
+            "command": "PluginContribDir + \/check_nrpe_quotes",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "check_nrpe_quotes",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {},
+            "zone": null
+        }
+    },
+    "ServiceTemplate": {
+        "generic-nrpe": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_nrpe",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 502,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 501,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 503,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 505,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 504,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-active-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "generic-nrpe",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "nrpe_timeout": "30",
+                "nrpe_timeout_unknown": true
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "nrpe-windows-generic-powershell": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": null,
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-nrpe"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "nrpe-windows-generic-powershell",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "nrpe_arguments": [
+                    "MySkripName.ps1"
+                ],
+                "nrpe_command": "ps1"
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "NRPE_Win_Memory": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": null,
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-nrpe"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "NRPE_Win_Memory",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "nrpe_arguments": [
+                    "ShowAll",
+                    "MaxWarn=98%",
+                    "MaxCrit=100%",
+                    "type=physical"
+                ],
+                "nrpe_command": "CheckMem"
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "NRPE_Win_Uptime": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": null,
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-nrpe"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "NRPE_Win_Uptime",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "nrpe_arguments": [
+                    "ShowAll",
+                    "MinWarn=1s",
+                    "MinCrit=2s"
+                ],
+                "nrpe_command": "CheckUptime"
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "NRPE_WinService_Auto_All": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": null,
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "windows-nrpe-winservice"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "NRPE_WinService_Auto_All",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "nrpe_arguments": [
+                    "service=*",
+                    "filter=name not regexp \"OneSyncSvc.*|CDPUserSvc_.*\"",
+                    "critical=not state_is_perfect()",
+                    "exclude=SysmonLog",
+                    "exclude=easy xbase host control process",
+                    "exclude=ShellHWDetection",
+                    "exclude=BarExUpdate",
+                    "exclude=DFSR",
+                    "exclude=NetTcpActivator",
+                    "exclude=TrustedInstaller",
+                    "exclude=msiserver",
+                    "exclude=wuauserv",
+                    "exclude=RemoteRegistry",
+                    "exclude=MSExchangeNotificationsBroker",
+                    "exclude=MapsBroker",
+                    "exclude=sppsvc",
+                    "exclude=WbioSrvc"
+                ]
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "NRPE_Win_CPU": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": null,
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-nrpe"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "NRPE_Win_CPU",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "nrpe_arguments": [
+                    "ShowAll",
+                    "warn=95",
+                    "crit=99",
+                    "time=10m",
+                    "warn=85",
+                    "crit=95",
+                    "time=50m"
+                ],
+                "nrpe_command": "CheckCPU"
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "NRPE_Win_Diskspace": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_nrpe_quotes",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-nrpe"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "NRPE_Win_Diskspace",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "nrpe_arguments": [
+                    "show-all",
+                    "warn=used>=85%",
+                    "crit=used>=95%",
+                    "filter=type in (\"FIXED\") AND name not like \"\\\\?\\\""
+                ],
+                "nrpe_command": "check_drivesize"
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "NRPE_Version": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": null,
+            "check_interval": "60",
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-nrpe"
+            ],
+            "max_check_attempts": "2",
+            "notes": null,
+            "notes_url": null,
+            "object_name": "NRPE_Version",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "nrpe_timeout": "5",
+                "nrpe_timeout_unknown": false
+            },
+            "volatile": null,
+            "zone": null
+        },
+        "NRPE_Windows_Users": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_nrpe_windows_users",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-active-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "NRPE_Windows_Users",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "Datafield": {
+        "502": {
+            "varname": "nrpe_arguments",
+            "caption": "NRPE Arguments (multi value)",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeArray",
+            "format": null,
+            "originalId": "502",
+            "settings": {}
+        },
+        "501": {
+            "varname": "nrpe_command",
+            "caption": "NRPE Command ",
+            "description": "The nrpe command",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "501",
+            "settings": {}
+        },
+        "503": {
+            "varname": "nrpe_no_ssl",
+            "caption": "NRPE Do not use SSL",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "503",
+            "settings": {}
+        },
+        "505": {
+            "varname": "nrpe_timeout",
+            "caption": "NRPE Timeout",
+            "description": "Number of seconds before connection times out (default=10)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "505",
+            "settings": {}
+        },
+        "504": {
+            "varname": "nrpe_timeout_unknown",
+            "caption": "NRPE timeout unknown",
+            "description": "Make socket timeouts return an UNKNOWN state instead of CRITICAL",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "504",
+            "settings": {}
+        }
+    }
+}
