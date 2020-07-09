@@ -1,34 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_ICINGA2-INFLUXDB",
-      "label": "icinga2-influxdb",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "5.2.4"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": "5.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "5.0.0"
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -46,12 +16,13 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1564669532670,
+  "id": 14,
+  "iteration": 1594285491190,
   "links": [],
   "panels": [
     {
       "collapsed": false,
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -69,10 +40,11 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_ICINGA2-INFLUXDB}",
+      "datasource": "icinga2-influxdb",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 10,
@@ -80,6 +52,7 @@
         "x": 0,
         "y": 1
       },
+      "hiddenSeries": false,
       "id": 4,
       "legend": {
         "alignAsTable": true,
@@ -95,8 +68,11 @@
       "lines": true,
       "linewidth": 2,
       "links": [],
-      "minSpan": 4,
+      "maxPerRow": 6,
       "nullPointMode": "connected",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 1,
       "points": false,
@@ -172,14 +148,15 @@
             {
               "condition": "AND",
               "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
+              "operator": "=",
+              "value": "rta"
             }
           ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "$hostname: RTA no Thresholds",
       "tooltip": {
@@ -198,7 +175,7 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "format": "s",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -206,7 +183,7 @@
           "show": true
         },
         {
-          "format": "short",
+          "format": "ms",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -223,10 +200,11 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_ICINGA2-INFLUXDB}",
+      "datasource": "icinga2-influxdb",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 10,
@@ -234,6 +212,7 @@
         "x": 0,
         "y": 11
       },
+      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "alignAsTable": true,
@@ -249,13 +228,16 @@
       "lines": true,
       "linewidth": 2,
       "links": [],
-      "minSpan": 4,
+      "maxPerRow": 6,
       "nullPointMode": "connected",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
-      "repeat": "Metrics",
+      "repeat": null,
       "repeatDirection": "v",
       "seriesOverrides": [
         {
@@ -326,8 +308,8 @@
             {
               "condition": "AND",
               "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
+              "operator": "=",
+              "value": "pl"
             }
           ]
         },
@@ -378,8 +360,8 @@
             {
               "condition": "AND",
               "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
+              "operator": "=",
+              "value": "pl"
             }
           ]
         },
@@ -430,16 +412,17 @@
             {
               "condition": "AND",
               "key": "metric",
-              "operator": "=~",
-              "value": "/^$Metrics$/"
+              "operator": "=",
+              "value": "pl"
             }
           ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "$hostname: $Metrics",
+      "title": "$hostname: PL",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -475,10 +458,273 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "icinga2-influxdb",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "hiddenSeries": false,
+      "id": 5,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "repeatDirection": "v",
+      "seriesOverrides": [
+        {
+          "alias": "/warning/",
+          "color": "#e5ac0e"
+        },
+        {
+          "alias": "/critical/",
+          "color": "#bf1b00"
+        },
+        {
+          "alias": "/warning|critical/",
+          "fill": 0
+        },
+        {
+          "alias": "/warning|critical/",
+          "legend": false
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "[[tag_hostname]]",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "hostname"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^$command$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "hostname",
+              "operator": "=~",
+              "value": "/^$hostname$/"
+            },
+            {
+              "condition": "AND",
+              "key": "metric",
+              "operator": "=",
+              "value": "rta"
+            }
+          ]
+        },
+        {
+          "alias": "[[tag_hostname]] warning",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "hostname"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^$command$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "warn"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "hostname",
+              "operator": "=~",
+              "value": "/^$hostname$/"
+            },
+            {
+              "condition": "AND",
+              "key": "metric",
+              "operator": "=",
+              "value": "rta"
+            }
+          ]
+        },
+        {
+          "alias": "[[tag_hostname]] critical",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "hostname"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^$command$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"time\" FROM \"http\" WHERE (\"hostname\" = 'neteye.mydomain.lan') AND $timeFilter GROUP BY time($interval) fill(none)",
+          "rawQuery": false,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "crit"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "hostname",
+              "operator": "=~",
+              "value": "/^$hostname$/"
+            },
+            {
+              "condition": "AND",
+              "key": "metric",
+              "operator": "=",
+              "value": "rta"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "$hostname: RTA",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": false,
-  "schemaVersion": 16,
+  "schemaVersion": 22,
   "style": "dark",
   "tags": [
     "itoa_custom_dashboard"
@@ -504,13 +750,18 @@
           }
         ],
         "query": "hostalive",
+        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "allFormat": "glob",
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ICINGA2-INFLUXDB}",
+        "current": {
+          "text": " PC_MCAL_L33",
+          "value": " PC_MCAL_L33"
+        },
+        "datasource": "icinga2-influxdb",
+        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": "Host",
@@ -521,6 +772,7 @@
         "query": "SHOW TAG VALUES FROM \"$command\"  WITH KEY = \"hostname\"",
         "refresh": 2,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
@@ -531,8 +783,13 @@
       {
         "allFormat": "glob",
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_ICINGA2-INFLUXDB}",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "icinga2-influxdb",
+        "definition": "",
         "hide": 0,
         "includeAll": true,
         "label": "Metrics",
@@ -543,6 +800,7 @@
         "query": "SHOW TAG VALUES FROM \"$command\"  WITH KEY = \"metric\"  WHERE hostname =~ /$hostname/",
         "refresh": 2,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
@@ -553,7 +811,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -585,5 +843,5 @@
   "timezone": "browser",
   "title": "Host: Hostalive",
   "uid": "cus0000005",
-  "version": 2
+  "version": 5
 }
