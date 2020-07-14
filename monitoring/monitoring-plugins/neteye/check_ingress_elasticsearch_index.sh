@@ -89,9 +89,9 @@ to elasticsearch date formats"
   echo -e "\t--es-port (int): the elasticsearch port (default: ${ES_PORT})"
   echo -e "\t--es-protocol (str): the protocol used to connect to elasticsearch (default: ${ES_PROTOCOL})"
   echo -e "\t--output-date-format (str): the output date format compatible with 'date' command (default: '${OUTPUT_DATE_FORMAT}')"
-  echo -e "\t--curl-command-path (str): path to a curl executable to use (default: ${CURL_COMMAND_PATH}"
-  echo -e "\t--curl-cert (str): path to the client's certificate (check: man curl for details) (default: ${CURL_CERT}"
-  echo -e "\t--curl-key (str): path to the private key of the client (check: man curl for details) (default: ${CURL_PRIVATE_KEY}"
+  echo -e "\t--curl-command-path (str): path to a curl executable to use (default: '${CURL_COMMAND_PATH}')"
+  echo -e "\t--curl-cert (str): path to the client's certificate (check: man curl for details) (default: '${CURL_CERT}')"
+  echo -e "\t--curl-key (str): path to the private key of the client (check: man curl for details) (default: ${CURL_PRIVATE_KEY}')"
 }
 
 
@@ -178,7 +178,12 @@ do
   esac
 done
 
-
+# Check if warning threshold smaller than critical one
+if [[ "$((CRITICAL_THRESHOLD-WARNING_THRESHOLD))" -lt 0 ]];
+then
+  echo "CHECK UNKNOWN - Critical Threshold '${CRITICAL_THRESHOLD}' should be bigger than or equal to '${WARNING_THRESHOLD}'"
+  exit 3
+fi
 
 #
 # Translate threshold from ${THRESHOLD_FORMAT} to seconds to allow flexibility
