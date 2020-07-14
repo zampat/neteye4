@@ -7,7 +7,7 @@ Baskets will be provided in a standardized way for NetEye and will be made avail
 ## Getting baskets
 
 Overview of provided baskets:
-- Automation: [Import definitions and Synch rules](../monitoring/import_automation)
+- Automation: [Import definitions and Synch rules](https://github.com/zampat/icinga2-monitoring-templates/tree/master/baskets)
 
 ## Installing Baskets
 
