@@ -7,12 +7,12 @@ Baskets will be provided in a standardized way for NetEye and will be made avail
 ## Getting baskets
 
 Overview of provided baskets:
-- Automation: [Import definitions and Synch rules](https://github.com/zampat/icinga2-monitoring-templates/tree/master/baskets)
+- Automation: [Import definitions and synchronization rules](https://github.com/zampat/icinga2-monitoring-templates/tree/master/baskets)
 
 ## Installing Baskets
 
 1. Download .json file
-2. Oben Director menu: "Configuration Baskets"
+2. Open Director menu: "Configuration Baskets"
 3. Click "Upload" and specify new name of basket and .json file
 4. Within new basket definition go to tab: "snapshots"
 5. Select available snapshot from list and click "Restore"
