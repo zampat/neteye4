@@ -1,23 +1,12 @@
-# Business Logic Enhancements
+# Business Services Monitoring
 
-## Monitoring status aggregation
+This section provides enhancements for the business services module, providing:
+- plugin scripts
+- service templates
 
-Enhancement to aggregate the monitoring status of multiple service checks with the same service name. This allows you to aggregate the monitoring states of the same context, i.e., check of Alyvix test case, SQL server status, etc.
-(The use case has been introduced on my blog article.](./check_service_aggregator_blog.md)
+ADVICE: This section is considered "work in progress"
 
-### Configuration for NetEye 3
+## Legacy Neteye 3 Business Service Status aggregation check
 
-1. Place Plugin in folder: /usr/lib64/nagios/plugins/local
-2. Import [Monarch Profile: ](./service-profile-monitoring_status_aggregation.xml) 
-3. Define services to aggregate using parameter `-s <servicename>`
+Contents introduced in NetEye Blog article [IT Servcie Status Aggregation for Distributed Monitoring Scenarious](https://www.neteye-blog.com/2018/09/it-service-status-aggregation-for-distributed-monitoring-scenarios/) has been moved into a [dedicated section in Repository of Neteye 3](https://github.com/zampat/neteye3/business-services/)
 
-### Dashboarding 
-
-The presentation of the aggregated information could be shown according the count of OK services with the provided sample dashboard.
-
-[Import dashboard for NetEye 3: status_overview_neteye3.json](status_overview_neteye3.json)
-![service_status_aggregation_dashboard](check_service_aggregator_dashboard.png)
-
-#### Dashboarding for Alyvix
-
-[See chapter dashboards for alyvix](../analytics_dashboards/alyvix)
