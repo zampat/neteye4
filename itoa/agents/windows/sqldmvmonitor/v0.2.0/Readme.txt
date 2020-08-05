@@ -1,0 +1,182 @@
+﻿Copyright 2020 Würth Phoenix S.r.l.
+
+This README describes the prerequisits for installing the SQL DMV Monitor. 
+It gives a overview of the possible installation options/parameters and describes the installation process providing some examples.
+
+
+The Installation process is diveded in 3 Phases. Before you install the SQL DMV Monitor and Tracing Service you have to :
+1) define the configuration file with the valid parameters(sqltrace.conf). 
+2) setup the SQL Server Instance with the required permissions and configurations 
+3) install the SQL DMV Monitoring and Tracing Service (DMVmonitor). 
+
+
+Phase 1)
+========
+To define the SQL DMV Monitoring and Tracing Configuration File please refer to the file SQLTrace.example.conf. it is located in the same directory.
+Copy it to SQLTrace.conf and make the necessary modifications.
+IMPORTANT:
+The msi bundle will register the config file SQLTrace.conf  for the service. The file will not be copied. For this it is important that a secure location is used for this config file.
+Please take into consideration that the user that is installing the SQL DMV Tracing Service and the Account under which the SQL DMV Service is running must have read access to this file.
+
+Phase 2)
+========
+PREREQUIREMENTS:
+- Powershell script requires SMO assemblies (SharedManagementObjects.msi) installed on the computer where you execute the script. the SMO must be at least for verions SQL 2012.
+- User exectuing the powershell script must have SysAdmin rights on the SQL Server Instance (defined in the SQLTrace.Conf)
+- a valid SQLTrace.conf which was created in Phase 1) 
+  IMPORTANT:
+  the msi bundle will register the config file SQLTrace.conf  for the service. The file will not be copied. For this it is important that a secure location is used for this config file.
+- Windows Service Account under which the SQL DMV Tracing Service will run.In this document we will name this account <SQLDMV Service Account>
+- Path where the SQL Service should write the SQL Extended Event files (path is checked starting form SQL Service)
+
+PREPARATIONS
+
+RUN the Powershell script Prepair4SQLDMVMonitoring.ps1 located in the same direcotry as the readme.txt. 
+The script will validate and set the needed configurations and permissions for the SQL Server Instance which you want to monitor.
+As Result the Scripts returns as Object with telling if SQL Server Instance is Perpared and describing the Status.
+
+$result.SQLInstancePrepared
+Example:
+$result=.\Prepair4SQLDMVMonitoring.ps1 -SQLTraceConfigFile C:\tmp\sqltrace.conf -SQLExtEventDir C:\tmp -SQLTraceServiceaccount 'wp\test_leitner'
+
+$result.SQLInstancePrepared must be return TRUE
+
+Phase 3)
+=======
+Installing  the  SQL DMV Monitor and Tracing Service
+
+PREREQUIREMENTS
+- Result of SQLInstancePrepared described in Phase 2 must be True 
+- User running installation must have windows local administration rights. 
+- Following software must be installed to be able to setup the SQL DMV Service:
+	- Windows Operation System: Windows 2008 R2 or higher (64 Bit)
+	- .net Framework 4.5.2 or higher
+
+
+PREPARATIONS
+
+Befor installing the Service, the Windows Administrator running the installation must provide following information:
+1) Windows account under which the SQL DMV Monitoring and Tracing Service can run. The account must be a windows account or a valid gMSA. In this document we will name this account <SQLDMV Service Account>
+2) Windows Administrator installing the service must provide the SQLTracing.conf file (Phase 1)
+3) SQL Service Instance (defined in sqltrace.conf) which will be Monitored and Traced must have configurations and permissions set from Phase2
+4) Optionally you can define a Windows Account/Group which have the permission to stop/start the service. The msi during installation will give this Account/Group required permissions for start/stopping the service
+   This is important if other users then the Windows Administrator should have the permissions to restart the service.
+
+
+RUNNING Installation
+====================
+You can install the SQLDMV Monitor Servic in 2 ways:
+1) using UI Wizzard
+2) running installation in silent mode 
+
+1. Installation using UI Wizzard
+Run SQLDMVMonitor-x64.msi and follow the installation steps.
+
+2. Installation silent mode
+Run msiexec from command line (detailed description regarding msiexec parameters you can find follwoing this link: https://docs.microsoft.com/en-us/windows/win32/msi/command-line-options). 
+To run the installation in silent mode use following syntax:
+msiexec /i "SQLDMVMonitor-x64.msi" /qn /L*V <logfile> <SQL DMV Setup Parameters>. You can find the desciption of the Parameters below:
+
+SQL DMV Setup Parameters   :
+============================
+INSTALLFOLDER    = Path where the binaries will be installed. Default <ProgramFiles>\SQLDMVTracing
+
+SQLDMVTRCCONFDIR = Path where the <SQLDMVCONFIG> file  must exist. This parameter is REQUIRED. 
+    The setup will register the config file for the service. The file will not copied. For this it is important that a secure location is used for this config file.
+	Setup will check that in this directory or subdirectory a valid config file with then name sqltrace.conf exist.
+	The Setup check that a config file exist in 3 directories using this sequence:
+		1.<SQLDMVTRCCONFDIR>\<computername>.<FullComputerDomainname>\sqltrace.conf
+		2.<SQLDMVTRCCONFDIR>\<computername>\sqltrace.conf
+		3.<SQLDMVTRCCONFDIR>\sqltrace.conf
+	If file is found, setup will skip further validations. This means if File is found on Point 1. than point 2 and 3 ar skiped.
+
+SQLDMVTRCSERVICEACCOUNT		=  Windows Account whith which the SQL DMV Tracing service will run. e.g. <domain\accountname> . Please take into consideration that the Powershell preparescript has set the needed permissions for this user.
+SQLDMVTRCSERVICEACCOUNTPWD	=  Passsword of the Windows Account. set Password "" if you use a gMSA
+
+SQLDMVTRCASSIGNADMIN		= If set to 1 a Windows Account/Group defined with param SQLDMVTRCADMINACCOUNT becomes the permissions to stop/start/query the SQL DMV Tracing Service.Default is 0 (false)
+SQLDMVTRCADMINACCOUNT		= Windows Account/Group which will have the permissions to start/stop  the SQL DMV service. Setup will assign the appropriate permissions. Specify <Domain\accountname> or <Domain\group>. Mandatory if SQLDMVTRCADMINACCOUNT=1
+
+MSINEWINSTANCE              = If set to 1 you can install until 5 additional sqldmvmonitor Agents 
+TRANSFORMS                  = String Value define which sqldmvmonitor Agent Instance can be installed allowed values are: ":I01",":I02",":I03",":I04",":I05"
+
+
+e.g.: msiexec /i sqldmvmonitor-<version>-x64.msi MSINEWINSTANCE=1 TRANSFORMS=":I02"
+
+Examples of installation:
+=========================
+
+1) install SQL DMV Tracing in silent mode. Service should run with an existing service account wp\sqlsvctrc. No SQL DMV  Admin should be configured. Install dir should be default one. SQL DMV config file is located in C:\tmp
+msiexec /i "SQLDMVMonitor-<version>-x64.msi" /qn /L*V c:\tmp\install.log SQLDMVTRCCONFDIR="c:\tmp" SQLDMVTRCSERVICEACCOUNT="wp\sqlsvctrc" SQLDMVTRCSERVICEACCOUNTPWD="password" SQLDMVTRCASSIGNADMIN=0 
+
+2) install  SQL DMV Tracing in silent mode. Service should run with an existing service account wp\sqlsvctrc. SQL DMV Admin group wp\SQLDMVadmingrp should be configured . Install dir should be default. SQL DMV config file is located in C:\tmp
+msiexec /i "SQLDMVMonitor-<version>-x64.msi" /qn /L*V c:\tmp\install.log SQLDMVTRCCONFDIR="c:\tmp" SQLDMVTRCSERVICEACCOUNT="wp\sqlsvctrc" SQLDMVTRCSERVICEACCOUNTPWD="password" SQLDMVTRCASSIGNADMIN=1  SQLDMVTRCADMINACCOUNT="wp\SQLDMVadmingrp" 
+
+3) install sql DMV Monitor with specific Instance 01 installing not in quite mode
+msiexec /i sqldmvmonitor-<version>-x64.msi /L*V c:\tmp\install-I01.log MSINEWINSTANCE=1 TRANSFORMS=":I01"
+
+Return codes msiexec:
+In silent mode you can verify if installation was successfull  checking the exitcode of msiexec. 
+If exit code is 0 installation was successfull. For details of error codes refer to https://docs.microsoft.com/en-us/windows/win32/msi/error-codes.
+
+
+Uninstall default Instance SQL DMV Monitoring Service - I00
+===========================================================
+The service can be uninstalled using:
+ 1) UI using the add/remove feature from Control Panel.
+ 2) Silent by using msiexec. e.g.
+	msiexec /x "{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}" /qn /L*V c:\tmp\uninstall.log
+
+Uninstall SQL DMV Monitoring Service installed with Instance I01 to I05
+=======================================================================
+The SQLDMVMonitor service for Instance I01 to I05 can be uninstalled using:
+  The service can be uninstalled using:
+ 1) UI using the add/remove feature from Control Panel.
+ 2) Silent by using msiexec with the specific GUID. List of Guid for instance can be found on APPENDIX point 2) (see end of readme).
+	the list of guids are:
+      I01={7C41FC5C-7694-45C2-B937-8AD4AEF5F952}
+  e.g. uninstalling SQLDMMonitor Instance I01:
+	msiexec /x "{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}" /qn /L*V c:\tmp\uninstall.log
+
+
+=================================
+Upgrade from previous Version
+=================================
+Each upgrade will be handled as Major Upgrade. During Upgrade Windows Installer will uninstall actual version before running the installation.
+Windows Installer does check current installed version using the ProductCode of the msi bundle (is a guid).(this is important when you deploy the agent using e.g. Powershell DSC).
+The ProductCode for the actual version can be found in this document under Section Appendix Point 2. 
+
+Please take in consideration that you have to run the upgrade/installation with the necessary setup parameters (like first installation)
+If during installation of the new version a error occure, the old version will not be installed!!
+
+Known issues: upgrading from version 0.1.x during unintall service is stopped but process is still running for approx 30 sec. Please stop service and check that process (DMVMonitor) is removed, before running msi bundle.
+
+==================================
+TROUBLESHOOTING
+=================================
+1) Error: Invalid command line argument. Consult the Windows Installer SDK for detailed command line help.
+This happens if you run the msi using the parameter for Multiinstance e.g. MSINEWINSTANCE=1 TRANSFORMS=":I01"
+The error occures if the Instance is already installed. In the msi log File you will find follwoing error.
+Extract from log:
+"Specified instance {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} via transform  is already installed. MSINEWINSTANCE requires a new instance that is not installed.
+MainEngineThread is returning 1639"
+
+============================
+APPENDIX:
+============================
+1) where you can find the SMO msi ?
+e.g. for SQL 2012
+- msi SQLSysClrTypes.msi Microsoft System CLR Types for Microsoft® SQL Server® 2012 link: http://go.microsoft.com/fwlink/?LinkID=239644&clcid=0x409
+- msi SharedManagementObjects.msi Microsoft SQL Server® 2012 Shared Management Objectslink: http://go.microsoft.com/fwlink/?LinkID=239659&clcid=0x409
+
+2) List of ProductCode for released versions based on InstanceID (important for upgrading and uninstall):
+
+Productcode for version 0.2.0
+Default={49689FD2-D834-4C3F-97FF-BC3BD7FEDAF0}
+I01={7C41FC5C-7694-45C2-B937-8AD4AEF5F952}
+I02={C1FF4CB6-26D4-4361-958F-4F8FC9BFCC0E}
+I03={A6F06ACB-009E-47B8-A1AD-612946392825}
+I04={9DB323F7-E431-465F-BD4D-42F570AE9837}
+I05={3259D96B-3A1A-46F0-9D7F-A4A43EC44FE1}
+
+Productcode for versoin 0.1.1
+Default={9A9628AC-47CC-4E08-B9A8-257FFC6A7EAC}
