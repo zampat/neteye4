@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+
+#
+# Cleanup MySQL DB (only if active)
+#
+/usr/lib64/neteye/monitoring/plugins/check_mysql -H localhost >/dev/null 2>&1 || exit 0
+dd=$(date +'%Y-%m-%d %H:%M:00' -d "1 hours ago")
+for i in `echo "select SUITEREPORTID from SUITEREPORTS where ENDTIME<'$dd'" | mysql -BN sahireports`
+do
+	echo "delete from SCRIPTREPORTS where SUITEREPORTID='$i'" | mysql -BN sahireports >/dev/null
+done
+echo "delete from STEPREPORTS where MESSAGETIMESTAMP<'$dd'" | mysql -BN sahireports >/dev/null
+echo "delete from SCRIPTREPORTS where STARTTIME<'$dd'" | mysql -BN sahireports >/dev/null
+echo "delete from SUITEREPORTS where ENDTIME<'$dd'" | mysql -BN sahireports >/dev/null
+echo "TRUNCATE TABLE QUERYLOG" | mysql -BN sahireports >/dev/null
+echo "optimize table STEPREPORTS" | mysql -BN sahireports >/dev/null
+echo "optimize table SCRIPTREPORTS" | mysql -BN sahireports >/dev/null
+echo "optimize table SUITEREPORTS" | mysql -BN sahireports >/dev/null
+exit 0
