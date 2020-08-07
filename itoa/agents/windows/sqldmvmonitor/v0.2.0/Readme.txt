@@ -1,4 +1,4 @@
-﻿Copyright 2020 Würth Phoenix S.r.l.
+Copyright 2020 Würth Phoenix S.r.l.
 
 This README describes the prerequisits for installing the SQL DMV Monitor. 
 It gives a overview of the possible installation options/parameters and describes the installation process providing some examples.
@@ -15,8 +15,11 @@ Phase 1)
 To define the SQL DMV Monitoring and Tracing Configuration File please refer to the file SQLTrace.example.conf. it is located in the same directory.
 Copy it to SQLTrace.conf and make the necessary modifications.
 IMPORTANT:
-The msi bundle will register the config file SQLTrace.conf  for the service. The file will not be copied. For this it is important that a secure location is used for this config file.
-Please take into consideration that the user that is installing the SQL DMV Tracing Service and the Account under which the SQL DMV Service is running must have read access to this file.
+    The setup  will register the location of the config file in the startup parameters of the service (see service.msc - SQLDMVMonitor). The file will not be copied. 
+    For this it is important that a secure location is used for this config file.
+    The service read the config file each time it is started. The config file can be located also on a local path or on a shared path.
+    Please take into consideration that the user that is installing the SQL DMV Tracing Service and the Account under which the SQL DMV Service is running must have read access to this file.
+	
 
 Phase 2)
 ========
@@ -34,11 +37,17 @@ PREPARATIONS
 RUN the Powershell script Prepair4SQLDMVMonitoring.ps1 located in the same direcotry as the readme.txt. 
 The script will validate and set the needed configurations and permissions for the SQL Server Instance which you want to monitor.
 As Result the Scripts returns as Object with telling if SQL Server Instance is Perpared and describing the Status.
-
 $result.SQLInstancePrepared
-Example:
-$result=.\Prepair4SQLDMVMonitoring.ps1 -SQLTraceConfigFile C:\tmp\sqltrace.conf -SQLExtEventDir C:\tmp -SQLTraceServiceaccount 'wp\test_leitner'
 
+Detailed description regarding the script parameters you can find in the powershell script.
+
+Example:
+1) apply permissions and configurations
+$result=.\Prepair4SQLDMVMonitoring.ps1 -SQLTraceConfigFile C:\tmp\sqltrace.conf -SQLExtEventDir C:\tmp -SQLTraceServiceaccount 'wp\test_leitner'
+$result.SQLInstancePrepared must be return TRUE
+
+2) validate if permissions and configurations are set without applying them (userful for checks/validate configurations)
+$result=.\Prepair4SQLDMVMonitoring.ps1 -SQLTraceConfigFile C:\tmp\sqltrace.conf -SQLExtEventDir C:\tmp -SQLTraceServiceaccount 'wp\test_leitner' -OnlyValidate
 $result.SQLInstancePrepared must be return TRUE
 
 Phase 3)
@@ -82,14 +91,17 @@ SQL DMV Setup Parameters   :
 INSTALLFOLDER    = Path where the binaries will be installed. Default <ProgramFiles>\SQLDMVTracing
 
 SQLDMVTRCCONFDIR = Path where the <SQLDMVCONFIG> file  must exist. This parameter is REQUIRED. 
-    The setup will register the config file for the service. The file will not copied. For this it is important that a secure location is used for this config file.
+    The setup  will register the location of the config file in the startup parameters of the service (see service.msc - SQLDMVMonitor). The file will not be copied. For this it is important that a secure location is used for this config file.
+    The service read the config file each time it is started. The config file can be located also on a local path or on a shared path.
+    Please take into consideration that the user that is installing the SQL DMV Tracing Service and the Account under which the SQL DMV Service is running must have read access to this file.
+	
 	Setup will check that in this directory or subdirectory a valid config file with then name sqltrace.conf exist.
 	The Setup check that a config file exist in 3 directories using this sequence:
 		1.<SQLDMVTRCCONFDIR>\<computername>.<FullComputerDomainname>\sqltrace.conf
 		2.<SQLDMVTRCCONFDIR>\<computername>\sqltrace.conf
 		3.<SQLDMVTRCCONFDIR>\sqltrace.conf
-	If file is found, setup will skip further validations. This means if File is found on Point 1. than point 2 and 3 ar skiped.
-
+	If file is found, setup will skip further validations. This means if File is found on Point 1., Point 2 and 3 ar skiped.
+	Important: The setup is following this rule to find the config file. The service is not following this rule to find the config file. The service works with the established location/Path of the config file,  passed as service startup parameter.
 SQLDMVTRCSERVICEACCOUNT		=  Windows Account whith which the SQL DMV Tracing service will run. e.g. <domain\accountname> . Please take into consideration that the Powershell preparescript has set the needed permissions for this user.
 SQLDMVTRCSERVICEACCOUNTPWD	=  Passsword of the Windows Account. set Password "" if you use a gMSA
 
@@ -101,6 +113,7 @@ TRANSFORMS                  = String Value define which sqldmvmonitor Agent Inst
 
 
 e.g.: msiexec /i sqldmvmonitor-<version>-x64.msi MSINEWINSTANCE=1 TRANSFORMS=":I02"
+
 
 Examples of installation:
 =========================
@@ -117,6 +130,16 @@ msiexec /i sqldmvmonitor-<version>-x64.msi /L*V c:\tmp\install-I01.log MSINEWINS
 Return codes msiexec:
 In silent mode you can verify if installation was successfull  checking the exitcode of msiexec. 
 If exit code is 0 installation was successfull. For details of error codes refer to https://docs.microsoft.com/en-us/windows/win32/msi/error-codes.
+
+SETUP Error/Failures
+=======================
+Setup will fail if :
+  - config file is not found/readable or 
+  - content of config file is not valid: 
+    - missing or wrong nats server 
+    - missing or wrong nats port 
+
+Details of error can be found in the msi log file or in the application eventlog. If setup fails please verify on this locations
 
 
 Uninstall default Instance SQL DMV Monitoring Service - I00
@@ -141,7 +164,7 @@ The SQLDMVMonitor service for Instance I01 to I05 can be uninstalled using:
 =================================
 Upgrade from previous Version
 =================================
-Each upgrade will be handled as Major Upgrade. During Upgrade Windows Installer will uninstall actual version before running the installation.
+Each upgrade will be handled as Major Upgrade. During Upgrade Windows Installer will uninstall previous version before running the installation.
 Windows Installer does check current installed version using the ProductCode of the msi bundle (is a guid).(this is important when you deploy the agent using e.g. Powershell DSC).
 The ProductCode for the actual version can be found in this document under Section Appendix Point 2. 
 
