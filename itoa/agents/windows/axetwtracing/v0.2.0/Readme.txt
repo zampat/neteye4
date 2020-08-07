@@ -127,7 +127,7 @@ e.g. for SQL 2012
 2) List of ProductCode for released versions  (important for upgrading and uninstall):
 
 Productcode for verion 0.2.0:
-{C68DFAEA-BA9E-491F-B184-872A390D316E}
+{4ACFA367-02CA-49B8-82D0-F501D2A9AE3E}
 
 Productcode for version 0.1.1:
 {B25BF6EF-109F-4044-8B33-05E29F322C6E}
