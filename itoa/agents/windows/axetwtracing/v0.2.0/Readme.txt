@@ -119,12 +119,7 @@ Known issues: upgrading from version 0.1.x during unintall service is stopped bu
 ============================
 APPENDIX:
 ============================
-1) where you can find the SMO msi ?
-e.g. for SQL 2012
-- msi SQLSysClrTypes.msi Microsoft System CLR Types for Microsoft® SQL Server® 2012 link: http://go.microsoft.com/fwlink/?LinkID=239644&clcid=0x409
-- msi SharedManagementObjects.msi Microsoft SQL Server® 2012 Shared Management Objectslink: http://go.microsoft.com/fwlink/?LinkID=239659&clcid=0x409
-
-2) List of ProductCode for released versions  (important for upgrading and uninstall):
+1) List of ProductCode for released versions  (important for upgrading and uninstall):
 
 Productcode for verion 0.2.0:
 {4ACFA367-02CA-49B8-82D0-F501D2A9AE3E}
