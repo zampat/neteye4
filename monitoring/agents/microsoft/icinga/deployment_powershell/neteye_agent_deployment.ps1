@@ -8,45 +8,66 @@
 # - Add switch variables to define the actions to perform
 # - Ability to distribute additional monitoring plugins
 # - Ability to customize nsclient.ini
+
+# Changelog
+# 2020-08-10
+# 1. Verify is agent is already installed. If yes, perfom only update and maintain an settings including Certificats, zones.conf and constands.conf
+
+
 # 
 # (C) 2019 - 2020 Patrick Zambelli and contributors, Würth Phoenix GmbH
 #
 
 param(
    [string]$workpath="C:\temp",
-   [string]$neteye4host="neteye4n1",
-   [string]$username = "configro",
-   [string]$password = "PWTg4vKCB622C",
-   [string]$director_token = "4cab4937c05415d20b388c036f0ac5ef678ef872",
 
    # Add parent zone and ca server to run check from satellite
-   [string]$parent_zone = "Test Zone Satellite",
-   [string]$ca_server = "neteye4sat.neteyelocal",
+   [string]$neteye4endpoint = $null,
+   [bool]$is_neteye4endpoint_master = $FALSE,
+   # [string]$parent_zone = "Test Zone Satellite",
+   # [string]$ca_server = "neteye4sat.neteyelocal",
+   [string]$neteye4_director_token = "559ef5ea8263654ecae42a9bcad860ad4dad60d2",
+
+   # Version of Icinga2 Agent
+   [string]$icinga2ver="2.11.3",
    
    # The icinga2 service users is overriden.
    [string]$icinga2agent_service_name = "LocalSystem",
 
    # Download extra Plugins if String is filled with values
-   [bool]$action_extra_plugins = $FALSE,
+   [bool]$action_extra_plugins = $TRUE,
 
    # Fetch custom nsclient.ini
-   [bool]$action_custom_nsclient = $FALSE,
+   [bool]$action_custom_nsclient = $TRUE,
 
    # Required in case of invalid HTTPS Server certificate. Then all required files need to be provided in work directory.
-   [bool]$action_uninstall_Icinga2_agent = $FALSE,
+   [bool]$action_uninstall_Icinga2_agent = $TRUE,
    [bool]$action_install_Icinga2_agent = $TRUE,
-   
-   [bool]$action_install_OCS_agent = $FALSE,
-   ##### Settings regarding connection to NetEye hosts #####
-   [bool]$avoid_https_requests = $FALSE 
+   [bool]$action_update_Icinga2_agent = $FALSE,
 
+   [bool]$action_install_OCS_agent = $TRUE,
+   
+   ##### Settings regarding connection to NetEye hosts #####
+   #[bool]$avoid_https_requests = $FALSE 
+   # Define how to retrieve files. Supported ources are: https, fileshare, disabled
+   [string]$remote_file_repository = "fileshare",
+
+   # NetEye 4 NetEyeShare webserver credentials
+   [string]$username = "configro",
+   [string]$password = "PWTg4vKCB622C"
 )
 
+
+# Array neteye endpoint: [string]endpoint fqdn, [int]icinga2 API tcp port, [bool]is master 
+$arr_neteye_endpoints = @(
+    ("neteye4master.mydomain.lan",5665, $TRUE),
+    ("neteye4satellite.mydomain.lan",5665, $FALSE)
+)
 
 
 ##### Other customizings and settings ####
 # If variable is set the corresponding action is started.
-[string]$url_icinga2agent_path = "https://${neteye4host}/neteyeshare/monitoring/agents/microsoft/icinga"
+[string]$url_icinga2agent_path = "https://${neteye4endpoint}/neteyeshare/monitoring/agents/microsoft/icinga"
 
 # Download extra Plugins if String is filled with values
 [string]$url_mon_extra_plugins = "${url_icinga2agent_path}/monitoring_plugins/monitoring_plugins.zip"
@@ -64,7 +85,7 @@ param(
 
 [string]$url_icinga2agent_psm = "${url_icinga2agent_path}/deployment_scripts/Icinga2Agent.psm1"
 
-[string]$url_neteye4director = "https://${neteye4host}/neteye/director/"
+[string]$url_neteye4director = "https://${neteye4endpoint}/neteye/director/"
 
 [string]$date_execution = Get-Date -Format "yyyMMd"
 
@@ -96,85 +117,236 @@ Get-Date | Out-File -FilePath "$log_file" -Append
 #"@
 #[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
 
+
 ##############################################################################################################
-# Collect the various files and folders from neteye web share
-echo "Starting neteye_agent_deployment script...." | Out-File -FilePath "$log_file" -Append
-Write-Host "Starting neteye_agent_deployment script...."
+# Test conditions what actions to perform for Icinga2 Agent: fresh install, update or is all up-to-date
+
+echo "[ ] Starting neteye_agent_deployment script...." | Out-File -FilePath "$log_file" -Append
+Write-Host "[ ] Starting neteye_agent_deployment script...."
+
+#Verify is agent installed: install or update 
+Write-Host "[ ] Testing if Icinga2 Agent is already installed"
+$r = Get-WmiObject Win32_Product | Where {($_.Name -match 'Icinga 2')} 
+
+if ($r -eq $null) {
+	Write-Host "[i] NEW INSTALLATION: Icinga2 agent is not installed. Proceeding with new install. Uninstall of Icinga2 agent is not required."
+    $action_uninstall_Icinga2_agent = $FALSE
+    $action_install_Icinga2_agent = $TRUE
+
+} else {
+
+    #Icinga2Agent is already installed. No update of extra plugins, no install/update of nslcient
+    $action_extra_plugins = $FALSE
+    $action_custom_nsclient = $FALSE
+    $action_install_OCS_agent = $FALSE
 
 
-# Section: Install Icinga2 Agent via PowerShell Module
+    if (($r -ne $null) -and (-not ($r.Version -match $icinga2ver))) {
+        
+        Write-Host "[i] UPDATE REQUIRED: Icinga2 Agent is installed at version: "$r.Version" Required version: $icinga2ver Updating now..."
+        $action_update_Icinga2_agent = $TRUE
+        $action_uninstall_Icinga2_agent = $FALSE
+        $action_install_Icinga2_agent = $FALSE
+
+    } else {
+        Write-Host "[i] Icinga2 Agent is up-to-date. Version $icinga2ver. No uninstall, no update is required."
+        $action_update_Icinga2_agent = $FALSE
+        $action_uninstall_Icinga2_agent = $FALSE
+        $action_install_Icinga2_agent = $FALSE
+    }
+}
+
+
+
+##############################################################################################################
+## Start of various actions and operations of powershell script
+##############################################################################################################
+
+#Verify preconditions to start:
+
+
+
+# Action: Check if i stand within a master or satellite zone
+if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agent -eq $TRUE)){
+
+
+    # Where am I as Agent: within a "master Zone"  or a "satellite zone" ?
+    Write-Host "[i] Going to check wheter I stand in a master or satellite zone..." 
+    
+    foreach ($arr_neteye_endpoint in $arr_neteye_endpoints){
+        Write-Host "... Checking for neteye 4 endpoint: " $arr_neteye_endpoint[0] " on port " $arr_neteye_endpoint[1] " is master: " $arr_neteye_endpoint[2]
+
+        $connection_test_result = Test-NetConnection -ComputerName $arr_neteye_endpoint[0] -Port $arr_neteye_endpoint[1]
+        if ($connection_test_result.TcpTestSucceeded -eq $TRUE){
+
+            Write-Host "[+] Discovered neteye 4 endpoint: " $arr_neteye_endpoint[0] " on port " $arr_neteye_endpoint[1] " is master: " $arr_neteye_endpoint[2]
+            $neteye4endpoint = $arr_neteye_endpoint[0]
+            $is_neteye4endpoint_master = $arr_neteye_endpoint[2]
+        }
+    }
+}
+
+
+
+# Action: Install Icinga2 Agent. 
+# Download the required Icinga2 powershell module. This is required only for Agents in Master zone
 if ( $action_install_Icinga2_agent -eq $TRUE ){
 
-    Write-Host "Starting Section: Install Icinga2 Agent via PowerShell Module"
+    # Endpoint has been discovered AND is Master node: install via Icinga2 PowerShell Module
+    if (( $neteye4endpoint -ne $null ) -and ( $is_neteye4endpoint_master -eq $TRUE)) {
 
-    # Web-get the Icinga2Agent.psm1 from neteye4 share
-    $icinga2agent_psm1_file = "$workpath\Icinga2Agent.psm1"
+        Write-Host "[i] Installation of Icinga2 Agent via PowerShell Module"
 
-    if (-not $avoid_https_requests){
+        # Web-get the Icinga2Agent.psm1 from neteye4 share
+        $icinga2agent_psm1_file = "$workpath\Icinga2Agent.psm1"
 
-        Write-Host "Going to download $url_icinga2agent_psm .... -OutFile $icinga2agent_psm1_file"
-        Invoke-WebRequest -Uri $url_icinga2agent_psm -OutFile $icinga2agent_psm1_file
-    } else {
-        Write-Host "Offline mode: Avoid to download $url_icinga2agent_psm."
-    }
+        if ($remote_file_repository -eq "https"){
 
-    if (Test-Path -Path $icinga2agent_psm1_file){
+            Write-Host "Going to download $url_icinga2agent_psm .... -OutFile $icinga2agent_psm1_file"
+            Invoke-WebRequest -Uri $url_icinga2agent_psm -OutFile $icinga2agent_psm1_file
+
+        } elseif ($remote_file_repository -eq "fileshare") {
+            Write-Host "TODO: Going to download icinga2agent powershell module from remote fileshare."
+
+        } else {
+            Write-Host "Offline mode: Avoid to download $url_icinga2agent_psm."
+        }
+
+
+        if (Test-Path -Path $icinga2agent_psm1_file){
         
-        Write-Host "Icinga2Agent.psm1: OK available in $icinga2agent_psm1_file"
-    } else {
-        Write-Host "Icinga2Agent.psm1: NOT AVAILABLE in $icinga2agent_psm1_file. Abort now!"
+            Write-Host "Icinga2Agent.psm1: OK available in $icinga2agent_psm1_file"
+        
+        } else {
+            Write-Host "[!] Icinga2Agent.psm1: NOT AVAILABLE in $icinga2agent_psm1_file. Abort now!"
+            exit
+        }
+        
+        Import-Module $workpath"\Icinga2Agent.psm1"
+    }
+}
+
+
+
+# Action : Uninstall of Icinga2 Agent via PowerShell Module
+if ( $action_uninstall_Icinga2_agent -eq $TRUE ){
+
+    # Endpoint has been discovered AND is Master node: UNinstall via Icinga2 PowerShell Module
+    if (( $neteye4endpoint -ne $null ) -and ( $is_neteye4endpoint_master -eq $TRUE)) {
+    
+        # Perform uninstall
+        Write-Host "[i] Perform Uninstallation of Icinga2 Agent now..."
+        echo "Perform Uninstallation of Icinga2 Agent now..." | Out-File -FilePath "$log_file" -Append
+        Icinga2AgentModule -FullUninstallation -RunUninstaller
+
+    # Endpoint has been discovered AND is Satellite node: UNinstall via msiexec and perform node setup
+    } elseif (( $neteye4endpoint -ne $null ) -and ( $is_neteye4endpoint_master -eq $FALSE)) {
+
+        Write-Host "[i] UN-Installation of Icinga2 Agent via msiexec and node setup."
+        Write-Host "[!] TODO. Needs to be implemented. Abort here." 
+
+        #Write-Host "Icinga must first be uninstalled"
+	    #$MSIArguments = @(
+	     #   "/x"
+	     #   $r.IdentifyingNumber
+	     #   "/qn"
+	     #   "/norestart"
+	    #)
+	    # Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+        # Start-Sleep -s 3
         exit
     }
-    Import-Module $workpath"\Icinga2Agent.psm1"
-
-}
-
-# Section: Install Icinga2 Agent via PowerShell Module
-if ( $action_uninstall_Icinga2_agent -eq $TRUE ){
-    
-    # Perform uninstall
-    Write-Host "Perform Uninstallation of Icinga2 Agent now..."
-    echo "Perform Uninstallation of Icinga2 Agent now..." | Out-File -FilePath "$log_file" -Append
-    Icinga2AgentModule -FullUninstallation -RunUninstaller
 }
 
 
 
-# Section: Install Icinga2 Agent via PowerShell Module
+# Action: Install Icinga2 Agent via PowerShell Module
 if ( $action_install_Icinga2_agent -eq $TRUE ){
 
-    #Sample to override the host address by hostname fqdn in lowercase format
-    $json = @{ "address"="&fqdn.lowerCase&"; "display_name"= "&hostname.lowerCase&"};
+    # Endpoint has been discovered AND is Master node: install via Icinga2 PowerShell Module
+    if (( $neteye4endpoint -ne $null ) -and ( $is_neteye4endpoint_master -eq $TRUE)) {
 
-    # Perform the setup of Icinga2 Agent via PowerShell module
-    $module_call = "-DirectorUrl $url_neteye4director -DirectorAuthToken $director_token -IcingaServiceUser $icinga2agent_service_name -NSClientEnableFirewall -NSClientEnableService -RunInstaller -DirectorHostObject $json"
+        #Sample to override the host address by hostname fqdn in lowercase format
+        $json = @{ "address"="&fqdn.lowerCase&"; "display_name"= "&fqdn.lowerCase&"};
 
-    echo "Invoking Icinga2Agent setup with parameters: $module_call" | Out-File -FilePath "$log_file" -Append
-    Write-Host "Invoking Icinga2Agent setup with parameters: $module_call"
+        # Perform the setup of Icinga2 Agent via PowerShell module
+        $module_call = "-DirectorUrl $url_neteye4director -DirectorAuthToken $neteye4_director_token -IcingaServiceUser $icinga2agent_service_name -NSClientEnableFirewall -NSClientEnableService -RunInstaller -DirectorHostObject $json"
 
-    Icinga2AgentModule -DirectorUrl $url_neteye4director -DirectorAuthToken $director_token -IcingaServiceUser $icinga2agent_service_name -ParentZone $parent_zone -CAServer $ca_server -NSClientEnableFirewall -NSClientEnableService -RunInstaller -DirectorHostObject $json
+        echo "Invoking Icinga2Agent setup with parameters: $module_call" | Out-File -FilePath "$log_file" -Append
+        Write-Host "Invoking Icinga2Agent setup with parameters: $module_call"
 
-    #Available parameters:
-    #Icinga2AgentModule `
-    #-DirectorUrl       $url_neteye4director `
-    #-DirectorAuthToken $director_token `
-    #-RunInstaller `
-    #-DirectorHostObject $json `
-    #-IgnoreSSLErrors
+        Icinga2AgentModule -DirectorUrl $url_neteye4director -DirectorAuthToken $neteye4_director_token -IcingaServiceUser $icinga2agent_service_name -NSClientEnableFirewall -NSClientEnableService -RunInstaller -DirectorHostObject $json
 
-    # Experimental
-    # IF defined: Override the Icinga2 Agent service user logOn
-    #if ($icinga2agent_service_name.Length -gt 1){
-    #
-    #    echo "Reconfiguring Icinga2 Agent service login account to: $icinga2agent_service_name" | Out-File -FilePath "$log_file" -Append
-    #    Write-Host "Reconfiguring Icinga2 Agent service login account to: $icinga2agent_service_name"
-    #    $service = Get-WmiObject -Class Win32_Service -Filter "Name='icinga2'"
-    #    $service.StopService()
-    #    $service.Change($null,$null,$null,$null,$null,$null,$icinga2agent_service_name,$null,$null,$null,$null)
-    #    $service.StartService()
-    #}
+        #Available parameters:
+        #Icinga2AgentModule `
+        #-DirectorUrl       $url_neteye4director `
+        #-DirectorAuthToken $neteye4_director_token `
+        #-RunInstaller `
+        #-DirectorHostObject $json `
+        #-IgnoreSSLErrors
+
+        # Experimental
+        # IF defined: Override the Icinga2 Agent service user logOn
+        #if ($icinga2agent_service_name.Length -gt 1){
+        #
+        #    echo "Reconfiguring Icinga2 Agent service login account to: $icinga2agent_service_name" | Out-File -FilePath "$log_file" -Append
+        #    Write-Host "Reconfiguring Icinga2 Agent service login account to: $icinga2agent_service_name"
+        #    $service = Get-WmiObject -Class Win32_Service -Filter "Name='icinga2'"
+        #    $service.StopService()
+        #    $service.Change($null,$null,$null,$null,$null,$null,$icinga2agent_service_name,$null,$null,$null,$null)
+        #    $service.StartService()
+        #}
+
+    # Endpoint has been discovered AND is Satellite node: install via msiexec and perform node setup
+    } elseif (( $neteye4endpoint -ne $null ) -and ( $is_neteye4endpoint_master -eq $FALSE)) {
+
+        Write-Host "[i] Installation of Icinga2 Agent via msiexec and node setup."
+        Write-Host "[!] TODO. Needs to be implemented. Abort here." 
+        exit
+    
+    } else {
+        Write-Host "[!] It was not possible to discover the NetEye 4 endpoint. Not setup of Icinga2 Agent is possible. Abort here." 
+        exit
+    }
 }
 
+# Section: Update Icinga2 Agent via PowerShell Module
+if ( $action_update_Icinga2_agent -eq $TRUE ){
+
+    # Endpoint has been discovered: update of Icinga2 Agent
+    # This procedure is valid both for MASTER and SATELLITE zone
+    if ( $neteye4endpoint -ne $null ) {
+
+	    Write-Host "[i] Procedding with update of new version of Icinga2 agent to version: $icinga2ver"
+        Write-Host "[i] Running command: /i ${workpath}\Icinga2-v${icinga2ver}-x86_64.msi /qn /norestart"
+	    $MSIArguments = @(
+	        "/i"
+	        "${workpath}\Icinga2-v${icinga2ver}-x86_64.msi"
+	        "/qn"
+	        "/norestart"
+	    )
+	    Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+
+        Write-Host "[i] Update completed, Going to Restart Servives"
+    
+        Start-Sleep -s 3
+        Restart-Service -Name icinga2
+        Start-Sleep -s 15
+        Restart-Service -Name icinga2
+        Write-Host "[i] Icinga2 service restarted twice"
+    
+    } else {
+        Write-Host "[!] It was not possible to discover the NetEye 4 endpoint. Not update of Icinga2 Agent is possible. Abort here." 
+        exit
+    }
+}
+
+
+
+
+##############################################################################################################
+## Start of additional actions to install additional Plugins, Agents etc.
+##############################################################################################################
 
 # Section: Download extra plugins from neteyeshare
 if ( $action_extra_plugins -eq $TRUE ){
@@ -335,22 +507,22 @@ if ( $action_install_OCS_agent -eq $TRUE ){
 Write-Host "Terminating: clean of temp-directory"
 echo "clean temp-directory" | Out-File -FilePath "$log_file" -Append
 
-If (Test-Path $ocsagent_dst_file) {
+If (( $action_install_OCS_agent -eq $TRUE ) -and (Test-Path $ocsagent_dst_file)) {
     Write-Host "Removing: $ocsagent_dst_file"
     Remove-Item $ocsagent_dst_file -Force
 }
 
-If (Test-Path $icinga2_monitoring_plugins_dst_path) {
+If (( $action_extra_plugins -eq $TRUE ) -and (Test-Path $icinga2_monitoring_plugins_dst_path)) {
     Write-Host "Removing: $icinga2_monitoring_plugins_dst_path"
     Remove-Item $icinga2_monitoring_plugins_dst_path -Force
 }
 
-If (Test-Path $icinga2agent_psm1_file) {
+If (( $action_install_Icinga2_agent -eq $TRUE ) -and (Test-Path $icinga2agent_psm1_file)) {
     Write-Host "Removing: $icinga2agent_psm1_file"
     Remove-Item $icinga2agent_psm1_file -Force
 }
 
-If (Test-Path "$workpath/Icinga2-*.msi") {
+If (( $action_install_Icinga2_agent -eq $TRUE ) -and (Test-Path "$workpath/Icinga2-*.msi")) {
     Write-Host "Removing: $workpath/Icinga2-*.msi"
     Remove-Item "$workpath/Icinga2-*.msi"
 }
