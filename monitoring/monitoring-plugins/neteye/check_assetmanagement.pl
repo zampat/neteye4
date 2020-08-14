@@ -1,10 +1,10 @@
 #!/usr/bin/perl
 # Check the OCS asset management for old assets and duplicate host items
 #
-# Use this plugin for your OCS inventory server to check for items not beeing updated any more.
+# Use this plugin for your OCS assetmanagement server to check for items not beeing updated any more.
 # Search also for duplicate items having the same name.
 #
-# Usage: check_inventory.pl -C <age|duplicates> [-w <item age warning in days>] [-c <item age critical in days>] [-x \"<host1,host2,host3,..>\" ]
+# Usage: check_assetmanagement.pl -C <age|duplicates> [-w <item age warning in days>] [-c <item age critical in days>] [-x \"<host1,host2,host3,..>\" ]
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ use Getopt::Long;
 ################Vars#############
 my %ERRORS=('OK'=>0,'WARNING'=>1,'CRITICAL'=>2,'UNKNOWN'=>3,'DEPENDENT'=>4);
 my %dbOCSVars=('host'=>"localhost",'db'=>"ocsweb",'user'=>"root",'pass'=>"");
-my %dbGLPIVars=('host'=>"localhost",'db'=>"glpi",'user'=>"root",'pass'=>"");
+my %dbGLPIVars=('host'=>"localhost",'db'=>"glpi",'user'=>"icinga_monitoring",'pass'=>"");
 
 $Version = "2.0";
 $DEBUG=0;
@@ -104,7 +104,7 @@ if ($o_command eq "age"){
 } elsif ($o_command eq "assets_in_monitoring"){
 
   $var_return = $ERRORS{"UNKNOWN"};
-  check_for_glpi_not_in_monitoring();
+  print "Command not supported in NetEye 4. \n";
 
 } elsif ($o_command eq "automatic_action_last_run"){
   $var_return = $ERRORS{"UNKNOWN"};
@@ -611,7 +611,7 @@ if (defined ($o_verb) )   {
   $DEBUG=1; 
   print "Verbouse mode on !\n";
   #Log::Log4perl->easy_init( { level   => $DEBUG,
-  #file    => ">>/tmp/check_inventory.log" } );
+  #file    => ">>/tmp/check_assetmanagement.log" } );
   }
   if (defined($o_exclHosts)){
     if ($o_exclHosts =~ m/,/) {
@@ -677,7 +677,7 @@ print <<EOT;
 -h, --help
 print this help message
 -C, --command
-specify the kind of check to perform on the OCS inventory: 
+specify the kind of check to perform on the OCS assetmanagement 
   - age:            check for old not up-to-date assets 
   - duplicates      check in OCS and GLPI for duplicate assests having the same host name
   - ocs_duplicates  check in OCS for duplicate assests having the same host name 
@@ -687,10 +687,10 @@ specify the kind of check to perform on the OCS inventory:
   - assets_in_monitoring check if Assets in GLPI are under active monitoring (Monarch)
   - automatic_action_last_run check regular execution of automatic action: verify last run
 
--w <intiger> --warning <intiger> 
+-w <int> --warning <int> 
 specify the number of days an asset item has not to be updated before returning a warning.
 Default: 10
--c <intiger> --critical <intiger> 
+-c <int> --critical <int> 
 specify the number of days an asset item has not to be updated before returning a critical
 Default: 20
 -x "host1,host2,neteye_.*,..."
