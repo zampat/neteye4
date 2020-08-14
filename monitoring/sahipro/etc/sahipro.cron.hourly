@@ -5,7 +5,7 @@ TMPFILE=$(mktemp)
 trap 'rm -f $TMPFILE; exit 1' 1 2 15
 trap 'rm -f $TMPFILE' 0
 
-SAHI_LOGDIR=/neteye/shared/httpd/sahipro
+SAHI_LOGDIR=/neteye/shared/monitoring/data/sahipro/logs
 
 if [ -e /neteye/local/sahipro/config/sysconfig.cfg ]
 then
@@ -30,28 +30,22 @@ fi
 #------------------------- FUNCTIONS -------------------------------------
 cleanup() {
 	DIR=$1
+	CLEANUP=""
 
-	CLEANUP="yes"
-	return
-
-	#
-	# Always cleanup dir where neteye service is running
-	#
-	if /usr/lib/nagios/plugins/check_mysql >/dev/null
+	if [ ! -e /etc/neteye-cluster ]
 	then
 		CLEANUP="yes"
 		return
 	fi
-	
+
 	#
-	# Don't cleanup if directory is in the neteye directory (NFS mount!)
+	# Always cleanup dir where httpd service is running
 	#
-	if df -P $DIR | grep '/data/neteye$' >/dev/null
+	if /bin/systemctl status httpd >/dev/null
 	then
+		CLEANUP="yes"
 		return
 	fi
-
-	CLEANUP="yes"
 }
 #-------------------------------------------------------------------------
 
@@ -71,11 +65,7 @@ done
 for d in ${SAHI_HOME}/userdata/temp ${SAHI_HOME}/userdata/logs/playback
 do
     if [ -d "$d" ]; then
-        cleanup "$d"
-	if [ -n "$CLEANUP" ]
-	then
-		/usr/sbin/tmpwatch -m -f --nosymlinks $CLEANUP_OK_HOURS "$d"
-	fi
+	/usr/sbin/tmpwatch -m -f --nosymlinks $CLEANUP_OK_HOURS "$d"
     fi
 done
 
@@ -93,13 +83,9 @@ fi
 #
 # Cleanup firefox sqllite db's
 #
-cleanup "${SAHI_HOME}/userdata/browser/ff"
-if [ -n "$CLEANUP" ]
+chown -R sahi:sahi ${SAHI_HOME}/userdata/browser/ff
+if [ -d ${SAHI_HOME}/userdata/browser/ff/profiles ]
 then
-	chown -R sahi:sahi ${SAHI_HOME}/userdata/browser/ff
-	if [ -d ${SAHI_HOME}/userdata/browser/ff/profiles ]
-	then
-		find ${SAHI_HOME}/userdata/browser/ff/profiles -maxdepth 2 -regextype posix-egrep -regex '.*/(cookies|healthreport|places|webappsstore).sqlite.*' -exec rm -f \{\} \;
-	fi
+	find ${SAHI_HOME}/userdata/browser/ff/profiles -maxdepth 2 -regextype posix-egrep -regex '.*/(cookies|healthreport|places|webappsstore).sqlite.*' -exec rm -f \{\} \;
 fi
 exit 0
