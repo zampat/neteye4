@@ -12,6 +12,9 @@
 # Changelog
 # 2020-08-10
 # 1. Verify is agent is already installed. If yes, perfom only update and maintain an settings including Certificats, zones.conf and constands.conf
+# 2020-08-17
+# Ability to install Icinga2 Agent in remote zone
+
 
 
 # 
@@ -65,15 +68,30 @@ $arr_neteye_endpoints = @(
 )
 
 
-##### Other customizings and settings ####
+##### Varialbes for HTTPS and FILE-Copy instructions ####
 # If variable is set the corresponding action is started.
-[string]$url_icinga2agent_path = "https://${neteye4endpoint}/neteyeshare/monitoring/agents/microsoft/icinga"
-
+[string]$url_neteyeshare_base = "https://${neteye4endpoint}/neteyeshare/monitoring/agents/microsoft/icinga"
 # Download extra Plugins if String is filled with values
-[string]$url_mon_extra_plugins = "${url_icinga2agent_path}/monitoring_plugins/monitoring_plugins.zip"
-
+[string]$url_mon_extra_plugins = "${url_neteyeshare_base}/monitoring_plugins/monitoring_plugins.zip"
 # Fetch custom nsclient.ini
-[string]$url_icinga2agent_nsclient_ini = "${url_icinga2agent_path}/configs/nsclient.ini"
+[string]$url_icinga2agent_nsclient_ini = "${url_neteyeshare_base}/configs/nsclient.ini"
+[string]$url_icinga2agent_psm = "${url_neteyeshare_base}/deployment_scripts/Icinga2Agent.psm1"
+
+[string]$url_ocsagent_path = "$url_neteyeshare_base/asset_management/agent/OcsPackage.exe"
+
+# File copy paths
+[string]$fs_base = "\\fileserver\SystemIntegration\TEMP"
+[string]$fs_mon_extra_plugins = "${fs_base}\monitoring_plugins\monitoring_plugins.zip"
+[string]$fs_icinga2agent_nsclient_ini = "${fs_base}\configs\nsclient.ini"
+[string]$fs_icinga2agent_psm = "${fs_base}\deployment_scripts/Icinga2Agent.psm1"
+[string]$fs_icinga2agent_msi = "${fs_base}"
+
+
+
+# Director and self-service API related variables
+[string]$url_neteye4director = "https://${neteye4endpoint}/neteye/director/"
+
+
 
 ##### Other variables #####
 [string]$nsclient_installPath = ""
@@ -83,13 +101,13 @@ $arr_neteye_endpoints = @(
 
 [string]$log_file = "${workpath}\neteye_agent_deployment.log"
 
-[string]$url_icinga2agent_psm = "${url_icinga2agent_path}/deployment_scripts/Icinga2Agent.psm1"
 
-[string]$url_neteye4director = "https://${neteye4endpoint}/neteye/director/"
+
+
 
 [string]$date_execution = Get-Date -Format "yyyMMd"
 
-[string]$url_ocsagent_path = "$url_icinga2agent_path/asset_management/agent/OcsPackage.exe"
+
 
 
 #Verify workdir exists
@@ -195,20 +213,25 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
     # Endpoint has been discovered AND is Master node: install via Icinga2 PowerShell Module
     if (( $neteye4endpoint -ne $null ) -and ( $is_neteye4endpoint_master -eq $TRUE)) {
 
-        Write-Host "[i] Installation of Icinga2 Agent via PowerShell Module"
+        
 
-        # Web-get the Icinga2Agent.psm1 from neteye4 share
+        # Destination path of the Icinga2Agent.psm1
         $icinga2agent_psm1_file = "$workpath\Icinga2Agent.psm1"
 
+        # Downdload via HTTPS
         if ($remote_file_repository -eq "https"){
 
             Write-Host "Going to download $url_icinga2agent_psm .... -OutFile $icinga2agent_psm1_file"
             Invoke-WebRequest -Uri $url_icinga2agent_psm -OutFile $icinga2agent_psm1_file
 
+        # Downdload from remote file-share
         } elseif ($remote_file_repository -eq "fileshare") {
-            Write-Host "TODO: Going to download icinga2agent powershell module from remote fileshare."
+
+            Write-Host "[!] TODO: Going to download icinga2agent powershell module from remote fileshare."
+
 
         } else {
+
             Write-Host "Offline mode: Avoid to download $url_icinga2agent_psm."
         }
 
@@ -266,6 +289,8 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
     # Endpoint has been discovered AND is Master node: install via Icinga2 PowerShell Module
     if (( $neteye4endpoint -ne $null ) -and ( $is_neteye4endpoint_master -eq $TRUE)) {
 
+        Write-Host "[i] Installation of Icinga2 Agent via PowerShell Module"
+
         #Sample to override the host address by hostname fqdn in lowercase format
         $json = @{ "address"="&fqdn.lowerCase&"; "display_name"= "&fqdn.lowerCase&"};
 
@@ -300,8 +325,44 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
     # Endpoint has been discovered AND is Satellite node: install via msiexec and perform node setup
     } elseif (( $neteye4endpoint -ne $null ) -and ( $is_neteye4endpoint_master -eq $FALSE)) {
 
-        Write-Host "[i] Installation of Icinga2 Agent via msiexec and node setup."
-        Write-Host "[!] TODO. Needs to be implemented. Abort here." 
+        # Download of the required Icinga2 MSI file
+        # Downdload via HTTPS
+        if ($remote_file_repository -eq "https"){
+
+            Write-Host "[!] TODO. Download of Icinga2 Agent via HTTPS. Neet to be implemented. Abort here." 
+            return 0
+
+        # Downdload from remote file-share
+        } elseif ($remote_file_repository -eq "fileshare") {
+        
+            Write-Host "[i] Installation of Icinga2 Agent in Satellite zone via .msi file." 
+            Write-Host "    Going to download ${fs_icinga2agent_msi}\Icinga2-v${icinga2ver}-x86_64.msi to Destination $workpath" 
+            Copy-Item -Path "${fs_icinga2agent_msi}\Icinga2-v${icinga2ver}-x86_64.msi" -Destination $workpath
+
+
+            Write-Host "[i] Going to install Icinga2 Agent with command: msiexec.exe"
+            Write-Host "    Running command: /i " + $workpath + "\Icinga2-v${icinga2ver}-x86_64.msi /qn /norestart"
+	        $MSIArguments = @(
+	            "/i"
+	            $workpath + "\Icinga2-v${icinga2ver}-x86_64.msi"
+	            "/qn"
+	            "/norestart"
+	        )
+		    Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+            
+            Write-Host "[i] Installation completed. Proceeding with configuration setup ..."
+
+            return 0
+        
+        
+        } else {
+
+            Write-Host "[!] Exception during Agent installation. You should collect sofware via HTTPS or Fileshare. None selected! Abort here." 
+        }
+
+
+
+        Write-Host "[i] Configuration of Icinga2 Agent is not implemented, yet. Abort here."
         exit
     
     } else {
