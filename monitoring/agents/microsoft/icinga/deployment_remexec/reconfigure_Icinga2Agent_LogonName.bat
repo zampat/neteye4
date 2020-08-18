@@ -1,4 +1,5 @@
-﻿:: Script to reconfigure a previously configured Icinga2 Agent service
+﻿@echo off
+:: Script to reconfigure a previously configured Icinga2 Agent service
 :: Define the list of remote hosts in for loop seciont
 
 :: NO configuration beyond this line 
@@ -16,16 +17,19 @@ host3
   if %%h.==. goto :EOF
 
   echo ">>> Starting Icinga2 Agent reconfiguration for Host: %%h"
+  echo ">>> Starting Icinga2 Agent reconfiguration for Host: %%h">>c:\temp\reconfigure_Icinga2Agent_LogonName.log
 
-  psexec64 SC CONFIG "%ICINGASRV%" obj="%ICINGASRV_Logon%"
+  echo "psexec64 \\%%h SC CONFIG %ICINGASRV% obj= %ICINGASRV_Logon%">>c:\temp\reconfigure_Icinga2Agent_LogonName.log
+  psexec64 \\%%h SC CONFIG "%ICINGASRV%" obj= "%ICINGASRV_Logon%">>c:\temp\reconfigure_Icinga2Agent_LogonName.log
 
-  echo "Restarting Icinga service ...."
-  psexec64 \\%%h sc stop %ICINGASRV%
+  echo "Restarting Icinga service ....">>c:\temp\reconfigure_Icinga2Agent_LogonName.log
+  psexec64 \\%%h sc stop %ICINGASRV%>NUL
 	
-  echo "Starting service..."
-  psexec64 \\%%h sc start %ICINGASRV%
+  echo "Starting service...">>c:\temp\reconfigure_Icinga2Agent_LogonName.log
+  psexec64 \\%%h sc start %ICINGASRV%>NUL
   
   echo "Done for Host: %%h"
+  echo "Done for Host: %%h">>c:\temp\reconfigure_Icinga2Agent_LogonName.log
 )
 
 :End
