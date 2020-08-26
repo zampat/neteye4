@@ -3,7 +3,7 @@
 # Install additional Host Icons in Icinaweb2 folder
 
 #Define Variables
-SRC_GIT_ICONS_FOLDER="./monitoring/configurations/icingaweb2_icons"
+SRC_GIT_ICONS_FOLDER="./monitoring/configurations/icingaweb2/icons/"
 # ARG1: ICINGA2_HOME_DIR="/neteye/shared/icingaweb2"
 DST_ICINGAWEB2_ICONS_FOLDER="$1/public/img/icons"
 

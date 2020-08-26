@@ -22,8 +22,9 @@ if [ -d "${FOLDER_MONITORING_AGENT_MICROSOFT}" ]
 then
    echo "[i] 020: Synchronizing Icinga2 Agent deployment scripts to neteyeshare (to ${FOLDER_MONITORING_AGENT_MICROSOFT})"
    /usr/bin/rsync -av ${SRC_GIT_AGENT_SCRIPTS_FOLDER}/* ${FOLDER_MONITORING_AGENT_MICROSOFT}/
-   /usr/bin/rsync -av ${SRC_GIT_AGENT_SCRIPTS_FOLDER}/deployment_scripts/* ${FOLDER_MONITORING_AGENT_MICROSOFT}/deployment_scripts/
-   /usr/bin/rsync -av ${SRC_GIT_AGENT_SCRIPTS_FOLDER}/icinga2-powershell-module/Icinga2Agent/Icinga2Agent.psm1 ${FOLDER_MONITORING_AGENT_MICROSOFT}/deployment_scripts/Icinga2Agent.psm1
+   /usr/bin/rsync -av ${SRC_GIT_AGENT_SCRIPTS_FOLDER}/deployment_batch ${FOLDER_MONITORING_AGENT_MICROSOFT}/
+   /usr/bin/rsync -av ${SRC_GIT_AGENT_SCRIPTS_FOLDER}/deployment_remexec ${FOLDER_MONITORING_AGENT_MICROSOFT}/
+   /usr/bin/rsync -av ${SRC_GIT_AGENT_SCRIPTS_FOLDER}/icinga2-powershell-module/Icinga2Agent/Icinga2Agent.psm1 ${FOLDER_MONITORING_AGENT_MICROSOFT}/icinga2-powershell-module/Icinga2Agent.psm1
 
 else
    echo "[-] 020: Failed synchronization of Icinga2 agent deployment scripts. Folder: ${FOLDER_MONITORING_AGENT_MICROSOFT} does not exist."
