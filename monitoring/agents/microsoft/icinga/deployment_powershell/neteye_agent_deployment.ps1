@@ -117,7 +117,7 @@ $arr_neteye_endpoints = @(
 [string]$url_ocsagent_path = "$url_neteyeshare_base/asset_management/agent/OcsPackage.exe"
 
 # File copy paths
-[string]$fs_base = "\\pbzfs02.wp.lan\SystemIntegration\TEMP"
+[string]$fs_base = "\\fileshare01.mydomain\neteye\TEMP"
 [string]$fs_mon_extra_plugins = "${fs_base}\monitoring_plugins\monitoring_plugins.zip"
 [string]$fs_icinga2agent_nsclient_ini = "${fs_base}\configs\nsclient.ini"
 [string]$fs_icinga2agent_psm = "${fs_base}\deployment_scripts/Icinga2Agent.psm1"
