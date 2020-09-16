@@ -1,4 +1,4 @@
-﻿# Deployment script for monitoring agent deploy for NetEye 3 to NetEye 4 migration projects
+# Deployment script for monitoring agent deploy for NetEye 3 to NetEye 4 migration projects
 #
 # This script is specailized to deploy the Icinga2 Agent for operation with NetEye 4 while
 # installing and maintaining a running instance of NSClient++ for NetEye 3.
@@ -304,9 +304,10 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
         # Downdload via HTTPS
         if ($remote_file_repository -eq "https"){
 
-            Write-Host "[i] Going to download https://${neteye4endpoint}$url_icinga2agent_msi -OutFile ${workpath}\Icinga2-v${icinga2ver}-x86_64.msi"
-            Invoke-WebRequest -Uri https://${neteye4endpoint}$url_icinga2agent_msi -OutFile ${workpath}\Icinga2-v${icinga2ver}-x86_64.msi
-            write-Host "[+] Done."
+	    Write-Host "[i] Going to download https://${neteye4endpoint}$url_icinga2agent_msi -OutFile ${workpath}\Icinga2-v${icinga2ver}-x86_64.msi"
+            #Invoke-WebRequest -Uri $url_icinga2agent_psm -OutFile $icinga2agent_psm1_file -Proxy $null
+	    $parms = '-k', '-s', "https://${neteye4endpoint}$url_icinga2agent_msi", '-o', "${workpath}\Icinga2-v${icinga2ver}-x86_64.msi" $cmdOutput = &".\curl.exe" @parms
+	    $cmdOutput = &".\curl.exe" @parms
             
         # Downdload from remote file-share
         } elseif ($remote_file_repository -eq "fileshare") {
@@ -513,7 +514,9 @@ if ( $action_update_Icinga2_agent -eq $TRUE ){
 	        "/norestart"
 	    )
 	    Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
-
+		$service = Get-WmiObject -Class Win32_Service -Filter "Name='icinga2'"
+        #$service.StopService()
+        $service.Change($null,$null,$null,$null,$null,$null,$icinga2agent_service_name,$null,$null,$null,$null)
         Write-Host "[i] Update completed, Going to Restart Service"
     
         Start-Sleep -s 3
