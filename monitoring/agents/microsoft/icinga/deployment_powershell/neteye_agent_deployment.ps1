@@ -5,7 +5,14 @@
 #
 # Instructions:
 # 1) Configure variables in section param()
-# 2) To be defined ....
+#    a) define which actions to perform ($action_*)
+#    b) define if download is via https (neteyeshare) or fileshare ($remote_file_repository)
+#    c) urls to download agents ($url_*)
+#    d) define credentials for https server, icinga2 api and director token
+#    e) define Icinga2 infrastructure: ($arr_neteye_endpoints)
+# 2) Provide software
+#    a) the current script
+#    b) curl.exe and libcurl-x64.dll
 #
 # Changelog:
 # 1.1 2020-03-20: 
@@ -31,19 +38,19 @@ param(
    [string]$workpath="$Env:temp",
 
    ###### ACTIONS TO PERFORM ######
+   
+   # Required in case of invalid HTTPS Server certificate. Then all required files need to be provided in work directory.
+   [bool]$action_uninstall_Icinga2_agent = $FALSE,
+   [bool]$action_install_Icinga2_agent = $TRUE,
+   [bool]$action_update_Icinga2_agent = $TRUE,
+
    # Download extra Plugins if String is filled with values
    [bool]$action_extra_plugins = $TRUE,
 
    # Fetch custom nsclient.ini
-   [bool]$action_custom_nsclient = $TRUE,
+   [bool]$action_custom_nsclient = $FALSE,
 
-   # Required in case of invalid HTTPS Server certificate. Then all required files need to be provided in work directory.
-   [bool]$action_uninstall_Icinga2_agent = $TRUE,
-   [bool]$action_install_Icinga2_agent = $TRUE,
-   [bool]$action_update_Icinga2_agent = $FALSE,
-
-   [bool]$action_install_OCS_agent = $TRUE,
-
+   [bool]$action_install_OCS_agent = $FALSE,
 
 
    ###### GLOBAL SETTINGS:  ######
@@ -54,11 +61,11 @@ param(
    [string]$icinga2agent_service_name = "LocalSystem",
    
    # Define how to download files. Supported ources are: https, fileshare, disabled
-   [string]$remote_file_repository = "fileshare",
+   [string]$remote_file_repository = "https",
 
    # NetEye 4 NetEyeShare webserver credentials
    [string]$https_username = "configro",
-   [string]$https_password = "u9XiN1OY5ZVJb",
+   [string]$https_password = "gen_password",
 
 
 
@@ -71,8 +78,8 @@ param(
    ###### ICINGA2 API SETTINGS:  ######
    # Variales for Setup via Icinga2 API (SATELLITE ZONE)
    # Icinga2 Agent install/update via Icinga2 API
-   [string]$neteye4_icinga_api_user = "root",
-   [string]$neteye4_icinga_api_password = "974a00c8931bbaac",
+   [string]$neteye4_icinga_api_user = "ro_user",
+   [string]$neteye4_icinga_api_password = "secret",
    [string]$icinga2_agent_hostname_fqdn=((Get-WmiObject win32_computersystem).DNSHostName+"."+(Get-WmiObject win32_computersystem).Domain).ToLower(),
 
 
@@ -82,7 +89,6 @@ param(
    [string]$neteye4endpoint = $null,
    [bool]$is_neteye4endpoint_master = $FALSE,
    [string]$neteye4parent_zone = ""
-
    
 )
 
@@ -91,8 +97,8 @@ param(
 # ADVICE: Copy-paste names from director zones and endpoint definition !!
 # Structure of Array: [string]endpoint fqdn, [int]icinga2 API tcp port, [bool]is master, [string] zone name
 $arr_neteye_endpoints = @(
-    ("pbzneteye4.wp.lan",5665, $TRUE, "master-wp"),
-    ("pbzsat-demo",5665, $FALSE, "dmz-demo")
+    ("master1",5665, $TRUE, "master"),
+    ("satellite1",5665, $FALSE, "satellit")
 )
 
 
@@ -101,11 +107,12 @@ $arr_neteye_endpoints = @(
 ## Discovery will be done below !
 # [string]$url_neteyeshare_base = "https://${neteye4endpoint}
 [string]$url_neteyeshare_base = "/neteyeshare/monitoring/agents/microsoft/icinga"
+[string]$url_icinga2agent_msi = "${url_neteyeshare_base}/Icinga2-v${icinga2ver}-x86_64.msi"
+[string]$url_icinga2agent_psm = "${url_neteyeshare_base}/deployment_scripts/Icinga2Agent.psm1"
 # Download extra Plugins if String is filled with values
 [string]$url_mon_extra_plugins = "${url_neteyeshare_base}/monitoring_plugins/monitoring_plugins.zip"
 # Fetch custom nsclient.ini
 [string]$url_icinga2agent_nsclient_ini = "${url_neteyeshare_base}/configs/nsclient.ini"
-[string]$url_icinga2agent_psm = "${url_neteyeshare_base}/deployment_scripts/Icinga2Agent.psm1"
 
 [string]$url_ocsagent_path = "$url_neteyeshare_base/asset_management/agent/OcsPackage.exe"
 
@@ -152,6 +159,7 @@ Set-StrictMode -Version Latest
 Get-Date | Out-File -FilePath "$log_file" -Append
 
 
+### ADVICE: Enable this only if really necessary
 ## Trust invalid ssl certificate
 add-type @"
     using System.Net;
@@ -185,9 +193,9 @@ if ($r -eq $null) {
 } else {
 
     #Icinga2Agent is already installed. No update of extra plugins, no install/update of nslcient
-    #$action_extra_plugins = $FALSE
-    #$action_custom_nsclient = $FALSE
-    #$action_install_OCS_agent = $FALSE
+    $action_extra_plugins = $FALSE
+    $action_custom_nsclient = $FALSE
+    $action_install_OCS_agent = $FALSE
 
 
     if (($r -ne $null) -and (-not ($r.Version -match $icinga2ver))) {
@@ -296,9 +304,10 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
         # Downdload via HTTPS
         if ($remote_file_repository -eq "https"){
 
-            Write-Host "[!] TODO. Download of Icinga2 Agent via HTTPS. Neet to be implemented. Abort here." 
-            return 0
-
+            Write-Host "[i] Going to download https://${neteye4endpoint}$url_icinga2agent_msi -OutFile ${workpath}\Icinga2-v${icinga2ver}-x86_64.msi"
+            Invoke-WebRequest -Uri https://${neteye4endpoint}$url_icinga2agent_msi -OutFile ${workpath}\Icinga2-v${icinga2ver}-x86_64.msi
+            write-Host "[+] Done."
+            
         # Downdload from remote file-share
         } elseif ($remote_file_repository -eq "fileshare") {
         
@@ -387,105 +396,100 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
 
     # Endpoint has been discovered AND is SATELLITE node: install via msiexec and perform node setup
     } elseif (( $neteye4endpoint -ne $null ) -and ( $is_neteye4endpoint_master -eq $FALSE)) {
-
-        # Download of the required Icinga2 MSI file
-        # Downdload via HTTPS
-        if ($remote_file_repository -eq "https"){
-
-            Write-Host "[!] TODO. Download of Icinga2 Agent via HTTPS. Neet to be implemented. Abort here." 
-            return 0
-
-        # Downdload from remote file-share
-        } elseif ($remote_file_repository -eq "fileshare") {
-        
-            Write-Host "[i] Installation of Icinga2 Agent in Satellite zone via .msi file." 
-            if (!(Test-Path -LiteralPath ${fs_icinga2agent_msi}\Icinga2-v${icinga2ver}-x86_64.msi )){
-                Write-Host "    Going to download ${fs_icinga2agent_msi}\Icinga2-v${icinga2ver}-x86_64.msi to Destination $workpath" 
-                Copy-Item -Path "${fs_icinga2agent_msi}\Icinga2-v${icinga2ver}-x86_64.msi" -Destination $workpath
-            } else {
-
-                Write-Host "    File ${fs_icinga2agent_msi}\Icinga2-v${icinga2ver}-x86_64.msi already downloaded in $workpath" 
-            }
             
-            Write-Host "[i] Going to install Icinga2 Agent with command: msiexec.exe"
-            Write-Host "    Running command: /i " + $workpath + "\Icinga2-v${icinga2ver}-x86_64.msi /qn /norestart"
-	        $MSIArguments = @(
-	            "/i"
-	            $workpath + "\Icinga2-v${icinga2ver}-x86_64.msi"
-	            "/qn"
-	            "/norestart"
-	        )
-		    Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+        if (!(Test-Path -LiteralPath ${workpath}\Icinga2-v${icinga2ver}-x86_64.msi )){
+            Write-Host "[- File ${workpath}\Icinga2-v${icinga2ver}-x86_64.msi already downloaded in $workpath" 
+        }
+
+
+        Write-Host "[i] Going to install Icinga2 Agent with command: msiexec.exe"
+        Write-Host "    Running command: /i " + $workpath + "\Icinga2-v${icinga2ver}-x86_64.msi /qn /norestart"
+	    $MSIArguments = @(
+	        "/i"
+	        $workpath + "\Icinga2-v${icinga2ver}-x86_64.msi"
+	        "/qn"
+	        "/norestart"
+	    )
+		Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
             
-            # Reconfigure the installed Service Log-on name
-            Write-Host "[i] Installation completed. Reconfigure Service Log-on to:  ${icinga2agent_service_name}"
-            Start-Sleep -s 2
-            $service = Get-WmiObject -Class Win32_Service -Filter "Name='icinga2'"
-            #$service.StopService()
-            $service.Change($null,$null,$null,$null,$null,$null,$icinga2agent_service_name,$null,$null,$null,$null)
-            #$service.StartService()
-            Start-Sleep -s 2
+        # Reconfigure the installed Service Log-on name
+        Write-Host "[i] Installation completed. Reconfigure Service Log-on to:  ${icinga2agent_service_name}"
+        Start-Sleep -s 2
+        $service = Get-WmiObject -Class Win32_Service -Filter "Name='icinga2'"
+        #$service.StopService()
+        $service.Change($null,$null,$null,$null,$null,$null,$icinga2agent_service_name,$null,$null,$null,$null)
+        #$service.StartService()
+        Start-Sleep -s 2
 
-            Write-Host "[i] Done. Proceeding with configuration setup ..."
+        Write-Host "[i] Done. Proceeding with configuration setup ..."
 
-            # 2 step: generate ticket from satellite
-            $parms = '-k', '-s', '-u', "${neteye4_icinga_api_user}:${neteye4_icinga_api_password}", '-H', '"Accept: application/json"', '-X', 'POST', "`"https://${neteye4endpoint}:5665/v1/actions/generate-ticket`"", '-d', "`"{ `\`"cn`\`":`\`"${icinga2_agent_hostname_fqdn}`\`" }`""
-            Write-Host "[ ] Fetching Ticket via Icinga API: $parms" 
-            $cmdOutput = &".\curl.exe" @parms | ConvertFrom-Json
+        # 2 step: generate ticket from satellite
+        # assemble credentials as indicated 
+        # https://stackoverflow.com/questions/27951561/use-invoke-webrequest-with-a-username-and-password-for-basic-authentication-on-t
+        $authentication_pair = "${neteye4_icinga_api_user}:${neteye4_icinga_api_password}"
+        $bytes = [System.Text.Encoding]::ASCII.GetBytes($authentication_pair)
+        $base64 = [System.Convert]::ToBase64String($bytes)
 
-            if (-not ($cmdOutput.results.code -eq "200.0")) {
-                Write-Host "[!] Cannot generate ticket. Abort now!"
-                exit
-            }
+        $basicAuthValue = "Basic $base64"
+        $headers = @{ Authorization = $basicAuthValue }
 
-            Write-Host "[+] Generated ticket: " $cmdOutput.results.ticket
-
-            $ticket = $cmdOutput.results.ticket
-
-            # 3 step: generate local certificates
-            $parms = 'pki', 'new-cert', '--cn', "${icinga2_agent_hostname_fqdn}", '--key', "${CertificatesPath}\${icinga2_agent_hostname_fqdn}.key", '--cert', "${CertificatesPath}\${icinga2_agent_hostname_fqdn}.crt"
-            $cmdOutput = &$icinga2bin @parms
-
-            Write-Host "[+] Result of icinga2 pki new-cert command: $cmdOutput"
-
-            if (-not ($cmdOutput -match "Writing X509 certificate")) {
-                Write-Host "[!] Cannot generate certificate. Abort now!"
-                exit
-            }
+        #$params = -Uri "https://${neteye4endpoint}:5665/v1/actions/generate-ticket" -Headers $headers -Method Post -ContentType "application/json" -Body "{ \"cn\":\"${icinga2_agent_hostname_fqdn}\" }"
+        #Write-Host "[ ] Fetching Ticket via Icinga API: $params" 
+        #Invoke-WebRequest $params
+        #return
 
 
-            # 4 step: get trusted certificates
-            $parms = 'pki', 'save-cert', '--host', "${neteye4endpoint}", '--port', '5665', '--trustedcert', "${CertificatesPath}\trusted-parent.crt"
-            $cmdOutput = &$icinga2bin @parms
+        $parms = '-k', '-s', '-u', "${neteye4_icinga_api_user}:${neteye4_icinga_api_password}", '-H', '"Accept: application/json"', '-X', 'POST', "`"https://${neteye4endpoint}:5665/v1/actions/generate-ticket`"", '-d', "`"{ `\`"cn`\`":`\`"${icinga2_agent_hostname_fqdn}`\`" }`""
+        Write-Host "[ ] Fetching Ticket via Icinga API: $parms" 
+        $cmdOutput = &".\curl.exe" @parms | ConvertFrom-Json
 
-            Write-Host "[+] Result of icinga2 pki save-cert command: $cmdOutput"
-
-            if (-not ($cmdOutput -match "Retrieving X.509 certificate")) {
-                Write-Host "[!] Cannot retrieve parent certificate. Abort now!"
-                exit
-            }
-
-
-            # 5 step: node setup
-            $parms = 'node', 'setup', '--parent_host', "${neteye4endpoint},5665", '--listen', '::,5665', '--cn', "${icinga2_agent_hostname_fqdn}", '--zone', "${icinga2_agent_hostname_fqdn}", '--parent_zone', """${neteye4parent_zone}""", '--trustedcert', "${CertificatesPath}\trusted-parent.crt", '--endpoint', "${neteye4endpoint},${neteye4endpoint}", '--ticket', "${ticket}", '--accept-config', '--accept-commands', '--disable-confd'
-            Write-Host "[i] Starting node setup with parms: " $parms
-            $cmdOutput = &$icinga2bin @parms
-
-            Write-Host "[i] Result of icinga2 pki save-cert command: $cmdOutput"
-
-            if ($cmdOutput -match "Make sure to restart Icinga 2") {
-                Restart-Service -Name icinga2
-                Start-Sleep -s 10
-                Restart-Service -Name icinga2
-                Write-Host "[+] Done. Icinga2 service restarted twice"
-            }
-        
-        
-        } else {
-
-            Write-Host "[!] Exception during Agent installation. You should collect sofware via HTTPS or Fileshare. None selected! Abort here." 
+        if (-not ($cmdOutput.results.code -eq "200.0")) {
+            Write-Host "[!] Cannot generate ticket. Abort now!"
             exit
         }
+
+        Write-Host "[+] Generated ticket: " $cmdOutput.results.ticket
+
+        $ticket = $cmdOutput.results.ticket
+
+        # 3 step: generate local certificates
+        $parms = 'pki', 'new-cert', '--cn', "${icinga2_agent_hostname_fqdn}", '--key', "${CertificatesPath}\${icinga2_agent_hostname_fqdn}.key", '--cert', "${CertificatesPath}\${icinga2_agent_hostname_fqdn}.crt"
+        $cmdOutput = &$icinga2bin @parms
+
+        Write-Host "[+] Result of icinga2 pki new-cert command: $cmdOutput"
+
+        if (-not ($cmdOutput -match "Writing X509 certificate")) {
+            Write-Host "[!] Cannot generate certificate. Abort now!"
+            exit
+        }
+
+
+        # 4 step: get trusted certificates
+        $parms = 'pki', 'save-cert', '--host', "${neteye4endpoint}", '--port', '5665', '--trustedcert', "${CertificatesPath}\trusted-parent.crt"
+        $cmdOutput = &$icinga2bin @parms
+
+        Write-Host "[+] Result of icinga2 pki save-cert command: $cmdOutput"
+
+        if (-not ($cmdOutput -match "Retrieving X.509 certificate")) {
+            Write-Host "[!] Cannot retrieve parent certificate. Abort now!"
+            exit
+        }
+
+
+        # 5 step: node setup
+        $parms = 'node', 'setup', '--parent_host', "${neteye4endpoint},5665", '--listen', '::,5665', '--cn', "${icinga2_agent_hostname_fqdn}", '--zone', "${icinga2_agent_hostname_fqdn}", '--parent_zone', """${neteye4parent_zone}""", '--trustedcert', "${CertificatesPath}\trusted-parent.crt", '--endpoint', "${neteye4endpoint},${neteye4endpoint}", '--ticket', "${ticket}", '--accept-config', '--accept-commands', '--disable-confd'
+        Write-Host "[i] Starting node setup with parms: " $parms
+        $cmdOutput = &$icinga2bin @parms
+
+        Write-Host "[i] Result of icinga2 pki save-cert command: $cmdOutput"
+
+        if ($cmdOutput -match "Make sure to restart Icinga 2") {
+            Restart-Service -Name icinga2
+            Start-Sleep -s 10
+            Restart-Service -Name icinga2
+            Write-Host "[+] Done. Icinga2 service restarted twice"
+        }
+        
     
     } else {
         Write-Host "[!] It was not possible to discover the NetEye 4 endpoint. Not setup of Icinga2 Agent is possible. Abort here." 
@@ -727,7 +731,7 @@ If (( $action_extra_plugins -eq $TRUE ) -and (Test-Path $icinga2_monitoring_plug
     Remove-Item $icinga2_monitoring_plugins_dst_path -Force
 }
 
-If (( $action_install_Icinga2_agent -eq $TRUE ) -and (Test-Path $icinga2agent_psm1_file)) {
+If (( $icinga2agent_psm1_file -ne $null ) -and ( $action_install_Icinga2_agent -eq $TRUE ) -and (Test-Path $icinga2agent_psm1_file)) {
     Write-Host "Removing: $icinga2agent_psm1_file"
     Remove-Item $icinga2agent_psm1_file -Force
 }
