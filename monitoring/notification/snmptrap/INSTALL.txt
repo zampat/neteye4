@@ -1,0 +1,9 @@
+Notification command:
+
+Host:
+
+/neteye/shared/monitoring/phoenix/bin/neteye-trap-notification $user.email$ public $host.name$ _HOST_ $host.display_name$ $host.state_id$ 0 $host.output$ $host.perfdata$ $host.check_attempt$ $host.duration_sec$ $host.last_check$ $host.last_state_change$ $host.last_state_up$ $host.last_state_down$ $host.last_state_unreachable$
+
+Service:
+
+/neteye/shared/monitoring/phoenix/bin/neteye-trap-notification $user.email$ public $host.name$ $service.name$ $host.display_name$ $host.state_id$ 0 $service.output$ $service.perfdata$ $service.check_attempt$ $service.duration_sec$ $service.last_check$ $service.last_state_change$ $service.last_state_ok$ $service.last_state_warning$ $service.last_state_critical$  $service.last_state_unknown$ $service.state_id$
