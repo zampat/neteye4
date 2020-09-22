@@ -1,3 +1,4 @@
+#!/neteye/shared/monitoring/plugins/pve/bin/python
 """
 (WIP) Dynamic Business Process check for icinga 2
 
@@ -44,10 +45,12 @@ states_map: Dict[str, Dict[float, str]] = {
 def parse_args():
     parser = argparse.ArgumentParser(description='Bussiness Process')
     parser = argparse.ArgumentParser(description=f"Example: {sys.argv[0]}")
-    parser.add_argument('-a', '--aggregator' , dest='aggregator', required=True, type=lambda x: x.lower(), help='Choose your aggregator Activity Service (AND, OR, MIN[\d+])')
+    parser.add_argument('-a', '--aggregator' , dest='aggregator', required=True, type=lambda x: x.lower(), help='Choose your aggregator Activity Service (AND, OR, MIN[\d+], MINOK([\d+], [\d+]))')
     parser.add_argument('-f', '--filter' , dest='myfilter', required=True, type=str, help="API filter, examples: '\"location_Bozen\" in host.groups'\n 'match(\"pbzesxi*\",host.name)'")
     parser.add_argument('-s', '--softness' , dest='softness', required=False, action='store_true', default=False, help='Consider soft states')
     parser.add_argument('-t', '--type' , dest='object_type', required=True, default="hosts", choices=["hosts", "services"], help='Whether to use host or service')
+    parser.add_argument('--degrade' , dest='', required=False, default=True, help='')
+
     parser.add_argument('--log_level', dest='log_level', required=False, default="WARNING", help="logging level")
 
     return parser.parse_args()
@@ -101,7 +104,28 @@ def compute_aggregation(operator: str, mylist: List[float], object_type: str) ->
         if minimum > len(mylist):
             raise ValueError("Min cannot be greater than the length of the list")
         return max(sorted(mylist)[0:minimum])
+    
+    t = re.match("minok(\d+)\-(\d+)", operator)
+    if t:
+        groups = t.groups()
+        logging.debug(groups)
+        m = int(groups[0])
+        n = int(groups[1])
+        count_ok = len([x for x in mylist if x == 0])
+        count_warn = len([x for x in mylist if x == 1])
+        count_critical = len([x for x in mylist if x == 2])
 
+
+        if count_ok >= n:
+            return 0
+        # Have at least m OKs
+        if count_ok < m:
+            return 2
+        # Have no more than m Criticals OR have less than n OKs
+        if count_critical >= m or count_ok < n:
+            return 1
+        
+        
 
 def compute_perfdata(mylist: List[Dict], softness: bool):
     res = [
@@ -111,7 +135,7 @@ def compute_perfdata(mylist: List[Dict], softness: bool):
         []
     ]
     for x in mylist:
-        res[int(considered_state(softness, x["attrs"]["state"], x["attrs"]["state_type"])].append(x["name"])
+        res[int(considered_state(softness, x["attrs"]["state"], x["attrs"]["state_type"]))].append(x["name"])
     return res
 
 
@@ -190,7 +214,7 @@ def main():
 
     print("CHECK " + states_map[args.object_type][res])
 
-    print(compute_perfdata(r.json()["results"]))
+    # print(compute_perfdata(r.json()["results"]))
 
     return res
 
