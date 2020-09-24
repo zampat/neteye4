@@ -20,6 +20,6 @@ To define the path, run the following commands:
 # touch /neteye/shared/icingaweb2/conf/modules/fileshipper/imports.ini
 # cat >>/neteye/shared/icingaweb2/conf/modules/fileshipper/imports.ini <<EOM
 [NetEye File import]
-basedir = "/data/file-import" 
+basedir = "/neteye/shared/httpd/file-import" 
 EOM
 ```
