@@ -2,7 +2,8 @@
 #! /bin/sh
 #
 export PATH=.:$PATH
-logfile=/var/log/phone-send-protocol.log
+#logfile=/var/log/phone-send-protocol.log
+logfile=/neteye/local/smsd/log/phone-send-protocol.log
 tmpfile=/tmp/phonesend_email_tmp$$.txt
 queuefile=/var/tmp/.phonequeue_$USER.txt
 number=""
