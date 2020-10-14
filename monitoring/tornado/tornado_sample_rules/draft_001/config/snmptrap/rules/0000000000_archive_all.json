@@ -1,0 +1,19 @@
+{
+  "name": "archive_all",
+  "description": "Archive all Rule",
+  "continue": true,
+  "active": true,
+  "constraint": {
+    "WHERE": null,
+    "WITH": {}
+  },
+  "actions": [
+    {
+      "id": "archive",
+      "payload": {
+        "archive_type": "${event.type}",
+        "event": "${event}"
+      }
+    }
+  ]
+}

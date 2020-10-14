@@ -1,0 +1,52 @@
+{
+  "name": "sample_regex_with_monitoring_action",
+  "description": "Sample Regex Rule with Monitoring Action",
+  "continue": true,
+  "active": true,
+  "constraint": {
+    "WHERE": {
+      "type": "AND",
+      "operators": [
+        {
+          "type": "regex",
+          "regex": ".*subject test.*",
+          "target": "${event.payload.subject}"
+        }
+      ]
+    },
+    "WITH": {}
+  },
+  "actions": [
+    {
+      "id": "monitoring",
+      "payload": {
+        "host_creation_payload": {
+          "object_name": "${event.payload.data.host}",
+          "address": "127.0.0.1",
+          "imports": "generic-passive-host",
+          "object_type": "Object",
+          "vars": {
+            "created_by": "tornado"
+          }
+        },
+        "action_name": "create_and_or_process_service_passive_check_result",
+        "process_check_result_payload": {
+          "exit_status": "${event.payload.data.service_status}",
+          "performance_data": [],
+          "type": "Service",
+          "service": "${event.payload.data.host}!${event.payload.data.service}",
+          "plugin_output": "Output message"
+        },
+        "service_creation_payload": {
+          "imports": "generic-passive-service",
+          "object_type": "Object",
+          "object_name": "${event.payload.data.service}",
+          "vars": {
+            "created_by": "tornado"
+          },
+          "host": "${event.payload.data.host}"
+        }
+      }
+    }
+  ]
+}

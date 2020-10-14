@@ -1,0 +1,14 @@
+{
+  "description": "",
+  "active": true,
+  "filter": {
+    "type": "AND",
+    "operators": [
+      {
+        "type": "equals",
+        "first": "${event.type}",
+        "second": "snmptrapd"
+      }
+    ]
+  }
+}
