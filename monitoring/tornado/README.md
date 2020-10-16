@@ -1,19 +1,25 @@
-# Tornado for NetEye 4
+# Tornado - event processing engine
 
-Sample tornado filters and rules collection
+Tornado is the module for flexible event processing in NetEye. The core of Tornado represents the event processing engine configurable by hierarchical set of rules. Those rules are structured in a hierarchical way, in order to setup processing trees to respect events coming from various input channels or to structure events according various usecases.
+
+To get a in depth introduction to Tornado consult the user guide withing NetEye 4 or [visit the project website on github](https://github.com/WuerthPhoenix/tornado). Tornado is published according the Apache license and therefore the entire source code is open.
 
 ## Setup of tornado
 
-Setup Tornado packages as indicated in NetEye user guide "Installing Additional Modules". Once done continue configuring the daemon and collectors:
+Tornado is shipped as EXTRA package with the lastest versions of NetEye 4.14 (and later) with the core subscription. Therefore to install Tornado you need to follow the indications in the NetEye 4 user guid for installing additional software. For those desiring installing Tornado on a plain Linxu environment, follow the instructions on the project website on github.
 
-Notes related the setup of tornado collectors can be found in folder: tornado_setup
+Notes related the setup of Tornado collectors can be found in folder: "tornado_setup"
 
 
-## Configure sample Tornado rules
+## Configure Tornado with sample rules
 
-If starting from a new "blank" Tornado setup, it is convenient to boost your getting-started with a set of sample tornado rules.
+In this place some sample rules for Tornado are provided that allow to cover you some simple requirements for event monitoring: 
+- collect events and archive all events by collector channel (event source)
+- compare some content within the event message according a pattern
+- perform a monitoring action if previous pattern matches: define/update an Icinga Object status information
+
+If starting from a new "blank" Tornado setup, it is simply possible to boost your getting-started with the provided set of sample tornado rules.
 Those roles consists of a simple rule structure:
-
 ```
 - filter to accept all incoming events
 \ email
@@ -27,6 +33,8 @@ Those roles consists of a simple rule structure:
     - rule to accept all events and archive into archive folder according event type "snmptrapd"
     - sample rule to match according a simple regex and perform monitoring action: create/update host, create/update service and define monitoring status
 ```
+
+### Install sample tornado rules
 
 To install the set of default rules place the content of "draft_001/*" into folder "/neteye/shared/tornado/conf/drafts/draft_001/"
 ```
@@ -49,13 +57,17 @@ snmptrapd = "snmptrap/all_events.log"
 ```
 
 
-## Perform SNMPTRAP Test
+## Usecase: SNMP-Trap event processing
 
-Send a trap
+The scenario consists in the assumption a remote device, such as a network devices, is sending an event message to Tornado. The Tornado snmp-trap collector accepts the message and a filter rule for snmptrap files forwards the event to a dedicated archive rule. Then the event message is stored within the archive folder.
+
+Step 1: Send an snmptrap to tornado (Note: "localhost" is the node where tornado resides)
 
 ```
 # snmptrap -v 2c -c public localhost '' 1.3.6.1.4.1.8072.2.3.0.1 SNMPv2-MIB::sysName.0 s "hostname1" DISMAN-EVENT-MIB::sysUpTimeInstance s "Uptime 180 Days" 1.3.6.1.4.1.8072.2.3.2.1 i 100 
 ```
+
+According the installed Filter rules and mathing rules, the incoming trap had been matched by rule "archive_all". According those settings, the action "archive" for archive_type = snmptrad should have been called. To verify the definition of this archive type verify the file (you just edited it): /neteye/shared/tornado/conf/archive_executor.toml
 
 Identify the last (or increase number ) archived snmp trap:
 ```
@@ -103,12 +115,16 @@ Identify the last (or increase number ) archived snmp trap:
 
 ## Extending the rule and matching of 
 
-Extend the ruleset to match:
-- the hostname from "SNMPv2-MIB::sysName.0"
-- the days of uptime from "DISMAN-EVENT-MIB::sysUpTimeInstance"
-- extra: verify value "NET-SNMP-EXAMPLES-MIB::netSnmpExampleHeartbeatRate" < 100
+Extend the ruleset' to match:
+- the hostname from 'SNMPv2-MIB::sysName.0'
+- the days of uptime from 'DISMAN-EVENT-MIB::sysUpTimeInstance'
+- Extra points: verify value 'NET-SNMP-EXAMPLES-MIB::netSnmpExampleHeartbeatRate' < 100
 
-Rule WITH:
+We consider defining a new rule according the provided samples in rule "sample_regex_with_monitoring_action".
+
+Define the WITH section to match the OID "DISMAN-EVENT-MIB::sysUpTimeInstance". Please note the above JSON structure: you need to address the entire path, therefore event.payload.oids.DISMAN-EVENT-MIB::sysUpTimeInstance. Life would be too easy when just copy-paste the name ... you need to define the OID within  " " as it contains spaces or other non-word characters. Remember also to escape the " with \".
+
+Here it goes:
 ```
 {
   "type": "AND",
@@ -121,7 +137,21 @@ Rule WITH:
   ]
 }
 ```
-Rule Action:
+
+### Test your condition
+
+Now your next incoming Snmp-Trap should match the rule. Verify this using the "Test Window"!
+Define the Event Type: "snmptrapd" and copy the entire payload {} into the Test window and "Run Test".
+
+<image of Tornado test window>
+
+
+Now proceed defining a suitable action. According the available "action" types, we use now an action definition to forward a result to monitoring module Icinga2. The action "monitoring" consists of 3 sub-actions:
+- host_creation_payload:  define a new host object if not created, yet
+- service_creation_payload: define a new service object if not created, yet
+- process_check_result_payload: define the status, status description and (optional) performance data
+
+Here comes the rule's Action definition:
 ```
 [
   {
@@ -159,4 +189,5 @@ Rule Action:
 ```
 
 
+When performing the Test again, enabling the option "Enable execution of actions", event the action section is executed and therefore a new host and service object defined in monitoring (if not exists) and the status is defined: OK with the output "Hearbeat value: 100".
 
