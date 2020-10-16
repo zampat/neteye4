@@ -19,6 +19,32 @@ MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
 MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
 MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/shared/monitoring/configs"
 
+TORNADO_RULES_DRAFT_DIR="/neteye/shared/tornado/conf/drafts"
+
+
+#Variables
+ACTION="help"
+ACTION=$1
+
+## start of code
+
+if [ "$ACTION" == "full" ]
+then
+   echo "Setup option: setup of all modules / scripts."
+
+elif [ "$ACTION" == "tornado" ]
+then
+   echo "Setup option: tornado. Setup of Tornado default rules."
+else
+   echo "Advice: The script can be run with parameter to define which action to perform."
+   echo ""
+   echo "./run_setup full                      instantiate the default settings, shares and configurations (legacy action)"
+   echo "./run_setup tornado                   install default tornado rules"
+   exit 3
+fi
+
+if [ "$ACTION" == "full" ]
+then
 
 # Init submodules
 ./scripts/005_git_submodules_init.sh
@@ -83,6 +109,15 @@ MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/shared/monitoring/configs"
 ./scripts/090_clusterSynch_PluginContribDir.sh ${MONITORING_PLUGINS_CONTRIB_CONFIG_DIR}
 ./scripts/091_clusterSynch_monitoringConfigs.sh
 
+fi
+
 # Log Manager setup
 # ./scripts/101_synch_log.sh ${NETEYESHARE_LOG}
 #./scripts/102_get_log_agents.sh ${NETEYESHARE_LOG}
+
+if [ "$ACTION" == "tornado" ] || [ "$ACTION" == "full" ]
+then
+
+   # Run Tornado setup
+   ./scripts/150_tornado_default_rules.sh ${TORNADO_RULES_DRAFT_DIR}
+fi
