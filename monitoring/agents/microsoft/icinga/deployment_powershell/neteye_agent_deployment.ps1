@@ -97,8 +97,8 @@ param(
 # ADVICE: Copy-paste names from director zones and endpoint definition !!
 # Structure of Array: [string]endpoint fqdn, [int]icinga2 API tcp port, [bool]is master, [string] zone name
 $arr_neteye_endpoints = @(
-    ("master1",5665, $TRUE, "master"),
-    ("satellite1",5665, $FALSE, "satellit")
+    ("master.domain",5665, $TRUE, "zone",$NULL, "template" ),
+    ("satellite.domain",5665, $FALSE, "zone", "satellite2.zone", "template2" )
 )
 
 
@@ -125,8 +125,7 @@ $arr_neteye_endpoints = @(
 
 
 
-# Director and self-service API related variables
-[string]$url_neteye4director = "https://${neteye4endpoint}/neteye/director/"
+
 
 
 
@@ -240,6 +239,15 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
             $neteye4endpoint = $arr_neteye_endpoint[0]
             $is_neteye4endpoint_master = $arr_neteye_endpoint[2]
             $neteye4parent_zone = $arr_neteye_endpoint[3]
+
+            if ($arr_neteye_endpoint[4] -ne $NULL){
+
+                $neteye4endpoint2 = $arr_neteye_endpoint[4]
+
+            }
+
+        $host_template = $arr_neteye_endpoint[5]
+
             
 
             if ($arr_neteye_endpoint[2] -eq $TRUE){
@@ -254,6 +262,9 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
         }
     }
 }
+
+# Director and self-service API related variables
+[string]$url_neteye4director = "https://${neteye4endpoint}/neteye/director/"
 
 
 
@@ -478,7 +489,18 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
 
 
         # 5 step: node setup
-        $parms = 'node', 'setup', '--parent_host', "${neteye4endpoint},5665", '--listen', '::,5665', '--cn', "${icinga2_agent_hostname_fqdn}", '--zone', "${icinga2_agent_hostname_fqdn}", '--parent_zone', """${neteye4parent_zone}""", '--trustedcert', "${CertificatesPath}\trusted-parent.crt", '--endpoint', "${neteye4endpoint},${neteye4endpoint}", '--ticket', "${ticket}", '--accept-config', '--accept-commands', '--disable-confd'
+
+        if ($neteye4endpoint2 -ne $NULL){
+        
+               $parms = 'node', 'setup', '--parent_host', "${neteye4endpoint},5665", '--listen', '::,5665', '--cn', "${icinga2_agent_hostname_fqdn}", '--zone', "${icinga2_agent_hostname_fqdn}", '--parent_zone', """${neteye4parent_zone}""", '--trustedcert', "${CertificatesPath}\trusted-parent.crt", '--endpoint', "${neteye4endpoint},${neteye4endpoint}", '--endpoint', "${neteye4endpoint2},${neteye4endpoint2}" , '--ticket', "${ticket}", '--accept-config', '--accept-commands', '--disable-confd'
+
+
+        }else{
+                
+              $parms = 'node', 'setup', '--parent_host', "${neteye4endpoint},5665", '--listen', '::,5665', '--cn', "${icinga2_agent_hostname_fqdn}", '--zone', "${icinga2_agent_hostname_fqdn}", '--parent_zone', """${neteye4parent_zone}""", '--trustedcert', "${CertificatesPath}\trusted-parent.crt", '--endpoint', "${neteye4endpoint},${neteye4endpoint}", '--ticket', "${ticket}", '--accept-config', '--accept-commands', '--disable-confd'
+
+        }
+
         Write-Host "[i] Starting node setup with parms: " $parms
         $cmdOutput = &$icinga2bin @parms
 
@@ -490,6 +512,12 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
             Restart-Service -Name icinga2
             Write-Host "[+] Done. Icinga2 service restarted twice"
         }
+        
+        # 6 step: host creation on Director
+        $parms = '-k', '-s', '-H', '"Accept: application/json"', '-X', 'POST', "`"https://${neteye4endpoint}/tornado/webhook/event/hsg?token=icinga`"", '-d', "`"{`\`"host_name`\`": `\`"${icinga2_agent_hostname_fqdn}`\`",`\`"host_address`\`": `\`"${icinga2_agent_hostname_fqdn}`\`", `\`"host_template`\`": `\`"${host_template}`\`", `\`"host_status`\`": `\`"0`\`", `\`"output`\`": `\`"Major_problem`\`", `\`"zone`\`": `\`"${neteye4parent_zone}`\`" }`""
+        Write-Host "[ ] Creation of Client in Director: $parms" 
+        $cmdOutput = &".\curl.exe" @parms 
+
         
     
     } else {
