@@ -25,7 +25,7 @@
 # 2020-08-17: Ability to install Icinga2 Agent in remote zone
 # 2020-08-14: Setup Icinga2 agent via msi and run icinga2.exe node setup
 # 2020-08-15: Refactoring of parameters, adjust Service "Log on" name after msi install, assemble download-url of monitoring-plugins, nsclient and ocs agent.
-# 
+# 2020-10-20: Icinga2 agents installation in satellite zone and registration of host via call of tornado webhook
 
 
 
@@ -317,7 +317,7 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
 
 	    Write-Host "[i] Going to download https://${neteye4endpoint}$url_icinga2agent_msi -OutFile ${workpath}\Icinga2-v${icinga2ver}-x86_64.msi"
             #Invoke-WebRequest -Uri $url_icinga2agent_psm -OutFile $icinga2agent_psm1_file -Proxy $null
-	    $parms = '-k', '-s', "https://${neteye4endpoint}$url_icinga2agent_msi", '-o', "${workpath}\Icinga2-v${icinga2ver}-x86_64.msi" $cmdOutput = &".\curl.exe" @parms
+	    $parms = '-k', '-s', "https://${neteye4endpoint}$url_icinga2agent_msi", '-o', "${workpath}\Icinga2-v${icinga2ver}-x86_64.msi"
 	    $cmdOutput = &".\curl.exe" @parms
             
         # Downdload from remote file-share
