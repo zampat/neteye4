@@ -136,7 +136,7 @@ $arr_neteye_endpoints = @(
 [string]$icinga_serviceName = "icinga2"
 
 [string]$log_file = "${workpath}\neteye_agent_deployment.log"
-
+[string]$neteye4endpoint2 = $NULL
 
 ####### Variables for Setup via Icinga2.exe
 [string]$CertificatesPath = "C:\ProgramData\icinga2\var\lib\icinga2\certs"
