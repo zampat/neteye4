@@ -197,7 +197,7 @@ e.g. for SQL 2012
 2) List of ProductCode for released versions based on InstanceID (important for upgrading and uninstall):
 
 Productcode for version 0.3.1
-Default={E05B5F69-C9DF-4C2C-8F0D-6A09030B83DB}
+Default={D0E7F4AF-82C4-4B58-87C9-89BDDBEE4779}
 I01={45B4717D-9B42-4998-B98D-14729EB3290D}
 I02={0E5CCFB0-9690-40A2-B216-548977CD54BC}
 I03={E69C1A2F-5B5F-435D-8E6B-1E585A740BA8}
