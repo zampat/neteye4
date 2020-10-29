@@ -244,7 +244,7 @@ JSON=$(${CURL_BASE_COMMAND} -XGET "${URL}" -H 'Content-Type: application/json' -
 
 EXIT_CODE="$?"
 
-LOG_TIMESTAMP=$(echo "$JSON" | jq -r ".hits.hits | .[] | .[\"_source\"] | .${INGESTED_TIME_FIELD}")
+LOG_TIMESTAMP=$(echo "$JSON" | jq -r ".hits.hits | .[] | .[\"_source\"] | .[\"${INGESTED_TIME_FIELD}\]")
 
 
 if [[ "${EXIT_CODE}" -ne 0 ]] || [[ -z "${LOG_TIMESTAMP}" ]]; then
