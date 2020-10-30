@@ -8,7 +8,7 @@ Execute: `service_template-pcmeasure2.sh`
 
 ## Setup and configuration 
 
-copy `check_pcmeasure2.pl` in NetEye 4 plugin directory : `/neteye/shared/monitoring/plugins`
+copy `check_pcmeasure2.pl` in NetEye 4 plugin directory : `/neteye/local/monitoring/plugins`
 
 In Director you need to create 4 Custom Fields:
 
@@ -20,7 +20,7 @@ In Director you need to create 4 Custom Fields:
 ## Example command-line
 
 ```
-[root@neteye4 plugins]# /neteye/shared/monitoring/plugins/check_pcmeasure2.pl -H 10.62.5.35 -S com1.1 -w 45 -c 55 -l 'Celsius'
+[root@neteye4 plugins]# /neteye/local/monitoring/plugins/check_pcmeasure2.pl -H 10.62.5.35 -S com1.1 -w 45 -c 55 -l 'Celsius'
 PCMEASURE OK - Celsius = 20.8 | celsius=20.8;45;55
 ```
 

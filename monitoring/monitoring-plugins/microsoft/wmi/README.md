@@ -23,13 +23,13 @@ Credits to the authors of http://www.edcint.co.nz/checkwmiplus/
 ### Apply configuration from `check_wmi_plus.conf` to `./etc/check_wmi_plus/`
 Define:
 - `$base_dir='/usr/lib64/nagios/plugins'; # NetEye 3`
-- `$base_dir='/neteye/shared/monitoring/plugins'; # NetEye 4`
+- `$base_dir='/neteye/local/monitoring/plugins'; # NetEye 4`
 - `$ignore_my_outdated_perl_module_versions=1; # CHANGE THIS IF NEEDED`
 
 ### Install check_wmi_plus in NetEye Plugins Dir:
 
 Path NetEye 3: `/usr/lib64/nagios/plugins`
-Path NetEye 4: `/neteye/shared/monitoring/plugins`
+Path NetEye 4: `/neteye/local/monitoring/plugins`
 
 - Copy the `check_wmi_plus.pl` 
 - Copy the folder `etc/`

@@ -763,7 +763,7 @@ sub parse_args {
   my $whitelist     = undef;
   my $nosync        = undef;
 #  my $path          = "/var/spool/nagios/ramdisk/FortiSerial";
-  my $path          = "/neteye/shared/monitoring/cache";
+  my $path          = "/neteye/local/monitoring/cache";
 #  my $path          = "/tmp/";
   my $help          = 0;
 

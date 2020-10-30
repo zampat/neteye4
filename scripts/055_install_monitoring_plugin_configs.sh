@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Define Variables
-# MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/shared/monitoring/configs"
+# MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/local/monitoring/configs"
 
 # Install configuration files for monitoring plugins
 MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="$1"

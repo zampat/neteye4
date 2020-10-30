@@ -15,7 +15,7 @@ export PATH
 PROGNAME=`/bin/basename $0`
 PROGPATH=`echo $0 | /bin/sed -e 's,[\\/][^\\/][^\\/]*$,,'`
 REVISION=`echo '$Revision: 1.0 $' | /bin/sed -e 's/[^0-9.]//g'`
-CHECKNRPE="/neteye/shared/monitoring/plugins/check_nrpe"
+CHECKNRPE="/neteye/local/monitoring/plugins/check_nrpe"
 
 HOST=""
 VERBOSE=""

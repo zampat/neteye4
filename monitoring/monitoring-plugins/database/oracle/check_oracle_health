@@ -7212,7 +7212,7 @@ $PROGNAME = "check_oracle_health";
 $REVISION = '$Revision: 3.1.2.2 $';
 $CONTACT = 'gerhard.lausser@consol.de';
 $TIMEOUT = 60;
-$STATEFILESDIR = '/neteye/shared/monitoring/cache/check_oracle_health';
+$STATEFILESDIR = '/neteye/local/monitoring/cache/check_oracle_health';
 $needs_restart = 0;
 
 my @modes = (

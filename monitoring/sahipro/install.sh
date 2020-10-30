@@ -27,10 +27,10 @@ chmod 0775 /neteye/shared/httpd/sahipro
 chmod 0775 /neteye/shared/httpd/sahipro/tmp
 cp etc/sahipro.conf /etc/httpd/conf.d/
 systemctl restart httpd
-mkdir -p /neteye/shared/monitoring/data/sahipro/scripts/lib
-chown sahi:sahi /neteye/shared/monitoring/data/sahipro/scripts
-cp lib/neteye.sah /neteye/shared/monitoring/data/sahipro/scripts/lib/
-ln -s /neteye/shared/monitoring/data/sahipro/scripts $1/userdata/scripts/sah
+mkdir -p /neteye/local/monitoring/data/sahipro/scripts/lib
+chown sahi:sahi /neteye/local/monitoring/data/sahipro/scripts
+cp lib/neteye.sah /neteye/local/monitoring/data/sahipro/scripts/lib/
+ln -s /neteye/local/monitoring/data/sahipro/scripts $1/userdata/scripts/sah
 cp phantomjs/* $1/ext/phantomjs/
-cp plugin/check_sahipro /neteye/shared/monitoring/plugins/
+cp plugin/check_sahipro /neteye/local/monitoring/plugins/
 yum install -y rpm/*.rpm

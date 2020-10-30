@@ -15,9 +15,9 @@ NETEYESHARE_LOG="${NETEYESHARE_ROOT_PATH}/log"
 ICINGA2_LIB_HOME_DIR="/usr/share/icingaweb2"
 ICINGA2_CONF_HOME_DIR="/neteye/shared/icingaweb2/conf"
 
-MONITORING_PLUGINS_CONTRIB_DIR="/neteye/shared/monitoring/plugins"
-MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/shared/monitoring/cache"
-MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/shared/monitoring/configs"
+MONITORING_PLUGINS_CONTRIB_DIR="/neteye/local/monitoring/plugins"
+MONITORING_PLUGINS_CACHE_CONTRIB_DIR="/neteye/local/monitoring/cache"
+MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/local/monitoring/configs"
 
 
 # Init submodules
@@ -77,7 +77,7 @@ MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/shared/monitoring/configs"
 ./scripts/071_get_telegraf_agents.sh ${NETEYESHARE_ITOA} ${ITOA_TELEGRAF_AGENT_VERSION}
 
 # Cluster Synchronizations
-# -Synchronize /neteye/shared/monitoring/plugins
+# -Synchronize /neteye/local/monitoring/plugins
 # -Synchronize various monititroing configuration files and folders 
 ./scripts/090_clusterSynch_PluginContribDir.sh ${MONITORING_PLUGINS_CONTRIB_DIR}
 ./scripts/090_clusterSynch_PluginContribDir.sh ${MONITORING_PLUGINS_CONTRIB_CONFIG_DIR}

@@ -16,7 +16,7 @@ Define in /etc/freetds.conf: *Note: This is valid for both NetEye 3 and 4.*
 
 **NetEye 4:**
 *Note: This step is done automatically when executing script "run_setup.sh"*
-Copy the file "check_mssql_health" to /neteye/shared/monitoring/plugins/
+Copy the file "check_mssql_health" to /neteye/local/monitoring/plugins/
 
 **NetEye 3:**
 Copy the file "check_mssql_health.neteye3" to /usr/lib64/nagios/plugins/
@@ -53,7 +53,7 @@ OK - running schedulers:: 0 | 'running'=0;100;150;;
    - Define cluster compatible cache file paths
      NetEye 3: /var/cache/nagios
      NetEye 4: WIP: No cluster compatible path had been defined, yet
-     Workaround: Make use of /neteye/shared/monitoring/cache/check_mssql_health
+     Workaround: Make use of /neteye/local/monitoring/cache/check_mssql_health
      ADVICE: make sure the cache folder exists!
 4. Copy the Plugin build in plugins-scripts/ into NetEye Plugin dir
 
@@ -67,13 +67,13 @@ Compile for NetEye 3:
 # make
 
 Compile for NetEye 4:
-# mkdir /neteye/shared/monitoring/cache/check_mssql_health
-# ./configure --prefix=/neteye/shared/monitoring/plugins --with-nagios-user=icinga --with-nagios-group=icinga --with-perl=/usr/bin/perl --with-statefiles-dir=/neteye/shared/monitoring/cache/check_mssql_health
+# mkdir /neteye/local/monitoring/cache/check_mssql_health
+# ./configure --prefix=/neteye/local/monitoring/plugins --with-nagios-user=icinga --with-nagios-group=icinga --with-perl=/usr/bin/perl --with-statefiles-dir=/neteye/local/monitoring/cache/check_mssql_health
 # make
 
 NetEye 3:
 # cp plugins-scripts/check_mssql_health.pl /usr/lib64/nagios/plugins
 NetEye 4:
-# cp plugins-scripts/check_mssql_health.pl /neteye/shared/monitoring/plugins/
+# cp plugins-scripts/check_mssql_health.pl /neteye/local/monitoring/plugins/
 ```
 

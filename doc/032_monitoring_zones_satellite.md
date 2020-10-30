@@ -1,4 +1,4 @@
-# NetEye Cluster: Icinga2 satellite services configuration
+ NetEye Cluster: Icinga2 satellite services configuration
 
 In the cluster, next to the icinga2-master service managed by the cluster software, an additional Icinga2 satellite can be configured as "worker" on the local node.
 The configuration of the master zone is therefore extended by another zone, containing the Icinga2 satellites. You can enable one on each cluster node. Services may co-exists with icinga2-master service, using a different port.
@@ -67,7 +67,7 @@ const ManubulonPluginDir = "/usr/lib64/neteye/monitoring/plugins"
 /* The directory which you use to store additional plugins which ITL provides user contributed command definitions for.
  * Check the documentation, chapter "Plugins Contribution", for details.
  */
-const PluginContribDir = "/neteye/shared/monitoring/plugins/"
+const PluginContribDir = "/neteye/local//monitoring/plugins/"
 
 /* Our local instance name. By default this is the server's hostname as returned by `hostname --fqdn`.
  * This should be the common name from the API certificate.

@@ -65,7 +65,7 @@ const ManubulonPluginDir = "/usr/lib64/neteye/monitoring/plugins"
 /* The directory which you use to store additional plugins which ITL provides user contributed command definitions for.
  * Check the documentation, chapter "Plugins Contribution", for details.
  */
-const PluginContribDir = "/neteye/shared/monitoring/plugins/"
+const PluginContribDir = "/neteye/local/monitoring/plugins/"
 
 /* Our local instance name. By default this is the server's hostname as returned by `hostname --fqdn`.
  * This should be the common name from the API certificate.
