@@ -43,13 +43,18 @@ if len(sys.argv) == 1:
 
 
 # Python3 code to iterate over a list 
-hosts = ["neteye02p", "neteye03p", "neteye04p"] 
+hosts = ["neteye01.neteyelocal",
+	 "neteye02.neteyelocal",
+	 "neteye03.neteyelocal",
+	 ] 
 system_files = ["/etc/hosts",
          "/etc/pki/tls/certs/*.crt",
          "/etc/pki/tls/private/*.key"
         ]
-files = ["/neteye/shared/monitoring",
-         "/neteye/local/icinga2/conf/icinga2/conf.d/dependency*"
+files = ["/neteye/local/monitoring",
+         "/neteye/local/icinga2/conf/icinga2/conf.d/dependency*",
+	"/var/lib/grafana/plugins/*",
+	"/usr/share/icingaweb2/public/img/icons"
         ]
 
 remote_commands = ["icinga2 daemon --validate && systemctl reload icinga2"
