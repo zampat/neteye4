@@ -17,7 +17,7 @@ if [ $RES -eq 0 ]
 then
    echo "[+] 006: Configuring 'PluginContribDir' in ${FOLDER_ICINGA2MASTER_CONST_CONF}."
    echo "         Please restart icinga2-master service"
-   sed -i "s/const PluginContribDir = \"\"/const PluginContribDir = \"\/neteye\/shared\/monitoring\/plugins\"/g" ${FOLDER_ICINGA2MASTER_CONST_CONF}
+   sed -i "s/const PluginContribDir = \"\"/const PluginContribDir = \"\/neteye\/local\/monitoring\/plugins\"/g" ${FOLDER_ICINGA2MASTER_CONST_CONF}
 fi
 
 # Configure Icinga2 constants.conf
@@ -27,9 +27,9 @@ if [ $RES -eq 0 ]
 then
    echo "[+] 006: Configuring 'PluginContribDir' in ${FOLDER_ICINGA2_CONST_CONF}"
    echo "         Please restart icinga2 service"
-   sed -i "s/const PluginContribDir = \"\"/const PluginContribDir = \"\/neteye\/shared\/monitoring\/plugins\"/g" ${FOLDER_ICINGA2_CONST_CONF}
+   sed -i "s/const PluginContribDir = \"\"/const PluginContribDir = \"\/neteye\/local\/monitoring\/plugins\"/g" ${FOLDER_ICINGA2_CONST_CONF}
 fi
 
 echo "[i] 006: To configure the 'PluginContribDir' on a remote neteye satellite run:"
-echo "    ssh remote_host_fqdn 'sed -i \"s/const PluginContribDir = \"\"/const PluginContribDir = \"\/neteye\/shared\/monitoring\/plugins\"/g\" /neteye/local/icinga2/conf/icinga2/constants.conf'"
+echo "    ssh remote_host_fqdn 'sed -i \"s/const PluginContribDir = \"\"/const PluginContribDir = \"\/neteye\/local\/monitoring\/plugins\"/g\" /neteye/local/icinga2/conf/icinga2/constants.conf'"
 echo "    ssh remote_host_fqdn 'systemctl restart icinga2'"
