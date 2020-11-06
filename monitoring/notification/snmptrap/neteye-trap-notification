@@ -1,0 +1,112 @@
+#! /bin/sh
+#
+# Arguments:
+# $1  = Management Station
+# $2  = Community String
+# $3  = host_name
+# $4  = service_description (or _HOST_ if host status)
+# $5  = host_alias
+# $6  = host_state_id
+# $7  = host_state_type
+# $8  = plugin_output
+# $9  = plugin performance data
+# $10  = host_attempt/service_attempt
+# $11 = host_duration_sec/service_duration_sec
+# $12 = host_groups/service_groups
+# $13 = host_last_check/service_last_check
+# $14 = host_last_change/service_last_change
+# $15 = host_last_up/service_last_ok
+# $16 = host_last_down/service_last_warning
+# $17 = host_last_unreachable/service_last_critical
+# $18 = service_last_unknown
+# $19 = service_state_id
+# $20 = host_groups only used on service notification
+#
+#
+
+#n=1
+#for i in "$@"
+#do
+#	echo -n "$n:$i " >>/tmp/trap-notif.txt
+#	n=$(expr $n + 1)
+#done
+#echo >>/tmp/trap-notif.txt
+
+print_usage() {
+	echo "USAGE: $(basename $0) <RECEIVER> <COMUNITY> <HOST_NAME> <SERVICE|_HOST_> <HOST_ALIAS> <HOST_STATE_ID> <HOST_STATE_TYPE>"
+	echo "                      <PLUGIN_OUTPUT> <PLUGIN_PERFDATA> <HOST/SERVICE_ATTEMPT> <HOST/SERVICE_DURATION>"
+	echo "                      <HOST/SERVICE_LAST_CHECK> <HOST/SERVICE_LAST_CHANGE> <HOST_LAST_UP/SERVICE_LAST_OK> <HOST_LAST_DOWN/SERVICE_LAST_WARNING>"
+	echo "                      <HOST_LAST_UNREACHABLE/SERVICE_LAST_CRITICAL> <SERVICE_LAST_UNKNOWN> <SERVICE_STATE_ID>"
+	echo "RECEIVER = Management Station"
+	echo "COMUNITY = Community String"
+	echo
+	echo "Command definition service notification:"
+	echo -n "$0 "
+	echo '<RECEIVER> <COMUNITY> "$HOSTNAME$" "$SERVICEDESC$" "$HOSTALIAS$" "$HOSTSTATEID$" "$HOSTSTATETYPE$" "$SERVICEOUTPUT$\n$LONGSERVICEOUTPUT$" "$SERVICEPERFDATA$" "$SERVICEATTEMPT$" "$SERVICEDURATIONSEC$" "$LASTSERVICECHECK$" "$LASTSERVICESTATECHANGE$" "$LASTSERVICEOK$" "$LASTSERVICEWARNING$" "$LASTSERVICECRITICAL$"  "$LASTSERVICEUNKNOWN$" "$SERVICESTATEID$"'
+	echo "Command definition host notification:"
+	echo -n "$0 "
+	echo '<RECEIVER> <COMUNITY> "$HOSTNAME$" _HOST_ "$HOSTALIAS$" "$HOSTSTATEID$" "$HOSTSTATETYPE$" "$HOSTOUTPUT$" "$HOSTPERFDATA$" "$HOSTATTEMPT$" "$HOSTDURATIONSEC$" "$LASTHOSTCHECK$" "$LASTHOSTSTATECHANGE$" "$LASTHOSTUP$" "$LASTHOSTDOWN$" "$LASTHOSTUNREACHABLE$"'
+}
+
+#
+# START MAIN
+#
+if [ "$1" = "-h" -o "$1" = "--help" ]
+then
+	print_usage
+	exit 0
+fi
+
+NA=$#
+
+if [ $NA -lt 16 ]
+then
+	print_usage
+	exit 3
+fi
+
+RECEIVER=$1
+shift
+COMUNITY=$1
+shift
+HOSTNAME=$1
+shift
+SERVICEDESC=$1
+shift
+HOSTALIAS=$1
+shift
+HOSTSTATEID=$1
+shift
+HOSTSTATETYPE=$1
+shift
+OUTPUT=$1
+shift
+PERFDATA=$1
+shift
+ATTEMPT=$1
+shift
+DURATIONSEC=$(echo "$1" | cut -d. -f1)
+shift
+LASTCHECK=$1
+shift
+LASTSTATECHANGE=$1
+shift
+STATEUPOK=$1
+shift
+STATEDOWNWARNING=$1
+shift
+STATEUNREACHABLECRITICAL=$1
+shift
+STATEUNKNOWN=$1
+shift
+SERVICESTATEID=$1
+shift
+
+if [ "$SERVICEDESC" = "_HOST_" ]
+then
+	echo /usr/bin/snmptrap -v 2c -c $COMUNITY $RECEIVER "''" NAGIOS-NOTIFY-MIB::nHostEvent nHostname s "'$HOSTNAME'" nHostAlias s "'$HOSTALIAS'" nHostStateID i $HOSTSTATEID nHostStateType i $HOSTSTATETYPE nHostAttempt i $ATTEMPT nHostDurationSec i $DURATIONSEC nHostGroupName s "'$GROUPNAMES'" nHostLastCheck i $LASTCHECK nHostLastChange i $LASTSTATECHANGE nHostLastUp i $STATEUPOK nHostLastDown i $STATEDOWNWARNING nHostLastUnreachable i $STATEUNREACHABLECRITICAL nHostOutput s "'$OUTPUT'" nHostPerfData s "'$PERFDATA'" >>/tmp/trap-notif.txt
+	/usr/bin/snmptrap -v 2c -c $COMUNITY $RECEIVER '' NAGIOS-NOTIFY-MIB::nHostEvent nHostname s "$HOSTNAME" nHostAlias s "$HOSTALIAS" nHostStateID i $HOSTSTATEID nHostStateType i $HOSTSTATETYPE nHostAttempt i $ATTEMPT nHostDurationSec i $DURATIONSEC nHostGroupName s "$GROUPNAMES" nHostLastCheck i $LASTCHECK nHostLastChange i $LASTSTATECHANGE nHostLastUp i $STATEUPOK nHostLastDown i $STATEDOWNWARNING nHostLastUnreachable i $STATEUNREACHABLECRITICAL nHostOutput s "$OUTPUT" nHostPerfData s "$PERFDATA"
+else
+	echo /usr/bin/snmptrap -v 2c -c $COMUNITY $RECEIVER "''" NAGIOS-NOTIFY-MIB::nSvcEvent nSvcHostname s "'$HOSTNAME'" nSvcHostAlias s "'$HOSTALIAS'" nSvcHostStateID i $HOSTSTATEID nSvcHostStateType i $HOSTSTATETYPE nSvcDesc s "'$SERVICEDESC'" nSvcStateID i $SERVICESTATEID nSvcAttempt i $ATTEMPT nSvcDurationSec i $DURATIONSEC nSvcGroupName s "'$GROUPNAMES'" nHostGroupName s "'$HOSTGROUPNAMES'" nSvcLastCheck i $LASTCHECK nSvcLastChange i $LASTSTATECHANGE nSvcLastOK i $STATEUPOK nSvcLastWarn i $STATEDOWNWARNING nSvcLastCrit i $STATEUNREACHABLECRITICAL nSvcLastUnkn i $STATEUNKNOWN nSvcOutput s "'$OUTPUT'" nSvcPerfData s "'$PERFDATA'" >>/tmp/trap-notif.txt
+	/usr/bin/snmptrap -v 2c -c $COMUNITY $RECEIVER '' NAGIOS-NOTIFY-MIB::nSvcEvent nSvcHostname s "$HOSTNAME" nSvcHostAlias s "$HOSTALIAS" nSvcHostStateID i $HOSTSTATEID nSvcHostStateType i $HOSTSTATETYPE nSvcDesc s "$SERVICEDESC" nSvcStateID i $SERVICESTATEID nSvcAttempt i $ATTEMPT nSvcDurationSec i $DURATIONSEC nSvcGroupName s "$GROUPNAMES" nHostGroupName s "$HOSTGROUPNAMES" nSvcLastCheck i $LASTCHECK nSvcLastChange i $LASTSTATECHANGE nSvcLastOK i $STATEUPOK nSvcLastWarn i $STATEDOWNWARNING nSvcLastCrit i $STATEUNREACHABLECRITICAL nSvcLastUnkn i $STATEUNKNOWN nSvcOutput s "$OUTPUT" nSvcPerfData s "$PERFDATA"
+fi

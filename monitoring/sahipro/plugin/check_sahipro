@@ -410,7 +410,7 @@ then
 	LOGPATH=$bb
 else
 	nn=$(basename $SCRIPTS_PATH .sah | sed -e 's/[^a-zA-Z0-9]//g')
-	LOGPATH=$(date +%Y%m%d)/$nn/$nn-$(date +%Y-%m-%d-%H-%M-%S-%N)
+	LOGPATH=$(date +%Y%m%d)/$nn-$(date +%Y-%m-%d-%H-%M-%S-%N)
 	LOGDIR=$LOGBASE/$LOGPATH
 	mkdir -p "$LOGDIR" >/dev/null 2>&1
 	if [ ! -w "$LOGDIR" ]
@@ -550,11 +550,10 @@ then
 	else
 		echo -e "<br><br><h1>Last navigation image not created ($(hostname))</h1><br><br>" >>$LOGDIR/index.html
 	fi
-	nn=$(basename $SCRIPTS_PATH .sah | sed -e 's/[^a-zA-Z0-9]//g')
-	URL="<a target='_blank' href='$WEBURL/$(date +%Y%m%d)/$nn/$(basename $LOGDIR)/index.html'>(Log)</a>"
+	URL="<a target='_blank' href='$WEBURL/$(date +%Y%m%d)/$(basename $LOGDIR)/index.html'>(Log)</a>"
 elif [ -s $SAHILOGFILE ]
 then
-	URL="<a target='_blank' href='$WEBURL/$(date +%Y%m%d)/$nn/$(basename $LOGDIR)/sahi_debug.log'>(DebugLog)</a>"
+	URL="<a target='_blank' href='$WEBURL/$(date +%Y%m%d)/$(basename $LOGDIR)/sahi_debug.log'>(DebugLog)</a>"
 else
 	URL="(Strange no index and no sahi-debug file)"
 fi

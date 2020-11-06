@@ -1,7 +1,5 @@
 {
-    "name": "all_emails",
     "description": "This matches all emails",
-    "continue": true,
     "active": true,
     "filter": {
       "type": "equal",

@@ -1,0 +1,254 @@
+#! /bin/sh
+#
+# Written by Juergen Vigna / Wuerth Phoenix s.r.l.
+# Last Modified: 2018/02/01
+#
+# Description:
+#
+# Gets the windows users over NRPE and a query user command and shows
+# the results
+#
+
+PATH=$PATH:/sbin:/bin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+export PATH
+
+PROGNAME=`/bin/basename $0`
+PROGPATH=`echo $0 | /bin/sed -e 's,[\\/][^\\/][^\\/]*$,,'`
+REVISION=`echo '$Revision: 1.0 $' | /bin/sed -e 's/[^0-9.]//g'`
+CHECKNRPE="/neteye/shared/monitoring/plugins/check_nrpe"
+
+HOST=""
+VERBOSE=""
+DEBUG=""
+WARN=0
+CRIT=0
+TMPFILE="/tmp/.winusers$$.log"
+COUTFILE="/tmp/.cwinusers$$.out"
+ROUTFILE="/tmp/.rwinusers$$.out"
+DOUTFILE="/tmp/.dwinusers$$.out"
+LDAPHOST=""
+LDAPPORT=""
+LDAPBADN=""
+LDAPUSER=""
+LDAPPASS=""
+
+trap 'rm -f $TMPFILE $COUTFILE $ROUTFILE $DOUTFILE; exit 1' 1 2 15
+trap 'rm -f $TMPFILE $COUTFILE $ROUTFILE $DOUTFILE' 0
+
+if [ -f "$PROGPATH/utils.sh" ]
+then
+        . $PROGPATH/utils.sh
+elif [ -f "/usr/lib/nagios/plugins/utils.sh" ]
+then
+        . /usr/lib/nagios/plugins/utils.sh
+fi
+
+print_usage() {
+    echo "Usage: $PROGNAME -H|--host <hostname/ip> [-L|--ldap <host:port:basedn:user:password>] [--verbose] [--debug] [--warning <warn>] [--critical <crit>]"
+    echo "Usage: $PROGNAME --help"
+    echo "Usage: $PROGNAME --version"
+}
+
+print_help() {
+    print_revision $PROGNAME $REVISION
+    echo ""
+    print_usage
+    echo ""
+    echo "Get the windows user over NRPE executed query user command and shows results"
+    echo
+    echo "-H|--host     ... host/ip to see users of"
+    echo "-L|--ldaphost ... LDAP connection parameters <host/ip:port:basedn:user:password>"
+    echo "                  This is only needed if you use also -v option"
+    echo "-v|--verbose  ... show in multiline output all users"
+    echo "-w|--warning  ... warning value will hit for found value >= warning"
+    echo "-c|--critical ... critical value will hit for found value >= critical"
+    echo "-D|--debug    ... show query user returned from NRPE call"
+    echo ""
+}
+
+get_ldap_username() {
+	uid="$1"
+	uname=""
+
+	
+}
+
+while test -n "$1"; do
+    case "$1" in
+        --help)
+            print_help
+            exit $STATE_OK
+            ;;
+        -h)
+            print_help
+            exit $STATE_OK
+            ;;
+        --version)
+            print_revision $PROGNAME $VERSION
+            exit $STATE_OK
+            ;;
+        -V)
+            print_revision $PROGNAME $VERSION
+            exit $STATE_OK
+            ;;
+        -H|--host)
+            HOST=$2
+            shift
+            ;;
+        -L|--ldap)
+            LDAPHOST=$(echo "$2" | cut -d: -f1)
+            LDAPPORT=$(echo "$2" | cut -d: -f2)
+            LDAPBADN=$(echo "$2" | cut -d: -f3)
+            LDAPUSER=$(echo "$2" | cut -d: -f4)
+            LDAPPASS=$(echo "$2" | sed -e 's/.*:.*:.*:.*:\(.*\)/\1/g')
+            shift
+            ;;
+        -v|--verbose)
+            VERBOSE=1
+            ;;
+	-D|--debug)
+            DEBUG=1
+            ;;
+        -w|--warning)
+            WARN=$2
+            shift
+            ;;
+        -c|--critical)
+            CRIT=$2
+            shift
+            ;;
+        *)
+            echo "Unknown argument: $1"
+            print_usage
+            exit $STATE_UNKNOWN
+            ;;
+    esac
+    shift
+done
+
+if [ -z "$HOST" ]
+then
+        echo "Missing Host parameter please specify"
+        exit 3
+fi
+
+$CHECKNRPE -H $HOST -c get_users >$COUTFILE
+
+if [ $? -ne 1 ]
+then
+	echo "UNKNOWN - nrpe command get_users did not return anything, did you configure NRPE Server?"
+	exit 3
+fi
+
+ll=$(cat $COUTFILE | wc -l)
+cat $COUTFILE | grep -Ev 'BENUTZER|USER|No User exists' >$TMPFILE
+cactive=0
+disconnected=0
+oactive=0
+total=0
+
+cat /dev/null > $COUTFILE
+cat /dev/null > $ROUTFILE
+cat /dev/null > $DOUTFILE
+while read ll
+do
+	uname=""
+	logintime=""
+	total=$(expr $total + 1)
+	ulogin="$(echo $ll | awk '{ print $1 }' | tr -d '>')"
+	if [ -n "$LDAPHOST" ]
+	then
+		uname=$(ldapsearch -x -h $LDAPHOST -b "$LDAPBADN" -p $LDAPPORT -D $LDAPUSER -w "$LDAPPASS" "(&(samaccountname=$ulogin))" name | grep name: | cut -d' ' -f2-)
+	fi
+	short=$(echo "$ll" | sed -e 's/  */ /g' -e 's/^  *//g' -e 's/[^ ][^ ]* [0-9][0-9]* .*/OK/g')
+	if [ "$short" = "OK" ]
+	then
+		logintime="$(echo $ll | awk '{ printf "%s.%s.%s",$5,$6,$7 }' | sed -e 's#/#.#g')"
+	else
+		logintime="$(echo $ll | awk '{ printf "%s.%s.%s",$6,$7,$8 }' | sed -e 's#/#.#g')"
+	fi
+	if [ -n "$logintime" ]
+	then
+		ld=$(echo $logintime | cut -d. -f1)
+		lm=$(echo $logintime | cut -d. -f2)
+		ly=$(echo $logintime | cut -d. -f3)
+		lt=$(echo $logintime | cut -d. -f4)
+		lp=$(echo $logintime | cut -d. -f5)
+		if [ -n "$lp" ]
+		then
+			loginsec=$(date -d "$ly/$ld/$lm $lt $lp" +%s)
+		else
+			loginsec=$(date -d "$ly/$lm/$ld $lt $lp" +%s)
+		fi
+		now=$(date +%s)
+		ls=$(expr $now - $loginsec)
+		lm=$(expr $ls / 60)
+		ls=$(expr $ls - $lm \* 60)
+		lh=$(expr $lm / 60)
+		lm=$(expr $lm - $lh \* 60)
+		ld=$(expr $lh / 24)
+		lh=$(expr $lh - $ld \* 24)
+		utime="(${ld}d ${lh}h ${lm}m)"
+	fi
+	if [ -n "$uname" ]
+	then
+		user=$(printf "%-30s %-20s -> $utime" "$uname" "($ulogin)")
+	else
+		user=$(printf "%-30s %-20s -> $utime" "$ulogin" "($ulogin)")
+	fi
+	if echo "$ll" | grep ica >/dev/null
+	then
+		if echo $ll | egrep 'Activ|Aktiv' >/dev/null
+		then
+			cactive=$(expr $cactive + 1)
+			printf "%-33s %-s\n" "Citrix(active):" "$user" >>$COUTFILE
+		else
+			disconnected=$(expr $disconnected + 1)
+			printf "%-33s %-s\n" "Citrix/RDP/Console(disconnected):" "$user" >>$DOUTFILE
+		fi
+	else
+		if echo "$ll" | egrep 'Activ|Aktiv' >/dev/null
+		then
+			oactive=$(expr $oactive + 1)
+			printf "%-33s %-s\n" "RDP/Console(active):" "$user" >>$ROUTFILE
+		else
+			disconnected=$(expr $disconnected + 1)
+			printf "%-33s %-s\n" "Citrix/RDP/Console(disconnected):" "$user" >>$DOUTFILE
+		fi
+	fi
+done < $TMPFILE
+
+state="OK"
+ecode=0
+if [ -n "$CRIT" -a $CRIT -gt 0 ]
+then
+        if [ $total -ge $CRIT ]
+        then
+		state="CRITCAL"
+		ecode=2
+        fi
+fi
+
+if [ $ecode -eq 0 -a -n "$WARN" -a $WARN -gt 0 ]
+then
+        if [ $total -ge $WARN ]
+        then
+		state="WARNING"
+		ecode=1
+        fi
+fi
+
+echo "$state - Active Citrix/RDP: $cactive/$oactive, Disconnected: $disconnected, Total: $total | total_users=$total;$WARN;$CRIT;0; active_citrix_users=$cactive active_rdp_users=$oactive disconnected_users=$disconnected"
+if [ $VERBOSE ]
+then
+		echo "<pre>"
+		cat $COUTFILE | sort
+		cat $ROUTFILE | sort
+		cat $DOUTFILE | sort
+		echo "</pre>"
+fi
+if [ $DEBUG ]
+then
+        cat $TMPFILE
+fi
+exit $ecode

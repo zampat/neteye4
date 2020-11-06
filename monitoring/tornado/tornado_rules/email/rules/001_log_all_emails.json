@@ -11,6 +11,11 @@
             "type": "equal",
             "first": "${event.type}",
             "second": "email"
+          },
+          {
+            "type": "regex",
+            "regex": "MyMessage.*",
+            "target": "${event.payload.subject}"
           }
         ]
       },
@@ -18,11 +23,13 @@
     },
     "actions": [
       {
-        "id": "Logger",
+        "id": "archive",
         "payload": {
-          "type": "${event.type}",
-          "subject": "${event.payload.subject}"
+          "sender": "${event.payload.from}",
+          "subject": "${event.payload.subject}",
+          "event": "${event}",
+          "archive_type": "archive_mail"
         }
-    }
-   ]
+      }
+    ]
 }

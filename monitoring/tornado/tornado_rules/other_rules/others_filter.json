@@ -1,7 +1,5 @@
 {
-    "name": "all_others",
     "description": "This matches all others",
-    "continue": true,
     "active": true,
     "filter": {
       "type": "equal",

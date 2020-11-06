@@ -15,6 +15,9 @@ Configure `procmail` to accept emails for host. If hostname does not correspond 
 #
 myhostname = cluster_neteye.mydomain.lan
 ...
+Configure the mailbox_command
+mailbox_command = /usr/bin/procmail -t -Y -a $h -d $u
+...
 ```
 
 Configure a `procmail` command for an event gateway user i.e. `eventgw`

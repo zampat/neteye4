@@ -17,16 +17,10 @@
   },
   "actions": [
     {
-      "id": "icinga2",
-      "payload": {
-        "icinga2_action_name": "process-check-result",
-        "icinga2_action_payload": {
-          "exit_status": "2",
-          "plugin_output": "CRITICAL - ${event.payload.message}",
-          "filter": "host.name == \"${event.payload.host.name}\" && service.name == \"eventlog-${event.payload.winlog.event_id}\"",
-          "type": "Service"
-        }
-      }
+       "id": "script",
+       "payload": {
+          "script": "/usr/bin/smssend +10123456789 \"Message from NetEye4: ${event.payload.subject}\""
+       }
     }
   ]
 }

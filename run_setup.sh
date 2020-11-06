@@ -3,7 +3,7 @@
 # VARIABLES DEFINITION
 GIT_MONITORING_TEMPLATES="https://github.com/zampat/icinga2-monitoring-templates.git"
 
-ICINGA2_AGENT_VERSION="2.10.5"
+ICINGA2_AGENT_VERSION="2.11.5"
 # Define in file directly! SAFED_WIN_VERSION="1_10_1-1"
 ITOA_TELEGRAF_AGENT_VERSION="1.10.2"
 
@@ -85,4 +85,4 @@ MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/shared/monitoring/configs"
 
 # Log Manager setup
 # ./scripts/101_synch_log.sh ${NETEYESHARE_LOG}
-./scripts/102_get_log_agents.sh ${NETEYESHARE_LOG}
+#./scripts/102_get_log_agents.sh ${NETEYESHARE_LOG}

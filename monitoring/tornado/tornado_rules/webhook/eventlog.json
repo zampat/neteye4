@@ -1,6 +1,5 @@
 {
   "description":"Eventlog processing rule",
-  "filter name": "Eventlog",
   "active": true,
   "filter": {
       "type": "AND",

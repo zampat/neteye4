@@ -24,7 +24,8 @@ Note: Generate and sign certificates where icinga2-master service is running!
 [Concepts about creating the certificates on the master](https://icinga.com/docs/icinga2/snapshot/doc/06-distributed-monitoring/#create-ca-on-the-master)
 Note 2: In NetEye the service name for icinga2 master is: "icinga2-master"
 
-## Certificate creation for satellite node
+## Operations On Satellite (s)
+### Certificate creation for satellite node (s)
 
 - Connect to Host where icinga2 master service is running:
 - Generate the certificates:
@@ -45,7 +46,7 @@ Note 2: In NetEye the service name for icinga2 master is: "icinga2-master"
 # chmod 600 *.key
 # chmod 644 *.crt
 ```
-### Configuration of icinga2: constants.conf
+### Configuration of icinga2: constants.conf (s)
 
 **Constants.conf for icinga2**
 Path: /neteye/local/icinga2/conf/icinga2/constants.conf
@@ -81,7 +82,7 @@ const TicketSalt = ""
 ```
 
 
-**Configuration of icinga2: Zones.conf**
+**Configuration of icinga2: Zones.conf (s) **
 Path: /neteye/local/icinga2/conf/icinga2/zones.conf
 ```
 object Endpoint "neteye4.mydomain.local" {
@@ -96,7 +97,7 @@ object Zone "master" {
 # Recursive include of folder zones.d/
 include_recursive "zones.d"
 ```
-Provide satellite zone configuration in zones.d/ include directory:
+Provide satellite zone configuration in zones.d/ include directory on **master**:
 Path: /neteye/shared/icinga2/conf/icinga2/zones.d/cluster.conf
 
 ```
@@ -116,7 +117,7 @@ object Zone "cluster-satellite" {
     }
 ```
 
-__Verify Firewall and Features__
+__Verify Firewall and Features__ **(s)**
 - Apply firewall rules to enable incoming connection on API port
 ```
 # firewall-cmd --list-all
@@ -144,7 +145,7 @@ object ApiListener "api" {
 - Test telnet on api port
 
 
-__Now validate configuration and start icinga2 service__
+__Now validate configuration and start icinga2 service__ **(s)**
 
 Enable service for automatic start in systemctl
 ```

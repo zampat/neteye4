@@ -1,0 +1,24 @@
+{
+    "Command": {
+        "phone-notification": {
+            "arguments": {
+                "-r": {
+                    "required": true,
+                    "skip_key": true,
+                    "value": "$notification_sms_number$"
+                }
+            },
+            "command": "\/neteye\/shared\/icinga2\/conf\/icinga2\/scripts\/phone-notification.sh",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginNotification",
+            "object_name": "phone-notification",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {},
+            "zone": null
+        }
+    }
+}
