@@ -16,6 +16,7 @@ parser = argparse.ArgumentParser(description="Arguments")
 parser.add_argument('--system-files', '-s', dest='system_files', help='Synch System Files for ex. /etc/hosts', action='store_true')
 parser.add_argument('--files', '-f', dest='files', help='Synch Files for ex. Monitoring Plugins', action='store_true')
 parser.add_argument('--remote-command', '-r', dest='remote_commands', help='Run Remote Command', action='store_true')
+parser.add_argument('--test', '-t', dest='rsync_dry', help='Run rsync in dry mode', action='store_true')
 
 args=parser.parse_args()
 
@@ -24,10 +25,11 @@ args=parser.parse_args()
 def helpOption():
 
     print("\nERROR  No arguments ERROR\n")
-    print("cust_synch_ClusterSatellites.py [-h] [--system-files] [--files] [--remote-command]")
+    print("cust_synch_ClusterSatellites.py [-h] [--system-files] [--files] [--remote-command] [--test]")
     print("--system-files / -s      Synch System Files for ex. /etc/hosts")
     print("--files / -f             Synch Files for ex. Monitoring Plugins")
     print("--remote-command / -r    Run Remote Command\n")
+    print("--test / -t    Run synch in dry/test mode\n")
     print("\nExample:\n")
     print("python cust_synch_ClusterSatellites.py -s")
     print("python cust_synch_ClusterSatellites.py -f")
@@ -65,24 +67,25 @@ remote_commands = ["icinga2 daemon --validate && systemctl reload icinga2"
 def synch_files(hosts,files):
 
    for dst_host in hosts: 
+       print (">>> Contacting host: " + dst_host) 
+
        for file in files: 
 
 	  # Distinguish between file or folder
 	  if os.path.isfile(file):
              print ("Sending file:" + file + " to " + dst_host) 
-             rsynccmd  = 'rsync -av ' + file + ' ' + dst_host + ':' + file
+             rsynccmd  = 'rsync -av'+rsync_test+' ' + file + ' ' + dst_host + ':' + file
 
 	  elif os.path.isdir(file):
 	     dst_path = os.path.abspath(os.path.join("..", os.path.dirname(file)));
 
              print ("Sending directory:" + file + " to dst path: " + dst_path + " on host: " + dst_host) 
-             rsynccmd  = 'rsync -av ' + file + ' ' + dst_host + ':' + dst_path
+             rsynccmd  = 'rsync -av'+rsync_test+' '+ file + ' ' + dst_host + ':' + dst_path
 
 	  else:
 	     dst_path = os.path.dirname(file)
              print ("Sending file:" + file + " to  dst path: " + dst_path + " on host: " + dst_host) 
-             rsynccmd  = 'rsync -av ' + file + ' ' + dst_host + ':' + dst_path
-
+             rsynccmd  = 'rsync -av'+rsync_test+' ' + file + ' ' + dst_host + ':' + dst_path
           # assemble rsync commandline and run it
           print ("Run command: " + rsynccmd)
           rsyncproc = subprocess.Popen(rsynccmd,
@@ -144,6 +147,12 @@ def run_remote_commands(hosts,remote_commands):
 
 #Run command on all hosts
 #run_remote_commands(hosts,remote_commands)
+
+
+rsync_test=""
+if args.rsync_dry is True:
+    print("[i] Run rsync in dry mode.")
+    rsync_test="n"
 
 if args.files is True:
     synch_files(hosts,files)
