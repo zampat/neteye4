@@ -15,7 +15,9 @@ import sys
 parser = argparse.ArgumentParser(description="Arguments")
 parser.add_argument('--system-files', '-s', dest='system_files', help='Synch System Files for ex. /etc/hosts', action='store_true')
 parser.add_argument('--files', '-f', dest='files', help='Synch Files for ex. Monitoring Plugins', action='store_true')
-parser.add_argument('--remote-command', '-r', dest='remote_commands', help='Run Remote Command', action='store_true')
+parser.add_argument('--restart-command', '-r', dest='restart_commands', help='Restart Remote Service', action='store_true')
+parser.add_argument('--check-command', '-c', dest='check_commands', help='Check remote configuration', action='store_true')
+parser.add_argument('--test', '-t', dest='rsync_dry', help='Run rsync in dry mode', action='store_true')
 
 args=parser.parse_args()
 
@@ -24,13 +26,16 @@ args=parser.parse_args()
 def helpOption():
 
     print("\nERROR  No arguments ERROR\n")
-    print("cust_synch_ClusterSatellites.py [-h] [--system-files] [--files] [--remote-command]")
+    print("cust_synch_ClusterSatellites.py [-h] [--system-files] [--files] [--restart-command] [--check-command] [--test]")
     print("--system-files / -s      Synch System Files for ex. /etc/hosts")
     print("--files / -f             Synch Files for ex. Monitoring Plugins")
-    print("--remote-command / -r    Run Remote Command\n")
+    print("--restart-command / -r   Restart Remote Service\n")
+    print("--check-command / -c     Check remote configuration\n")
+    print("--test / -t    Run synch in dry/test mode\n")
     print("\nExample:\n")
-    print("python cust_synch_ClusterSatellites.py -s")
     print("python cust_synch_ClusterSatellites.py -f")
+    print("python cust_synch_ClusterSatellites.py -s")
+    print("python cust_synch_ClusterSatellites.py -c")
     print("python cust_synch_ClusterSatellites.py -r\n")
 
 
@@ -49,26 +54,33 @@ hosts = ["neteye01.neteyelocal",
 	 ] 
 
 system_files = ["./sync_satellites/etc/hosts",
-        "./sync_satellites/etc/httpd/conf.d/tornado-webhook-collector.conf",
-        "./sync_satellites/etc/httpd/conf.d/ssl.conf",
-        "./sync_satellites/etc/httpd/conf.d/neteye-zones-proxy.conf",
+        "./sync_satellites/etc/httpd/conf.d/*",
         "./sync_satellites/etc/httpd/conf/httpd.conf",
         "/etc/pki/tls/certs/*.crt",
-        "/etc/pki/tls/private/*.key",
+        "/etc/pki/tls/private/*.key"
         ]
 
 files = ["/neteye/local/monitoring",
-         "/neteye/local/icinga2/conf/icinga2/conf.d/dependency*"
+         "./sync_satellites/neteye/local/icinga2/conf/icinga2/conf.d/*",
         ]
 
-remote_commands = ["icinga2 daemon --validate && systemctl reload icinga2"
+restart_commands = ["icinga2 daemon --validate && systemctl reload icinga2",
+        "systemctl status httpd && echo 'Service httpd is running. Going to restart' && systemctl reload httpd"
     ]
 
+check_commands = [
+        'grep -E .*TicketSalt.*\\"\\".* /neteye/local/icinga2/conf/icinga2/constants.conf && echo "[!] Icinga2 constants conf: Salt is not defined"',
+        'grep -E .*PluginContribDir.*\\"\\".* /neteye/local/icinga2/conf/icinga2/constants.conf && echo "[!] Icinga2 constants conf: PluginContribDir is not defined"'
+    ]
 
 # Using for loop 
 def synch_files(hosts,files):
 
-   for dst_host in hosts: 
+   for dst_host in hosts:
+
+       print (">>> Contacting host: " + dst_host) 
+
+ 
        for file in files:
 
 	  file_dst = file.replace('./sync_satellites','') 
@@ -76,19 +88,19 @@ def synch_files(hosts,files):
 	  # Distinguish between file or folder
 	  if os.path.isfile(file):
              print ("Sending file:" + file + " to " + dst_host) 
-             rsynccmd  = 'rsync -av ' + file + ' ' + dst_host + ':' + file_dst
+             rsynccmd  = 'rsync -av'+rsync_test+' ' + file + ' ' + dst_host + ':' + file
              
 	  elif os.path.isdir(file):
 	     dst_path = os.path.abspath(os.path.join("..", os.path.dirname(file)));
 	     dst_path = dst_path.replace('./sync_satellites','')
              print ("Sending directory:" + file + " to dst path: " + dst_path + " on host: " + dst_host) 
-             rsynccmd  = 'rsync -av ' + file + ' ' + dst_host + ':' + dst_path
-             
+             rsynccmd  = 'rsync -av'+rsync_test+' '+ file + ' ' + dst_host + ':' + dst_path 
+
 	  else:
 	     dst_path = os.path.dirname(file)
              dst_path = dst_path.replace('./sync_satellites','')
              print ("Sending file:" + file + " to  dst path: " + dst_path + " on host: " + dst_host) 
-             rsynccmd  = 'rsync -av ' + file + ' ' + dst_host + ':' + dst_path
+             rsynccmd  = 'rsync -av'+rsync_test+' ' + file + ' ' + dst_host + ':' + dst_path
           # assemble rsync commandline and run it
           print ("Run command: " + rsynccmd)
           rsyncproc = subprocess.Popen(rsynccmd,
@@ -111,14 +123,14 @@ def synch_files(hosts,files):
           exitcode = rsyncproc.wait()
 
 # Restart remote servcies
-def run_remote_commands(hosts,remote_commands):
+def run_remote_commands(hosts,restart_commands):
 
    for dst_host in hosts:
-      for cmd in remote_commands:
+      for cmd in restart_commands:
 
 	  # assemble ssh commandline and run it
           run_cmd  = 'ssh ' + dst_host + ' \'' + cmd + '\''
-          print ("Would run remote command: " + run_cmd + " on host: " + dst_host)
+          print ("[ ] Remote command: " + run_cmd + " on host: " + dst_host)
 
           ssh_proc = subprocess.Popen(run_cmd,
                                        shell=True,
@@ -134,7 +146,7 @@ def run_remote_commands(hosts,remote_commands):
                   break
               log += next_line
 
-          print "Output: " + log
+          print "[ ] Output: " + log
 
           # wait until process is really terminated
           exitcode = ssh_proc.wait()
@@ -148,13 +160,21 @@ def run_remote_commands(hosts,remote_commands):
 #synch_files(hosts,files)
 
 #Run command on all hosts
-#run_remote_commands(hosts,remote_commands)
+#run_remote_commands(hosts,restart_commands)
+
+rsync_test=""
+if args.rsync_dry is True:
+    print("[i] Run rsync in dry mode.")
+    rsync_test="n"
 
 if args.files is True:
     synch_files(hosts,files)
 
-if args.remote_commands is True:
-    run_remote_commands(hosts,remote_commands)
+if args.restart_commands is True:
+    run_remote_commands(hosts,restart_commands)
+
+if args.check_commands is True:
+    run_remote_commands(hosts,check_commands)
 
 if args.system_files is True:
     synch_files(hosts,system_files)
