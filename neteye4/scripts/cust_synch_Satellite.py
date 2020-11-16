@@ -18,6 +18,7 @@ parser.add_argument('--files', '-f', dest='files', help='Synch Files for ex. Mon
 parser.add_argument('--restart-command', '-r', dest='restart_commands', help='Restart Remote Service', action='store_true')
 parser.add_argument('--check-command', '-c', dest='check_commands', help='Check remote configuration', action='store_true')
 parser.add_argument('--test', '-t', dest='rsync_dry', help='Run rsync in dry mode', action='store_true')
+parser.add_argument('--verbose', '-v', dest='debug', help='Verbose output', action='store_true')
 
 args=parser.parse_args()
 
@@ -32,6 +33,7 @@ def helpOption():
     print("--restart-command / -r   Restart Remote Service\n")
     print("--check-command / -c     Check remote configuration\n")
     print("--test / -t    Run synch in dry/test mode\n")
+    print("--verbose / -v    Verbose output\n")
     print("\nExample:\n")
     print("python cust_synch_ClusterSatellites.py -f")
     print("python cust_synch_ClusterSatellites.py -s")
@@ -64,8 +66,8 @@ files = ["/neteye/local/monitoring",
          "./sync_satellites/neteye/local/icinga2/conf/icinga2/conf.d/*",
         ]
 
-restart_commands = ["icinga2 daemon --validate && systemctl reload icinga2",
-        "systemctl status httpd && echo 'Service httpd is running. Going to restart' && systemctl reload httpd"
+restart_commands = ["echo '[i] Start of Icinga2 service check...' && systemctl status icinga2 > /dev/null && echo '[i] Service icinga2 is running. Verify config ...' && icinga2 daemon --validate > /dev/null && echo '[i] Icinga2 configuration is valid. Going to reload' && systemctl reload icinga2 && echo '[i] Reload done.'",
+        "echo '[i] Start of HTTPD service check...' && systemctl status httpd > /dev/null && echo '[i] Service httpd is running. Going to restart' && systemctl reload httpd"
     ]
 
 check_commands = [
@@ -126,11 +128,15 @@ def synch_files(hosts,files):
 def run_remote_commands(hosts,restart_commands):
 
    for dst_host in hosts:
+      
+      print ("[ ] Remote host: " + dst_host)
+
       for cmd in restart_commands:
 
 	  # assemble ssh commandline and run it
           run_cmd  = 'ssh ' + dst_host + ' \'' + cmd + '\''
-          print ("[ ] Remote command: " + run_cmd + " on host: " + dst_host)
+          if args.debug is True:
+              print ("[ ] Remote command: " + run_cmd + " on host: " + dst_host)
 
           ssh_proc = subprocess.Popen(run_cmd,
                                        shell=True,
