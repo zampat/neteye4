@@ -38,6 +38,7 @@ cp bin/startsahi.sh $1/userdata/bin
 cp config/browser_types.xml $1/userdata/config
 cat config/userdata.properties.add >>$1/userdata/config/userdata.properties
 cp config/sysconfig.cfg $1/config/
+cp config/sysconfig.cfg /etc/sysconfig/sahipro
 cp etc/sahipro.cron.hourly /etc/cron.hourly/sahipro
 cp etc/sahipro*.service /etc/systemd/system/
 systemctl daemon-reload
