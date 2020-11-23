@@ -14,11 +14,11 @@ then
 	exit 1
 fi
 
-if grep ^sahi /etc/group >/dev/null
+if ! grep ^sahi /etc/group >/dev/null
 then
 	groupadd -g $SAHIUID sahi
 fi
-if grep ^sahi /etc/passwd >/dev/null
+if ! grep ^sahi /etc/passwd >/dev/null
 then
 	useradd -u $SAHIUID -g sahi sahi
 fi

@@ -56,7 +56,7 @@ SAHIHOST="localhost"
 SAHIPORT="9999"
 SAHITHREADS=5
 WEBURL="/sahipro"
-LOGBASE="/neteye/shared/httpd/sahipro"
+LOGBASE="/neteye/shared/monitoring/data/sahipro/logs"
 WARN=""
 CRIT=""
 PERFDATA=""
@@ -66,7 +66,7 @@ TRAPCOMUNITY="public"
 BROWSER=phantomjs
 REMOTE_LOGBASE=""
 STARTURL=""
-TIMEOUT=200
+TIMEOUT=380
 SERVICEATTEMPT=1
 MAXSERVICEATTEMPTS=1
 SERVICESTATETYPE="HARD"
@@ -485,22 +485,53 @@ then
 fi
 
 d1=$(date +%s)
-SAHILOGFILE=$LOGDIR/sahi_debug.log
 #export CUSTOM_TAGS="-tags $(basename $SCRIPTS_PATH .sah)"
 #export CUSTOM_FIELDS=-customField customValue -anotherCustomField "another value"
-export LOGS_INFO=html:$REMOTE_LOGBASE/$LOGPATH
+# SHOW_PERIODIC_SUMMARY enables printing of script status update in the console
+export SHOW_PERIODIC_SUMMARY=true
+# Minutes at which suite will stop execution
+export SUITE_TIME_OUT=0
+export ABORTED_RETRY_COUNT=0
+export FAILURE_RETRY_COUNT=0
+# Set true to avoid skipping of scripts if depended scripts fail
+export IS_AVOID_SKIPPING=false
+# Set true to enable autohealing of elements if not found
+export ISAUTOHEALENABLED=false
 
+LOGDIRORIG=$LOGDIR
+LOGPATHORIG=$LOGPATH
 
 n=$RETRIES
 while [ $n -gt 0 ]
 do
-	hostname >$SAHILOGFILE
-	/usr/bin/waitmax $TIMEOUT java -cp $SAHI_HOME/lib/ant-sahi.jar net.sf.sahi.test.TestRunner $CUSTOM_FIELDS -test $REMOTE_LOGBASE/$LOGPATH/$SCRIPT_FILE -browserType $BROWSER -logsInfo "$LOGS_INFO" -baseURL "$START_URL" -host $SAHIHOST -port $SAHIPORT -threads $SAHITHREADS -useSingleSession $SINGLE_SESSION -sendEmail false $CUSTOM_TAGS >>$SAHILOGFILE 2>&1
+	SAHILOGFILE=$LOGDIR/sahi_debug.log
+	LOGS_INFO=html:$REMOTE_LOGBASE/$LOGPATH
+	SAHISCRIPT=$REMOTE_LOGBASE/$LOGPATH/$SCRIPT_FILE
+	hostname=$(hostname)
+	echo $hostname >>$SAHILOGFILE
+	#/usr/bin/waitmax $TIMEOUT java -cp $SAHI_HOME/lib/ant-sahi.jar net.sf.sahi.test.TestRunner $CUSTOM_FIELDS -test $REMOTE_LOGBASE/$LOGPATH/$SCRIPT_FILE -browserType $BROWSER -logsInfo "$LOGS_INFO" -baseURL "$START_URL" -host $SAHIHOST -port $SAHIPORT -threads $SAHITHREADS -useSingleSession $SINGLE_SESSION -sendEmail false $CUSTOM_TAGS >>$SAHILOGFILE 2>&1
+	/usr/bin/waitmax $TIMEOUT java -cp $SAHI_HOME/lib/ant-sahi.jar in.co.sahi.distributed.DSahiRunner $CUSTOM_FIELDS -isNonDistributedRun true -scriptsPathMaster $(dirname $SCRIPTS_PATH) -suite $SCRIPTS_PATH -browserDeviceParams "$BROWSER" -logsInfo "$LOGS_INFO" -baseURL "$START_URL" -host $SAHIHOST -port $SAHIPORT -threads $SAHITHREADS -abortedRetryCount $ABORTED_RETRY_COUNT -failureRetryCount $FAILURE_RETRY_COUNT -isAvoidSkipping "$IS_AVOID_SKIPPING" -isAutohealEnabled $ISAUTOHEALENABLED -useSingleSession $SINGLE_SESSION -sendEmail false -showPeriodicSummary "$SHOW_PERIODIC_SUMMARY" $CUSTOM_TAGS -suiteTimeOut $SUITE_TIME_OUT >>$SAHILOGFILE 2>&1
+	hh=$(grep HOST: $LOGDIR/*.html 2>/dev/null | sed -e 's/.*HOST:\(.*\)/\1/g')
+	if [ -n "$hh" ]
+	then
+		echo "HOST:$hh" >>$SAHILOGFILE
+		hostname="$hh:$hostname"
+	fi
 	if grep "SUCCESS" $SAHILOGFILE >/dev/null 2>&1
 	then
 		n=0
 	else
 		n=$(expr $n - 1)
+	fi
+	if [ $n -gt 0 ]
+	then
+		LOGDIR=${LOGDIRORIG}-$n
+		LOGPATH=${LOGPATHORIG}-$n
+		mkdir -p "$LOGDIR" >/dev/null 2>&1
+		cp -a $SAHISCRIPT $LOGDIR/
+		touch $LOGDIR/index.html
+		chgrp -R sahi $LOGDIR 2>/dev/null
+		chmod -R g+w  $LOGDIR 2>/dev/null
 	fi
 done
 
@@ -515,7 +546,7 @@ done
 sahisid=$(grep sahisid $SAHILOGFILE | sed -e 's/.*&sahisid=\(.*\)/\1/g')
 if [ -z "$sahisid" ]
 then
-	sahisid=$(grep suiteId= $SAHILOGFILE | head -1 | cut -d= -f2-)
+	sahisid=$(grep suiteId= $SAHILOGFILE | head -1 | sed -e 's/.*\(suiteId=.*\).*/\1/g' | cut -d= -f2- | cut -d\& -f1)
 fi
 if [ -n "$sahisid" -a -d "$LOGBASE/tmp/$sahisid" ]
 then
@@ -541,14 +572,14 @@ then
 	screenshot=$(ls -1 $LOGDIR/images 2>/dev/null | tail -1)
 	if [ -e $LOGDIR/sahiurl.png ]
 	then
-		echo -e "<br><br><h1>Last navigation image ($(hostname))</h1><br><br>" >>$LOGDIR/index.html
+		echo -e "<br><br><h1>Last navigation image ($hostname)</h1><br><br>" >>$LOGDIR/index.html
 		echo -e '\n<img src="sahiurl.png">' >>$LOGDIR/index.html
 	elif [ -n "$screenshot" -a -e $LOGDIR/images/$screenshot ]
 	then
-		echo -e "<br><br><h1>Last navigation image ($(hostname))</h1><br><br>" >>$LOGDIR/index.html
+		echo -e "<br><br><h1>Last navigation image ($hostname)</h1><br><br>" >>$LOGDIR/index.html
 		echo -e "\n<img src='images/$screenshot'>" >>$LOGDIR/index.html
 	else
-		echo -e "<br><br><h1>Last navigation image not created ($(hostname))</h1><br><br>" >>$LOGDIR/index.html
+		echo -e "<br><br><h1>Last navigation image not created ($hostname)</h1><br><br>" >>$LOGDIR/index.html
 	fi
 	URL="<a target='_blank' href='$WEBURL/$(date +%Y%m%d)/$(basename $LOGDIR)/index.html'>(Log)</a>"
 elif [ -s $SAHILOGFILE ]
