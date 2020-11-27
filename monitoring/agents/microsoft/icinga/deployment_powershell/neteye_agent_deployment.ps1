@@ -160,7 +160,8 @@ $arr_neteye_endpoints = @(
 [string]$neteye4endpoint2 = $NULL
 [string]$icinga2agent_psm1_file = $NULL
 
-[string]$log_file = "${workpath}\neteye_agent_deployment.log"
+[string]$logdate = (Get-Date -Format "yyyyMMdd")
+[string]$log_file = "${workpath}\neteye_agent_deployment_$logdate.log"
 
 
 ####### Variables for Setup via Icinga2.exe
@@ -685,7 +686,7 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
 	    log_message -message "[i] Going to download https://${neteye4endpoint}$url_icinga2agent_msi -OutFile ${workpath}\Icinga2-v${icinga2ver}-x86_64.msi"
             #Invoke-WebRequest -Uri $url_icinga2agent_psm -OutFile $icinga2agent_psm1_file -Proxy $null
 	    $parms = '-k', '-s', "https://${neteye4endpoint}$url_icinga2agent_msi", '-o', "${workpath}\Icinga2-v${icinga2ver}-x86_64.msi"
-	    $cmdOutput = &".\curl.exe" @parms
+	    $cmdOutput = &"$workpath\curl.exe" @parms
             
         # Downdload from remote file-share
         } elseif ($remote_file_repository -eq "fileshare") {
@@ -795,6 +796,15 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
         log_message -message "[i] Installation completed. Reconfigure Service Log-on to:  ${icinga2agent_service_name}"
         Start-Sleep -s 2
         $service = Get-WmiObject -Class Win32_Service -Filter "Name='icinga2'"
+		IF ($service) {
+			log_message -message "[i] Service icinga2 successfully installed"
+		}
+		else {
+			log_message -message "[i] Service icinga2 not installed"
+			log_message -message "[i] the installation will be canceled in 15 seconds"
+			Start-Sleep -s 15
+			Exit 1
+		}
         #$service.StopService()
         $service.Change($null,$null,$null,$null,$null,$null,$icinga2agent_service_name,$null,$null,$null,$null)
         #$service.StartService()
@@ -820,7 +830,7 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
 
         $parms = '-k', '-s', '-u', "${neteye4_icinga_api_user}:${neteye4_icinga_api_password}", '-H', '"Accept: application/json"', '-X', 'POST', "`"https://${neteye4endpoint}:5665/v1/actions/generate-ticket`"", '-d', "`"{ `\`"cn`\`":`\`"${icinga2_agent_hostname_short}`\`" }`""
         log_message -message "[ ] Fetching Ticket via Icinga API: $parms" 
-        $cmdOutput = &".\curl.exe" @parms | ConvertFrom-Json
+        $cmdOutput = &"$workpath\curl.exe" @parms | ConvertFrom-Json
 
         if (-not ($cmdOutput.results.code -eq "200.0")) {
             log_message -message "[!] Cannot generate ticket. Abort now!"
@@ -884,7 +894,7 @@ if ( $action_install_Icinga2_agent -eq $TRUE ){
         # 6 step: host creation on Director
         $parms = '-k', '-s', '-H', '"Accept: application/json"', '-X', 'POST', "`"https://${neteye4endpoint}/tornado/webhook/event/hsg?token=icinga`"", '-d', "`"{`\`"host_name`\`": `\`"${icinga2_agent_hostname_short}`\`",`\`"host_address`\`": `\`"${icinga2_agent_hostname_fqdn}`\`", `\`"host_template`\`": `\`"${host_template}`\`", `\`"host_status`\`": `\`"0`\`", `\`"output`\`": `\`"Major_problem`\`", `\`"zone`\`": `\`"${neteye4parent_zone}`\`" }`""
         log_message -message "[ ] Creation of Client in Director: $parms" 
-        $cmdOutput = &".\curl.exe" @parms 
+        $cmdOutput = &"$workpath\curl.exe" @parms 
 
         
     
