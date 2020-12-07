@@ -2,8 +2,8 @@
 
 Here you will find 2 approaches for automated setup and configuration of Icinga2 Agent.
 
-- 
--
+- neteye_simple_agent_deployment.ps1
+- neteye_agent_deployment.ps1
 
 For both approaches make sure to provide the setup of the Icinga2 Agent via HTTPS link or fileshare.
 
