@@ -17,7 +17,7 @@ https://neteye.mydomain.lan/neteyeshare/monitoring/agents/microsoft/icinga/netey
 ## !! Advice !! - Agent setup in remote satellite zone without access to Director self-service API requires various configurations to be provided from your site:
 
 To setup do:
-- Provide the Icinga2 .msi via https or file-share
+- Provide the Icinga2 ".msi" via https or file-share
 - publish the Icinga2 API to generate a host's ticket
 - configure Icinga2 CA Proxy
 - test the various services
