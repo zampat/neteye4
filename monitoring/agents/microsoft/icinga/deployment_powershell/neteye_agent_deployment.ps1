@@ -559,8 +559,7 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
             
             [array] $arr_subnet2test = $arr_subnet_ranges[$x]
 
-            ### Neues Script
-            # Script basiert auf " contains"  logic aus PSipcalc
+            # Script built on "contains" logic from PSipcalc
             ## https://www.powershelladmin.com/wiki/Calculate_and_enumerate_subnets_with_PSipcalc
             ## Source code:
             ## https://github.com/EliteLoser/PSipcalc/blob/master/PSipcalc.ps1
@@ -593,40 +592,6 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
         }
     }
 
-
-
-    # Auswertung mit TCP Suche: Icinga2 API Port 5665
-    #foreach ($arr_neteye_endpoint in $arr_neteye_endpoints){
-    #    log_message -message "[ ] ... Checking for neteye 4 endpoint: " $arr_neteye_endpoint[0] "(Master: " $arr_neteye_endpoint[2] ") on port " $arr_neteye_endpoint[1]
-    #
-    #    $connection_test_result = Test-NetConnection -ComputerName $arr_neteye_endpoint[0] -Port $arr_neteye_endpoint[1]
-    #    if ($connection_test_result.TcpTestSucceeded -eq $TRUE){
-    #
-    #        $neteye4endpoint = $arr_neteye_endpoint[0]
-    #        $is_neteye4endpoint_master = $arr_neteye_endpoint[2]
-    #        $neteye4parent_zone = $arr_neteye_endpoint[3]
-    #
-    #        if ($arr_neteye_endpoint[4] -ne $NULL){
-    #
-    #            $neteye4endpoint2 = $arr_neteye_endpoint[4]
-    #
-    #        }
-    #
-    #    $host_template = $arr_neteye_endpoint[5]
-    #
-    #        
-    #
-    #        if ($arr_neteye_endpoint[2] -eq $TRUE){
-    #
-    #            log_message -message "[+] Discovered Neteye 4 MASTER Endpoint: " $arr_neteye_endpoint[0] " (Zone: "$arr_neteye_endpoint[3] ")on port " $arr_neteye_endpoint[1]
-    #        } else {
-    #
-    #            log_message -message "[+] Discovered Neteye 4 SATELLITE Endpoint: " $arr_neteye_endpoint[0] " (Zone: "$arr_neteye_endpoint[3]") on port " $arr_neteye_endpoint[1]
-    #        }
-    #        
-	#    break 
-    #    }
-    #}
 }
 
 # Director and self-service API related variables
