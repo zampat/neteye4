@@ -1,0 +1,1368 @@
+{
+  "__inputs": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "5.2.4"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": "5.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": "5.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "datasource": "$SISTEMA",
+        "enable": false,
+        "hide": false,
+        "iconColor": "#badff4",
+        "name": "AxTransactions",
+        "query": "select AxTransactionName,AxTransactionType,AxSessionS as AxSession,AxComputer,AxServer,AxUser from autogen.CLIENT_EVENTS2 where $timeFilter  and AxTransactionType=~/Begin|End/",
+        "showIn": 0,
+        "tagsColumn": "AxComputer,AxServer,AxUser,AxSession",
+        "textColumn": "AxTransactionType"
+      },
+      {
+        "datasource": "$SISTEMA",
+        "enable": false,
+        "hide": false,
+        "iconColor": "#f2c96d",
+        "name": "AxMessages",
+        "query": "select Message,AxComputer,AxServer,AxUser from autogen.CLIENT_EVENTS2 where $timeFilter and Message!=''",
+        "showIn": 0,
+        "tagsColumn": "AxComputer,AxServer,AxUser,AxSession"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 1,
+  "id": null,
+  "iteration": 1597146483675,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 33,
+      "panels": [
+        {
+          "columns": [],
+          "datasource": "$SISTEMA",
+          "fontSize": "100%",
+          "gridPos": {
+            "h": 38,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 26,
+          "links": [],
+          "pageSize": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 0,
+            "desc": false
+          },
+          "styles": [
+            {
+              "alias": "",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "alias": "AxClientHost",
+              "colorMode": null,
+              "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "#cca300",
+                "rgba(245, 54, 54, 0.9)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "CLIENT_EVENTS2.AxComputer",
+              "thresholds": [
+                ""
+              ],
+              "type": "string",
+              "unit": "short",
+              "valueMaps": []
+            },
+            {
+              "alias": "AxAosHost",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "CLIENT_EVENTS2.AxServer",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "AxUser",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "CLIENT_EVENTS2.AxUser",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "Form",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "CLIENT_EVENTS2.FORM",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "FormOpen",
+              "colorMode": "cell",
+              "colors": [
+                "rgba(0, 0, 0,0)",
+                "#1f78c1",
+                "rgba(0, 0, 0,0)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": null,
+              "mappingType": 1,
+              "pattern": "CLIENT_EVENTS2.FormOpen",
+              "rangeMaps": [
+                {
+                  "from": "1",
+                  "text": "",
+                  "to": "Open"
+                }
+              ],
+              "thresholds": [
+                "1",
+                "2"
+              ],
+              "type": "string",
+              "unit": "none",
+              "valueMaps": [
+                {
+                  "text": "",
+                  "value": "0"
+                },
+                {
+                  "text": "Open",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "alias": "FormClose",
+              "colorMode": "cell",
+              "colors": [
+                "rgba(0, 0, 0,0)",
+                "#1f78c1",
+                "rgba(0, 0, 0,0)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": null,
+              "mappingType": 1,
+              "pattern": "CLIENT_EVENTS2.FormClose",
+              "thresholds": [
+                "1",
+                "2"
+              ],
+              "type": "string",
+              "unit": "none",
+              "valueMaps": [
+                {
+                  "text": "",
+                  "value": "0"
+                },
+                {
+                  "text": "Close",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "alias": "ControlClicked",
+              "colorMode": "cell",
+              "colors": [
+                "rgba(0, 0, 0,0)",
+                "#1f78c1",
+                "rgba(0, 0, 0,0)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": null,
+              "mappingType": 1,
+              "pattern": "CLIENT_EVENTS2.ControlClicked",
+              "thresholds": [
+                "1",
+                "2"
+              ],
+              "type": "string",
+              "unit": "none",
+              "valueMaps": [
+                {
+                  "text": "",
+                  "value": "0"
+                },
+                {
+                  "text": "Clicked",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "alias": "AxSession",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": null,
+              "mappingType": 1,
+              "pattern": "CLIENT_EVENTS2.AxSession",
+              "thresholds": [],
+              "type": "number",
+              "unit": "none"
+            },
+            {
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 0,
+              "pattern": "/.*/",
+              "sanitize": false,
+              "thresholds": [],
+              "type": "number",
+              "unit": "none"
+            }
+          ],
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "hide": true,
+              "measurement": "CLIENT_EVENTS2",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"AxUser\", \"Control\" AS \"FORM\", \"FormOpen\", \"FormClose\", \"ControlClicked\", \"AxSession\" FROM \"CLIENT_EVENTS\" WHERE \"AxUser\" =~ /^$USER$/ AND \"Control\" =~ /^$CONTROLNAME$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "AxUser"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "Control"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [
+                      "FORM"
+                    ],
+                    "type": "alias"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "FormOpen"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "FormClose"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "ControlClicked"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxSession"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxComputer"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxServer"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "Control",
+                  "operator": "=~",
+                  "value": "/^$CONTROLNAME$/"
+                }
+              ]
+            },
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "hide": false,
+              "measurement": "CLIENT_EVENTS2",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"AxUser\", \"Control\" AS \"FORM\", \"FormOpen\", \"FormClose\", \"ControlClicked\", \"AxSession\", \"AxComputer\", \"AxServer\" FROM \"CLIENT_EVENTS2\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"Control\" =~ /^$CONTROLNAME$/ AND AxServer =~ /^$AxAosHost$/ AND AxComputer =~ /^$AxClientHost$/)  AND $timeFilter",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "AxUser"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "Control"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [
+                      "FORM"
+                    ],
+                    "type": "alias"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "FormOpen"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "FormClose"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "ControlClicked"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxSession"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxComputer"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxServer"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "Control",
+                  "operator": "=~",
+                  "value": "/^$CONTROLNAME$/"
+                }
+              ]
+            }
+          ],
+          "title": "EVENTS",
+          "transform": "timeseries_to_columns",
+          "type": "table"
+        }
+      ],
+      "repeat": null,
+      "title": "EVENTS",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 34,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 2
+          },
+          "id": 29,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "$col: $tag_Control",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "15m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "Control"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": true,
+              "measurement": "CLIENT_EVENTS2",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "FormOpen"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "FormOpen"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "Control",
+                  "operator": "=~",
+                  "value": "/^$CONTROLNAME$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                }
+              ]
+            },
+            {
+              "alias": "$col: $tag_Control $tag_AxUser",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "15m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "Control"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "CLIENT_EVENTS2",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT sum(\"FormOpen\") AS \"FormOpen\" FROM \"CLIENT_EVENTS2\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"Control\" =~ /^$CONTROLNAME$/ AND AxServer =~ /^$AxAosHost$/ AND AxComputer =~ /^$AxClientHost$/)  AND $timeFilter GROUP BY time($AggragationInterval), \"Control\", \"AxUser\"",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "FormOpen"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "FormOpen"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "Control",
+                  "operator": "=~",
+                  "value": "/^$CONTROLNAME$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Open",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "repeat": null,
+      "title": "Control statistics",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 35,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 3
+          },
+          "id": 30,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "$col: $tag_Control",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "15m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "Control"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": true,
+              "measurement": "CLIENT_EVENTS2",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "FormClose"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "FormOpen"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "Control",
+                  "operator": "=~",
+                  "value": "/^$CONTROLNAME$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                }
+              ]
+            },
+            {
+              "alias": "$col: $tag_Control $tag_AxUser",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "15m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "Control"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "CLIENT_EVENTS2",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT sum(\"FormClose\") AS \"FormClose\" FROM \"CLIENT_EVENTS2\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"Control\" =~ /^$CONTROLNAME$/ AND AxServer =~ /^$AxAosHost$/ AND AxComputer =~ /^$AxClientHost$/)  AND $timeFilter GROUP BY time($AggragationInterval), \"Control\", \"AxUser\"",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "FormClose"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "FormOpen"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "Control",
+                  "operator": "=~",
+                  "value": "/^$CONTROLNAME$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Close",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "repeat": null,
+      "title": "Control statistics",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 36,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 4
+          },
+          "id": 31,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "$col: $tag_Control",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "15m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "Control"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": true,
+              "measurement": "CLIENT_EVENTS2",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "ControlClicked"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "FormOpen"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "Control",
+                  "operator": "=~",
+                  "value": "/^$CONTROLNAME$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                }
+              ]
+            },
+            {
+              "alias": "$col: $tag_Control",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "15m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "Control"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "CLIENT_EVENTS2",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT sum(\"ControlClicked\") AS \"FormOpen\" FROM \"CLIENT_EVENTS2\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"Control\" =~ /^$CONTROLNAME$/ AND AxServer =~ /^$AxAosHost$/ AND AxComputer =~ /^$AxClientHost$/)  AND $timeFilter GROUP BY time($AggragationInterval), \"Control\"",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "ControlClicked"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "FormOpen"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "Control",
+                  "operator": "=~",
+                  "value": "/^$CONTROLNAME$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Control Clicked",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "repeat": null,
+      "title": "Control statistics",
+      "type": "row"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "liqui-moly",
+          "value": "liqui-moly"
+        },
+        "hide": 2,
+        "label": null,
+        "name": "SISTEMA",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "USER",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"CLIENT_EVENTS2\" WITH KEY = \"AxUser\"",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "CONTROLNAME",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"CLIENT_EVENTS2\" WITH KEY = \"Control\"",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "AxClientHost",
+        "options": [],
+        "query": "select distinct AxComputer from \"CLIENT_EVENTS2\"",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "AxAosHost",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "AXPRODAOS01",
+            "value": "AXPRODAOS01"
+          },
+          {
+            "selected": false,
+            "text": "AXPRODAOS02",
+            "value": "AXPRODAOS02"
+          },
+          {
+            "selected": false,
+            "text": "AXPRODAOS03",
+            "value": "AXPRODAOS03"
+          },
+          {
+            "selected": false,
+            "text": "AXPRODAOS04",
+            "value": "AXPRODAOS04"
+          },
+          {
+            "selected": false,
+            "text": "AXPRODAOS05",
+            "value": "AXPRODAOS05"
+          },
+          {
+            "selected": false,
+            "text": "AXPRODAOS06",
+            "value": "AXPRODAOS06"
+          },
+          {
+            "selected": false,
+            "text": "AXPRODAOS07",
+            "value": "AXPRODAOS07"
+          },
+          {
+            "selected": false,
+            "text": "AXPRODAOS08",
+            "value": "AXPRODAOS08"
+          }
+        ],
+        "query": "AXPRODAOS01,AXPRODAOS02,AXPRODAOS03,AXPRODAOS04,AXPRODAOS05,AXPRODAOS06,AXPRODAOS07,AXPRODAOS08",
+        "type": "custom"
+      },
+      {
+        "allValue": "*",
+        "current": {
+          "selected": false,
+          "tags": [],
+          "text": "15m",
+          "value": "15m"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "AggregationInterval",
+        "multi": false,
+        "name": "AggragationInterval",
+        "options": [
+          {
+            "selected": true,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "2m",
+            "value": "2m"
+          },
+          {
+            "selected": false,
+            "text": "3m",
+            "value": "3m"
+          },
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "15m",
+            "value": "15m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          }
+        ],
+        "query": "1m,2m,3m,5m,10m,15m,30m,1h",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "CLIENT view",
+  "uid": "000000798",
+  "version": 6
+}
