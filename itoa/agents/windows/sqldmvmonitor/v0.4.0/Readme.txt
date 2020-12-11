@@ -185,6 +185,20 @@ This is needed to get all the required information about query fetches. The corr
 2) run Prepair4SQLDMVMonitor.ps1 with the needed parameters (same parameters as during first setup)
 3) upgrade to new version running msi bundle of version 0.4.x (SQLDMVMonitor-v0.4.1-x64.msi)
 
+Special Anotation regarding migrating to version 0.4.x:
+With the Introduction of 0.4 the Field Types of Maxduration and MaxLastBatch in the Measurment SQLLongTransaction has been changed from float to integer. 
+Data Collected by the Agent regarding SQLLongTransaction  will not be written to the Measurement until you:
+- migrate the 2 Fields from float to integer 
+- or you drop the measurement SQLLongTransaction
+
+As consequence the measurements must be migrated or dropped, as influx does not permit to write values of integer to fields of type float with the same measurements.
+
+If you decide that you want to keep the measurements for SQLLongTransaction, you must :
+1) write the measurement SQLLongTransaction including tags,fields to a temporary measurement (converting the 2 field Maxduration and MaxLastBatch to integer)
+2) drop measurement SQLLongTransaction
+3) write the temporary measurement back to SQLLongTransaction
+
+
 ==================================
 TROUBLESHOOTING
 =================================
