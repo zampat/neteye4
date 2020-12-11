@@ -551,6 +551,10 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
     $IP_Subnet_CIDR = ""
     $IP_Address_Matched = ""
 
+    if (( $my_IPs -eq $null ) -or ( $my_IPs.Length -lt 1 )) {
+        log_message -message "[-] Error: Local IP Addresses discovery failed. NO IP Addresses found."
+    }
+
     for ($i=0; $i -lt $my_IPs.Length; $i++){
 
         if ($my_IPs[$i] -eq "127.0.0.1") {
@@ -597,7 +601,6 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
 
     # FAllback: No Subnet discoverd -> FAllback rule
     if ( $IP_Subnet_discovered -ne $TRUE ){
-        log_message -message "[-] Error: Local IP Addresses discovery failed. NO IP Addresses found."
 
         # Default rule: take the first element of Endpoints
         [array] $arr_subnet2test = $arr_subnet_ranges[0]
