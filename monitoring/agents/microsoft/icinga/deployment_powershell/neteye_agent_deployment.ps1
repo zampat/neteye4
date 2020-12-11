@@ -100,9 +100,13 @@ param(
 # Define available Neteye4 Endpoints 
 # HINT: Copy-paste names from director zones and endpoint definition !!
 #
-# ADVICE: 
+# INSTRUCTIONS: 
 # - For Endpoint MASTER = TRUE define the IP of Master/cluster node
 # - For Endpoint MASTER = FALSE define the IP of the endpoint(s) in zone
+#
+# Advice:
+# IF there are errors during local IP discovery or subnet can not be resolved:
+# "Default" fallback: The first element of array used.
 #
 # Structure of Array: arr_subnet_ranges
 # [0] [string]IP subnet, 
@@ -538,8 +542,7 @@ if ($action_force_reinstall_extra_plugins -eq $TRUE){
 if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agent -eq $TRUE) -or ($action_extra_plugins -eq $TRUE)-or ($action_custom_nsclient -eq $TRUE)-or ($action_install_OCS_agent -eq $TRUE)){
 
     # Where am I as Agent: within a "master Zone"  or a "satellite zone" ?
-    log_message -message "[i] Going to check wheter I stand in a master or satellite zone..." 
-
+    log_message -message "[i] Local IP vs. Subnet discovery: Going to check wheter I stand in a master or satellite zone..." 
 
     
     [string[]]$my_IPs = @(Get-NetIPAddress -AddressState Preferred -AddressFamily IPv4 | %{$_.IPAddress})
@@ -590,6 +593,22 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
                 log_message "Found: IP $Contains is in subnet $arr_subnet2test."
             }
         }
+    }
+
+    # FAllback: No Subnet discoverd -> FAllback rule
+    if ( $IP_Subnet_discovered -ne $TRUE ){
+        log_message -message "[-] Error: Local IP Addresses discovery failed. NO IP Addresses found."
+
+        # Default rule: take the first element of Endpoints
+        [array] $arr_subnet2test = $arr_subnet_ranges[0]
+        $neteye4endpoint = $arr_subnet2test[1]
+        if ($arr_subnet2test[2] -ne $NULL){
+            $neteye4endpoint2 = $arr_subnet2test[2]
+        }
+        $neteye4parent_zone = $arr_subnet2test[3]
+        $is_neteye4endpoint_master = $arr_subnet2test[4]
+        $host_template = $arr_subnet2test[5]
+        log_message -message "[!] Proceeding with Fallback logice: Take default Endpoint: $neteye4endpoint and Zone $neteye4parent_zone"
     }
 
 }
