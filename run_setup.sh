@@ -3,7 +3,7 @@
 # VARIABLES DEFINITION
 GIT_MONITORING_TEMPLATES="https://github.com/zampat/icinga2-monitoring-templates.git"
 
-ICINGA2_AGENT_VERSION="2.11.5"
+ICINGA2_AGENT_VERSION="2.11.7"
 # Define in file directly! SAFED_WIN_VERSION="1_10_1-1"
 ITOA_TELEGRAF_AGENT_VERSION="1.10.2"
 
@@ -33,8 +33,9 @@ MONITORING_PLUGINS_CONTRIB_CONFIG_DIR="/neteye/shared/monitoring/configs"
 # Icinga2 Agents
 #
 ./scripts/020_get_icinga2_agents.sh ${NETEYESHARE_MONITORING} ${ICINGA2_AGENT_VERSION}
-./scripts/021_get_icinga2_agent_nix.sh ${NETEYESHARE_MONITORING} ${ICINGA2_AGENT_VERSION}
-./scripts/022_get_icinga2_agent_rhel7.sh ${NETEYESHARE_MONITORING} ${ICINGA2_AGENT_VERSION}
+# Not really useful providing rpms via neteyeshare web
+#./scripts/021_get_icinga2_agent_nix.sh ${NETEYESHARE_MONITORING} ${ICINGA2_AGENT_VERSION}
+#./scripts/022_get_icinga2_agent_rhel7.sh ${NETEYESHARE_MONITORING} ${ICINGA2_AGENT_VERSION}
 
 
 # NetEye 4 default configurations
