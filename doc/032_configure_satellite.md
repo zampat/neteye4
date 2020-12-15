@@ -47,6 +47,9 @@ Note 2: In NetEye the service name for icinga2 master is: "icinga2-master"
 ### Configuration of icinga2: constants.conf
 
 **Constants.conf for icinga2**
+
+**const PluginContribDir = "/neteye/shared/monitoring/plugins/" --> WORK IN PROGRESS!!!** 
+
 Path: /neteye/local/icinga2/conf/icinga2/constants.conf
 ```
 /**
