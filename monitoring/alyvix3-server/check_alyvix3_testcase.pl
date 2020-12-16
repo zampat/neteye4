@@ -88,8 +88,8 @@ my $base_url = "https://$opt_host/v0/testcases/$opt_testcase/";
 #my $json_content = get("https://$opt_host/v0/testcases/$opt_testcase/");
 my $useragent = LWP::UserAgent->new;
 $useragent->ssl_opts(
-    SSL_verify_mode => SSL_VERIFY_NONE, 
-    verify_hostname => 0
+	SSL_verify_mode => SSL_VERIFY_NONE,
+	verify_hostname => 0
 );
 my $request = HTTP::Request->new('GET', $base_url);
 my $response = $useragent->request($request);
@@ -140,6 +140,7 @@ my $nprob = 0;
 my $oldcode = "";
 my $oldstr = "OLD";
 my $now = time();
+my $perfstr = "";
 
 while($n lt $size) {
 	if (defined($opt_testuser)) {
@@ -166,11 +167,23 @@ while($n lt $size) {
 		}
 
 	}
-	
+
 	$perfname  = $measures[$n]->{transaction_name};
 	$perfvalue = $measures[$n]->{transaction_performance_ms};
 	$perfstate = $measures[$n]->{transaction_state};
 	$perfwarn  = $measures[$n]->{transaction_warning_ms};
+	if (!defined($perfvalue)) {
+		$perfvalue = "[undef]";
+	}
+	if ($perfstate eq 0) {
+		$perfstr .= "OK - $perfname (${perfvalue}ms)\n";
+	} elsif ($perfstate eq 1) {
+		$perfstr .= "WARNING - $perfname (${perfvalue}ms)\n";
+	} elsif ($perfstate eq 1) {
+		$perfstr .= "CRITICAL - $perfname (${perfvalue}ms)\n";
+	} else {
+		$perfstr .= "UNKNOWN - $perfname (${perfvalue}ms)\n";
+	}
 	if (!defined($perfwarn) || $perfwarn !~ /[0-9]*/) {
 		$perfwarn = "";
 	}
@@ -193,12 +206,16 @@ if (!defined($testcode)) {
 	exit 3;
 }
 
+$nprob = "No";
 if ($teststate == 1) {
 	$statestr = "WARNING";
+	$nprob = "Some";
 } elsif ($teststate == 2) {
 	$statestr = "CRITICAL";
+	$nprob = "Some";
 } elsif ($teststate > 2) {
 	$statestr = "UNKNOWN";
+	$nprob = "Some";
 }
 
 if ($opt_timeout > 0) {
@@ -218,16 +235,17 @@ if ($opt_debug) {
 	print "$testcode -> $oldcode\n";
 }
 if ($opt_testing) {
-	print "${statestr} - $nprob transaction in Problem Status (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
+	print "${statestr} - $nprob transaction(s) in Problem Status (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
 } elsif ($testcode ne $oldcode) {
 	open(my $fh_out, '>', $tmpfile)
 		or die "Can't create \"$tmpfile\": $!\n";
 	print($fh_out "${testcode}\n");
 	close($fh_out);
-	print "${statestr} - $nprob transaction in Problem Status (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
+	print "${statestr} - $nprob transaction(s) in Problem Status (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
 } else {
-	print "${statestr} - $nprob transaction in Problem Status [$oldstr] (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>)\n";
+	print "${statestr} - $nprob transaction(s) in Problem Status [$oldstr] (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>)\n";
 }
+print "$perfstr";
 exit $teststate;
 
 # --------------------------------------------------- helper -----------------------------------------
