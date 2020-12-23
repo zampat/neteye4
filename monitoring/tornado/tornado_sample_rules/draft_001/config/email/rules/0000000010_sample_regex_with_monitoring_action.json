@@ -1,0 +1,39 @@
+{
+  "name": "sample_regex_with_monitoring_action",
+  "description": "Sample Regex Rule with Monitoring Action",
+  "continue": true,
+  "active": true,
+  "constraint": {
+    "WHERE": {
+      "type": "AND",
+      "operators": [
+        {
+          "type": "regex",
+          "regex": ".*tornado test.*",
+          "target": "${event.payload.subject}"
+        },
+        {
+          "type": "regex",
+          "regex": ".*root.*",
+          "target": "${event.payload.from}"
+        }
+      ]
+    },
+    "WITH": {}
+  },
+  "actions": [
+    {
+      "id": "icinga2",
+      "payload": {
+        "icinga2_action_payload": {
+          "type": "Service",
+          "exit_status": "0",
+          "plugin_output": "Output message",
+          "filter": "host.name==\"neteye\" && service.name ==\"email_event\"",
+          "performance_data": []
+        },
+        "icinga2_action_name": "process-check-result"
+      }
+    }
+  ]
+}

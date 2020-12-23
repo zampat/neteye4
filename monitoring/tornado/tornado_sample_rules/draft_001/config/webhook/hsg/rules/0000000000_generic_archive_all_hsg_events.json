@@ -1,0 +1,28 @@
+{
+  "name": "generic_archive_all_hsg_events",
+  "description": "Archive all incoming Host-Service generation events",
+  "continue": true,
+  "active": true,
+  "constraint": {
+    "WHERE": {
+      "type": "AND",
+      "operators": [
+        {
+          "type": "regex",
+          "regex": ".*hsg.*",
+          "target": "${event.type}"
+        }
+      ]
+    },
+    "WITH": {}
+  },
+  "actions": [
+    {
+      "id": "archive",
+      "payload": {
+        "archive_type": "${event.type}",
+        "event": "${event}"
+      }
+    }
+  ]
+}

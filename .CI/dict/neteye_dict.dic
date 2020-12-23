@@ -204,6 +204,7 @@ nrpe
 NRPE
 ntp
 NWC
+OID
 offline
 Offline
 online
@@ -241,6 +242,7 @@ procs
 programmatically
 Programmatically
 PSU
+regex
 relocative
 Relocative
 repo

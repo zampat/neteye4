@@ -1,0 +1,42 @@
+{
+  "name": "sysupdtime_create_update_monitoring_object",
+  "description": "Event Heartbeat creates or updates monitoring object",
+  "continue": true,
+  "active": true,
+  "constraint": {
+    "WHERE": {
+      "type": "AND",
+      "operators": [
+        {
+          "type": "regex",
+          "regex": ".*Days.*",
+          "target": "${event.payload.oids.\"DISMAN-EVENT-MIB::sysUpTimeInstance\".content}"
+        }
+      ]
+    },
+    "WITH": {}
+  },
+  "actions": [
+    {
+      "id": "smart_monitoring_check_result",
+      "payload": {
+        "service": {
+          "check_command": "dummy",
+          "object_name": "Heartbeat Event"
+        },
+        "check_result": {
+          "plugin_output": "SNMP Trap message: ${event.payload.oids.\"DISMAN-EVENT-MIB::sysUpTimeInstance\".content}",
+          "exit_status": "1"
+        },
+        "host": {
+          "vars": {
+            "location": "Bozen"
+          },
+          "address": "127.0.0.1",
+          "object_name": "SNMPTRAP DEMO",
+          "imports": "generic-host"
+        }
+      }
+    }
+  ]
+}

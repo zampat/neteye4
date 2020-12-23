@@ -1,0 +1,14 @@
+{
+  "description": "Email events from \"tornado_email_collector\" service",
+  "active": true,
+  "filter": {
+    "type": "AND",
+    "operators": [
+      {
+        "type": "equals",
+        "first": "${event.type}",
+        "second": "email"
+      }
+    ]
+  }
+}
