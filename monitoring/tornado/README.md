@@ -190,3 +190,37 @@ Here comes the rule's Action definition:
 
 When performing the Test again, enabling the option "Enable execution of actions", event the action section is executed and therefore a new host and service object defined in monitoring (if not exists) and the status is defined: OK with the output "Hearbeat value: 100".
 
+## Usecase: Webhook Event call
+
+The webhook represents a very universal and efficient way to structure data and transmit the contents to Tornado to create monitoring objects and update its status.
+
+This example will make use of the rules to create a new monitoring Object in Director without automatically creating the Objects in Icinga. Within the payload all data for defining the object is provided.
+
+__First define a webhook collector called "hsg": Host-Service Generator__
+
+The webhooks are defined within the configurations directory of the webhook collector service:
+- ID defining the event
+- Token, to validate incoming event body
+- event_type as the type name
+- payload json object
+```
+# cat /neteye/shared/tornado_webhook_collector/conf/webhooks/host_service_generator.json
+{
+  "id": "hsg",
+  "token": "neteye_s3cr3t",
+  "collector_config": {
+    "event_type": "hsg",
+    "payload": {
+       "data": "${@}"
+    }
+  }
+}
+```
+Once defined restart the webhook collector service.
+
+A simple webhook collector event could look like this:
+```
+curl http://httpd.neteyelocal/tornado/webhook/event/hsg?token=neteye_s3cr3t -H "content-type: application/json" -X POST -d '{ "host_name": "host3", "host_address": "127.0.0.1", "host_template": "generic-host", "host_displayname": "Host 3",  "state": "1", "output": "Running_without_replica" }'
+```
+
+
