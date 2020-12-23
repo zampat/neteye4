@@ -63,6 +63,7 @@ file_cache_ttl_secs = 1
 one = "all/one_events.log"
 email = "email/all_events.log"
 snmptrapd = "snmptrap/all_events.log"
+hsg = "webhooks/hsg/all_hsg_events.log"
 ```
 
 
