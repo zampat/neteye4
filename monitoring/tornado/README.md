@@ -76,7 +76,7 @@ Step 1: Send an snmptrap to tornado (Note: "localhost" is the node where tornado
 # snmptrap -v 2c -c public localhost '' 1.3.6.1.4.1.8072.2.3.0.1 SNMPv2-MIB::sysName.0 s "hostname1" DISMAN-EVENT-MIB::sysUpTimeInstance s "Uptime 180 Days" 1.3.6.1.4.1.8072.2.3.2.1 i 100 
 ```
 
-According the installed Filter rules and mathing rules, the incoming trap had been matched by rule "archive_all". According those settings, the action "archive" for archive_type = snmptrad should have been called. To verify the definition of this archive type verify the file (you just edited it): /neteye/shared/tornado/conf/archive_executor.toml
+According the installed Filter rules and matching rules, the incoming trap had been matched by rule "archive_all". According those settings, the action "archive" for `archive_type = snmptrad` should have been called. To verify the definition of this archive type verify the file (you just edited it): /neteye/shared/tornado/conf/archive_executor.toml
 
 Identify the last (or increase number ) archived snmp trap:
 ```
@@ -124,14 +124,14 @@ Identify the last (or increase number ) archived snmp trap:
 
 ## Extending the rule and matching of 
 
-Extend the ruleset' to match:
+Extend the ruleset to match:
 - the hostname from `SNMPv2-MIB::sysName.0`
 - the days of uptime from `DISMAN-EVENT-MIB::sysUpTimeInstance`
 - Extra points: verify value `NET-SNMP-EXAMPLES-MIB::netSnmpExampleHeartbeatRate' < 100`
 
 We consider defining a new rule according the provided samples in rule "sample_regex_with_monitoring_action".
 
-Define the WITH section to match the OID "DISMAN-EVENT-MIB::sysUpTimeInstance". Please note the above JSON structure: you need to address the entire path, therefore event.payload.oids.DISMAN-EVENT-MIB::sysUpTimeInstance. Life would be too easy when just copy-paste the name ... you need to define the OID within  " " as it contains spaces or other non-word characters. Remember also to escape the " with \".
+Define the WITH section to match the OID `DISMAN-EVENT-MIB::sysUpTimeInstance`. Please note the above JSON structure: you need to address the entire path, therefore `event.payload.oids.DISMAN-EVENT-MIB::sysUpTimeInstance`. Life would be too easy when just copy-paste the name ... you need to define the OID within  " " as it contains spaces or other non-word characters. Remember also to escape the " with \".
 
 Here it goes:
 ```
