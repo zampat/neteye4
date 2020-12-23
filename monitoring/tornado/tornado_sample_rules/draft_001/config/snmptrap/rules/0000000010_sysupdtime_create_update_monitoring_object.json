@@ -20,21 +20,21 @@
     {
       "id": "smart_monitoring_check_result",
       "payload": {
+        "service": {
+          "check_command": "dummy",
+          "object_name": "Heartbeat Event"
+        },
         "check_result": {
           "plugin_output": "SNMP Trap message: ${event.payload.oids.\"DISMAN-EVENT-MIB::sysUpTimeInstance\".content}",
           "exit_status": "1"
         },
         "host": {
-          "address": "127.0.0.1",
-          "check_command": "hostalive",
-          "object_name": "SNMPTRAP DEMO",
           "vars": {
             "location": "Bozen"
-          }
-        },
-        "service": {
-          "object_name": "Heartbeat Event",
-          "check_command": "dummy"
+          },
+          "address": "127.0.0.1",
+          "object_name": "SNMPTRAP DEMO",
+          "imports": "generic-host"
         }
       }
     }
