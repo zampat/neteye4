@@ -1,0 +1,14 @@
+{
+  "description":"Eventlog processing rule",
+  "active": true,
+  "filter": {
+      "type": "AND",
+      "operators": [
+	    {
+		   "type": "equal",
+		   "first": "${event.type}",
+		   "second": "eventlog"
+		}
+      ]
+ }
+} 

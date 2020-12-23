@@ -1,0 +1,9 @@
+{
+    "description": "This matches all others",
+    "active": true,
+    "filter": {
+      "type": "equal",
+      "first": "${event.type}",
+      "second": "others"
+    }
+}

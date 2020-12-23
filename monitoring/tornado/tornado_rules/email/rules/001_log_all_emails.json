@@ -1,0 +1,35 @@
+{
+    "name": "all_emails",
+    "description": "This matches all emails",
+    "continue": true,
+    "active": true,
+    "constraint": {
+      "WHERE": {
+        "type": "AND",
+        "operators": [
+          {
+            "type": "equal",
+            "first": "${event.type}",
+            "second": "email"
+          },
+          {
+            "type": "regex",
+            "regex": "MyMessage.*",
+            "target": "${event.payload.subject}"
+          }
+        ]
+      },
+      "WITH": {}
+    },
+    "actions": [
+      {
+        "id": "archive",
+        "payload": {
+          "sender": "${event.payload.from}",
+          "subject": "${event.payload.subject}",
+          "event": "${event}",
+          "archive_type": "archive_mail"
+        }
+      }
+    ]
+}

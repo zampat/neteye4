@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Tornado - event processing engine
 
 Tornado is the module for flexible event processing in NetEye. The core of Tornado represents the event processing engine configurable by hierarchical set of rules. Those rules are structured in a hierarchical way, in order to setup processing trees to respect events coming from various input channels or to structure events according various use case.
@@ -154,12 +155,16 @@ Define the Event Type: `snmptrapd` and copy the entire payload {} into the Test 
 
 <image of Tornado test window>
 
+=======
+# Tornado for NetEye 4
 
-Now proceed defining a suitable action. According the available "action" types, we use now an action definition to forward a result to monitoring module Icinga2. The action "monitoring" consists of 3 sub-actions:
-- host_creation_payload:  define a new host object if not created, yet
-- service_creation_payload: define a new service object if not created, yet
-- process_check_result_payload: define the status, status description and (optional) performance data
+## Setup of tornado
 
+Setup Tornado packages as indicated in NetEye user guide "Installing Additional Modules". Once done continue configuring the daemon and collectors:
+>>>>>>> master
+
+
+<<<<<<< HEAD
 Here comes the rule's Action definition:
 ```
 [
@@ -223,4 +228,12 @@ A simple webhook collector event could look like this:
 curl http://httpd.neteyelocal/tornado/webhook/event/hsg?token=neteye_s3cr3t -H "content-type: application/json" -X POST -d '{ "host_name": "host3", "host_address": "127.0.0.1", "host_template": "generic-host", "host_displayname": "Host 3",  "state": "1", "output": "Running_without_replica" }'
 ```
 
+=======
+[Setup tornado collectors email, snmptrap, webhook](tornado_setup.md)
 
+
+## Configure Tornado rules
+>>>>>>> master
+
+- [Configure a simple tornado rule to archive incoming events](tornado_rule_simple.md)
+- [Extend tornado rule by Icinga2 action](tornado_rule_icinga.md)

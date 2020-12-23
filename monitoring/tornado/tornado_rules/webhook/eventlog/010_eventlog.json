@@ -1,0 +1,27 @@
+{
+  "description": "Eventlog 7036 - Event Service Restart",
+  "active": true,
+  "continue": true,
+  "constraint": {
+    "WHERE": {
+      "type": "AND",
+      "operators": [
+         {
+           "type": "equal",
+           "first": "${event.payload.winlog.event_id}",
+           "second": 7036.0
+        }
+      ]
+    },
+    "WITH": {}
+  },
+  "actions": [
+    {
+       "id": "script",
+       "payload": {
+          "script": "/usr/bin/smssend +10123456789 \"Message from NetEye4: ${event.payload.subject}\""
+       }
+    }
+  ]
+}
+

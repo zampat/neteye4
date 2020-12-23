@@ -7,7 +7,10 @@ trap 'rm -f $TMPFILE' 0
 
 SAHI_LOGDIR=/neteye/shared/monitoring/data/sahipro/logs
 
-if [ -e /neteye/local/sahipro/config/sysconfig.cfg ]
+if [ -e /etc/sysconfig/sahipro ]
+then
+	. /etc/sysconfig/sahipro
+elif [ -e /neteye/local/sahipro/config/sysconfig.cfg ]
 then
 	. /neteye/local/sahipro/config/sysconfig.cfg
 fi

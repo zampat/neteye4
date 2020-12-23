@@ -1,0 +1,10 @@
+{
+  "id": "generic_webhook",
+  "token": "atoken",
+  "collector_config": {
+    "event_type": "generic_webhook",
+    "payload": {
+        "original": "${@}"
+    }
+  }
+}

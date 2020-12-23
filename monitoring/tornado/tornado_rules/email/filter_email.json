@@ -1,0 +1,9 @@
+{
+    "description": "This matches all emails",
+    "active": true,
+    "filter": {
+      "type": "equal",
+      "first": "${event.type}",
+      "second": "email"
+    }
+}

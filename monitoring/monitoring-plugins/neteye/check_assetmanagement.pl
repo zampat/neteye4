@@ -488,7 +488,12 @@ sub check_automatic_action_last_run
 
 $dbh = DBI->connect("DBI:mysql:".$dbGLPIVars{"db"}.":".$dbGLPIVars{"host"},$dbGLPIVars{"user"}, $dbGLPIVars{"pass"});
 
-$query = 'SELECT name, frequency, lastrun, UNIX_TIMESTAMP(lastrun) AS lastrun_utc FROM glpi_crontasks WHERE name LIKE ?;';
+# Get The latest cronlog message where a successful data synchronization had been done
+#$query = 'SELECT name, frequency, lastrun, UNIX_TIMESTAMP(lastrun) AS lastrun_utc FROM glpi_crontasks WHERE name LIKE ?;';
+$query = 'SELECT C.name, MAX(L.date) as lastrun, UNIX_TIMESTAMP(MAX(L.date)) as lastrun_utc
+	FROM `glpi_crontasklogs` L
+	JOIN glpi_crontasks C ON C.id = L.crontasks_id
+	WHERE C.name LIKE ? AND L.content = "Action completed, fully processed";';
 
 $sqlQuery  = $dbh->prepare($query) or die "Can't prepare $query: $dbh->errstr\n";
 $sqlQuery->bind_param(1, $o_glpiCronName);
@@ -502,16 +507,17 @@ $str_resultOutput = "UNKNOWN: Now automatic Job matching.";
 #Loop trough all rows
 if (@row= $sqlQuery->fetchrow_array()) {
 
-   $str_resultOutput .= "Job '".$row[0]."' last execution time:'".$row[2]."'<br/>";
-   my $time_diff = $dateNow - $row[3];
+   my $time_diff = $dateNow - $row[2];
 
    if ($time_diff > $o_warn){
 	$var_return = $ERRORS{"WARNING"};	
-	$str_resultOutput = "WARNING: The Automatic Action Job: '".$row[0]."' had been executed '".$time_diff."' Seconds ago. (Limit $o_warn) | last_execution=$time_diff;$o_warn;$o_warn ";
+	$str_resultOutput = "WARNING: ";
    }else{
 	$var_return = $ERRORS{"OK"};	
-	$str_resultOutput = "OK: The Automatic Action Job: '".$row[0]."' had been executed '".$time_diff."' Seconds ago. | last_execution=$time_diff;$o_warn;$o_warn ";
+	$str_resultOutput = "OK: ";
    } 
+   $str_resultOutput .= " Last real import of asset data by automatic Job: '".$row[0]."' last execution: '".$row[1]."' ( '".$time_diff."' Seconds ago). | last_execution=$time_diff;$o_warn;$o_warn ";
+   $str_detailOutput .= "\n Job '".$row[0]."' last execution time:'".$row[1]."'";
 }
 
 }

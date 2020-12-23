@@ -1,0 +1,28 @@
+{
+    "id": "notify_event",
+    "name": "notify incoming event",
+    "description": "Event acceptor with feature to register new host in monitoring publish status",
+    "continue": true,
+    "active": true,
+    "constraint": {
+      "WHERE": {
+        "type": "AND",
+        "operators": [
+          {
+            "type": "equal",
+            "first": "${event.type}",
+            "second": "generic_event"
+          }
+        ]
+      },
+      "WITH": {}
+    },
+    "actions": [
+      {
+        "id": "script",
+        "payload": {
+          "script": "/neteye/shared/tornado/exercise/create_host_live.sh ${event.payload.servicename} ${event.payload.state} ${event.payload.output}"
+        }
+      }
+    ]
+  }
