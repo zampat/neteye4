@@ -6,9 +6,9 @@ To get a in depth introduction to Tornado consult the user guide withing NetEye 
 
 ## Setup of tornado
 
-Tornado is shipped as EXTRA package with the lastest versions of NetEye 4.14 (and later) with the core subscription. Therefore to install Tornado you need to follow the indications in the NetEye 4 user guid for installing additional software. For those desiring installing Tornado on a plain Linxu environment, follow the instructions on the project website on github.
+Tornado is shipped as Preview Software with the lastest versions of NetEye 4.15 (and later) and can be installed from the Repository "neteye-extras". The activation of the modules does not require any additional subscription, as shipped within the core subscription. To install Tornado you need to follow the indications in the NetEye 4 user guide for installing additional software. For those desiring installing Tornado on a plain Linxu environment, follow the instructions on the project website on [github](https://github.com/WuerthPhoenix/tornado).
 
-Notes related the setup of Tornado collectors can be found in folder: "tornado_setup"
+Notes related the setup of Tornado collectors can be found in folder: "tornado_setup".
 
 
 ## Configure Tornado with sample rules
@@ -23,15 +23,24 @@ Those roles consists of a simple rule structure:
 ```
 - filter to accept all incoming events
 \ email
-  - filter to accpt all incoming emails
+  - filter for incoming emails collected by Tornado service: "tornado_email_collector"
   \ rules
     - rule to accept all events and archive into archive folder according event type "email"
     - sample rule to match according a simple regex and perform monitoring action: create/update host, create/update service and define monitoring status
 \ snmptrap
-  - filter to accpt all incoming snmptraps
+  - filter for incoming snmptraps collected by snmptrapd (configuration in /neteye/shared/snmptrapd/)
   \ rules
     - rule to accept all events and archive into archive folder according event type "snmptrapd"
     - sample rule to match according a simple regex and perform monitoring action: create/update host, create/update service and define monitoring status
+\ webhooks
+  - filter for Webhook HTTP call collected by from "tornado_webhook_collector" service
+  \ hsg - Host - Service Generator
+  - filter for Webhook HTTP call for ID "hsg"
+  \ rules
+  - all archive rule. Action "Archive" of Archive executor ${event.type}
+  - create_only_new_host_object
+  
+  
 ```
 
 ### Install sample tornado rules
@@ -155,33 +164,23 @@ Here comes the rule's Action definition:
 ```
 [
   {
-    "id": "monitoring",
+    "id": "smart_monitoring_check_result",
     "payload": {
-      "action_name": "create_and_or_process_service_passive_check_result",
-      "host_creation_payload": {
+      "check_result": {
+        "exit_status": "1",
+        "plugin_output": "Output message"
+      },
+      "host": {
         "address": "127.0.0.1",
-        "imports": "generic-passive-host",
-        "object_name": "${event.payload.oids.\"SNMPv2-MIB::sysName.0\".content}",
-        "object_type": "Object",
+        "check_command": "hostalive",
+        "object_name": "host_snmptrap_demo",
         "vars": {
-          "created_by": "tornado"
+          "location": "Bozen"
         }
       },
-      "process_check_result_payload": {
-        "exit_status": "0",
-        "performance_data": [],
-        "plugin_output": "Hearbeat value: ${event.payload.oids.\"DISMAN-EVENT-MIB::sysUpTimeInstance\".content}",
-        "service": "${event.payload.oids.\"SNMPv2-MIB::sysName.0\".content}!Heartbeat",
-        "type": "Service"
-      },
-      "service_creation_payload": {
-        "host": "${event.payload.oids.\"SNMPv2-MIB::sysName.0\".content}",
-        "imports": "generic-passive-service",
-        "object_name": "Heartbeat",
-        "object_type": "Object",
-        "vars": {
-          "created_by": "tornado"
-        }
+      "service": {
+        "check_command": "dummy",
+        "object_name": "SNMPTRAP Demo"
       }
     }
   }
