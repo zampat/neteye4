@@ -124,7 +124,7 @@ Identify the last (or increase number ) archived snmp trap:
 
 ## Extending the rule and matching of 
 
-Extend the ruleset to match:
+Extend the rules to match:
 - the hostname from `SNMPv2-MIB::sysName.0`
 - the days of uptime from `DISMAN-EVENT-MIB::sysUpTimeInstance`
 - Extra points: verify value `NET-SNMP-EXAMPLES-MIB::netSnmpExampleHeartbeatRate' < 100`
