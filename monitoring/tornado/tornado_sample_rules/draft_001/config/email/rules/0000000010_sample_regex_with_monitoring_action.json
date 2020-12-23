@@ -9,8 +9,13 @@
       "operators": [
         {
           "type": "regex",
-          "regex": ".*subject test.*",
+          "regex": ".*tornado test.*",
           "target": "${event.payload.subject}"
+        },
+        {
+          "type": "regex",
+          "regex": ".*root.*",
+          "target": "${event.payload.from}"
         }
       ]
     },
@@ -18,34 +23,16 @@
   },
   "actions": [
     {
-      "id": "monitoring",
+      "id": "icinga2",
       "payload": {
-        "host_creation_payload": {
-          "object_name": "${event.payload.data.host}",
-          "address": "127.0.0.1",
-          "imports": "generic-passive-host",
-          "object_type": "Object",
-          "vars": {
-            "created_by": "tornado"
-          }
-        },
-        "action_name": "create_and_or_process_service_passive_check_result",
-        "process_check_result_payload": {
-          "exit_status": "${event.payload.data.service_status}",
-          "performance_data": [],
+        "icinga2_action_payload": {
           "type": "Service",
-          "service": "${event.payload.data.host}!${event.payload.data.service}",
-          "plugin_output": "Output message"
+          "exit_status": "0",
+          "plugin_output": "Output message",
+          "filter": "host.name==\"neteye\" && service.name ==\"email_event\"",
+          "performance_data": []
         },
-        "service_creation_payload": {
-          "imports": "generic-passive-service",
-          "object_type": "Object",
-          "object_name": "${event.payload.data.service}",
-          "vars": {
-            "created_by": "tornado"
-          },
-          "host": "${event.payload.data.host}"
-        }
+        "icinga2_action_name": "process-check-result"
       }
     }
   ]

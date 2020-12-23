@@ -17,6 +17,10 @@ then
    cp -r monitoring/tornado/tornado_sample_rules/draft_001 ${TORNADO_RULES_DRAFT_DIR}
 
    chown -R tornado:tornado ${TORNADO_RULES_DRAFT_DIR}
+
+else
+   echo "[ ] 150: tornado_default rules already installed in ${TORNADO_RULES_DRAFT_DIR}"
+
 fi
 
-echo "[i] 150: Done."
+echo "[i] 150: Installation of Tornado rules done."

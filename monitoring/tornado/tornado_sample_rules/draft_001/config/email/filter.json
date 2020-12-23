@@ -1,5 +1,5 @@
 {
-  "description": "",
+  "description": "Email events from \"tornado_email_collector\" service",
   "active": true,
   "filter": {
     "type": "AND",

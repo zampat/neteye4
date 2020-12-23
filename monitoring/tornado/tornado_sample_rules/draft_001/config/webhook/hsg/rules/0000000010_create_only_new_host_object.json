@@ -1,0 +1,38 @@
+{
+  "name": "create_only_new_host_object",
+  "description": "Create only a new host object in Director using a template. Creation in Icinga is set to false.",
+  "continue": false,
+  "active": true,
+  "constraint": {
+    "WHERE": {
+      "type": "AND",
+      "operators": [
+        {
+          "type": "regex",
+          "regex": ".*generic-host.*",
+          "target": "${event.payload.data.host_template}"
+        }
+      ]
+    },
+    "WITH": {}
+  },
+  "actions": [
+    {
+      "id": "director",
+      "payload": {
+        "icinga2_live_creation": false,
+        "action_payload": {
+          "display_name": "${event.payload.data.host_displayname}",
+          "object_name": "${event.payload.data.host_name}",
+          "object_type": "object",
+          "address": "${event.payload.data.host_address}",
+          "vars": {
+            "created_by": "tornado"
+          },
+          "imports": "${event.payload.data.host_template}"
+        },
+        "action_name": "create_host"
+      }
+    }
+  ]
+}

@@ -1,12 +1,12 @@
 # Tornado - event processing engine
 
-Tornado is the module for flexible event processing in NetEye. The core of Tornado represents the event processing engine configurable by hierarchical set of rules. Those rules are structured in a hierarchical way, in order to setup processing trees to respect events coming from various input channels or to structure events according various usecases.
+Tornado is the module for flexible event processing in NetEye. The core of Tornado represents the event processing engine configurable by hierarchical set of rules. Those rules are structured in a hierarchical way, in order to setup processing trees to respect events coming from various input channels or to structure events according various use case.
 
 To get a in depth introduction to Tornado consult the user guide withing NetEye 4 or [visit the project website on github](https://github.com/WuerthPhoenix/tornado). Tornado is published according the Apache license and therefore the entire source code is open.
 
 ## Setup of tornado
 
-Tornado is shipped as Preview Software with the lastest versions of NetEye 4.15 (and later) and can be installed from the Repository "neteye-extras". The activation of the modules does not require any additional subscription, as shipped within the core subscription. To install Tornado you need to follow the indications in the NetEye 4 user guide for installing additional software. For those desiring installing Tornado on a plain Linxu environment, follow the instructions on the project website on [github](https://github.com/WuerthPhoenix/tornado).
+Tornado is shipped as Preview Software with the latest versions of NetEye 4.15 (and later) and can be installed from the Repository "neteye-extras". The activation of the modules does not require any additional subscription, as shipped within the core subscription. To install Tornado you need to follow the indications in the NetEye 4 user guide for installing additional software. For those desiring installing Tornado on a plain Linux environment, follow the instructions on the project website on [github](https://github.com/WuerthPhoenix/tornado).
 
 Notes related the setup of Tornado collectors can be found in folder: "tornado_setup".
 
@@ -28,7 +28,7 @@ Those roles consists of a simple rule structure:
     - rule to accept all events and archive into archive folder according event type "email"
     - sample rule to match according a simple regex and perform monitoring action: create/update host, create/update service and define monitoring status
 \ snmptrap
-  - filter for incoming snmptraps collected by snmptrapd (configuration in /neteye/shared/snmptrapd/)
+  - filter for incoming snmptraps collected by `snmptrapd` (configuration in /neteye/shared/snmptrapd/)
   \ rules
     - rule to accept all events and archive into archive folder according event type "snmptrapd"
     - sample rule to match according a simple regex and perform monitoring action: create/update host, create/update service and define monitoring status
@@ -66,7 +66,7 @@ snmptrapd = "snmptrap/all_events.log"
 ```
 
 
-## Usecase: SNMP-Trap event processing
+## Use case: SNMP-Trap event processing
 
 The scenario consists in the assumption a remote device, such as a network devices, is sending an event message to Tornado. The Tornado snmp-trap collector accepts the message and a filter rule for snmptrap files forwards the event to a dedicated archive rule. Then the event message is stored within the archive folder.
 
@@ -125,9 +125,9 @@ Identify the last (or increase number ) archived snmp trap:
 ## Extending the rule and matching of 
 
 Extend the ruleset' to match:
-- the hostname from 'SNMPv2-MIB::sysName.0'
-- the days of uptime from 'DISMAN-EVENT-MIB::sysUpTimeInstance'
-- Extra points: verify value 'NET-SNMP-EXAMPLES-MIB::netSnmpExampleHeartbeatRate' < 100
+- the hostname from `SNMPv2-MIB::sysName.0`
+- the days of uptime from `DISMAN-EVENT-MIB::sysUpTimeInstance`
+- Extra points: verify value `NET-SNMP-EXAMPLES-MIB::netSnmpExampleHeartbeatRate' < 100`
 
 We consider defining a new rule according the provided samples in rule "sample_regex_with_monitoring_action".
 
@@ -150,7 +150,7 @@ Here it goes:
 ### Test your condition
 
 Now your next incoming Snmp-Trap should match the rule. Verify this using the "Test Window"!
-Define the Event Type: "snmptrapd" and copy the entire payload {} into the Test window and "Run Test".
+Define the Event Type: `snmptrapd` and copy the entire payload {} into the Test window and "Run Test".
 
 <image of Tornado test window>
 
@@ -188,15 +188,15 @@ Here comes the rule's Action definition:
 ```
 
 
-When performing the Test again, enabling the option "Enable execution of actions", event the action section is executed and therefore a new host and service object defined in monitoring (if not exists) and the status is defined: OK with the output "Hearbeat value: 100".
+When performing the Test again, enabling the option "Enable execution of actions", event the action section is executed and therefore a new host and service object defined in monitoring (if not exists) and the status is defined: OK with the output "Heartbeat value: 100".
 
-## Usecase: Webhook Event call
+## Use case: Webhook Event call
 
 The webhook represents a very universal and efficient way to structure data and transmit the contents to Tornado to create monitoring objects and update its status.
 
 This example will make use of the rules to create a new monitoring Object in Director without automatically creating the Objects in Icinga. Within the payload all data for defining the object is provided.
 
-__First define a webhook collector called "hsg": Host-Service Generator__
+__First define a webhook collector called `hsg`: Host-Service Generator__
 
 The webhooks are defined within the configurations directory of the webhook collector service:
 - ID defining the event

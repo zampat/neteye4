@@ -1,0 +1,33 @@
+{
+  "name": "monitoring_update_icinga_object_status",
+  "description": "Monitoring Result: Update Icinga2 Object status",
+  "continue": true,
+  "active": true,
+  "constraint": {
+    "WHERE": {
+      "type": "AND",
+      "operators": [
+        {
+          "type": "regex",
+          "regex": ".*hsg.*",
+          "target": "${event.type}"
+        }
+      ]
+    },
+    "WITH": {}
+  },
+  "actions": [
+    {
+      "id": "icinga2",
+      "payload": {
+        "icinga2_action_name": "process-check-result",
+        "icinga2_action_payload": {
+          "exit_status": "${event.payload.exit_status}",
+          "type": "Host",
+          "plugin_output": "${event.payload.plugin_output}",
+          "filter": "host.name==\"example.localdomain\""
+        }
+      }
+    }
+  ]
+}

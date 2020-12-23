@@ -1,0 +1,8 @@
+{
+  "description": "Host - Service Generator: Webhook to generate Objects in Icinga and set status",
+  "active": true,
+  "filter": {
+    "type": "AND",
+    "operators": []
+  }
+}

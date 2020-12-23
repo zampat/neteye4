@@ -1,5 +1,5 @@
 {
-  "description": "SNMP Traps collected by snmptrapd (configuration in /neteye/shared/snmptrapd/)",
+  "description": "Webhook HTTP call collected by from \"tornado_webhook_collector\" service",
   "active": true,
   "filter": {
     "type": "AND",
@@ -7,7 +7,7 @@
       {
         "type": "equals",
         "first": "${event.type}",
-        "second": "snmptrapd"
+        "second": "hsg"
       }
     ]
   }

@@ -1,5 +1,5 @@
 {
-  "name": "archive_all",
+  "name": "generic_archive_all_snmptrap_events",
   "description": "Archive all Rule",
   "continue": true,
   "active": true,
