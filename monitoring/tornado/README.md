@@ -37,10 +37,10 @@ Those roles consists of a simple rule structure:
   \ hsg - Host - Service Generator
   - filter for Webhook HTTP call for ID "hsg"
   \ rules
-  - all archive rule. Action "Archive" of Archive executor ${event.type}
-  - create_only_new_host_object
-  
-  
+    - all archive rule. Action "Archive" of Archive executor ${event.type}
+    - create_only_new_host_object
+    - monitoring_update_icinga_object_status
+    - monitoring_create_update_icinga_object_status
 ```
 
 ### Install sample tornado rules
