@@ -15,7 +15,7 @@ mkdir /tmp/ns/
 cd /tmp/ns
 git clone https://github.com/zampat/neteye4
 cd neteye4
-./run_setup.sh
+./run_setup.sh full
 
 systemctl restart httpd.service
 ```
@@ -34,7 +34,7 @@ To update and install latest neteye4 configurations, agents and update share at 
 cd neteye4
 git fetch
 git pull
-./run_setup.sh
+./run_setup.sh full
 ```
 To update the neteye4 monitoring template library at any later moment and inject templates to Director:
 ```
