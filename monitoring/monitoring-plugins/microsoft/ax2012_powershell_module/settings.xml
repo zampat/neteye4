@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<axmonitor>
+  <sql instance="AXDBhost.domain" db="AXDatabaseName">
+    <database id="AXBUSINESS" instance="AXDBhost.domain" name="AXDatabaseName">
+      <readquery>select * from srsservers</readquery>
+    </database>
+    <database id="AXMODEL" instance="AXDBhost.domain" name="AXMODELSTOREDatabaseName">
+      <readquery>select * from schemaversion</readquery>
+    </database>
+    <database id="RS" instance="AXDBhost.domain" name="SSRSDatabaseName">
+      <readquery>select top 1 * from DataSource</readquery>
+    </database>
+  </sql>
+  <aos server="AXAOS01.domain" instance="01@AXAOS01" batch="0" netTCPport="8201">
+  </aos>
+  <dixf path="\\AXFileShare\DIXF"></dixf>
+  <printserver server="AxPrintServer">
+    <printer name="Printer 1"/>
+  </printserver>
+  <webpages>
+    <webpage id="AXMOBcomp1" uri="http://AXIIShost.domain:8001" />
+  </webpages>
+  <ssrssvc uri="http://AXRShost.domain:8080/ReportServer/ReportService2005.asmx?wsdl">
+    <webpage>http://AXRShost.domain:8080/ReportServer/Pages/ReportViewer.aspx?%2fDynamicsAX%2fSRSReportServerWarmup.AutoDesign&amp;rs:Command=Render</webpage>
+  </ssrssvc>
+  <helpserver uri="http://AXHELPhost.domain:9100/DynamicsAX6HelpServer" defaultLanguage="EN-US">
+    <check language="EN-US" title="Microsoft Dynamics Help" textToFind="Enterprise+Portal"/>
+  </helpserver>
+  <iis>
+    <site name="AXHELPSERVER" />
+  </iis>
+  <fileshare>
+    <share name="DatamigrationCOMPANY1" value="\\AXFileShare\DatamigrationCOMPANY1">
+      <account account="domain\AOSsvcuser" accesscontroltype="Allow" accessrights="Modify, Synchronize" inheritanceflags="ContainerInherit, ObjectInherit" propagationflags="None"/>
+    </share>
+  </fileshare>
+</axmonitor>

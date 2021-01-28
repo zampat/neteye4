@@ -1,0 +1,45 @@
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+SELECT SPID, BLOCKED, REPLACE (REPLACE (T.TEXT, CHAR(10), ' '), CHAR (13), ' ' ) AS BATCH,REPLACE(LTRIM(cast(R.context_info as varchar(128))), ' ',',') as AXClient,Hostname,HostProcess,loginame,nt_domain,nt_username,last_batch,convert(numeric(18,2),round(datediff(ss,r.last_batch,getdate()),2)) as waitInSec
+INTO #T
+FROM sys.sysprocesses R CROSS APPLY sys.dm_exec_sql_text(R.SQL_HANDLE) T
+
+DECLARE @currentDatetime datetime;
+
+set @currentDatetime=GETDATE();
+
+WITH BLOCKERS (SPID, BLOCKED, LEVEL, BATCH,AXClient,Host,HostPoc,lname,domain,username,waitInSeconds)
+AS
+(
+SELECT SPID,
+BLOCKED,
+CAST (REPLICATE ('0', 4-LEN (CAST (SPID AS VARCHAR))) + CAST (SPID AS VARCHAR) AS VARCHAR (1000)) AS LEVEL,
+R.BATCH,R.AXClient,Hostname,HostProcess,loginame,nt_domain,nt_username,waitInSec FROM #T R
+WHERE (BLOCKED = 0 OR BLOCKED = SPID)
+ AND EXISTS (SELECT * FROM #T R2 WHERE R2.BLOCKED = R.SPID AND R2.BLOCKED <> R2.SPID)
+UNION ALL
+SELECT R.SPID,
+R.BLOCKED,
+CAST (BLOCKERS.LEVEL + RIGHT (CAST ((1000 + R.SPID) AS VARCHAR (100)), 4) AS VARCHAR (1000)) AS LEVEL,
+R.BATCH,R.AXClient,Hostname,HostProcess,loginame,nt_domain,nt_username,waitInSec FROM #T AS R
+INNER JOIN BLOCKERS ON R.BLOCKED = BLOCKERS.SPID WHERE R.BLOCKED > 0 AND R.BLOCKED <> R.SPID
+)
+SELECT 
+@currentDatetime as [timestamp],
+SUBSTRING(AXClient,  CHARINDEX(',',AXClient) + 1,CHARINDEX(',',	AXClient, CHARINDEX(',',AXClient) + 1)- ( CHARINDEX(',',AXClient) )- CASE	WHEN AXClient = ''	THEN 0	ELSE 1	END) AS AXSessionID,
+SUBSTRING(AXClient,1,CHARINDEX(',',AXClient) - CASE	WHEN AXClient = '' THEN 0 ELSE 1 END) AS AXUser,
+LTRIM(Host) AS ServerName,
+waitInSeconds,
+(LEN(LEVEL)/4) as iLEVEL,
+SPID,
+BATCH
+into #U
+FROM BLOCKERS 
+ORDER BY LEVEL ASC
+
+select #U.*,uinfo.COMPANY from #U
+left outer join AXPRODDB.dbo.USERINFO uinfo on #U.AXUser=uinfo.ID;
+
+DROP TABLE #T
+DROP TABLE #U
