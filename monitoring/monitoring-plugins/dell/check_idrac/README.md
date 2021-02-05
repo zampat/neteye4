@@ -15,3 +15,11 @@ Check idrac 7 hardwares status via SNMP. Currently supports these hardware:
 - Battery
 - Temperature Sensor
 - Global
+
+## Basket
+
+In the
+[NetEye4 Repo](https://github.com/zampat/icinga2-monitoring-templates/tree/master/baskets/monitoring_templates/neteye)
+you can download the basket `Director-Basket_Idrac_check.json`.
+
+This basket contains a service template and the fields definition.
