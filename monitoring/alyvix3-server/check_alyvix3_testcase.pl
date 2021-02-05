@@ -88,8 +88,8 @@ my $base_url = "https://$opt_host/v0/testcases/$opt_testcase/";
 #my $json_content = get("https://$opt_host/v0/testcases/$opt_testcase/");
 my $useragent = LWP::UserAgent->new;
 $useragent->ssl_opts(
-	SSL_verify_mode => SSL_VERIFY_NONE,
-	verify_hostname => 0
+    SSL_verify_mode => SSL_VERIFY_NONE, 
+    verify_hostname => 0
 );
 my $request = HTTP::Request->new('GET', $base_url);
 my $response = $useragent->request($request);
@@ -119,7 +119,6 @@ if (!defined($hash_content)) {
 	exit 3;
 }
 
-my $tmpfile = "/var/tmp/alyvix3_last_testcase_code";
 my $m = $hash_content->{measures};
 my @measures = @$m;
 my $size = @measures;
@@ -137,53 +136,66 @@ my $perfwarn;
 my $perfcrit;
 my $statestr = "OK";
 my $nprob = 0;
+my $ntot = 0;
 my $oldcode = "";
 my $oldstr = "OLD";
 my $now = time();
-my $perfstr = "";
+my $probstr = "";
+my $verbstr = "";
+if (defined($opt_testuser)) {
+	$testuser = $opt_testuser;
+}
+my $tmpfile = "/var/tmp/alyvix3_last_testcase_code-$opt_testcase-$testuser.txt";
 
-while($n lt $size) {
+if (-e $tmpfile) {
+	open(my $fh_in, '<', $tmpfile)
+		or die "Can't open \"$tmpfile\": $!\n";
+	while (<$fh_in>) {
+		chomp;
+		$oldcode = "$_";
+	}
+	close($fh_in);
+}
+
+while($n < $size) {
 	if (defined($opt_testuser)) {
 		$testuser = $measures[$n]->{domain_username};
-		if ($testuser != $opt_testuser) {
+		if ($testuser ne $opt_testuser) {
 			$n++;
 			next;
 		}
 	}
 	if (!defined($testcode)) {
+		$testcode     = $measures[$n]->{test_case_execution_code};
+		if ($opt_debug) { print "First TESTCODE: $testcode\n"; }
 		$teststate    = $measures[$n]->{test_case_state};
 		$testduration = $measures[$n]->{test_case_duration_ms};
-		$testcode     = $measures[$n]->{test_case_execution_code};
 		$testtime     = substr($measures[$n]->{timestamp_epoch}, 0, 10);
-		$tmpfile .= "-$opt_testcase-$testuser.txt";
-		if (-e $tmpfile) {
-			open(my $fh_in, '<', $tmpfile)
-				or die "Can't open \"$tmpfile\": $!\n";
-			while (<$fh_in>) {
-				chomp;
-				$oldcode = "$_";
-			}
-			close($fh_in);
+	} elsif ($testcode ne $measures[$n]->{test_case_execution_code}) {
+		if ($opt_debug) { print "TESTCODE: $testcode" . " : " . $measures[$n]->{test_case_execution_code} . "\n"; }
+		my $newtesttime = substr($measures[$n]->{timestamp_epoch}, 0, 10);
+		if ($opt_debug) { print "Changed TESTCODE: $testtime < $newtesttime\n"; }
+		if ($testtime > $newtesttime) {
+			$n++;
+			next;
 		}
-
+		# Reset all newer data available
+		$perfout = "";
+		$probstr = "";
+		$verbstr = "";
+		$ntot    = 0;
+		$nprob   = 0;
+		$testcode     = $measures[$n]->{test_case_execution_code};
+		if ($opt_debug) { print "New TESTCODE: $testcode\n"; }
+		$teststate    = $measures[$n]->{test_case_state};
+		$testduration = $measures[$n]->{test_case_duration_ms};
+		$testtime     = substr($measures[$n]->{timestamp_epoch}, 0, 10);
 	}
-
+	
 	$perfname  = $measures[$n]->{transaction_name};
 	$perfvalue = $measures[$n]->{transaction_performance_ms};
 	$perfstate = $measures[$n]->{transaction_state};
 	$perfwarn  = $measures[$n]->{transaction_warning_ms};
-	if (!defined($perfvalue)) {
-		$perfvalue = "[undef]";
-	}
-	if ($perfstate eq 0) {
-		$perfstr .= "OK - $perfname (${perfvalue}ms)\n";
-	} elsif ($perfstate eq 1) {
-		$perfstr .= "WARNING - $perfname (${perfvalue}ms)\n";
-	} elsif ($perfstate eq 1) {
-		$perfstr .= "CRITICAL - $perfname (${perfvalue}ms)\n";
-	} else {
-		$perfstr .= "UNKNOWN - $perfname (${perfvalue}ms)\n";
-	}
 	if (!defined($perfwarn) || $perfwarn !~ /[0-9]*/) {
 		$perfwarn = "";
 	}
@@ -191,12 +203,37 @@ while($n lt $size) {
 	if (!defined($perfcrit) || $perfcrit !~ /[0-9]*/) {
 		$perfcrit = "";
 	}
-
 	if (defined($perfvalue) && $perfwarn && $perfcrit) {
 		$perfout .= " ${perfname}=${perfvalue}ms;${perfwarn};${perfcrit};0;";
 	}
-	if ($perfstate ne 0) {
-		$nprob++;
+	if ($opt_debug) { print "PERFSTATE:${perfname}->${perfstate}:\n"; }
+	if ($perfwarn && $perfcrit && ($perfstate != 0) && defined($perfvalue)) {
+		$ntot++;
+		if ($perfstate == 1) {
+			$nprob++;
+			$probstr .= ",$perfname:WARNING";
+		} elsif ($perfstate == 2) {
+			$nprob++;
+			$probstr .= ",$perfname:CRITICAL";
+		} else {
+			$nprob++;
+			$probstr .= ",$perfname:UNKNOWN";
+		}
+	} elsif ($perfwarn && $perfcrit) {
+		$ntot++;
+	}
+	if ($opt_verbose) {
+		if ($perfwarn && $perfcrit) {
+			if ($perfstate == 0) {
+				$verbstr .= "$perfname\[OK\]\n";
+			} elsif ($perfstate == 1) {
+				$verbstr .= "$perfname\[WARNING\]\n";
+			} elsif ($perfstate == 2) {
+				$verbstr .= "$perfname\[CRITICAL\]\n";
+			} else {
+				$verbstr .= "$perfname\[UNKNOWN\]";
+			}
+		}
 	}
 	$n++;
 }
@@ -206,22 +243,18 @@ if (!defined($testcode)) {
 	exit 3;
 }
 
-$nprob = "No";
 if ($teststate == 1) {
 	$statestr = "WARNING";
-	$nprob = "Some";
 } elsif ($teststate == 2) {
 	$statestr = "CRITICAL";
-	$nprob = "Some";
 } elsif ($teststate > 2) {
 	$statestr = "UNKNOWN";
-	$nprob = "Some";
 }
 
 if ($opt_timeout > 0) {
 	my $timediff = $now - $testtime;
 	if ($timediff > $opt_timeout) {
-		if ($opt_verbose || $opt_debug) {
+		if ($opt_debug) {
 			print "TIMEOUT $timediff > $opt_timeout\n";
 		}
 		$statestr = "UNKNOWN";
@@ -235,17 +268,25 @@ if ($opt_debug) {
 	print "$testcode -> $oldcode\n";
 }
 if ($opt_testing) {
-	print "${statestr} - $nprob transaction(s) in Problem Status (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
+	print "${statestr} - $nprob/$ntot problem(s)${probstr} (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
+	if ($opt_verbose) {
+		print "$verbstr";
+	}
 } elsif ($testcode ne $oldcode) {
 	open(my $fh_out, '>', $tmpfile)
 		or die "Can't create \"$tmpfile\": $!\n";
 	print($fh_out "${testcode}\n");
 	close($fh_out);
-	print "${statestr} - $nprob transaction(s) in Problem Status (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
+	print "${statestr} - $nprob problem(s)${probstr} (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
+	if ($opt_verbose) {
+		print "$verbstr";
+	}
 } else {
-	print "${statestr} - $nprob transaction(s) in Problem Status [$oldstr] (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>)\n";
+	print "${statestr} - $nprob problem(s)${probstr} [$oldstr] (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>)\n";
+	if ($opt_verbose) {
+		print "$verbstr";
+	}
 }
-print "$perfstr";
 exit $teststate;
 
 # --------------------------------------------------- helper -----------------------------------------

@@ -133,7 +133,7 @@ foreach my $line (<$fh>) {
         # Count offline nodes
         my @offline = split( /\s+/, $1 );
         my $numoffline = scalar @offline;
-        $np->add_message( $warn_or_crit, ": $numoffline Nodes Offline" );
+        $np->add_message( 'WARNING', ": $numoffline Nodes Offline" );
     }
     elsif ( $line =~ m/^node\s+(\S.*):\s*standby/i ) {
 
@@ -180,7 +180,7 @@ foreach my $line (<$fh>) {
 
 # If found any Nodes in standby & no -s option used send warn/crit
 if ( scalar @standby > 0 && !$np->opts->standbyignore ) {
-    $np->add_message( $warn_or_crit,
+    $np->add_message( 'WARNING',
         ": " . join( ', ', @standby ) . " in Standby" );
 }
 
