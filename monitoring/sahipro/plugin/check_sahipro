@@ -72,13 +72,15 @@ MAXSERVICEATTEMPTS=1
 SERVICESTATETYPE="HARD"
 RETRIES=2
 PASSIVE=""
+SUMREGEX=""
+PERFSUM=0
 ALLARGS=$@
 
 print_usage() {
 	echo "Make a webtest using Sahi and Phantomjs check for success and if it took"
 	echo "too long and return it also with an URL to the Sahi Log."
 	echo
-        echo "USAGE: $(basename $0) [-H <SAHI-HOST>] [-P <SAHI-PORT>] [-S <SAHI-HOME>] [-b <BROWSER>] [-B <LOGBASE>] [-L <LOGDIR>] [-R <REMOTE-LOGBASE>] [-W LOG-DIR-URL] [-T <THREADS>] [-w <warn-value>] [-c <crit-value] [-N TRAPHOST[:DISABLED[:COMUNITY]]] [-O SERVICEATTEMPT:MAXSERVICEATTEMPTS] [-U <startURL>] [-t <timeout-seconds>] [-r retry-count] [-p HOSTNAME:SERVICEDESC] -F <sah file|suite file>"
+        echo "USAGE: $(basename $0) [-H <SAHI-HOST>] [-P <SAHI-PORT>] [-S <SAHI-HOME>] [-b <BROWSER>] [-B <LOGBASE>] [-L <LOGDIR>] [-R <REMOTE-LOGBASE>] [-W LOG-DIR-URL] [-T <THREADS>] [-w <warn-value>] [-c <crit-value] [-N TRAPHOST[:DISABLED[:COMUNITY]]] [-O SERVICEATTEMPT:MAXSERVICEATTEMPTS] [-U <startURL>] [-t <timeout-seconds>] [-r retry-count] [-p HOSTNAME:SERVICEDESC] -F <sah file|suite file> -l <SUM-REGEX>"
         echo
         echo "SAHI-HOST   ... host/ip where Sahi server is running (default: $SAHIHOST)"
         echo "SAHI-PORT   ... tcp port on which Sahi server is running (default: $SAHIPORT)"
@@ -97,6 +99,7 @@ print_usage() {
 	echo "timeout-seconds ... seconds before killing the sahi java call and return"
 	echo "SERVICEATTEMPT/MAXSERVICEATTEMPTS ... used for sending traps. If this option is specified, no trap"
 	echo "HOSTNAME:SERVICEDESC ... run plugin in passive mode and return immediately"
+	echo "SUM-REGEX   ... for warning/critical value don't check duration but the performance data(s) sum of this regex"
         echo
         echo "Sahi sah file or suite file"
         echo
@@ -133,6 +136,13 @@ pdata_set() {
 		PPERF[$tlen]="$label=$val"
 	else
 		PPERF[$pos]="$label=$val"
+	fi
+	if [ -n "$SUMREGEX" ]
+	then
+		if echo "$label" | egrep "$SUMREGEX" >/dev/null
+		then
+			PERFSUM=$(echo $PERFSUM + $val | bc)
+		fi
 	fi
 }
 
@@ -260,6 +270,10 @@ while test -n "$1"; do
             ;;
         -r)
             RETRIES=$2
+            shift
+            ;;
+        -s)
+            SUMREGEX=$2
             shift
             ;;
         -N)
@@ -485,6 +499,7 @@ BB=$(echo $BROWSER | cut -c1-9)
 if [ "$BB" = "phantomjs" ]
 then
 	sed -i 's#^//.*SKIP_SCREENSHOTS.*#_sahi.SKIP_SCREENSHOTS = true;#g' $LOGDIR/$SCRIPT_FILE
+	sed -i 's#^//.*SKIP_ASSERT_SNAPSHOTS.*#_sahi.SKIP_ASSERT_SNAPSHOTS = true;#g' $LOGDIR/$SCRIPT_FILE
 fi
 
 d1=$(date +%s)
@@ -621,17 +636,23 @@ fi
 #
 ttsta=$status
 dd=$(expr $d2 - $d1)
+get_perfdata
+PERFDATA="duration=$dd;$WARN;$CRIT;0$PERFDATA"
 
+if [ -n "$SUMREGEX" -a "$PERFSUM" != "0" ]
+then
+	suminsec=$(echo "$PERFSUM" | cut -d. -f1)
+fi
 if [ -n "$CRIT" -a $ttsta -eq $STATE_OK ]
 then
 	ttmsg=" and was inside time parameters"
-	if [ $dd -gt $CRIT ]
+	if [ $suminsec -gt $CRIT ]
 	then
 		if [ -n "$WARN" ]
 		then
-			ttmsg=", but did take too long (${dd}s > ($WARN,$CRIT): CRITICAL"
+			ttmsg=", but did take too long (${PERFSUM}s > ($WARN,$CRIT): CRITICAL"
 		else
-			ttmsg=", but did take too long (${dd}s > $CRIT: CRITICAL"
+			ttmsg=", but did take too long (${PERFSUM}s > $CRIT: CRITICAL"
 		fi
 		ttsta=$STATE_CRITICAL
 		stmsg="CRITICAL"
@@ -641,13 +662,13 @@ fi
 if [ -n "$WARN" -a $ttsta -eq $STATE_OK ]
 then
 	ttmsg=" and was inside time parameters"
-	if [ $dd -gt $WARN ]
+	if [ $suminsec -gt $WARN ]
 	then
 		if [ -n "$CRIT" ]
 		then
-			ttmsg=", but did take too long (${dd}s > ($WARN,$CRIT)): WARNING"
+			ttmsg=", but did take too long (${PERFSUM}s > ($WARN,$CRIT)): WARNING"
 		else
-			ttmsg=", but did take too long (${dd}s > $WARN): WARNING"
+			ttmsg=", but did take too long (${PERFSUM}s > $WARN): WARNING"
 		fi
 		ttsta=$STATE_WARNING
 		if [ "$stmsg" = "OK" ]
@@ -657,8 +678,21 @@ then
 	fi
 fi
 
-get_perfdata
-PERFDATA="duration=$dd;$WARN;$CRIT;0$PERFDATA"
+if [ -n "$WARN" -o -n "$CRIT" ]
+then
+	if [ $ttsta -eq $STATE_OK ]
+	then
+		if [ -n "$CRIT" -a -n "$WARN" ]
+		then
+			ttmsg=" and was inside warn/crit parameters (${PERFSUM}s < ($WARN,$CRIT))"
+		elif [ -n "$CRIT" ]
+		then
+			ttmsg=" and was inside crit parameters (${PERFSUM}s < ($CRIT))"
+		else
+			ttmsg=" and was inside warn parameters (${PERFSUM}s < ($WARN))"
+		fi
+	fi
+fi
 
 if [ $status -eq $STATE_OK ]
 then
