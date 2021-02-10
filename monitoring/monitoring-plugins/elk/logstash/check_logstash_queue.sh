@@ -206,7 +206,7 @@ if [[ "${LOGSTASH_VERSION}" == "auto" ]]; then
       exit ${UNKNOWN}
     fi
 
-    LOGSTASH_VERSION=$(echo ${BASIC_INFO} | jq -r ".version" | sed  "s/\([0-9]\)\.[0-9]\.[0-9]/\1/")
+    LOGSTASH_VERSION=$(echo ${BASIC_INFO} | jq -r ".version" | sed -r "s:([0-9]).[0-9]+.[0-9]:\1:" )
 fi
 
 case "${LOGSTASH_VERSION}" in
