@@ -642,6 +642,9 @@ PERFDATA="duration=$dd;$WARN;$CRIT;0$PERFDATA"
 if [ -n "$SUMREGEX" -a "$PERFSUM" != "0" ]
 then
 	suminsec=$(echo "$PERFSUM" | cut -d. -f1)
+else
+	suminsec=$dd
+	PERFSUM=$dd
 fi
 if [ -n "$CRIT" -a $ttsta -eq $STATE_OK ]
 then
