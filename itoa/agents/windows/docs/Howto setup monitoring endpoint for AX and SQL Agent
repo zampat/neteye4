@@ -40,26 +40,15 @@ To be able to listen and consume events of the agent keepalive and monitordata t
 /neteye/shared/tornado_nats_json_collector/topics path: 
 
 Create file  <topic>.json file:
-
 {
-
   "nats_topics": [<agent_monitor_alive.topic>],
-
   "collector_config": {
-
     "event_type": "${event_type}",
-
     "payload": {
-
       "header": "${header}",
-
       "body": "${body}"
-
     }
-
   }
-
 }
-
 
 
