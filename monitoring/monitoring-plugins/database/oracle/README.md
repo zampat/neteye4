@@ -13,8 +13,13 @@
 oracle-instantclient<version>-basic-<version>.x86_64
 oracle-instantclient<version>-sqlplus-<version>.x86_64
 
+@caragian suggest : 
+- oracle-instantclient19.3-basic-19.3.0.0.0-1.x86_64.rpm
+- oracle-instantclient19.3-sqlplus-19.3.0.0.0-1.x86_64.rpm
+
 perl-DBD-Pg-2.19.3-4.el7.x86_64
 perl-DBD-ODBC-1.50-3.el7.x86_64
+perl-DBD-Oracle-1.80-19.3.0.0.0.rhel7.x86_64.rpm
 ```
 
 
