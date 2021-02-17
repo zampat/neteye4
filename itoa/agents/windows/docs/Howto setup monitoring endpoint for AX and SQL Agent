@@ -51,4 +51,31 @@ Create file  <topic>.json file:
   }
 }
 
+In this file nats topics are defined (nats_topic can be changed). Defines transformation rule for messages sent from agents to tornado syntax (leave this part without changes) 
+
+The tornado group must have read rights on <topic>.json 
+
+Chown tornado <topic>.json 
+
+Chgrp tornado <topic>.json 
+
+Chmod g+r-x <topic>.json 
+
+Chmod +rw <topic>.json 
+
+Chmod o-xrw <topic>.json 
+
+ 
+Restart the service 
+
+systemctl restart tornado_nats_json_collector.service 
+
+Check service tornado_nats_json_collector  is up and running 
+
+systemctl status tornado_nats_json_collector.service 
+
+
+Configuration of Tornado rules and filters for Agents using Tornado UI
+
+
 
