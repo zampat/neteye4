@@ -78,4 +78,139 @@ systemctl status tornado_nats_json_collector.service
 Configuration of Tornado rules and filters for Agents using Tornado UI
 
 
+Add Filter for  <itoafilter>
 
+Name:<itoafilter>
+parent Node : root
+Active: true
+Description: filters all events of type "tornado.events.message" -> monitoring.events.keepalive
+
+Filter:
+{
+  "type": "AND",
+  "operators": [
+    {
+      "type": "equals",
+      "first": "${event.type}",
+      "second": "monitoring.events.keepalive"
+    }
+  ]
+}
+
+Add new Ruleset <create_and_process_events>
+
+name: <create_and_process_events>
+Parrent Node: root/<itoafilter>
+
+Add Rule keepalive to Ruleset <create_and_process_events>
+Name: keepalive
+position: 1
+description: keepalive message
+active: true
+continue after: true
+
+where:
+{
+  "type": "AND",
+  "operators": [
+    {
+      "type": "equals",
+      "first": "${event.payload.header.id}",
+      "second": 1
+    }
+  ]
+}
+
+with:
+{}
+
+action:
+[
+  {
+    "id": "monitoring",
+    "payload": {
+      "action_name": "create_and_or_process_service_passive_check_result",
+      "host_creation_payload": {
+        "address": "${event.payload.header.host}",
+        "imports": "generic-passive-host",
+        "object_name": "${event.payload.header.host}",
+        "object_type": "Object",
+        "vars": {
+          "created_by": "tornado"
+        }
+      },
+      "process_check_result_payload": {
+        "exit_status": "0",
+        "plugin_output": "message received from ${event.payload.header.agent} ${event.payload.header.description}",
+        "service": "${event.payload.header.host}!${event.payload.header.agent} keepalive",
+        "type": "Service"
+      },
+      "service_creation_payload": {
+        "host": "${event.payload.header.host}",
+        "imports": "generic_keepalive_service",
+        "object_name": "${event.payload.header.agent} keepalive",
+        "object_type": "Object",
+        "vars": {
+          "created_by": "tornado"
+        }
+      }
+    }
+  }
+]
+
+Add Rule monitordata to Ruleset <create_and_process_events>
+Name: monitordata
+position: 2
+description: monitordata message
+active: true
+continue after: true
+
+where:
+{
+  "type": "AND",
+  "operators": [
+    {
+      "type": "equals",
+      "first": "${event.payload.header.id}",
+      "second": 2
+    }
+  ]
+}
+
+with:
+{}
+
+action:
+[
+  {
+    "id": "monitoring",
+    "payload": {
+      "action_name": "create_and_or_process_service_passive_check_result",
+      "host_creation_payload": {
+        "address": "${event.payload.header.host}",
+        "imports": "generic-passive-host",
+        "object_name": "${event.payload.header.host}",
+        "object_type": "Object",
+        "vars": {
+          "created_by": "tornado"
+        }
+      },
+      "process_check_result_payload": {
+        "exit_status": "${event.payload.body.exit_status}",
+        "performance_data": "${event.payload.body.performance_data}",
+        "plugin_output": "message received from ${event.payload.header.agent} ${event.payload.header.description}",
+        "service": "${event.payload.header.host}!${event.payload.header.agent} monitordata",
+        "type": "Service"
+      },
+      "service_creation_payload": {
+        "host": "${event.payload.header.host}",
+        "imports": "generic_monitordata_service",
+        "object_name": "${event.payload.header.agent} monitordata",
+        "object_type": "Object",
+        "vars": {
+          "created_by": "tornado"
+        }
+      }
+    }
+  }
+]
