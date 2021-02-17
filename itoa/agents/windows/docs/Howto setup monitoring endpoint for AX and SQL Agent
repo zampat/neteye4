@@ -1,0 +1,8 @@
+To be able to setup endpoint Monitoring of AX Etw Tracing and SQL DMV Monitor following prerequisits must be fullfilled
+
+1) Neteye 4.16
+2) setup and configured Tornado on neteye 4 master
+3) installed AX Etw Traxing and SQLDMV Monitor  version 0.5 or higher
+4) installed and configured Zampat repository (please refer to https://github.com/zampat/neteye4/blob/master/doc/050_community_configs_init.md).
+this is needed as configuration is based on the templates generic-passive-host and generic-passive-service
+
