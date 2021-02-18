@@ -1,24 +1,52 @@
+#!/opt/neteye/saprfc/bin/python
+
+# Author: Mirko Bez mirko.bez<at>wuerth-phoenix.com
+
 import argparse
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, List, Tuple, Optional
 
+import yaml
 import csv
 import json
 import sys
 import re
+import requests
+import urllib3
 
 from enum import Enum
 from pyrfc import Connection
-
+import datetime
 
 class IcingaServiceStatus(Enum):
     OK = 0
     WARNING = 1
     CRITICAL = 2
-    UNKOWN = 3
+    UNKNOWN = 3
 
 
-def load_csv_configuration(filename: str, header: bool = True) -> Dict[str, Dict[str, str]]:
+class ArgumentParser(argparse.ArgumentParser):
+    """Subclass of Argument Parser that overrides the exit status to Icinga's Unknown"""
+
+    def error(self, message):
+        print('%s: error: %s\n' % (self.prog, message))
+        self.exit(IcingaServiceStatus.UNKNOWN.value)
+
+
+def read_file(file_name: str) -> str:
+    """
+    Simple utility to read the content of a file
+
+    :param file_name: the name of the file to read
+    :return: the content of the file
+    """
+    with open(file_name, "r") as file_descriptor:
+        content = file_descriptor.read()
+        return content
+
+
+def load_my_csv_configuration(filename: str, sysid: str, mandant: Optional[str], header: bool = True) -> Dict[str, str]:
+    """Read the csv config. Reads entirely only the needed line"""
     with open(filename, "r") as fd:
         csv_reader = csv.reader(fd, delimiter=' ')
         # Skip the first line if header is true
@@ -26,85 +54,31 @@ def load_csv_configuration(filename: str, header: bool = True) -> Dict[str, Dict
             next(csv_reader)
         conf = {}
         for row in csv_reader:
-            key = row[0]
-            if key in conf:
-                print("Error: multiple config for same object")
-            else:
-                conf[key] = {}
-            conf[key]["sysid"] = row[0]
-            conf[key]["sysnr"] = row[1]
-            conf[key]["client"] = row[2]
-            conf[key]["user"] = row[3]
-            conf[key]["passwd"] = row[4]
-            try:
-                conf[key]["ashost"] = row[5]
-            except KeyError:  # as host is an optional parameter
-                conf[key]["ashost"] = row[0]
+            if row[0] == sysid and (mandant is None or row[2] == mandant):
+                # conf[key]["trace"] = "3"
+                conf["sysid"] = row[0]
+                conf["sysnr"] = row[1]
+                conf["client"] = row[2]
+                conf["user"] = row[3]
+                conf["passwd"] = row[4]
+                try:
+                    conf["ashost"] = row[5]
+                except KeyError:  # as host is an optional parameter
+                    conf["ashost"] = row[0]
+                if len(row) > 7:
+                    conf["group"] = row[6]
+                    conf["mshost"] =  conf["ashost"]
+                    conf["msserv"] = "36" + conf["sysnr"]
+                    conf["saprouter"] = row[7]
+                    conf["language"] = "en"
+                    conf["codepage"] = "4110"
+                    conf.pop("ashost", None)
+                break
+        else:
+            print(f"Check Unknown - Could not find configuration for sysid {sysid} and mandant {mandant}")
+            sys.exit(IcingaServiceStatus.UNKNOWN.value)
 
     return conf
-
-
-def load_json_configuration(filename: str) -> Dict[str, Dict[str, str]]:
-    with open(filename, "r") as fd:
-        data = json.load(fd)
-        conf = {}
-        for row in data:
-            key = row["sysid"]
-            conf[key] = row
-
-    return conf
-
-
-def parse_args():
-    """
-    Parse the command line input. It returns the list of arguments and the parameters
-    """
-    parser = argparse.ArgumentParser(description='RFC SAP')
-    parser.add_argument('--version', '-V', dest="version",
-                        help='print the program version and exit', action='store_true')
-    parser.add_argument('--log_level', dest="logging_level", default="WARNING",
-                        help="logging level", type=str),
-    parser.add_argument('--sap_config_file', dest="sap_config_file", default="nag_sap.cfg", type=str)
-
-    parser.add_argument('--sysid', '-s', dest='sysid', required=True, type=str, help="sysid, e.g. DE7\n")
-    parser.add_argument('--function', '-f', dest='function_name', required=True, type=str,
-                        help="function, e.g. /WRP/NEMO_CENTRAL\n")
-    parser.add_argument('--kpi', '-k', dest='key_performance_indicator', required=True, type=str,
-                        help="key performance indicator, e.g., WPSTA\n")
-    # The following parameter are temporarily not required, check the old perl version to find out how they were used
-    parser.add_argument('--checktype', '-c', dest='checktype', required=False, type=str, help='checktype')
-    parser.add_argument('--attribute', '-a', dest='attribute', required=False, type=str, help='attribute')
-    parser.add_argument('--master-attribute', '-m', dest='master_attribute', required=False, type=str,
-                        help='master-attribute')
-    # Finished
-    parser.add_argument('--timeout', '-t', dest='timeout', required=False, default=25, type=int,
-                        help='timeout for the call (default 25)')
-
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('--import-json-file', '-i', dest="import_json_file", type=str)
-    group.add_argument('--import-json', dest="import_json_str", type=str)
-
-    group.add_argument('--param', '-p', help='parameters', dest="parameters", type=str)
-    # group.add_argument('--param','-p', nargs=1, action="append", help='parameters', dest="parameters")
-
-    args = parser.parse_args()
-
-    return args
-
-
-def prepare_icinga_output(result: Dict[str, Any]) -> str:
-    """
-    Returns the status and the output string for icinga, following the nagios output format
-    for performance data, see ref: https://nagios-plugins.org/doc/guidelines.html#AEN200
-    """
-    kpi = result["KPI"]
-    output = kpi["OUTPUT"]
-    performance = result["PERFORMANCE"]
-    output_string = f"{output[0]} | "
-    for p in performance:
-        output_string += f"{p};"
-        output_string.join(" ")
-    return output_string
 
 
 def get_check_status(result: Dict[str, Any]) -> int:
@@ -113,32 +87,6 @@ def get_check_status(result: Dict[str, Any]) -> int:
     """
     status: int = int(result["KPI"]["STATUS"])
     return status
-
-
-def get_import_json(options) -> str:
-    """
-    Extract an import json string either from a file or from the input
-    """
-    if options.import_json_file is not None:
-        with open(options.import_json_file) as fd:
-            return json.dumps(json.load(fd))
-    else:
-        return options.import_json_str
-
-
-def build_json_payload(args):
-    data: Dict[str, Any] = dict()
-    data["KPI"] = args.key_performance_indicator
-    data["PARAMS"] = []
-    if len(args.parameters) % 2 != 0:
-        exit(IcingaServiceStatus.UNKOWN)
-
-    i = 0
-    while i < len(args.parameters):
-        data["PARAMS"] += [{"NAME": args.parameters[i], "VALUE": args.parameters[i + 1]}]
-        i += 2
-    return json.dumps(data)
-
 
 def build_json_payload_alternative(args):
     data: Dict[str, Any] = dict()
@@ -162,7 +110,7 @@ def check_for_special_cases(result: Dict[str, Any]):
     logging.debug("Checking for special cases")
     if "KPI" not in result:
         print(json.dumps(result, indent=4))
-        sys.exit(IcingaServiceStatus.UNKOWN.value)
+        sys.exit(IcingaServiceStatus.UNKNOWN.value)
 
     kpi = result["KPI"]
     output = kpi["OUTPUT"]
@@ -171,63 +119,277 @@ def check_for_special_cases(result: Dict[str, Any]):
         if "STATUS" in kpi:
             sys.exit(int(kpi["STATUS"]))
         else:
-            sys.exit(IcingaServiceStatus.UNKOWN.value)
+            sys.exit(IcingaServiceStatus.UNKNOWN.value)
+
+
+def send_to_webhook(args, result: List[Dict[str, Any]]):
+
+    logger = logging.getLogger(__name__)
+    conf = args.webhook_connection_configuration
+
+    scheme = conf["scheme"]
+    tornado_host = conf["hostname"]
+    tornado_port = conf["port"]
+    endpoint = conf["endpoint"]
+
+    url = f"{scheme}://{tornado_host}:{tornado_port}/{endpoint}"
+    logging.debug(url)
+
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    sap_case = "usual"
+
+    if len(result) > 0 and "SERVICE_NAME" in result[0] and "ABORTED_JOB" in result[0] and isinstance(result[0]["ABORTED_JOB"], list):
+        
+        tmp_result = result
+        result = []
+        for t in tmp_result:
+            for aborted_job in t["ABORTED_JOB"]:
+                result.append(
+                    {
+                        "SERVICE_NAME": t["SERVICE_NAME"],
+                        **aborted_job
+                    }
+                )
+        sap_case = "aborted_jobs"
+          
+    logger.debug(result)
+
+        response = requests.post(
+            url,
+            params=conf["params"],
+            verify=conf.get("verify", False),
+            json={ 
+                "host": args.sysid,
+                "sap_case": sap_case,
+                "sap_response": result
+            }
+        )
+
+    try:
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        logger.info(e)
+        print(f"Check Critical - Could not send data to the webhook. Error code: {response.status_code}")
+        sys.exit(IcingaServiceStatus.CRITICAL.value)
+
+
+def check_webhook_configuration(args):
+    conf = {}
+
+    if args.webhook_config:
+        conf = yaml.load(read_file(args.webhook_config), Loader=yaml.Loader)
+    if "params" not in conf:
+        conf["params"] = {}
+    if args.webhook_hostname:
+        conf["hostname"] = args.webhook_hostname
+    if args.webhook_endpoint:
+        conf["endpoint"] = args.webhook_endpoint.strip()
+    if args.webhook_port:
+        conf["port"] = args.webhook_port
+    if args.webhook_scheme:
+        conf["scheme"] = args.webhook_scheme
+    if args.webhook_token:
+        conf["params"]["token"] = args.webhook_token
+    
+    if conf["endpoint"][0] == "/":
+        conf["endpoint"] = conf["endpoint"][1:]
+
+    try:
+        # Check that the needed variables are defined
+        conf["scheme"]
+        conf["hostname"]
+        conf["port"]
+        conf["endpoint"]
+        conf["params"]["token"]
+    except KeyError:
+        print("Check Unknown - Webhook connection information not sufficient.. specify them with the webhook_* options")
+        
+        sys.exit(IcingaServiceStatus.UNKNOWN.value)
+    args.webhook_connection_configuration = conf
+
+
+def reduce_special_cases_to_performance_data(input_performance_data: List[str]) -> List[str]:
+    """
+    Some checks are not developed internally in Wuerth IT. Therefore there are special
+    cases that do not follow Nagios convention. This function reduces these (whitelisted) cases
+    to the Nagios Format
+    """
+    # Heuristics to check if it is worth to perform expensive regexes
+    if len(input_performance_data) == 1 and "Fehler" in input_performance_data[0] and "//" in input_performance_data[0]:
+        output: List[str] = []
+        input_performance_data = input_performance_data[0].split("//")
+        for ipd in input_performance_data:
+            res = re.match(r"Fehler \( \d+ \/ (.*) \): (\d+(\.\d+)?)", ipd.strip())
+            if(res):
+                key = res.groups()[0].replace(" (", "_").replace(")", "")
+                value = res.groups()[1]
+                output += [f"{key}={value}"]
+        return output
+    else:
+        return input_performance_data
+
+
+def prepare_icinga_output(result: Dict[str, Any], connection_performance_data: str) -> str:
+    """
+    Returns the status and the output string for icinga, following the nagios output format
+    for performance data, see ref: https://nagios-plugins.org/doc/guidelines.html#AEN200
+    """
+    logger = logging.getLogger(__name__)
+    kpi = result["KPI"]
+    output = kpi["OUTPUT"]
+    performance = reduce_special_cases_to_performance_data(result["PERFORMANCE"])
+    logger.debug(result["PERFORMANCE"])
+    logger.debug(performance)
+    output_string = f"{output[0]} | "
+    for p in performance:
+        output_string += f"{p}"
+        output_string += " "
+    output_string += connection_performance_data
+        
+    return output_string
+
+
+def parse_args():
+    """
+    Parse the command line input. It returns the list of arguments and the parameters
+    """
+    parser = argparse.ArgumentParser(description='RFC SAP')
+
+    subparsers = parser.add_subparsers(help="Subcommands options")
+    parser_healthcheck = subparsers.add_parser("healthcheck", description="Health Check")
+    parser_kpi = subparsers.add_parser("kpi", description="Kpi")
+
+    # Generic-Options
+    for subparser in [parser_healthcheck, parser_kpi]:
+       
+        subparser.add_argument('--log_level', dest="logging_level", default="WARNING",
+                            help="logging level", type=str),
+        subparser.add_argument('--sap_config_file', dest="sap_config_file", default="nag_sap.cfg", type=str)
+
+        subparser.add_argument('--sysid', '-s', dest='sysid', required=True, type=str, help="sysid, e.g. DE7\n")
+        subparser.add_argument('--mandant', dest='mandant', required=False, type=str, help="mandant, e.g. 401\n")
+        subparser.add_argument('--function', '-f', dest='function_name', required=True, type=str,
+                               help="function, e.g. /WRP/NEMO_CENTRAL\n")
+        subparser.add_argument('--timeout', '-t', dest='timeout', required=False, default=25, type=int,
+                               help='timeout for the call (default 25)')
+
+        
+
+
+    # HealthCheck Specific
+    parser_healthcheck.set_defaults(command="healthcheck")
+    parser_healthcheck.add_argument('--healthcheck_name', dest="health_check_name", required=True, type=str, help="Health Check Name")
+    parser_healthcheck.add_argument('--webhook_config', dest="webhook_config", required=False, type=str, help="Config files containin webhook configurations")
+
+    parser_healthcheck.add_argument('--webhook_hostname', dest="webhook_hostname", required=False, help="hostname to which send the webhook")
+    parser_healthcheck.add_argument('--webhook_endpoint', dest="webhook_endpoint", required=False, help="endpoint to which send the webhook")
+    parser_healthcheck.add_argument('--webhook_port', dest="webhook_port", default=443, help="port to which send the webhook")
+    parser_healthcheck.add_argument('--webhook_scheme', dest="webhook_scheme", default="https", help="scheme for the webhook")
+    parser_healthcheck.add_argument('--webhook_token', dest="webhook_token", required=False, help="secret token parameter for the webhook")
+
+    # webhook_config_group.add_group(webhook_config_group)
+
+    parser_kpi.set_defaults(command="kpi")
+    parser_kpi.add_argument('--kpi', '-k', dest='key_performance_indicator', required=True, type=str,
+                        help="key performance indicator, e.g., WPSTA\n")
+    parser_kpi.add_argument('--param', '-p', help='parameters', dest="parameters", type=str, required=True)
+    
+    args = parser.parse_args()
+
+    logging.basicConfig(format='[%(asctime)s][%(levelname)-7s] %(pathname)s at line '
+                        '%(lineno)4d (%(funcName)20s): %(message)s')
+
+
+    logger = logging.getLogger(__name__)
+
+    logger.setLevel(getattr(logging, args.logging_level.upper()))
+
+    if args.command == "healthcheck":
+        check_webhook_configuration(args)
+
+    return args
+
+def build_function_argument(args):
+    if args.command == "kpi":
+        return {
+            "I_IMPORT": build_json_payload_alternative(args)
+        }
+    elif args.command == "healthcheck":
+        return {
+            "I_HEALTHCHECK_NAME": args.health_check_name
+        }
+    else:
+        raise NotImplemented(f"Command {args.command} not yet supported")
+
+    
+def get_connection_performance_data(delta_connection, delta_call) -> str:
+    return f"connection={delta_connection}s call={delta_call}s"
 
 
 def main():
     args = parse_args()
 
-    if args.version:
-        print("Version 0.1.0")
-        exit(0)
+    logger = logging.getLogger(__name__)
+    
+    logger.debug(f"Read config -> {args}")
 
-    logging.basicConfig(level=getattr(logging, args.logging_level.upper()))
+    sap_conf = load_my_csv_configuration(args.sap_config_file, args.sysid, args.mandant)
 
-    # json_call_payload = get_import_json(options)
+    function_argument = build_function_argument(args)
 
-    logging.debug(f"Read config -> {args}")
+    time_before_connection = datetime.datetime.utcnow()
+    conn = Connection(**sap_conf)
+    time_after_connection = datetime.datetime.utcnow()
 
-    json_call_payload: str = build_json_payload_alternative(args)
+    
+    logging.debug("Connection Established")
 
-    logging.debug(f"Build this json: {json_call_payload}")
+    logging.debug("Starting Call")
+    time_before_call = datetime.datetime.utcnow()
+    raw_result = conn.call(args.function_name, **function_argument)
+    time_after_call = datetime.datetime.utcnow()
+    conn.close()
 
-    # Call for help example
-    # json_call_payload = '{"KPI": "WPSTA", "PARAMS": [{"NAME": "I_Help", "VALUE": "X" }] }'
-    # json_call_payload = '{"KPI": "WPSTA", "PARAMS": [{"NAME": "", "VALUE": "" }] }'
-    # Call for Dialog. Bei upper_bound = X == Anzahl laufender Prozesse, bei upper_bound = "", dann Anzahl der freien jobs.
+    logger.debug("Close connection")
 
-    # json_call_payload = u'{"KPI": "WPSTA", "PARAMS": [{"NAME": "I_WORKPROCESS_TYPE", "VALUE": "DIALOG"}, {"NAME": "I_WARNING_VALUE", "VALUE": ""}, {"NAME": "I_CRITICAL_VALUE", "VALUE": "10" }, {"NAME": "I_UPPER_BORDER", "VALUE": "X" }] }'
+    logger.debug(raw_result)
 
-    # Call for Batch
-    # json_call_payload = '{"KPI": "WPSTA", "PARAMS": [{"NAME": "I_WORKPROCESS_TYPE", "VALUE": "BATCH"}, {"NAME": "I_WARNING_VALUE", "VALUE": "5"}, {"NAME": "I_CRITICAL_VALUE", "VALUE": "10" }, {"NAME": "I_UPPER_BORDER", "VALUE": "X" }] }'
-    # Call for Update workptozesse
-    # json_call_payload = '{"KPI": "WPSTA", "PARAMS": [{"NAME": "I_WORKPROCESS_TYPE", "VALUE": "UPDATE"}, {"NAME": "I_WARNING_VALUE", "VALUE": "5"}, {"NAME": "I_CRITICAL_VALUE", "VALUE": "10" }, {"NAME": "I_UPPER_BORDER", "VALUE": "" }] }'
-    # Call for enqueue eingeschränkt nach application server
-    # json_call_payload = '{"KPI": "WPSTA", "PARAMS": [{"NAME": "I_WORKPROCESS_TYPE", "VALUE": "ENQUEUE"}, {"NAME": "I_WARNING_VALUE", "VALUE": "5"}, {"NAME": "I_CRITICAL_VALUE", "VALUE": "10" }, {"NAME": "I_UPPER_BORDER", "VALUE": "X" },{"NAME": "I_APPSERVER", "VALUE": "db225de7_DE7_14"}] }'
+    logger.debug("compute times")
+    delta_connection = (time_after_connection - time_before_connection).total_seconds()
+    delta_call = (time_after_call - time_before_call).total_seconds()
 
-    sap_conf = load_csv_configuration(args.sap_config_file)
-
-    if args.sysid not in sap_conf:
-        print(f"No connection parameters available for system-ID {args.sysid:s}\n")
-        exit(IcingaServiceStatus.UNKOWN)
-
-    conn = Connection(**sap_conf[args.sysid])
-
-    # Sample call:  python check_sap_rfc.py /WRP/NEMO_FIND_WPSTA a s e DE7
-    raw_result = conn.call(args.function_name, I_IMPORT=json_call_payload)
-
-    logging.debug(raw_result)
-
+    logger.debug(raw_result)
     # Parsing the result
-    e_return: str = raw_result["E_RETURN"]
-    result = json.loads(e_return)
+    e_return: str  = raw_result["E_RETURN"]
 
-    check_for_special_cases(result)
+    result = []
 
-    (output_string) = prepare_icinga_output(result)
-    status = get_check_status(result)
-    print(output_string)
-    sys.exit(status)
+    try:
+        result = json.loads(e_return)
+    except json.decoder.JSONDecodeError:
+        print(f"Check Unknown - {e_return}")
+        sys.exit(IcingaServiceStatus.UNKNOWN.value)
+
+    connection_performance_data = get_connection_performance_data(delta_connection, delta_call) 
+
+    if args.command == "kpi":
+        check_for_special_cases(result)
+        
+        (output_string) = prepare_icinga_output(result, connection_performance_data)
+        status = get_check_status(result)
+        print(output_string)
+        sys.exit(status)
+    elif args.command == "healthcheck":
+
+        send_to_webhook(args, result)
+
+        print(f"Check OK - Execute healthcheck for '{args.health_check_name}' on host '{args.sysid}'. Sent {len(result)} elements to Tornado"
+              f"| {connection_performance_data}")
+        sys.exit(IcingaServiceStatus.OK.value)
+    else:
+        raise NotImplemented(f"Command {args.command} not yet supported")
+
 
 
 if __name__ == "__main__":
