@@ -26,7 +26,7 @@ perl-DBD-Oracle-1.80-19.3.0.0.0.rhel7.x86_64.rpm
 Where to download Oracle client
 https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
 
-Where to download the perl-DBD-Oracle:
+Where to download the `perl-DBD-Oracle`:
 https://rpm.pbone.net/info_idpl_68368613_distro_redhat_el_7_com_perl-DBD-Oracle-1.80-19.3.0.0.0.rhel7.x86_64.rpm.html
 
 
