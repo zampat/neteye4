@@ -40,7 +40,7 @@ my $VERSION  = "1.0.0";
 sub print_help ();
 sub print_usage ();
 
-my $opt_verbose  = 0;
+my @opt_verbose  = [];
 my $opt_help     = undef;
 my $opt_debug    = 0;
 my $opt_host     = undef;
@@ -53,8 +53,8 @@ my $opt_testing  = 0;
 Getopt::Long::Configure('bundling');
 GetOptions(
 	'h'			=> \$opt_help,
-	'v'			=> \$opt_verbose,
-	'verbose'		=> \$opt_verbose,
+	'v'			=> \@opt_verbose,
+	'verbose'		=> \@opt_verbose,
 	'help'			=> \$opt_help,
 	'D'			=> \$opt_debug,
 	'debug'			=> \$opt_debug,
@@ -131,6 +131,7 @@ my $testtime;
 my $perfout = "";
 my $perfname;
 my $perfvalue = 0;
+my $perfvalout;
 my $perfstate;
 my $perfwarn;
 my $perfcrit;
@@ -222,16 +223,27 @@ while($n < $size) {
 	} elsif ($perfwarn && $perfcrit) {
 		$ntot++;
 	}
-	if ($opt_verbose) {
+	if ($#opt_verbose) {
+		my $pv;
+		if (defined($perfvalue)) {
+			$pv = $perfvalue;
+		} else {
+			$pv = "[n/a]";
+		}
 		if ($perfwarn && $perfcrit) {
+			$perfvalout = "${pv}ms/$perfwarn/$perfcrit";
+		} else {
+			$perfvalout = "${pv}ms";
+		}
+		if (($#opt_verbose > 1) || ($perfwarn && $perfcrit)) {
 			if ($perfstate == 0) {
-				$verbstr .= "$perfname\[OK\]\n";
+				$verbstr .= "OK - $perfname ($perfvalout)\n";
 			} elsif ($perfstate == 1) {
-				$verbstr .= "$perfname\[WARNING\]\n";
+				$verbstr .= "WARNING - $perfname ($perfvalout)\n";
 			} elsif ($perfstate == 2) {
-				$verbstr .= "$perfname\[CRITICAL\]\n";
+				$verbstr .= "CRITICAL - $perfname ($perfvalout)\n";
 			} else {
-				$verbstr .= "$perfname\[UNKNOWN\]";
+				$verbstr .= "UNKNOWN - $perfname ($perfvalout)";
 			}
 		}
 	}
@@ -269,7 +281,7 @@ if ($opt_debug) {
 }
 if ($opt_testing) {
 	print "${statestr} - $nprob/$ntot problem(s)${probstr} (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
-	if ($opt_verbose) {
+	if ($#opt_verbose) {
 		print "$verbstr";
 	}
 } elsif ($testcode ne $oldcode) {
@@ -278,12 +290,12 @@ if ($opt_testing) {
 	print($fh_out "${testcode}\n");
 	close($fh_out);
 	print "${statestr} - $nprob problem(s)${probstr} (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
-	if ($opt_verbose) {
+	if ($#opt_verbose) {
 		print "$verbstr";
 	}
 } else {
 	print "${statestr} - $nprob problem(s)${probstr} [$oldstr] (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>)\n";
-	if ($opt_verbose) {
+	if ($#opt_verbose) {
 		print "$verbstr";
 	}
 }
