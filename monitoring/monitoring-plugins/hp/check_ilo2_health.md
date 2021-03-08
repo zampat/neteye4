@@ -6,3 +6,7 @@
 
 https://exchange.icinga.com/algbaer/check_ilo2_health/releases
 
+To install required Perl Modul in NetEye:
+```
+# yum install perl-XML-Simple.noarch
+```
