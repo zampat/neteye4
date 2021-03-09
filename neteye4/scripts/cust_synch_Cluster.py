@@ -53,7 +53,7 @@ system_files = ["/etc/hosts",
          "/etc/pki/tls/certs/*.crt",
          "/etc/pki/tls/private/*.key"
         ]
-files = ["/neteye/local/monitoring",
+files = ["/neteye/shared/monitoring",
          "/neteye/local/icinga2/conf/icinga2/conf.d/dependency*",
 	"/var/lib/grafana/plugins/*",
 	"/usr/share/icingaweb2/public/img/icons"
