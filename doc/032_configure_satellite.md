@@ -117,14 +117,6 @@ Path: /neteye/shared/icinga2/conf/icinga2/zones.d/satellite.conf
 
 ```
 
-object Endpoint "icinga2-master" {
-
-}
-
-object Zone "master" {
-        endpoints = [ "icinga2-master" ]
-}
-
 object Endpoint "neteye4vm1.mydomain.local" {
         host = "neteye4vm1.mydomain.local"
         port = 5665
