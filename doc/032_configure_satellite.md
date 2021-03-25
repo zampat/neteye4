@@ -111,19 +111,11 @@ object Zone "satellite" {
 # Recursive include of folder zones.d/
 include_recursive "zones.d"
 ```
-## On Master ##
+### Publish Satellite Endpoint and Zone on Master ###
 Provide satellite zone configuration in zones.d/ include directory:
 Path: /neteye/shared/icinga2/conf/icinga2/zones.d/satellite.conf
 
 ```
-
-object Endpoint "icinga2-master" {
-
-}
-
-object Zone "master" {
-        endpoints = [ "icinga2-master" ]
-}
 
 object Endpoint "neteye4vm1.mydomain.local" {
         host = "neteye4vm1.mydomain.local"
@@ -135,6 +127,7 @@ object Zone "satellite" {
     }
 ```
 
+## On Satellite ##
 __Verify Firewall and Features__
 - Apply firewall rules to enable incoming connection on API port
 ```
