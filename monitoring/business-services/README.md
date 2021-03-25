@@ -3,6 +3,7 @@
 This section provides enhancements for the business services module, providing:
 - plugin scripts
 - service templates
+- virtual python envirionment for running the check. Consider creating your own virtual environment instead.
 
 ADVICE: This section is considered "work in progress"
 
