@@ -1,0 +1,245 @@
+{
+    "Command": {
+        "check_dynamic_bp.py": {
+            "arguments": {
+                "--log_level": {
+                    "value": "$dynbp_log_level$"
+                },
+                "-a": {
+                    "description": "AND, OR, MIN, DEG",
+                    "value": "$dynbp_aggregator$"
+                },
+                "-f": {
+                    "value": "$dynbp_filter$"
+                },
+                "-s": {
+                    "description": "HARD \/ SOFT STATE",
+                    "set_if": "$dynbp_softStates$",
+                    "set_if_format": "string"
+                },
+                "-t": {
+                    "description": "Host or Service",
+                    "value": "$dynbp_obj_type$"
+                }
+            },
+            "command": "PluginContribDir + \/check_dynamic_bp.py",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "check_dynamic_bp.py",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {},
+            "zone": null
+        }
+    },
+    "ServiceTemplate": {
+        "generic-dynamic-bp": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_dynamic_bp.py",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 10194,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10195,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10193,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10197,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 10196,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-active-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "generic-dynamic-bp",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "dynbp_softStates": true
+            },
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "DataList": {
+        "dynbp_aggregator": {
+            "list_name": "dynbp_aggregator",
+            "owner": "CA00113913",
+            "originalId": "10022",
+            "entries": [
+                {
+                    "entry_name": "and",
+                    "entry_value": "AND",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "deg",
+                    "entry_value": "DEG",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "min10",
+                    "entry_value": "MIN 10",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "min20",
+                    "entry_value": "MIN 20",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "min30",
+                    "entry_value": "MIN 30",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "minok",
+                    "entry_value": "MINOK n m ",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "not",
+                    "entry_value": "NOT",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "or",
+                    "entry_value": "OR",
+                    "format": "string",
+                    "allowed_roles": null
+                }
+            ]
+        },
+        "dynbp_obj_type": {
+            "list_name": "dynbp_obj_type",
+            "owner": "CA00113913",
+            "originalId": "10021",
+            "entries": [
+                {
+                    "entry_name": "hosts",
+                    "entry_value": "Hosts",
+                    "format": "string",
+                    "allowed_roles": null
+                },
+                {
+                    "entry_name": "services",
+                    "entry_value": "Services",
+                    "format": "string",
+                    "allowed_roles": null
+                }
+            ]
+        }
+    },
+    "Datafield": {
+        "10194": {
+            "varname": "dynbp_aggregator",
+            "caption": "DynBP Aggregator",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeDatalist",
+            "format": null,
+            "originalId": "10194",
+            "settings": {
+                "behavior": "strict",
+                "data_type": "string",
+                "datalist": "dynbp_aggregator"
+            }
+        },
+        "10195": {
+            "varname": "dynbp_filter",
+            "caption": "DynBP Filter",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10195",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "10193": {
+            "varname": "dynbp_log_level",
+            "caption": "DynBP Log Level",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "10193",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "10197": {
+            "varname": "dynbp_obj_type",
+            "caption": "DynBP Object Type",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeDatalist",
+            "format": null,
+            "originalId": "10197",
+            "settings": {
+                "behavior": "strict",
+                "data_type": "string",
+                "datalist": "dynbp_obj_type"
+            }
+        },
+        "10196": {
+            "varname": "dynbp_softStates",
+            "caption": "DynBP consider Soft States",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "10196",
+            "settings": {}
+        }
+    }
+}

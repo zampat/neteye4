@@ -1,4 +1,4 @@
-#!/neteye/shared/monitoring/plugins/pve/bin/python
+#!/neteye/local/monitoring/plugins/pve/bin/python
 """
 (WIP) Dynamic Business Process check for icinga 2
 
@@ -31,8 +31,10 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 states_map: Dict[str, Dict[float, str]] = {
     "hosts": {
-        0.0: "UP",
-        1.0: "DOWN"
+        0.0: "OK: Level of UP-Hosts is reached",
+        1.0: "WARNING: Too many Hosts are DOWN",
+        2.0: "CRITICAL: Too many Hosts are DOWN",
+        3.0: "UNKNOWN: Too many Hosts are DOWN"
     },
     "services": {
         0.0: "OK",
@@ -48,10 +50,10 @@ def parse_args():
     parser.add_argument('-a', '--aggregator' , dest='aggregator', required=True, type=lambda x: x.lower(), help='Choose your aggregator Activity Service (AND, OR, MIN[\d+], MINOK([\d+], [\d+]))')
     parser.add_argument('-f', '--filter' , dest='myfilter', required=True, type=str, help="API filter, examples: '\"location_Bozen\" in host.groups'\n 'match(\"pbzesxi*\",host.name)'")
     parser.add_argument('-s', '--softness' , dest='softness', required=False, action='store_true', default=False, help='Consider soft states')
-    parser.add_argument('-t', '--type' , dest='object_type', required=True, default="hosts", choices=["hosts", "services"], help='Whether to use host or service')
+    parser.add_argument('-t', '--type' , dest='object_type', required=True, default="hosts", choices=["hosts", "services"], help='Whether to use hosts or services')
     parser.add_argument('--degrade' , dest='', required=False, default=True, help='')
 
-    parser.add_argument('--log_level', dest='log_level', required=False, default="WARNING", help="logging level")
+    parser.add_argument('--log_level', dest='log_level', required=False, default="WARNING", help="logging level: WARNING, INFO, DEBUG")
 
     return parser.parse_args()
 
@@ -67,10 +69,22 @@ def count_el_with_value(mylist, value):
             s += 1
     return s
 
+def to_service_state(object_type: str, res: float):
+   if object_type == "hosts":
+       if res == 1.0:
+          return 2.0
+       else:
+          return res
+   else:
+       return res
 
 
+# Host status: Host status NOT OK (ie 1.0) => Critical 2.0
 def compute_aggregation(operator: str, mylist: List[float], object_type: str) -> float:
-    logging.debug(len(mylist))
+
+    sys.num_of_aggregated_objects = len(mylist)
+    logging.debug(sys.num_of_aggregated_objects)
+
     if operator == "and": return max(mylist)
     if operator == "or": return min(mylist)
     if operator == "not":
@@ -127,7 +141,7 @@ def compute_aggregation(operator: str, mylist: List[float], object_type: str) ->
         
         
 
-def compute_perfdata(mylist: List[Dict], softness: bool):
+def compute_perfdata(mylist: List[Dict], softness: bool) -> List[List[str]]:
     res = [
         [],
         [],
@@ -169,14 +183,25 @@ def remap_unknown(state: float, from_icinga_to_order: bool) -> float:
 
 
 def process(aggregator: str, softness: bool, object_type: str, objects: List[Dict]):
-    return remap_unknown(
-        compute_aggregation(
-            aggregator,
-            [remap_unknown(considered_state(softness, el["attrs"]["state"], el["attrs"]["state_type"]), True) for el in objects],
-            object_type
-        ),
-        False
-    )
+    return to_service_state(
+       object_type, 
+       remap_unknown(
+          compute_aggregation(
+              aggregator,
+              [remap_unknown(considered_state(softness, el["attrs"]["state"], el["attrs"]["state_type"]), True) for el in objects],
+              object_type
+          ),
+          False
+        )
+      )  
+
+
+def print_html_details_table(table: List[str], label: str = "NOT OK"):
+    table_output = f"<tr><th>{label}</th><td>"
+    for row in table:
+        table_output += f"{row} "
+    table_output += f"</td></tr>"
+    return table_output
 
 
 def main():
@@ -189,7 +214,10 @@ def main():
 
 
     tmp = ""
-    with open("/neteye/shared/tornado/conf/icinga2_client_executor.toml") as f:
+
+    sys.num_of_aggregated_objects = ""
+
+    with open("/neteye/local/monitoring/configs/icinga2_api_monitoring_user.toml") as f:
         tmp = f.read()
     config = toml.loads(tmp)
     payload = {
@@ -199,26 +227,43 @@ def main():
 
     logging.info(payload)
 
+    logging.debug("Icinga2 API Query: https://localhost:5665/v1/objects/" + args.object_type)
+
+
     r = requests.get(f"https://localhost:5665/v1/objects/{args.object_type}",
                     auth=(config["username"], config["password"]),
                     verify=False,
                     headers={'Accept': 'application/json'},
                     json=payload)
 
+    logging.debug([key for key in r.json()["results"][0]])
 
-    # print([key for key in r.json()["results"][0]])
+    #print ("Status: STATE, TYPE, consider_soft_states, state, state_type") 
     #for el in r.json()["results"]:
-    #    print(str(el["attrs"]["state"]) + "," + str(is_soft(el["attrs"]["state_type"])) + "," + str(considered_state(args.softness, el["attrs"]["state"], el["attrs"]["state_type"])))
+    #    print("Status: " + str(el["attrs"]["state"]) + "," + str(is_soft(el["attrs"]["state_type"])) + "," + str(considered_state(args.softness, el["attrs"]["state"], el["attrs"]["state_type"])))
 
+    # Calculate the Return Status
     res = process(args.aggregator, args.softness, args.object_type, r.json()["results"])
 
-    print("CHECK " + states_map[args.object_type][res])
+    # Prepare details overviews of indicating evaluated host and service objects
+    details_list = compute_perfdata(r.json()["results"], args.softness)
 
-    # print(compute_perfdata(r.json()["results"]))
+    num_of_ok = int(len(details_list[0]))
+    num_of_crit = int(len(details_list[1]))
+    html_details_table = "<table border='1'><thead><tr><th>Status</th><th>Objects</th></tr></thead><tbody>"
+    html_details_table += print_html_details_table(details_list[1], "DOWN HOSTS")
+    html_details_table += print_html_details_table(details_list[0], "UP HOSTS")
+    html_details_table += "</tbody></table>"
 
-    return res
 
-    # print(functools.reduce(operator_map[sys.argv[1].lower()], [considered_state(softness, el["attrs"]["state"], el["attrs"]["state_type"]) for el in r.json()["results"]]))
+    # Return the overall check result message
+    print("BP aggregator: " + states_map[args.object_type][res] + " | total_objects=" + str(sys.num_of_aggregated_objects) + " ok_objects=" + str(num_of_ok) + " crit_objects=" + str(num_of_crit))
+
+    print(html_details_table)
+
+    sys.exit(int(res))
+
+    #print(functools.reduce(operator_map[sys.argv[1].lower()], [considered_state(softness, el["attrs"]["state"], el["attrs"]["state_type"]) for el in r.json()["results"]]))
 
 if __name__ == "__main__":
     main()
