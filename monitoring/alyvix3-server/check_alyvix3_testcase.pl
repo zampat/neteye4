@@ -133,6 +133,7 @@ my $perfname;
 my $perfvalue = 0;
 my $perfvalout;
 my $perfstate;
+my $perfexit;
 my $perfwarn;
 my $perfcrit;
 my $statestr = "OK";
@@ -197,6 +198,7 @@ while($n < $size) {
 	$perfvalue = $measures[$n]->{transaction_performance_ms};
 	$perfstate = $measures[$n]->{transaction_state};
 	$perfwarn  = $measures[$n]->{transaction_warning_ms};
+	$perfexit = $measures[$n]->{transaction_exit};
 	if (!defined($perfwarn) || $perfwarn !~ /[0-9]*/) {
 		$perfwarn = "";
 	}
@@ -220,6 +222,9 @@ while($n < $size) {
 			$nprob++;
 			$probstr .= ",$perfname:UNKNOWN";
 		}
+	} elsif ($perfexit =~ /fail/) {
+		$nprob++;
+		$probstr .= ",$perfname:FAIL";
 	} elsif ($perfwarn && $perfcrit) {
 		$ntot++;
 	}
