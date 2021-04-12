@@ -77,9 +77,35 @@ Value: $dummy_text$
 Position: 2
 
 c) Create Service templates (generic_keepalive_service and generic_monitordata_service)
+create template Service "generic_keepalive_service"
+
+Main properties
+    Name : generic_keepalive_service
+    imports: generic-passive-service
+    Check command: keepalive_check
+
+Check execution
+    check_interval = 1m
+    retry_interval = 15s
+    enable_active_checks = yes
+
+
+create template Service "generic_monitordata_service" 
+
+Main properties
+    Name : generic_monitordata_service
+    Imports : generic-passive-service
+    Check command: keepalive_check
+
+Check execution
+    check_interval : 10m
+    retry_interval : 15s
+    enable_active_checks : yes
+
 
 
 Configuration of nats user and permissions 
+==========================================
 
 Define permission for ax and sql agents on nats server
 
@@ -96,6 +122,7 @@ create conf file /neteye/shared/nats-server/conf/users.d:
 
 
 Configuration of tornado json collector 
+=======================================
 
 To be able to listen and consume events of the agent keepalive and monitordata, the defined topic <agent_monitor_alive.topic> must be configured in 
 /neteye/shared/tornado_nats_json_collector/topics path. For this create the needed <topic>.json configuration file:
