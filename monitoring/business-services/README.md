@@ -6,18 +6,18 @@ ADVICE: This section is considered "work in progress"
 
 ## Feature description
 
-The plugin allows the definition of filter expressions to group Icinga2 objecs using the Icinga DSL query language
+The plugin allows the definition of filter expressions to group Icinga2 objects using the Icinga DSL query language
 Example: match all hosts having name "*neteye*"
 ```
 match("*1401*",host.name)
 ```
 
 Aggregators:
-- AND    All objects must be ok, the worst status is excracted as return value
-- OR     At least one object must be ok, the best status is excracted as return value
-- NOT    Inverted logic of ANY, none must be ok
-- DEG    For service only: Critical status is degraded to warning
-- MINn   Like OR, just with a condition for having at least n objects ok
+- `AND`    All objects must be ok, the worst status is extracted as return value
+- `OR`     At least one object must be ok, the best status is extracted as return value
+- `NOT`    Inverted logic of ANY, none must be ok
+- `DEG`    For service only: Critical status is degraded to warning
+- `MINn`   Like OR, just with a condition for having at least n objects ok
 
 
 ## Content of this folder for dynamic business services monitoring:

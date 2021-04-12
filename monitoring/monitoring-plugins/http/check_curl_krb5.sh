@@ -16,19 +16,18 @@
 # Boston, MA 02111-1307, USA
 #
 # (C) Würth Phoenix GmbH
-# 3. April 2019: Patrick Zambelli <patrick.zambelli@wuerth-phoenix.com>
-# Version 0.1.0
+# 12. April 2021: Patrick Zambelli <patrick.zambelli@wuerth-phoenix.com>
+# Version 0.2.0
 
 
-# Please change this
+# Defaults 
+PROXY='proxy.mydomain'
 proxyport=3128
-proxy='proxy.mydomain.lan'
-user='my_kerberos_user'
 
-# constants
+user='username'
 TMPFILE=/tmp/check_curl_krb5$$.tmp
 
-# variwable not used. Place instead the .netrc file in the HOME path of the user running the script! 
+# variwable not used: 
 # parameter --netrc-file not compatible with curl of CentOS6
 #pwfile='./.netrc'
 
@@ -36,15 +35,16 @@ TMPFILE=/tmp/check_curl_krb5$$.tmp
 RET_CODE=3
 RET_STRING="Unknown"
 
-trap 'rm -f $TMPFILE' 0
+#trap 'rm -f $TMPFILE' 0
 
 # Scripts tries to get Kerberos Ticket to authenticate against server which requires negtiate Auth
 function get_usage() {
    echo "Usage: check_curl_krb5.sh -u <url> -k <keytab_file> -s <search_string>"
    echo " "
-   echo "Hint: CURL makes use of a netrc file providing hostname, username and password. "
-   echo "      Place the file '.netrc' in the home path i.e /var/log/nagios/ with the following content:"
-   echo "      machine <fqdn> login <the user> password <the password> "
+   echo " -u the url to open"
+   echo " -p the proxy url or 'noproxy' to disable"
+   echo " -k keytab file"
+   echo " -s search string"
    echo " "
    echo "Hint: How to generate a keytab holding kerberos principal: "
    echo "# ktutil "
@@ -53,36 +53,47 @@ function get_usage() {
    echo " "
 }
 
-
+# Parsing of parameters
 if [ -z "$5" ]
 then
    get_usage
    exit $RET_CODE
 fi
 
+while [ $# -gt 0 ]; do
+    case $1 in
+        -h|--help)
+            print_help
+            exit 0
+            ;;
+        -V|--version)
+            print_version
+            exit 0
+            ;;
+        -u)
+            URL=$2
+            shift 2
+            ;;
+        -k)
+            KEYTAB=$2
+            shift 2
+            ;;
+        -s)
+            SEARCH_STR=$2
+            shift 2
+            ;;
+        -p)
+            PROXY=$2
+            shift 2
+            ;;
+        *)
+            echo "Internal Error: option processing error: $1" 1>&2
+            exit $STATE_UNKNOWN
+            ;;
+    esac
+done
 
-if [ "$1" = "-u" ]
-then
-        shift
-        URL=$1
-        shift
-fi
-
-if [ "$1" = "-k" ]
-then
-        shift
-        KEYTAB=$1
-        shift
-fi
-
-if [ "$1" = "-s" ]
-then
-        shift
-        SEARCH_STR=$1
-        shift
-fi
-
-
+#Validations
 if [ -z $KEYTAB ]
 then
    echo "please define a keytab file."
@@ -100,16 +111,30 @@ then
 fi
 
 
-# curl
-#curl -s -o /tmp/nego_check_result --negotiate --netrc-file $pwfile $1 -k --proxy $proxy:$proxyport
-curl -s -o $TMPFILE --negotiate --netrc $URL -k --proxy $proxy:$proxyport
-RES=$?
-if [ $RES -ne 0 ]
+# curl run 
+if [ $PROXY == "noproxy" ]
 then
-   echo "Non-OK CURL return code. Return code: $RES"
+   #curl -s -o /tmp/nego_check_result --negotiate --netrc-file $pwfile $1 -k --proxy $PROXY:$proxyport
+   curl -s -o $TMPFILE --negotiate --netrc $URL -k
+   RES=$?
+   if [ $RES -ne 0 ]
+   then
+      echo "Non-OK CURL return code. Return code: $RES"
+   fi
+elif [ ! -z $PROXY ]
+then
+
+   curl -s -o $TMPFILE --negotiate --netrc $URL -k --proxy $PROXY:$proxyport
+   RES=$?
+   if [ $RES -ne 0 ]
+   then
+      echo "Non-OK CURL return code. Return code: $RES"
+   fi
+else
+   echo "Proxy not defined. No check executed. Return code: $RES"
 fi
 
-
+#`cat $TMPFILE`
 # parse the outputfile for the expected String
 if  grep -q $SEARCH_STR $TMPFILE 
 then
