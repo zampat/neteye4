@@ -14,7 +14,68 @@ define topic name to use for nats communication
 Configuration of neteye Icinga Directory Objects for EndPoint monitor
 
 a) Create Data Fields (dummy_text and dummy_state) 
+
+dummy_text :
+Fieldname : dummy_text
+Caption : Dummy Text
+Data Type: String
+Visibility: Visible
+
+dummy_state :
+Fieldname : dummy_state
+Caption : Dummy State
+Data Type: Number
+
 b) Create Command (keepalive_check and monitordata_check)
+
+Create command for keepalive_check:
+
+Command type: Plugin Check Command
+Command name: keepalive_check
+Coammnd: /usr/lib64/neteye/monitoring/plugins/check_dummy 
+Timeout :60
+
+Custom properties:
+- Dummy State: 2
+- Dummy Text : No keepalive message received from host within defined timeout
+
+Create agrumgents:
+Argument name: state
+Description : state
+Value Type: String
+Value: $dummy_state$
+Position: 1
+
+Argument name: output_text
+Description : output
+Value Type: String
+Value: $dummy_text$ 
+Position: 2
+
+Create command for monitordata_check:
+
+Command type: Plugin Check Command
+Command name: monitordata_check
+Command: /usr/lib64/neteye/monitoring/plugins/check_dummy 
+Timeout :60
+
+Custom properties:
+- Dummy State: 2
+- Dummy Text : No monitordata message received from host within defined timeout
+
+Create agrumgents:
+Argument name: state
+Description : state
+Value Type: String
+Value: $dummy_state$
+Position: 1
+
+Argument name: output_text
+Description : output
+Value Type: String
+Value: $dummy_text$ 
+Position: 2
+
 c) Create Service templates (generic_keepalive_service and generic_monitordata_service)
 
 
