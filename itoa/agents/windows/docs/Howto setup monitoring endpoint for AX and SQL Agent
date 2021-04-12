@@ -55,7 +55,7 @@ In this file nats topics are defined (nats_topic can be changed). Defines transf
 
 Please validate that the  tornado group has read rights on file <topic>.json and in case assign the permissions required:
 
-Chown tornado <topic>.json -
+Chown tornado <topic>.json 
 Chgrp tornado <topic>.json 
 Chmod g+r-x <topic>.json 
 Chmod +rw <topic>.json 
