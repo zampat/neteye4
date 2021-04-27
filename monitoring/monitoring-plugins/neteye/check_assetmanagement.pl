@@ -34,6 +34,7 @@
 # 2.2: (20180927) : assets_in_monitoring check if Assets in GLPI are under active monitoring (Monarch) 
 # 2.2: (20181015) : Verify last run of a automatic action 
 # 2.3: (20190131) : Filter for Entity ID for Duplicates in GLPI 
+# 2.4: (20210427) : Check if duplicate or invalid operating systems are present
 
 use DBI;
 use POSIX;
@@ -41,8 +42,8 @@ use Getopt::Long;
 
 ################Vars#############
 my %ERRORS=('OK'=>0,'WARNING'=>1,'CRITICAL'=>2,'UNKNOWN'=>3,'DEPENDENT'=>4);
-my %dbOCSVars=('host'=>"localhost",'db'=>"ocsweb",'user'=>"root",'pass'=>"");
-my %dbGLPIVars=('host'=>"localhost",'db'=>"glpi",'user'=>"icinga_monitoring",'pass'=>"");
+my %dbOCSVars=('host'=>"mariadb.neteyelocal",'db'=>"ocsweb",'user'=>"root",'pass'=>"");
+my %dbGLPIVars=('host'=>"mariadb.neteyelocal",'db'=>"glpi",'user'=>"icinga_monitoring",'pass'=>"");
 
 $Version = "2.0";
 $DEBUG=0;
@@ -110,6 +111,10 @@ if ($o_command eq "age"){
   $var_return = $ERRORS{"UNKNOWN"};
   check_automatic_action_last_run();
   
+} elsif ($o_command eq "os_count"){
+  $var_return = $ERRORS{"OK"};
+  check_os_count();
+  
 } else {
   print "Undefined command name. Check usage of -C \n";
   print_usage();
@@ -148,6 +153,40 @@ sub check_ocs_new_software
       $str_resultOutput = "OCS: All software managed | ocs-new-software=".$new_soft.";;";
    }
    $dbh->disconnect;
+}
+
+############################################
+sub check_os_count
+############################################
+{
+
+   $var_return = $ERRORS{"OK"};
+   
+   $query = "SELECT C.name FROM `glpi_items_operatingsystems` RO JOIN glpi_computers C ON C.id = RO.items_id WHERE RO.itemtype = 'Computer' AND RO.operatingsystems_id NOT IN (SELECT glpi_operatingsystems.id FROM glpi_operatingsystems) ORDER BY `RO`.`date_mod` DESC";
+    
+   $dbh = DBI->connect("DBI:mysql:".$dbGLPIVars{"db"}.":".$dbGLPIVars{"host"},$dbGLPIVars{"user"}, $dbGLPIVars{"pass"});
+   $sqlQuery  = $dbh->prepare($query)
+      or die "Can't prepare $query: $dbh->errstr\n";
+   
+   $rv = $sqlQuery->execute()
+      or die "can't execute the query: $sqlQuery->errstr";
+   
+   #Loop trough all rows
+   while(@row = $sqlQuery->fetchrow_array()){
+     $str_detailOutput .= "Matching computer name: ".$row[0].".\n";
+   }
+
+   $sqlQuery->finish();
+
+   $dbh->disconnect();
+
+   
+   if ( length($str_detailOutput) < 1){
+      $str_resultOutput .= "OK: GLPI: No computer with duplicate or invalid operating system. | os_count=".$rows.";;";
+   }else{
+      $var_return = $ERRORS{"WARNING"};
+      $str_resultOutput .= "WARNING: GLPI: ".($str_detailOutput =~ tr/\n//)." computers with duplicate or invalid operating system. | os_count=".($str_detailOutput =~ tr/\n//).";;";
+   }
 }
 
 ############################################
@@ -692,6 +731,7 @@ specify the kind of check to perform on the OCS assetmanagement
   Each Duplicate check will lead to a WARNING if a duplicate is found
   - assets_in_monitoring check if Assets in GLPI are under active monitoring (Monarch)
   - automatic_action_last_run check regular execution of automatic action: verify last run
+  - os_count check count of computers with relation to a non existing operating system
 
 -w <int> --warning <int> 
 specify the number of days an asset item has not to be updated before returning a warning.
