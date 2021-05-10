@@ -287,7 +287,7 @@
         $bodyHtml=""
         if($result -is [System.Data.DataTable]) {
             if($result.Rows.Count -gt 0) {
-                $retObj.AppendErrorMessage("sessionId |  duration  | AxSession |   AxUser  | ServerName | Company");
+                #$retObj.AppendErrorMessage("sessionId |  duration  | AxSession |   AxUser  | ServerName | Company");
                 $bodyHtml="<table><tr><th>sessionId</th><th>duration</th><th>AxSession</th><th>AxUser</th><th>ServerName</th><th>Company</th></tr>"
             }
             [Decimal]$maxDuration = [Decimal]::Zero;
@@ -311,7 +311,7 @@
                 $duration = $duration.PadLeft(10)
                 $AxSession = $AxSession.PadLeft(9)
                 $AxUser = $AxUser.PadLeft(9)
-                $retObj.AppendErrorMessage([string]::Format(" {0} | {1} | {2} | {3} | {4}", $sessionId, $duration, $AxSession, $AxUser, $ServerName, $Company));
+                #$retObj.AppendErrorMessage([string]::Format(" {0} | {1} | {2} | {3} | {4}", $sessionId, $duration, $AxSession, $AxUser, $ServerName, $Company));
             }
             if($result.Rows.Count -gt 0) {
                 $bodyHtml+="</table>"
@@ -320,12 +320,12 @@
             $retObj.measurements[0].Update($maxDuration)
             if($maxDuration -gt $errTh)
                 { 
-                    $retObj.SetStatusMessage(2, "Transactions over $errTh seconds")
+                    $retObj.SetStatusMessage(2, "Transactions over $errTh seconds $bodyHtml")
                     Send-MailMessage -To $settings.longtransactions.critical.Split(',') -From $settings.longtransactions.account -SmtpServer $settings.longtransactions.smtpserver -Subject "Long transaction CRITICAL detail" -BodyAsHtml $bodyHtml
                 }
             elseif($maxDuration -gt $wrnTh)
                 { 
-                    $retObj.SetStatusMessage(1, "Transactions over $wrnTh seconds")
+                    $retObj.SetStatusMessage(1, "Transactions over $wrnTh seconds $bodyHtml")
                     Send-MailMessage -To $settings.longtransactions.warning.Split(',') -From $settings.longtransactions.account -SmtpServer $settings.longtransactions.smtpserver -Subject "Long transaction WARNING detail" -BodyAsHtml $bodyHtml
                 }
             else
@@ -367,7 +367,7 @@
         $bodyHtml=""
         if($result -is [System.Data.DataTable]) {
             if($result.Rows.Count -gt 0) {
-                $retObj.AppendErrorMessage("sessionId |  waitTime  | AxSession |   AxUser  | ServerName | SqlText ");
+                #$retObj.AppendErrorMessage("sessionId |  waitTime  | AxSession |   AxUser  | ServerName | SqlText ");
             }
             [Decimal]$maxDuration = [Decimal]::Zero;
             foreach($Row in $result.Rows)
@@ -400,7 +400,7 @@
                 $AxSession = $AxSession.PadLeft(9)
                 $AxUser = $AxUser.PadLeft(9)
                 $ServerName = $ServerName.PadLeft(10)
-                $retObj.AppendErrorMessage([string]::Format(" {0} | {1} | {2} | {3} | {4} | {5}", $sessionId, $waitTime, $AxSession, $AxUser, $ServerName, $BlockingTree, $Company));
+                #$retObj.AppendErrorMessage([string]::Format(" {0} | {1} | {2} | {3} | {4} | {5}", $sessionId, $waitTime, $AxSession, $AxUser, $ServerName, $BlockingTree, $Company));
             }
             if($result.Rows.Count -gt 0) {
                 $bodyHtml+="</table>"
@@ -410,13 +410,13 @@
             if($maxDuration -gt $errTh)
                 { 
                     $bodyHtml=[string]::Format("<p>Head blocker detection with critical threshold at {0}</p>",[TimeSpan]::FromSeconds($errTh)) + $bodyHtml;
-                    $retObj.SetStatusMessage(2, "Transaction blocked over $errTh seconds")
+                    $retObj.SetStatusMessage(2, "Transaction blocked over $errTh seconds $bodyHtml")
                     Send-MailMessage -To $settings.longtransactions.critical.Split(',') -From $settings.longtransactions.account -SmtpServer $settings.longtransactions.smtpserver -Subject "Headblocker CRITICAL detail" -BodyAsHtml $bodyHtml
                 }
             elseif($maxDuration -gt $wrnTh)
                 { 
                     $bodyHtml=[string]::Format("<p>Head blocker detection with warning threshold at {0}</p>",[TimeSpan]::FromSeconds($wrnTh)) + $bodyHtml;
-                    $retObj.SetStatusMessage(1, "Transaction blocked over $wrnTh seconds")
+                    $retObj.SetStatusMessage(1, "Transaction blocked over $wrnTh seconds $bodyHtml")
                     Send-MailMessage -To $settings.longtransactions.warning.Split(',') -From $settings.longtransactions.account -SmtpServer $settings.longtransactions.smtpserver -Subject "Headblocker WARNING detail" -BodyAsHtml $bodyHtml
                 }
             else
