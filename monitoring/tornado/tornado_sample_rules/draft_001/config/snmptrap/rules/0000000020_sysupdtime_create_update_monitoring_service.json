@@ -1,0 +1,63 @@
+{
+  "name": "service_smart_action",
+  "description": "Create and update Service object",
+  "continue": true,
+  "active": true,
+  "constraint": {
+    "WHERE": {
+      "type": "AND",
+      "operators": [
+        {
+          "type": "equals",
+          "first": "${event.payload.src_ip}",
+          "second": "10.10.10.20"
+        }
+      ]
+    },
+    "WITH": {
+      "service_name": {
+        "from": "${event.payload.oids.\"SNMPv2-SMI::enterprises.1000.1.1.1.21.0\".content}",
+        "regex": {
+          "match": "[a-zA-Z\\s]+:([a-zA-Z\\s]+),.*",
+          "group_match_idx": 1,
+          "all_matches": false
+        },
+        "modifiers_post": []
+      },
+      "output_value": {
+        "from": "${event.payload.oids.\"SNMPv2-SMI::enterprises.1000.1.1.1.21.2\".content}",
+        "regex": {
+          "match": "[a-zA-Z\\s]+:([a-zA-Z\\s]+),.*",
+          "group_match_idx": 1,
+          "all_matches": false
+        },
+        "modifiers_post": []
+      }
+    }
+  },
+  "actions": [
+    {
+      "id": "smart_monitoring_check_result",
+      "payload": {
+        "host": {
+          "address": "localhost",
+          "display_name": "Hostname A",
+          "imports": "generic-passive-host",
+          "object_name": "hostname"
+        },
+        "service": {
+          "object_name": "${_variables.service_name}",
+          "vars": {
+            "dummydescription": "TEST",
+            "dummystate": 0
+          },
+          "imports": "generic-passive-freshness-service"
+        },
+        "check_result": {
+          "plugin_output": "${_variables.output_value}",
+          "exit_status": 0
+        }
+      }
+    }
+  ]
+}
