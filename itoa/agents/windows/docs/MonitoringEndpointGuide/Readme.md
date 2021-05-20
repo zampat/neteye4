@@ -12,7 +12,7 @@
 
 Configuration of neteye Icinga Directory Objects for EndPoint monitor
 
-![define_data_fields](MonitoringEndpointGuide/define_data_fields.png)
+![define_data_fields](images/define_data_fields.png)
 
 1. Create Data Fields (dummy_text and dummy_state)
 
