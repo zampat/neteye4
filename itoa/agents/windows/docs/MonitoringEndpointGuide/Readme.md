@@ -12,12 +12,12 @@
 
 Configuration of neteye Icinga Directory Objects for EndPoint monitor
 
-![define_data_fields](MonitoringEndpointGuide/define_data_fields.png)
+![define_data_fields](images/define_data_fields.png)
 
 1. Create Data Fields (dummy_text and dummy_state)
 
 
-![new_dummy_text_data_field](MonitoringEndpointGuide/new_dummy_text_data_field.png)
+![new_dummy_text_data_field](images/new_dummy_text_data_field.png)
 
 ```
 dummy_text :
@@ -36,7 +36,7 @@ Data Type: Number
 
 #### keepalive_check:
 
-![icinga_create_command_keepalive_check](MonitoringEndpointGuide/icinga_create_command_keepalive_check.png)
+![icinga_create_command_keepalive_check](images/icinga_create_command_keepalive_check.png)
 
 ```
 Command type: Plugin Check Command
@@ -49,7 +49,7 @@ Dummy State: 2
 Dummy Text: No keepalive message received from host within defined timeout
 ```
 
-![icinga_create_command_keepalive_check_state_arg](MonitoringEndpointGuide/icinga_create_command_keepalive_check_state_arg.png)
+![icinga_create_command_keepalive_check_state_arg](images/icinga_create_command_keepalive_check_state_arg.png)
 
 ```
 Argument name: state
@@ -59,7 +59,7 @@ Value: $dummy_state$
 Position: 1
 ```
 
-![icinga_create_command_keepalive_check_output_arg](MonitoringEndpointGuide/icinga_create_command_keepalive_check_output_arg.png)
+![icinga_create_command_keepalive_check_output_arg](images/icinga_create_command_keepalive_check_output_arg.png)
 
 ```
 Argument name: output_text
@@ -82,7 +82,7 @@ Position: 2
   Dummy Text : No monitordata message received from host within defined timeout
 ```
 
-![icinga_create_command_monitordata_check_output_arg](MonitoringEndpointGuide/icinga_create_command_monitordata_check_output_arg.png)
+![icinga_create_command_monitordata_check_output_arg](images/icinga_create_command_monitordata_check_output_arg.png)
 
 ```
 Argument name: state
@@ -92,7 +92,7 @@ Value: $dummy_state$
 Position: 1
 ```
 
-![icinga_create_command_monitordata_check_output_arg](MonitoringEndpointGuide/icinga_create_command_monitordata_check_output_arg.png)
+![icinga_create_command_monitordata_check_output_arg](images/icinga_create_command_monitordata_check_output_arg.png)
 
 ```
 Argument name: output_text
@@ -106,7 +106,7 @@ Position: 2
 
 #### generic_keepalive_service
 
-![generic_keepalive_service_template](MonitoringEndpointGuide/generic_keepalive_service_template.png)
+![generic_keepalive_service_template](images/generic_keepalive_service_template.png)
 
 ```
 Main properties
@@ -123,7 +123,7 @@ Check execution
 
 #### generic_monitordata_service
 
-![generic_monitordata_service_template](MonitoringEndpointGuide/generic_monitordata_service_template.png)
+![generic_monitordata_service_template](images/generic_monitordata_service_template.png)
 
 ```
 Main properties
@@ -238,7 +238,7 @@ https://github.com/WuerthPhoenix/tornado
 
 Adding filter for <itoafilter> and new ruleset <create_and_process_events>
   
-![tornado_ui_itoafilter](MonitoringEndpointGuide/tornado_ui_itoafilter.png)
+![tornado_ui_itoafilter](images/tornado_ui_itoafilter.png)
 
 ```
 {
@@ -257,7 +257,7 @@ Adding filter for <itoafilter> and new ruleset <create_and_process_events>
 }
 ```
 
-![tornado_ui_rulesset](MonitoringEndpointGuide/tornado_ui_rulesset.png)
+![tornado_ui_rulesset](images/tornado_ui_rulesset.png)
 
 Add Rule keepalive
 
