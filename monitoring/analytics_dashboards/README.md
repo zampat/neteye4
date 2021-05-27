@@ -12,6 +12,10 @@ Some analytics dashboards require the [setup on NetEye of the ITOA streaming dat
 To be integrated as ITOA custom dashboard into monitoring view, the relative url to the dashboard must be configured
 __Details for the configuration in NetEye 4 user guide, chapter "ITOA" > "Custom Dashboards for Hosts and Services".__
 __Note: since NetEye v 4.7 the URL must specify the alias "d" and you need to prefix "../d/"__
+__Note: the Grafana authentication integration requires to pass all arguments via authentication proxy: Here an example of URL encoding:__
+```
+./analytics/analyticsdashboard?src=%2Fneteye%2Fanalytics%2Fproxy%2Fdashboard%2F..%2Fd%2Fcus0000005%2Fhost-hostalive%3Fvar-hostname%3Dclu-02%26var-command%3Dhostalive%26orgId%3D1%26var-limit%3D50%26var-page%3D1%26kiosk%3Dtv%26theme%3Dlight
+```
 
 - `itoa_cust_hostalive.json`         [Preview](./itoa_cust_hostalive.png) (url: `../d/cus0000005/host-hostalive`
 - `generic_services.json` 	     [Preview](./itoa_cust_diskspace.png) (url: `../d/cus0000010/generic_services`
