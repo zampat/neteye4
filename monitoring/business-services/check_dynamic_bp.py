@@ -251,8 +251,14 @@ def main():
     num_of_ok = int(len(details_list[0]))
     num_of_crit = int(len(details_list[1]))
     html_details_table = "<table border='1'><thead><tr><th>Status</th><th>Objects</th></tr></thead><tbody>"
-    html_details_table += print_html_details_table(details_list[1], "DOWN HOSTS")
-    html_details_table += print_html_details_table(details_list[0], "UP HOSTS")
+
+    if args.object_type == "hosts":
+       html_details_table += print_html_details_table(details_list[1], "DOWN HOSTS")
+       html_details_table += print_html_details_table(details_list[0], "UP HOSTS")
+    if args.object_type == "services":
+       html_details_table += print_html_details_table(details_list[2], "CRITICAL SERVICES")
+       html_details_table += print_html_details_table(details_list[1], "WARNING SERVICES")
+       html_details_table += print_html_details_table(details_list[0], "OK SERVICES")
     html_details_table += "</tbody></table>"
 
 

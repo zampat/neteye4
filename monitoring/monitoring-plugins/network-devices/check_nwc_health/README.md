@@ -21,6 +21,9 @@ Cache Paths to create:
 
 
 ## Compiling of script:
+Download last available source codes from https://labs.consol.de/omd/packages/check_nwc_health/ and unpack in into a temporary directory.
+Then, move to that directory, run `configure` (with the required options) and `make` (just plain is enough).
+At the end, in the subdirectory `./plugins-scripts` the compiled version will be available.
 
 ```
 Compiling for NetEye 4:

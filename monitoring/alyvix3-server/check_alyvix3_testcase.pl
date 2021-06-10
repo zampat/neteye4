@@ -48,6 +48,8 @@ my $opt_testcase = undef;
 my $opt_testuser = undef;
 my $opt_timeout  = 0;
 my $opt_testing  = 0;
+my $opt_apibase  = 'v0/testcases';
+my $opt_proxybase = undef;
 
 # Get the options
 Getopt::Long::Configure('bundling');
@@ -67,6 +69,10 @@ GetOptions(
 	'testuser=s'		=> \$opt_testuser,
 	't=i'			=> \$opt_timeout,
 	'timeout=i'		=> \$opt_timeout,
+	'A=s'			=> \$opt_apibase,
+	'apibase=s'		=> \$opt_apibase,
+	'P=s'			=> \$opt_proxybase,
+	'useproxypass=s'	=> \$opt_proxybase,
 	) || print_help();
 
 # If somebody wants the help ...
@@ -84,8 +90,13 @@ if (! defined($opt_testcase)) {
 	exit 3;
 }
 
-my $base_url = "https://$opt_host/v0/testcases/$opt_testcase/";
-#my $json_content = get("https://$opt_host/v0/testcases/$opt_testcase/");
+my $base_url = "https://${opt_host}/${opt_apibase}/${opt_testcase}/";
+my $output_url = $base_url;
+
+if (defined($opt_proxybase)) {
+	$output_url = "${opt_proxybase}/${opt_host}/${opt_apibase}/${opt_testcase}";
+}
+
 my $useragent = LWP::UserAgent->new;
 $useragent->ssl_opts(
     SSL_verify_mode => SSL_VERIFY_NONE, 
@@ -285,7 +296,7 @@ if ($opt_debug) {
 	print "$testcode -> $oldcode\n";
 }
 if ($opt_testing) {
-	print "${statestr} - $nprob/$ntot problem(s)${probstr} (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
+	print "${statestr} - $nprob/$ntot problem(s)${probstr} (<a href='${output_url}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
 	if ($#opt_verbose) {
 		print "$verbstr";
 	}
@@ -294,12 +305,12 @@ if ($opt_testing) {
 		or die "Can't create \"$tmpfile\": $!\n";
 	print($fh_out "${testcode}\n");
 	close($fh_out);
-	print "${statestr} - $nprob problem(s)${probstr} (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
+	print "${statestr} - $nprob problem(s)${probstr} (<a href='${output_url}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
 	if ($#opt_verbose) {
 		print "$verbstr";
 	}
 } else {
-	print "${statestr} - $nprob problem(s)${probstr} [$oldstr] (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>)\n";
+	print "${statestr} - $nprob problem(s)${probstr} [$oldstr] (<a href='${output_url}/reports/?runcode=${testcode}' target='_blank'>Log</a>)\n";
 	if ($#opt_verbose) {
 		print "$verbstr";
 	}
@@ -326,14 +337,16 @@ sub print_help() {
 	print " -H (--host)      Alyvix3 Server hostname/ip\n";
 	print " -T (--testcase)  Alyvix3 Testcase name\n";
 	print " -U (--testuser)  Alyvix3 Testcase user (default: ALL_USERS)\n";
-	print " -t (--timeout)   Alyvix3 Testcase values older then timeout gives UNKNOWN (default: $opt_timeout)";
-	print "\n";
+	print " -t (--timeout)   Alyvix3 Testcase values older then timeout gives UNKNOWN (default: $opt_timeout)\n";
+	print " -A (--apibase)   Alyvix3 Server API BaseURL (default: $opt_apibase)\n";
+	print " -P (--useproxypass)   The Output Url to access logs uses a proxypass\n";
 	exit 0;
 }
 
 sub print_usage() {
 	print "Usage: \n";
 	print "  $PROGNAME [-H|--dbhost <hostname/ip>] [-d|--dbname <databasename>] [-u|--dbuser <username>] [-p|--dbpass <password>] [-T|--testonly] [-U|--apiuser <user>] [-S|--apipass <password>]\n";
+	print "            [-A|--apibase <api-baseurl>] [-P|--useproxypass <proxy-base-url>]\n";
 	print "  $PROGNAME [-h | --help]\n";
 	print "  $PROGNAME [-V | --version]\n";
 }

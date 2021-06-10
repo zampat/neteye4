@@ -61,6 +61,7 @@ DRBD
 DSL
 elasticsearch
 Elasticsearch
+EMC
 enablerepo
 epel
 esx
@@ -337,6 +338,7 @@ virtualenv
 VM
 VMware
 VMWare
+VNX
 webhook
 Webhook
 webhooks

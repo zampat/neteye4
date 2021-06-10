@@ -1,6 +1,6 @@
 ## EMC VNX
 
-Use Check: check_vnx.pl
+Use Check: `check_vnx.pl`
 
 - Install the `navicli` from here:
 
