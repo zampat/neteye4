@@ -47,15 +47,17 @@ my $opt_help         = undef;
 my $opt_debug        = 0;
 my $opt_host         = undef;
 my $opt_hostname     = undef;
-my $opt_servicepre   = "ALYVIX";
+my $opt_servicepre   = "Alyvix";
 my $opt_testuser     = undef;
 my $opt_timeout      = 0;
 my $opt_testing      = 0;
+my $opt_apibase      = 'v0/testcases';
+my $opt_proxybase    = undef;
 my $opt_statedir     = "/var/spool/neteye/tmp";
+my $opt_userpass     = "root:356f9cc46d491810";
 
 # Global Variables
-my $request_host = "https://icinga2-master.neteyelocal:5665";
-my $userpass     = "root:e4a55a025463362f";
+my $request_url = "https://icinga2-master.neteyelocal:5665";
 my @services     = [];
 my @testcases    = [];
 my @timeouts     = [];
@@ -74,14 +76,20 @@ GetOptions(
 	'host=s'		=> \$opt_host,
 	'N=s'			=> \$opt_hostname,
 	'hostname=s'		=> \$opt_hostname,
-	'P=s'			=> \$opt_servicepre,
-	'testcase-pre=s'	=> \$opt_servicepre,
+	'T=s'			=> \$opt_servicepre,
+	'testcasepre=s'		=> \$opt_servicepre,
 	'U=s'			=> \$opt_testuser,
 	'testuser=s'		=> \$opt_testuser,
 	't=i'			=> \$opt_timeout,
 	'timeout=i'		=> \$opt_timeout,
 	'd=s'			=> \$opt_statedir,
 	'statedir=s'		=> \$opt_statedir,
+	'p=s'			=> \$opt_userpass,
+	'userpass=s'		=> \$opt_userpass,
+	'A=s'			=> \$opt_apibase,
+	'apibase=s'		=> \$opt_apibase,
+	'P=s'			=> \$opt_proxybase,
+	'useproxypass=s'	=> \$opt_proxybase,
 	) || print_help();
 
 # If somebody wants the help ...
@@ -109,10 +117,13 @@ sub get_testcase_status {
 	my $opt_hostname = shift;
 	my $opt_service = shift;
 
-	if (!defined($opt_testcase)) {
-		return 0;
+	my $base_url = "https://${opt_host}/${opt_apibase}/${opt_testcase}/";
+	my $output_url = $base_url;
+
+	if (defined($opt_proxybase)) {
+		$output_url = "${opt_proxybase}/${opt_apibase}/${opt_testcase}";
 	}
-	my $base_url = "https://$opt_host/v0/testcases/$opt_testcase/";
+
 	my $useragent = LWP::UserAgent->new;
 	$useragent->ssl_opts(
 		SSL_verify_mode => SSL_VERIFY_NONE, 
@@ -317,22 +328,24 @@ sub get_testcase_status {
 	}
 	my $outstr = "";
 	if ($opt_testing) {
-		print "${statestr} - $nprob/$ntot problem(s)${probstr} (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
+		print "${statestr} - $nprob/$ntot problem(s)${probstr} (<a href='${output_url}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
 		if ($#opt_verbose) {
 			print "$verbstr";
 		}
 	} elsif ($testcode ne $oldcode) {
-		$outstr="${statestr} - $nprob problem(s)${probstr} (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>)";
+		$outstr="${statestr} - $nprob problem(s)${probstr} (<a href='${output_url}/reports/?runcode=${testcode}' target='_blank'>Log</a>)";
 		passive_set_service($opt_hostname, $opt_service, $teststate, $outstr, $verbstr, "duration=${testduration}ms;;;0;${perfout}");
 		open(my $fh_out, '>', $statefile)
 			or die "Can't create \"$statefile\": $!\n";
 		print($fh_out "${testcode}\n");
 		close($fh_out);
 	} elsif ($oldstr eq "TIMEOUT") {
-		$outstr="${statestr} - $nprob problem(s)${probstr} [$oldstr] (<a href='https://${opt_host}/v0/testcases/${opt_testcase}/reports/?runcode=${testcode}' target='_blank'>Log</a>)\n";
+		$outstr="${statestr} - $nprob problem(s)${probstr} [$oldstr] (<a href='${output_url}/reports/?runcode=${testcode}' target='_blank'>Log</a>)\n";
 		passive_set_service($opt_hostname, $opt_service,$teststate, $outstr, $verbstr, "");
+	} else {
+		$teststate += 10;
 	}
-	return 0;
+	return $teststate;
 }
 
 sub get_alyvix_services {
@@ -340,12 +353,12 @@ sub get_alyvix_services {
 	my $servicepre = shift;
 
 	my $client = REST::Client->new();
-	$client->setHost($request_host);
+	$client->setHost($request_url);
 	$client->getUseragent()->ssl_opts(verify_hostname => 0);
 	#$client->setCa("/neteye/shared/monitoring/data/root-ca.crt");
 	$client->addHeader("Accept", "application/json");
 	$client->addHeader("X-HTTP-Method-Override", "GET");
-	$client->addHeader("Authorization", "Basic " . encode_base64($userpass));
+	$client->addHeader("Authorization", "Basic " . encode_base64($opt_userpass));
 	my %json_data = (
 		filter => "host.name==\"$hostname\" && match(\"$servicepre*\",service.name)",
 	);
@@ -380,10 +393,13 @@ sub get_alyvix_services {
 		}
 		$services[$n]  = $service->{attrs}->{name};
 		$testcases[$n] = $service->{attrs}->{vars}->{alyvix_testcase_name};
-		if (defined($service->{attrs}->{vars}->{alyvix_testcase_timeout})) {
-			$timeouts[$n] = $service->{attrs}->{vars}->{alyvix_testcase_timeout};
+		if (defined($service->{attrs}->{vars}->{alyvix_timeout})) {
+			$timeouts[$n] = $service->{attrs}->{vars}->{alyvix_timeout};
 		} else {
 			$timeouts[$n] = $opt_timeout;
+		}
+		if ($opt_debug) {
+			print "Timeout: " . $timeouts[$n] . "\n";
 		}
 		$n++;
 	}
@@ -398,12 +414,12 @@ sub passive_set_service {
 	my $perfstr  = shift;
 
 	my $client = REST::Client->new();
-	$client->setHost($request_host);
+	$client->setHost($request_url);
 	$client->getUseragent()->ssl_opts(verify_hostname => 0);
 	#$client->setCa("pki/icinga2-ca.crt");
 	$client->addHeader("Accept", "application/json");
 	$client->addHeader("X-HTTP-Method-Override", "POST");
-	$client->addHeader("Authorization", "Basic " . encode_base64($userpass));
+	$client->addHeader("Authorization", "Basic " . encode_base64($opt_userpass));
 	my $thost = `hostname`;
 	chomp $thost;
 		#pretty => 'true',
@@ -416,7 +432,6 @@ sub passive_set_service {
 		performance_data => $perfstr,
 	);
 	my $data = encode_json(\%json_data);
-print "DATA:$data\n";
 	$client->POST("/v1/actions/process-check-result", $data);
 
 	my $status = $client->responseCode();
@@ -437,22 +452,28 @@ sub print_help() {
 	print "\n";
 	print_usage();
 	print "\n";
-	print " -V (--version)   Programm version\n";
-	print " -h (--help)      usage help\n";
-	print " -v (--verbose)   verbose output\n";
-	print " -D (--debug)     debug output\n";
-	print " -H (--host)      Alyvix3 Server hostname/ip\n";
-	print " -T (--testcase)  Alyvix3 Testcase name\n";
-	print " -U (--testuser)  Alyvix3 Testcase user (default: ALL_USERS)\n";
-	print " -t (--timeout)   Alyvix3 Testcase values older then timeout gives UNKNOWN (default: $opt_timeout)";
-	print " -d (--statedir)  Directory where to write the statefiles (default: $opt_statedir)";
+	print " -V (--version)     Programm version\n";
+	print " -h (--help)        usage help\n";
+	print " -v (--verbose)     verbose output\n";
+	print " -D (--debug)       debug output\n";
+	print " -H (--host)        Alyvix3 Server hostname/ip\n";
+	print " -N (--hostname)    Alyvix3 Monitoring Hostname\n";
+	print " -T (--testcasepre) Alyvix3 Testcase Monitoring Service Prefix\n";
+	print " -U (--testuser)    Alyvix3 Testcase user (default: ALL_USERS)\n";
+	print " -t (--timeout)     Alyvix3 Testcase values older then timeout gives UNKNOWN (default: $opt_timeout)\n";
+	print " -d (--statedir)    Directory where to write the statefiles (default: $opt_statedir)\n";
+	print " -p (--userpass)    User:Password for Icinga2 API access (default: alyvix:***)\n";
+
+
+	print " -A (--apibase)     Alyvix3 Server API BaseURL (default: $opt_apibase)\n";
+	print " -P (--proxypass)   The Output Url to access logs uses a proxypass\n";
 	print "\n";
 	exit 0;
 }
 
 sub print_usage() {
 	print "Usage: \n";
-	print "  $PROGNAME [-H|--dbhost <hostname/ip>] [-d|--dbname <databasename>] [-u|--dbuser <username>] [-p|--dbpass <password>] [-T|--testonly] [-U|--apiuser <user>] [-S|--apipass <password>] [-d|--statedir <dir>]\n";
+	print "  $PROGNAME (-H|--host <hostname/ip>) (-N|--hostname <host.name>) [-T|--testcasepre <string>] [-U|--testuser <user>] [-t|--timeout <int>] [-d|--statedir <dir>] [-p|--userpass <user:pass>] [-A|--apibase <apibase>] [-P|--proxypass <proxy-pre>]\n";
 	print "  $PROGNAME [-h | --help]\n";
 	print "  $PROGNAME [-V | --version]\n";
 }
@@ -462,8 +483,19 @@ sub print_usage() {
 #
 get_alyvix_services($opt_hostname, $opt_servicepre);
 my $n = 0;
+my $outstr = "";
+my @statestr = ( "OK", "WARNING", "CRITICAL", "UNKNOWN" );
+
 foreach my $service ( @services ) {
-	get_testcase_status($opt_host, $testcases[$n], $timeouts[$n], $opt_hostname, $service);
+	my $state = get_testcase_status($opt_host, $testcases[$n], $timeouts[$n], $opt_hostname, $service);
+	if ($state >= 10) {
+		$state -= 10;
+		$outstr .= "[" . $statestr[$state] . "]\t(OLD) $service\n";
+	} else {
+		$outstr .= "[" . $statestr[$state] . "]\t$service\n";
+	}
 	$n++;
-}	
+}
+
+print "OK - Run all '$opt_servicepre' services\n$outstr";
 exit 0;
