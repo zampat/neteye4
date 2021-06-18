@@ -1,16 +1,15 @@
 #!/bin/bash
 
 FOLDER_MONITORING_AGENT_MICROSOFT="$1/agents/microsoft/icinga"
-ICINGA2_AGENT_VERSION=$2
+CURRENT_VERSION=$(rpm -qf /neteye/shared/share/icinga2/downloads/icinga2.msi | cut -d - -f3 | cut -d _ -f 1)
 ICINGA2_AGENT_PS_SCRIPT="/Icinga2Agent.psm1"
 SRC_GIT_AGENT_SCRIPTS_FOLDER="./monitoring/agents/microsoft/icinga"
 
 
-if [ ! -f "${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2-v$ICINGA2_AGENT_VERSION-x86_64.msi" ]
+if [ ! -f "${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2-v$CURRENT_VERSION-x86_64.msi" ]
 then
    mkdir -p $FOLDER_MONITORING_AGENT_MICROSOFT
    echo "[i] 020: Installing Icinga Monitoring Agent Version $ICINGA2_AGENT_VERSION for Microsoft"
-   CURRENT_VERSION=$(rpm -qf /neteye/shared/share/icinga2/downloads/icinga2.msi | cut -d - -f3 | cut -d _ -f 1)
    cp /neteye/shared/share/icinga2/downloads/icinga2.msi ${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2-v$CURRENT_VERSION-x86_64.msi   
 else
    echo "[ ] 020: Icinga2 agent already installed"
