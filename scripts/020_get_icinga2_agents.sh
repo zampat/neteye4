@@ -9,7 +9,7 @@ SRC_GIT_AGENT_SCRIPTS_FOLDER="./monitoring/agents/microsoft/icinga"
 if [ ! -f "${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2-v$CURRENT_VERSION-x86_64.msi" ]
 then
    mkdir -p $FOLDER_MONITORING_AGENT_MICROSOFT
-   echo "[i] 020: Installing Icinga Monitoring Agent Version $ICINGA2_AGENT_VERSION for Microsoft"
+   echo "[i] 020: Installing Icinga Monitoring Agent Version $CURRENT_VERSION for Microsoft"
    cp /neteye/shared/share/icinga2/downloads/icinga2.msi ${FOLDER_MONITORING_AGENT_MICROSOFT}/Icinga2-v$CURRENT_VERSION-x86_64.msi   
 else
    echo "[ ] 020: Icinga2 agent already installed"
