@@ -696,7 +696,7 @@ def main():
 
 
 def print_html_state_details(elements: List[str], label: str):
-    elements = " | ".join(elements)
+    elements = " \\ ".join(elements)
     return f"<tr><td>{label}</td><td>{elements}</td></tr>"
 
 
