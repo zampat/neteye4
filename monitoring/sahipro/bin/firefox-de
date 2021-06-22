@@ -1,0 +1,4 @@
+#! /bin/sh
+#
+export LANG=de_DE.UTF-8
+/usr/bin/waitmax 900 /usr/bin/firefox $@
