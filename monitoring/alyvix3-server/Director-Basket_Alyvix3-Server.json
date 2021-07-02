@@ -1,0 +1,302 @@
+{
+    "Command": {
+        "check_alyvix3_testcase": {
+            "arguments": {
+                "-H": {
+                    "description": "Hostname\/IP",
+                    "value": "$host.address$"
+                },
+                "-T": {
+                    "description": "Alyvix Testcase Name",
+                    "value": "$alyvix_testcase_name$"
+                },
+                "-U": {
+                    "description": "Alyvix Testcase User",
+                    "value": "$alyvix_testcase_user$"
+                },
+                "-t": {
+                    "description": "Alyvix Testcase Timeout",
+                    "value": "$alyvix_timeout$"
+                },
+                "-v": {
+                    "description": "Verbose Output",
+                    "set_if": "1",
+                    "set_if_format": "string"
+                }
+            },
+            "command": "PluginContribDir + \/check_alyvix3_testcase.pl",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "check_alyvix3_testcase",
+            "object_type": "object",
+            "timeout": null,
+            "vars": {},
+            "zone": null
+        },
+        "check_alyvix3_testcases": {
+            "arguments": {
+                "-H": {
+                    "description": "Hostname\/IP",
+                    "value": "$host.address$"
+                },
+                "-N": {
+                    "description": "Alyvix Monitoring Hostname",
+                    "value": "$host.name$"
+                },
+                "-P": {
+                    "description": "Alyvix Server Proxy Pass",
+                    "value": "\/alyvix\/$host.name$"
+                },
+                "-T": {
+                    "description": "Alyvix Testcase Prefix",
+                    "value": "$alyvix_testcase_prefix$"
+                },
+                "-U": {
+                    "description": "Alyvix Testcase User",
+                    "value": "$alyvix_testcase_user$"
+                },
+                "-p": {
+                    "description": "Icinga2 API user:pass",
+                    "value": "$icinga2_api_userpass$"
+                },
+                "-t": {
+                    "description": "Alyvix Testcase Timeout",
+                    "value": "$alyvix_timeout$"
+                },
+                "-v": {
+                    "description": "Verbose Output",
+                    "set_if": "1"
+                }
+            },
+            "command": "PluginContribDir + \/check_alyvix3_testcases.pl",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "check_alyvix3_testcases",
+            "object_type": "object",
+            "timeout": null,
+            "vars": {},
+            "zone": null
+        },
+        "run_alyvix_workflow": {
+            "arguments": [],
+            "command": "PluginContribDir + \/run_alyvix_workflow.sh $host.address$ $alyvix_testcase_user$ $alyvix_testcase_domain$",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginCheck",
+            "object_name": "run_alyvix_workflow",
+            "object_type": "object",
+            "timeout": null,
+            "vars": {},
+            "zone": null
+        }
+    },
+    "ServiceTemplate": {
+        "Set_Alyvix_Services": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_alyvix3_testcases",
+            "check_interval": "60",
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-active-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "Set_Alyvix_Services",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        },
+        "run_alyvix_workflow": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "run_alyvix_workflow",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 2106,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 2086,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-active-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "run_alyvix_workflow",
+            "object_type": "template",
+            "retry_interval": null,
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {},
+            "volatile": null,
+            "zone": null
+        },
+        "Alyvix_Testcase": {
+            "action_url": null,
+            "apply_for": null,
+            "assign_filter": null,
+            "check_command": "check_alyvix3_testcase",
+            "check_interval": null,
+            "check_period": null,
+            "check_timeout": null,
+            "command_endpoint": null,
+            "disabled": false,
+            "display_name": null,
+            "enable_active_checks": null,
+            "enable_event_handler": null,
+            "enable_flapping": null,
+            "enable_notifications": null,
+            "enable_passive_checks": null,
+            "enable_perfdata": null,
+            "event_command": null,
+            "fields": [
+                {
+                    "datafield_id": 2085,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 2086,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 2087,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "flapping_threshold_high": null,
+            "flapping_threshold_low": null,
+            "groups": [],
+            "host": null,
+            "icon_image": null,
+            "icon_image_alt": null,
+            "imports": [
+                "generic-passive-service"
+            ],
+            "max_check_attempts": null,
+            "notes": null,
+            "notes_url": null,
+            "object_name": "Alyvix_Testcase",
+            "object_type": "template",
+            "retry_interval": "300",
+            "service_set": null,
+            "template_choice": null,
+            "use_agent": null,
+            "use_var_overrides": null,
+            "vars": {
+                "custom_analytics_dashboard": "..\/d\/CT3qf5oZz\/alyvix-testcases?var-command=$service.check_command$"
+            },
+            "volatile": null,
+            "zone": null
+        }
+    },
+    "Datafield": {
+        "2106": {
+            "category_id": null,
+            "varname": "alyvix_testcase_domain",
+            "caption": "Alyvix Testcase Domain",
+            "description": "Windows Domain of Alyvix Testcase User",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "2106",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "2086": {
+            "category_id": null,
+            "varname": "alyvix_testcase_user",
+            "caption": "Alyvix Testcase User",
+            "description": "Alyvix Testcase User",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "2086",
+            "settings": {}
+        },
+        "2085": {
+            "category_id": null,
+            "varname": "alyvix_testcase_name",
+            "caption": "Alyvix Testcase Name",
+            "description": "Alyvix Testcase Name",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "2085",
+            "settings": {}
+        },
+        "2087": {
+            "category_id": null,
+            "varname": "alyvix_timeout",
+            "caption": "Alyvix UNKNOWN Timeout",
+            "description": "Alyvix Testcase Timeout",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "2087",
+            "settings": {}
+        }
+    }
+}

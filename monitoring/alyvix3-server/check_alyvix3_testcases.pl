@@ -54,7 +54,7 @@ my $opt_testing      = 0;
 my $opt_apibase      = 'v0/testcases';
 my $opt_proxybase    = undef;
 my $opt_statedir     = "/var/spool/neteye/tmp";
-my $opt_userpass     = "root:356f9cc46d491810";
+my $opt_userpass     = "root:password";
 
 # Global Variables
 my $request_url = "https://icinga2-master.neteyelocal:5665";
