@@ -47,7 +47,7 @@
                     "value": "$user.vars.teams_webhook_url$"
                 }
             },
-            "command": "\/neteye\/shared\/icinga2\/conf\/icinga2\/scripts\/mail-host-notification.py",
+            "command": "\/neteye\/shared\/icinga2\/conf\/icinga2\/scripts\/teams-notification.py",
             "disabled": false,
             "fields": [],
             "imports": [],
@@ -142,7 +142,7 @@
                     "value": "$user.vars.teams_webhook_url$"
                 }
             },
-            "command": "\/neteye\/shared\/icinga2\/conf\/icinga2\/scripts\/mail-host-notification.py",
+            "command": "\/neteye\/shared\/icinga2\/conf\/icinga2\/scripts\/teams-notification.py",
             "disabled": false,
             "fields": [],
             "imports": [],
