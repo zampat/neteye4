@@ -8,7 +8,7 @@ import sys
 
 plugin_output_max_length = 3500
 
-icinga2_base_url = "https://xxxxxneteye_urlxxxxx/neteye"
+icinga2_base_url = "https://neteyedewzr.wgs.wuerth.com/neteye"
 
 teams_color = {
     "OK": "#32CD32",
@@ -44,6 +44,8 @@ def parse_args():
 
     parser.add_argument('--teams_webhook_url',
                         dest='teams_webhook_url', type=str, help='')
+    parser.add_argument('--teams_proxy',
+                        dest='teams_proxy', type=str, help='')
     parser.add_argument('--notification_type',
                         dest='notification_type', type=str, help='')
     parser.add_argument('--notification_author',
@@ -154,13 +156,18 @@ def main():
     logger.debug("Generating notification command")
 
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
+    #proxy = args.teams_proxy
+    proxyDict = { 
+              "http"  : args.teams_proxy, 
+              "https" : args.teams_proxy, 
+            }
     # print(payload_attachments)
     response = requests.post(
         args.teams_webhook_url,
-        data=payload_attachments
+	proxies = proxyDict,
+        data=payload_attachments,
     )
-
+    
     try:
         response.raise_for_status()
     except requests.exceptions.HTTPError as e:
