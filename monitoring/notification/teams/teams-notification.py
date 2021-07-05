@@ -8,7 +8,7 @@ import sys
 
 plugin_output_max_length = 3500
 
-icinga2_base_url = "https://pbzneteye4.wp.lan/neteye"
+icinga2_base_url = "https://xxxxxneteye_urlxxxxx/neteye"
 
 teams_color = {
     "OK": "#32CD32",
