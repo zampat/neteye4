@@ -1,0 +1,220 @@
+{
+    "Command": {
+        "teams-host-notification": {
+            "arguments": {
+                "--host_check_attempt": {
+                    "required": true,
+                    "value": "$host.check_attempt$"
+                },
+                "--host_display_name": {
+                    "required": true,
+                    "value": "$notification_hostdisplayname$"
+                },
+                "--host_duration_sec": {
+                    "required": true,
+                    "value": "$host.duration_sec$"
+                },
+                "--host_last_state": {
+                    "value": "$host.last_state$"
+                },
+                "--host_name": {
+                    "required": true,
+                    "value": "$notification_hostname$"
+                },
+                "--host_output": {
+                    "value": "$notification_hostoutput$"
+                },
+                "--host_state": {
+                    "required": true,
+                    "value": "$notification_hoststate$"
+                },
+                "--icinga_long_date_time": {
+                    "required": true,
+                    "value": "$notification_date$"
+                },
+                "--notification_author": {
+                    "value": "$notification_author$"
+                },
+                "--notification_comment": {
+                    "value": "$notification_comment$"
+                },
+                "--notification_type": {
+                    "required": true,
+                    "value": "$notification_type$"
+                },
+                "--teams_webhook_url": {
+                    "required": true,
+                    "value": "$user.vars.teams_webhook_url$"
+                }
+            },
+            "command": "\/neteye\/shared\/icinga2\/conf\/icinga2\/scripts\/mail-host-notification.py",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginNotification",
+            "object_name": "teams-host-notification",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {
+                "notification_address": "$address$",
+                "notification_address6": "$address6$",
+                "notification_author": "$notification.author$",
+                "notification_comment": "$notification.comment$",
+                "notification_date": "$icinga.long_date_time$",
+                "notification_hostdisplayname": "$host.display_name$",
+                "notification_hostname": "$host.name$",
+                "notification_hostoutput": "$host.output$",
+                "notification_hoststate": "$host.state$",
+                "notification_type": "$notification.type$",
+                "notification_useremail": "$user.email$"
+            },
+            "zone": null
+        },
+        "teams-service-notification": {
+            "arguments": {
+                "--host_check_attempt": {
+                    "required": true,
+                    "value": "$host.check_attempt$"
+                },
+                "--host_display_name": {
+                    "required": true,
+                    "value": "$notification_hostdisplayname$"
+                },
+                "--host_duration_sec": {
+                    "required": true,
+                    "value": "$host.duration_sec$"
+                },
+                "--host_last_state": {
+                    "value": "$host.last_state$"
+                },
+                "--host_name": {
+                    "required": true,
+                    "value": "$notification_hostname$"
+                },
+                "--host_output": {
+                    "value": "$notification_hostoutput$"
+                },
+                "--host_state": {
+                    "required": true,
+                    "value": "$notification_hoststate$"
+                },
+                "--icinga_long_date_time": {
+                    "required": true,
+                    "value": "$notification_date$"
+                },
+                "--notification_author": {
+                    "value": "$notification_author$"
+                },
+                "--notification_comment": {
+                    "value": "$notification_comment$"
+                },
+                "--notification_type": {
+                    "required": true,
+                    "value": "$notification_type$"
+                },
+                "--object_type": {
+                    "value": "service"
+                },
+                "--service_check_attempt": {
+                    "value": "$service.check_attempt$"
+                },
+                "--service_display_name": {
+                    "value": "$service.display_name$"
+                },
+                "--service_duration_sec": {
+                    "value": "$service.duration_sec$"
+                },
+                "--service_last_state": {
+                    "value": "$service.last_state$"
+                },
+                "--service_name": {
+                    "value": "$service.name$"
+                },
+                "--service_output": {
+                    "value": "$service.output$"
+                },
+                "--service_state": {
+                    "value": "$service.state$"
+                },
+                "--teams_webhook_url": {
+                    "required": true,
+                    "value": "$user.vars.teams_webhook_url$"
+                }
+            },
+            "command": "\/neteye\/shared\/icinga2\/conf\/icinga2\/scripts\/mail-host-notification.py",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginNotification",
+            "object_name": "teams-service-notification",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {
+                "notification_address": "$address$",
+                "notification_address6": "$address6$",
+                "notification_author": "$notification.author$",
+                "notification_comment": "$notification.comment$",
+                "notification_date": "$icinga.long_date_time$",
+                "notification_hostdisplayname": "$host.display_name$",
+                "notification_hostname": "$host.name$",
+                "notification_hostoutput": "$host.output$",
+                "notification_hoststate": "$host.state$",
+                "notification_type": "$notification.type$",
+                "notification_useremail": "$user.email$"
+            },
+            "zone": null
+        }
+    },
+    "NotificationTemplate": {
+        "teams-host-notification": {
+            "apply_to": null,
+            "assign_filter": null,
+            "command": "teams-host-notification",
+            "disabled": false,
+            "fields": [],
+            "host": null,
+            "imports": [
+                "generic notify all events"
+            ],
+            "notification_interval": null,
+            "object_name": "teams-host-notification",
+            "object_type": "template",
+            "period": null,
+            "service": null,
+            "states": null,
+            "times_begin": null,
+            "times_end": null,
+            "types": null,
+            "user_groups": [],
+            "users": [],
+            "vars": {},
+            "zone": null
+        },
+        "teams-service-notification": {
+            "apply_to": null,
+            "assign_filter": null,
+            "command": "teams-service-notification",
+            "disabled": false,
+            "fields": [],
+            "host": null,
+            "imports": [
+                "generic notify all events"
+            ],
+            "notification_interval": null,
+            "object_name": "teams-service-notification",
+            "object_type": "template",
+            "period": null,
+            "service": null,
+            "states": null,
+            "times_begin": null,
+            "times_end": null,
+            "types": null,
+            "user_groups": [],
+            "users": [],
+            "vars": {},
+            "zone": null
+        }
+    }
+}
