@@ -1,0 +1,6 @@
+README:
+
+Credits for script to Saskia Oppenlaender, Würth IT
+
+1.
+pip-3 install py-radius

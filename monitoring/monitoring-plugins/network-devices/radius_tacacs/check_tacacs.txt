@@ -1,0 +1,10 @@
+README:
+
+Credits for script to Saskia Oppenlaender, Würth IT
+
+1.
+git clone https://github.com/ansible/tacacs_plus.git
+2.
+pip-3 install tacacs_plus
+3. 
+cp check_tacacs.py tacacs_plus/
