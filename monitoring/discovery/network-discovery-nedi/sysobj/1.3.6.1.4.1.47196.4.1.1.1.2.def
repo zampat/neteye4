@@ -1,0 +1,66 @@
+# Definition for 1.3.6.1.4.1.47196.4.1.1.1.2 created by Defed 1.9 on 12.Jul 2021 (root)
+
+# Main
+SNMPv	1
+Type	
+TypOID	
+NamOID	
+DesOID	
+OS	ArubaOS
+Icon	s2m
+Size	1
+Uptime	U
+Bridge	normal
+ArpND	oldphy
+Dispro	LLDPX
+Serial	
+Bimage	
+VLnams		
+VLnamx	
+Group	
+Mode	
+CfgChg	
+CfgWrt	
+FTPConf	
+Fanstat		
+
+# Interfaces
+StartX	
+EndX	
+IFname	
+IFaddr		
+IFalia	
+IFalix	
+InBcast	
+InDisc	
+OutDisc	
+IFvlan		
+IFvlix	
+IFpowr		
+IFpwix	
+IFpalc	
+IFdupl	
+IFduix	
+Halfdp	
+Fulldp	
+
+# Modules
+Modom		
+Moslot	
+Moclas	
+Movalu	
+Modesc	
+Modhw	
+Modfw	
+Modsw	
+Modser	
+Momodl	
+Modloc	
+Mostat	
+Mostok	
+
+# RRD Graphing
+CPUutl			
+Temp			
+MemCPU			
+Custom			
