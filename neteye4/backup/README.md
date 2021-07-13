@@ -15,7 +15,7 @@ yum install cifs-utils pigz
 ## Register remote mount point
 ```
 vi /etc/fstab
-//mydomain.lan/Backups/NetEye4   /cifs/NetEye     cifs    defaults,auto,username=neteye,password=secret,dom=mydomain.lan,file_mode=0666,dir_mode=0777   0       0
+//mydomain.lan/Backups/NetEye4   /cifs/backup     cifs    defaults,auto,username=neteye,password=secret,dom=mydomain.lan,file_mode=0666,dir_mode=0777   0       0
 ```
 
 ## Raise MySQL max connections limit

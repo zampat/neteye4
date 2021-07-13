@@ -75,7 +75,7 @@ fi
 #
 # Export the DB's in single file and one x table
 #
-for i in `mysql -BNe "show databases" 2>/dev/null`
+for i in `mysql -BNe "SELECT schema_name FROM information_schema.schemata where <> 'eventhandler'" 2>/dev/null`
 do
 	if [ -z "$ECHO" ]
 	then
