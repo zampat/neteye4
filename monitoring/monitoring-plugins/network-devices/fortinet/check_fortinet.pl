@@ -1239,7 +1239,7 @@ sub parse_args {
   my $blacklist     = undef;
   my $whitelist     = undef;
   my $nosync        = undef;
-  my $path          = "/usr/local/nagios/var/spool/FortiSerial";
+  my $path          = "/neteye/shared/monitoring/cache";
   my $help          = 0;
   my $version       = 0;
 
