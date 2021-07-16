@@ -1,0 +1,56 @@
+# Definition for 1.3.6.1.4.1.6486.800.1.1.2.1.12.1.5 created by Defgen 1.8 on 8.Nov 2012 (admin)
+
+# General
+SNMPv	2HC
+Type	OS6450-24
+TypOID	
+DesOID	
+OS	Omnistack
+Icon	s3m
+Size	1
+Bridge	qbri
+ArpND	old
+Dispro	LLDPX
+Serial	1.3.6.1.2.1.47.1.1.1.1.11.1
+Bimage	1.3.6.1.4.1.6486.800.1.1.1.1.1.1.1.31.1
+
+VLnams	1.3.6.1.4.1.6486.800.1.2.1.3.1.1.1.1.1.2
+VLnamx	
+Group	
+Mode	
+
+# Interfaces
+StartX	
+EndX	
+IFname	1.3.6.1.2.1.31.1.1.1.1
+IFaddr	old
+IFalia	1.3.6.1.2.1.31.1.1.1.18
+IFalix	
+InBcast	1.3.6.1.2.1.31.1.1.1.3
+InDisc	1.3.6.1.2.1.2.2.1.13
+OutDisc	1.3.6.1.2.1.2.2.1.19
+IFvlan	1.3.6.1.2.1.17.7.1.4.5.1.1
+IFvlix	
+IFpowr	
+IFpwix	
+IFdupl	1.3.6.1.2.1.10.7.2.1.19
+IFduix	
+Halfdp	2
+Fulldp	3
+
+# Modules
+Modesc	1.3.6.1.2.1.47.1.1.1.1.12
+Moclas	1.3.6.1.2.1.47.1.1.1.1.5
+Movalu	3|10
+Moslot	1.3.6.1.2.1.47.1.1.1.1.7
+Modhw	
+Modsw	
+Modfw	
+Modser	1.3.6.1.2.1.47.1.1.1.1.11
+Momodl	
+
+# RRD Graphing
+CPUutl	1.3.6.1.4.1.6486.800.1.2.1.16.1.1.1.15.0
+Temp	1.3.6.1.4.1.6486.800.1.2.1.16.1.1.1.17.0	
+MemCPU	1.3.6.1.4.1.6486.800.1.2.1.16.1.1.1.9.0	%
+Custom		

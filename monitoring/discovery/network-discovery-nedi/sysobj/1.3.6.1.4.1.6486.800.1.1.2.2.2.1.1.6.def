@@ -1,0 +1,62 @@
+# Definition for 1.3.6.1.4.1.6486.800.1.1.2.2.2.1.1.6 created by Defgen 2.0 on 18.Oct 2016 (admin)
+ 
+# Main
+SNMPv	2HC
+Type	OAW-4504
+TypOID	1.3.6.1.2.1.47.1.1.1.1.13.1
+DesOID	
+OS	other
+Icon	wcm
+Size	1
+TempAlert	
+Bridge	Aruba
+ArpND	old
+Dispro	LLDPXN
+Serial	1.3.6.1.2.1.47.1.1.1.1.11.1
+Bimage	
+CfgChg	
+CfgWrt	
+FTPConf	
+VLnams	1.3.6.1.2.1.17.7.1.4.3.1.1
+VLnamx	
+Group	
+Mode	
+ 
+# Interfaces
+StartX	
+EndX	
+IFname	
+IFaddr		
+IFalia	
+IFalix	
+InBcast	
+InDisc	
+OutDisc	
+IFvlan	
+IFvlix	
+IFpowr		
+IFpwix	
+IFdupl	
+IFduix	
+Halfdp	
+Fulldp	
+ 
+# Modules
+Modesc	
+Moclas	
+Movalu	
+Moslot	
+Modhw	
+Modsw	
+Modfw	
+Modser	
+Momodl	
+Modloc	
+Mostat	
+Mostok	
+ 
+# RRD Graphing
+CPUutl		
+Temp		
+MemCPU		
+Custom		
