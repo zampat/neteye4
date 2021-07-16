@@ -54,13 +54,17 @@ my $opt_testing      = 0;
 my $opt_apibase      = 'v0/testcases';
 my $opt_proxybase    = undef;
 my $opt_statedir     = "/var/spool/neteye/tmp";
+<<<<<<< HEAD
+my $opt_userpass     = "alyvix:password";
+=======
 my $opt_userpass     = "root:password";
+>>>>>>> 18b2d0ad54c2a302c00f1038ab093279a8449cec
 
 # Global Variables
 my $request_url = "https://icinga2-master.neteyelocal:5665";
-my @services     = [];
-my @testcases    = [];
-my @timeouts     = [];
+my @services;
+my %testcases;
+my %timeouts;
 
 # Get the options
 Getopt::Long::Configure('bundling');
@@ -185,6 +189,11 @@ sub get_testcase_status {
 	if (defined($opt_testuser)) {
 		$testuser = $opt_testuser;
 	}
+
+	if ($size <= 0) {
+		return 20;
+	}
+
 	my $statefile = $opt_statedir . "/alyvix3_${opt_host}_${opt_testcase}_${testuser}.state";
 
 	if (-e $statefile) {
@@ -392,14 +401,14 @@ sub get_alyvix_services {
 			print $service->{attrs}->{name} . ":" . $service->{attrs}->{vars}->{alyvix_testcase_name} . "\n";
 		}
 		$services[$n]  = $service->{attrs}->{name};
-		$testcases[$n] = $service->{attrs}->{vars}->{alyvix_testcase_name};
+		$testcases{$service->{attrs}->{name}} = $service->{attrs}->{vars}->{alyvix_testcase_name};
 		if (defined($service->{attrs}->{vars}->{alyvix_timeout})) {
-			$timeouts[$n] = $service->{attrs}->{vars}->{alyvix_timeout};
+			$timeouts{$service->{attrs}->{name}} = $service->{attrs}->{vars}->{alyvix_timeout};
 		} else {
-			$timeouts[$n] = $opt_timeout;
+			$timeouts{$service->{attrs}->{name}} = $opt_timeout;
 		}
 		if ($opt_debug) {
-			print "Timeout: " . $timeouts[$n] . "\n";
+			print "Timeout: " . $timeouts{$service->{attrs}->{name}} . "\n";
 		}
 		$n++;
 	}
@@ -423,11 +432,17 @@ sub passive_set_service {
 	my $thost = `hostname`;
 	chomp $thost;
 		#pretty => 'true',
+	my $pout;
+	if (defined($verbstr)) {
+		$pout = "$outstr\n$verbstr";
+	} else {
+		$pout = "$outstr";
+	}
 	my %json_data = (
 		type => 'Service',
 		filter => "host.name==\"$HOSTNAME\" && service.name==\"$SERVICE\"",
 		exit_status => $state,
-		plugin_output => "$outstr\n$verbstr",
+		plugin_output => "$pout",
 		check_source => "$thost",
 		performance_data => $perfstr,
 	);
@@ -486,9 +501,12 @@ my $n = 0;
 my $outstr = "";
 my @statestr = ( "OK", "WARNING", "CRITICAL", "UNKNOWN" );
 
-foreach my $service ( @services ) {
-	my $state = get_testcase_status($opt_host, $testcases[$n], $timeouts[$n], $opt_hostname, $service);
-	if ($state >= 10) {
+foreach my $service ( sort @services ) {
+	my $state = get_testcase_status($opt_host, $testcases{$service}, $timeouts{$service}, $opt_hostname, $service);
+	if ($state >= 20) {
+		$state = 3;
+		$outstr .= "[" . $statestr[$state] . "]\t{DISABLED} $service\n";
+	} elsif ($state >= 10) {
 		$state -= 10;
 		$outstr .= "[" . $statestr[$state] . "]\t(OLD) $service\n";
 	} else {
