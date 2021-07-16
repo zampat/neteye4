@@ -6,6 +6,7 @@ Aggregators
 AIX
 aix
 al
+Alcatel
 alyvix
 Alyvix
 analytics
@@ -73,6 +74,7 @@ EventHandler
 Fibre
 filebeat
 Filebeat
+Fortinet
 fqdn
 FQDN
 freetds
@@ -183,6 +185,7 @@ NagVis
 nats
 Nats
 navicli
+NeDi
 neteye/M
 Neteye/M
 NetEye/M
