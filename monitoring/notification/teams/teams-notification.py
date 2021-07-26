@@ -8,7 +8,7 @@ import sys
 
 plugin_output_max_length = 3500
 
-icinga2_base_url = "https://neteyedewzr.wgs.wuerth.com/neteye"
+icinga2_base_url = "https://neteye.mydomain.lan/neteye"
 
 teams_color = {
     "OK": "#32CD32",
