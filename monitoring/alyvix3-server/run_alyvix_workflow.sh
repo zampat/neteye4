@@ -4,7 +4,7 @@ HOST=$1
 USER=$2
 DOMAIN=$3
 
-if [ -n "$DOMAÏN" ]
+if [ -n "$DOMAIN" ]
 then
 	RETSTR=$(curl -k -s "https://$HOST/v0/flows/run/?username=$DOMAIN\\$USER")
 else
@@ -13,14 +13,14 @@ fi
 
 if ! echo $RETST | grep true >/dev/null
 then
-	if [ -n "$DOMAÏN" ]
+	if [ -n "$DOMAIN" ]
 	then
 		echo "OK - Workflow $DOMAIN\\$USER started"
 	else
 		echo "OK - Workflow $USER started"
 	fi
 else
-	if [ -n "$DOMAÏN" ]
+	if [ -n "$DOMAIN" ]
 	then
 		echo "CRITICAL - Could not start workflow for user $DOMAIN\\$USER"
 	else
