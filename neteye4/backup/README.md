@@ -20,7 +20,7 @@ vi /etc/fstab
 
 ## Raise MySQL max connections limit
 ```
-cat >>/etc/my.cnf.d/neteye.cnf <<EOM
+cat >>/neteye/shared/mysql/conf/my.cnf.d/neteye.cnf <<EOM
 [mysqld]
 max_connections = 250
 EOM
@@ -37,5 +37,5 @@ Define cron job:
 ```
 #crontab -e
 #Backup of neteye at 20:00.
-0 20 * * * /usr/local/sbin/backup_neteye.sh >/dev/null
+0 20 * * * /usr/bin/df | grep mysql$ > /dev/null 2>&1 && /usr/local/sbin/backup_neteye.sh --dbonly >/dev/null
 ```

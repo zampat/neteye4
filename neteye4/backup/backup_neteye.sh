@@ -75,7 +75,7 @@ fi
 #
 # Export the DB's in single file and one x table
 #
-for i in `mysql -BNe "SELECT schema_name FROM information_schema.schemata where <> 'eventhandler'" 2>/dev/null`
+for i in `mysql -BNe "SELECT schema_name FROM information_schema.schemata where schema_name NOT IN ('information_schema', 'eventhandler','icinga');" 2>/dev/null`
 do
 	if [ -z "$ECHO" ]
 	then
@@ -83,16 +83,16 @@ do
 		then
 			mkdir -p $BACKUPDIR/db/$i
 		fi
-		mysqldump --single-transaction --quick --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-quote-names --skip-extended-insert $i | gzip >$BACKUPDIR/db/$i.sql.gz
+		mysqldump --single-transaction --quick --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-extended-insert $i | gzip >$BACKUPDIR/db/$i.sql.gz
 		for j in $(mysql -BNe "show tables from $i")
 		do
-			mysqldump  --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-quote-names --skip-extended-insert $i $j | gzip >$BACKUPDIR/db/$i/$j.sql.gz
+			mysqldump  --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-extended-insert $i $j | gzip >$BACKUPDIR/db/$i/$j.sql.gz
 		done
 	else
-		echo "mysqldump --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-quote-names --skip-extended-insert $i | gzip >$BACKUPDIR/db/$i.sql.gz"
+		echo "mysqldump --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-extended-insert $i | gzip >$BACKUPDIR/db/$i.sql.gz"
 		for j in $(mysql -BNe "show tables from $i")
 		do
-			echo "mysqldump --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-quote-names --skip-extended-insert $i $j | gzip >$BACKUPDIR/db/$i/$j.sql.gz"
+			echo "mysqldump --skip-lock-tables --create-options --skip-disable-keys --skip-add-drop-table --skip-add-locks --skip-extended-insert $i $j | gzip >$BACKUPDIR/db/$i/$j.sql.gz"
 		done
 	fi
 done 2>&1 | grep -v "Warning: Skipping the data of table mysql.event"
