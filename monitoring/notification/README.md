@@ -17,10 +17,12 @@ icingacli director basket restore < Director-Basket_SMS_Notification.json
 cp sms-host-notification.sh sms-service-notification.sh /neteye/shared/icinga2/conf/icinga2/scripts/
 chmod 755 /neteye/shared/icinga2/conf/icinga2/scripts/sms-*
 ```
-Patch the smssend binary:
+Patch the `smssend` binary:
+```
 grep out /usr/bin/smssend
+```
 
-sms file in the outgoing queue.
+SMS-Queue files in the outgoing queue.
 ```
 FILE=`mktemp /neteye/local/smsd/data/spool/outgoing/send_XXXXXX`
 ```
