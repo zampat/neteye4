@@ -225,6 +225,10 @@ A simple webhook collector event could look like this:
 curl http://httpd.neteyelocal/tornado/webhook/event/hsg?token=neteye_s3cr3t -H "content-type: application/json" -X POST -d '{ "host_name": "host3", "host_address": "127.0.0.1", "host_template": "generic-host", "host_displayname": "Host 3",  "state": "1", "output": "Running_without_replica" }'
 ```
 
+Sample call from remote host:
+  ```
+  curl --insecure https://myhost.mydomain/tornado/webhook/event/event-id?token=jO8nFg3yTTGu -H "content-type: application/json" -X POST -d '{ "message": "hello world", "status": "1" }' -vvv
+  ```
 [Setup tornado collectors email, snmptrap, webhook](tornado_setup.md)
 
 
