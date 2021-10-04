@@ -38,6 +38,9 @@
 ## https://github.com/EliteLoser/PSipcalc/blob/master/PSipcalc.ps1
 #
 
+# Security policies might enforce TLS 1.2 in order to allow Invoke-Webrequest
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 param(
    [string]$workpath="C:\temp",
    #[string]$workpath="$Env:temp",
