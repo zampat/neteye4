@@ -54,11 +54,7 @@ my $opt_testing      = 0;
 my $opt_apibase      = 'v0/testcases';
 my $opt_proxybase    = undef;
 my $opt_statedir     = "/var/spool/neteye/tmp";
-<<<<<<< HEAD
 my $opt_userpass     = "alyvix:password";
-=======
-my $opt_userpass     = "root:password";
->>>>>>> 18b2d0ad54c2a302c00f1038ab093279a8449cec
 
 # Global Variables
 my $request_url = "https://icinga2-master.neteyelocal:5665";
@@ -185,6 +181,7 @@ sub get_testcase_status {
 	my $oldstr = "OLD";
 	my $now = time();
 	my $probstr = "";
+	my $outstr = "";
 	my $verbstr = "";
 	if (defined($opt_testuser)) {
 		$testuser = $opt_testuser;
@@ -307,7 +304,10 @@ sub get_testcase_status {
 	}
 
 	if (!defined($testcode)) {
-		passive_set_service(3, "UNKNOWN - Could not find any performace data for the testcase $opt_testcase!");
+		$teststate = 3;
+		$outstr = "UNKNOWN - Could not find any performace data for the testcase $opt_testcase!";
+		$verbstr = "";
+		passive_set_service($opt_hostname, $opt_service, $teststate, $outstr, $verbstr, "");
 		return 3;
 	}
 
@@ -335,7 +335,6 @@ sub get_testcase_status {
 	if ($opt_debug) {
 		print "$testcode -> $oldcode\n";
 	}
-	my $outstr = "";
 	if ($opt_testing) {
 		print "${statestr} - $nprob/$ntot problem(s)${probstr} (<a href='${output_url}/reports/?runcode=${testcode}' target='_blank'>Log</a>) | duration=${testduration}ms;;;0;${perfout}\n";
 		if ($#opt_verbose) {
