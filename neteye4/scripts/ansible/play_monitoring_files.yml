@@ -1,0 +1,12 @@
+- name: Copy system files with owner and permissions
+  hosts: all
+
+  tasks:
+  - name: Synchronize monitoring PluginContribDir
+    synchronize:
+      src: /neteye/shared/monitoring/plugins
+      dest: /neteye/shared/monitoring
+#  - name: Remove unwanted files and folders
+#    file:
+#      state: absent
+#      path: /neteye/shared/monitoring/plugins/plugins/

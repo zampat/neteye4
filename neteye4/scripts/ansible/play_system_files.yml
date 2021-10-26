@@ -1,0 +1,11 @@
+- name: Copy system files with owner and permissions
+  hosts: all
+
+  tasks:
+  - name: Copy system files with owner and permissions
+    ansible.builtin.copy:
+      src: /etc/hosts
+      dest: /etc/hosts
+      owner: root
+      group: root
+      mode: '0644'
