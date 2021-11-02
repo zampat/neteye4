@@ -626,7 +626,7 @@ def parse_args():
                         default="WARNING")
 
     parser.add_argument('-f', '--filter', dest='filter', required=True,
-                        type=str, help='Filter to check the state of the business service')
+                        type=str, help='Filter to check the state of the business service. Example: filter("--service=ping", "min100")')
     parser.add_argument('-t', '--type', dest='object_type', required=True, default="hosts",
                         choices=["hosts", "services"], help='Whether to use hosts or services')
     parser.add_argument('-k', '--show-ok-states', dest='show_ok_states', default=False,
@@ -676,7 +676,7 @@ def main():
         if isinstance(expr, ast.Expr):
             logger.info("OK, expression passed")
         else:
-            logger.error("Currently, we accept only expressions")
+            logger.error("Currently, we accept only expressions\n Example: -f 'filter(\"--service=ping\", \"min100%\")'")
 
     debug_print_tree(expression_list)
 

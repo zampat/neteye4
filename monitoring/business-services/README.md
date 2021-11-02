@@ -4,7 +4,19 @@ Plugin providing a dynamic approach to aggregate the status of monitored objects
 
 ADVICE: This section is considered "work in progress"
 
-## Feature description
+## Dynamic BP: Based on Icingaweb CLI
+
+The Icingaweb2 CLI allows you to query for monitoring objects using the Icingaweb2 DB.
+Syntax is similar to icingaweb2 query expressions. To find a simple way to assemble a query 
+Examples for using the icingacli:
+```
+icingacli monitoring list services  --service_display_name=*ping* --service_state=3
+```
+
+
+## Dynamic BP: Based on Icinga API
+
+ADVICE: This approach is deprecated in favor using icingaweb2 cli
 
 The plugin allows the definition of filter expressions to group Icinga2 objects using the Icinga DSL query language
 Example: match all hosts having name "*neteye*"
