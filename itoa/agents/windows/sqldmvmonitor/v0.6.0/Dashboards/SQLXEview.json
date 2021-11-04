@@ -1,0 +1,4506 @@
+{
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "7.2.0"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table-old",
+      "name": "Table (old)",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 1,
+  "id": null,
+  "iteration": 1615973820427,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 20,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 0,
+            "y": 1
+          },
+          "id": 6,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": false,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlEventName"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "physical_reads"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "*8"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe - physicalReads",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "deckbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 8,
+            "y": 1
+          },
+          "id": 8,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": false,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlEventName"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "logical_reads"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "*8"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -logicalReads",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "deckbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 16,
+            "y": 1
+          },
+          "id": 10,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": false,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlEventName"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "writes"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe - writes",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 8
+          },
+          "id": 9,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlEventName"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "cpu_time"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -cpu_time",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "µs",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 8
+          },
+          "id": 13,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlEventName"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -duration",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "µs",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 16,
+            "y": 8
+          },
+          "id": 27,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlEventName"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "count"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -count",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "repeat": "SQLINSTANCE",
+      "title": "TOTALS ${SQLINSTANCE}",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 21,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 2
+          },
+          "id": 11,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLHOSTNODE": {
+              "selected": false,
+              "text": "1869DB0011",
+              "value": "1869DB0011"
+            },
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlQueryHash"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "cpu_time"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlQueryHash",
+                  "operator": "=~",
+                  "value": "/^$QueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -Query CPU Time",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "µs",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 9
+          },
+          "id": 12,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLHOSTNODE": {
+              "selected": false,
+              "text": "1869DB0011",
+              "value": "1869DB0011"
+            },
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlQueryHash"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlQueryHash",
+                  "operator": "=~",
+                  "value": "/^$QueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -Query duration Time",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "µs",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 16
+          },
+          "id": 14,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLHOSTNODE": {
+              "selected": false,
+              "text": "1869DB0011",
+              "value": "1869DB0011"
+            },
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlQueryHash"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "physical_reads"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "*8"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlQueryHash",
+                  "operator": "=~",
+                  "value": "/^$QueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -Query phy reac",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "deckbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 23
+          },
+          "id": 15,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLHOSTNODE": {
+              "selected": false,
+              "text": "1869DB0011",
+              "value": "1869DB0011"
+            },
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlQueryHash"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "logical_reads"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "*8"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlQueryHash",
+                  "operator": "=~",
+                  "value": "/^$QueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -Query logical read",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "deckbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 30
+          },
+          "id": 36,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLHOSTNODE": {
+              "selected": false,
+              "text": "1869DB0011",
+              "value": "1869DB0011"
+            },
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlQueryHash"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "writes"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "*8"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlQueryHash",
+                  "operator": "=~",
+                  "value": "/^$QueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -Query writes",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "deckbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "repeat": "SQLINSTANCE",
+      "title": "QUERY_HASH ${SQLINSTANCE}",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 33,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 3
+          },
+          "id": 31,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLHOSTNODE": {
+              "selected": false,
+              "text": "1869DB0011",
+              "value": "1869DB0011"
+            },
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "1m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlEventName"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "count"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=",
+                  "value": "rpc_completed"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "result",
+                  "operator": "=",
+                  "value": "OK"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Successful",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 3
+          },
+          "id": 34,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLHOSTNODE": {
+              "selected": false,
+              "text": "1869DB0011",
+              "value": "1869DB0011"
+            },
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "1m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlEventName"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "count"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=",
+                  "value": "rpc_completed"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "result",
+                  "operator": "=",
+                  "value": "Error"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Errors",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 3
+          },
+          "id": 35,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLHOSTNODE": {
+              "selected": false,
+              "text": "1869DB0011",
+              "value": "1869DB0011"
+            },
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "1m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlEventName"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "count"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=",
+                  "value": "rpc_completed"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "result",
+                  "operator": "=",
+                  "value": "Abort"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Aborted",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "repeat": "SQLINSTANCE",
+      "title": "RPC ${SQLINSTANCE}",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 26,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 26
+          },
+          "id": 17,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "1m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlQueryHash"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "logical_reads"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "count"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlQueryHash",
+                  "operator": "=~",
+                  "value": "/^$QueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -Query count",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 33
+          },
+          "id": 30,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "1m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "SqlQueryHash"
+                  ],
+                  "type": "tag"
+                },
+                {
+                  "params": [
+                    "AxUser"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "logical_reads"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "count"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=~",
+                  "value": "/^$sqleventname$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlQueryHash",
+                  "operator": "=~",
+                  "value": "/^$QueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "SqlXe -Query count",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "repeat": "SQLINSTANCE",
+      "title": "COUNTS ${SQLINSTANCE}",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 22,
+      "panels": [
+        {
+          "columns": [],
+          "datasource": "$SISTEMA",
+          "fontSize": "80%",
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 5
+          },
+          "id": 7,
+          "links": [],
+          "pageSize": 30,
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 0,
+            "desc": false
+          },
+          "styles": [
+            {
+              "align": "auto",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 3,
+              "pattern": "/duration/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "µs"
+            },
+            {
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "pattern": "logical_reads",
+              "thresholds": [],
+              "type": "number",
+              "unit": "deckbytes"
+            },
+            {
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "pattern": "physical_reads",
+              "thresholds": [],
+              "type": "number",
+              "unit": "deckbytes"
+            },
+            {
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "pattern": "sqlXeEvents.session_id",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            },
+            {
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 3,
+              "pattern": "cpu_time",
+              "thresholds": [],
+              "type": "number",
+              "unit": "µs"
+            },
+            {
+              "alias": "query_hash",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "link": false,
+              "linkTargetBlank": true,
+              "linkTooltip": "",
+              "linkUrl": "../dmvmonitor/queries/$SISTEMA/586087461924866446",
+              "mappingType": 1,
+              "pattern": "SqlQueryHash",
+              "sanitize": false,
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "link": false,
+              "linkTargetBlank": false,
+              "linkTooltip": "",
+              "linkUrl": "../dmvmonitor/queries/$SISTEMA/586087461924866446",
+              "mappingType": 1,
+              "pattern": "hex_query_hash",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "link": false,
+              "linkTargetBlank": false,
+              "linkTooltip": "",
+              "linkUrl": "",
+              "mappingType": 1,
+              "pattern": "queryplan_hash",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "link": false,
+              "linkTargetBlank": true,
+              "linkTooltip": "",
+              "linkUrl": "../dmvmonitor/plans/$SISTEMA/16474117005120685646",
+              "mappingType": 1,
+              "pattern": "hex_queryplan_hash",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "hide": false,
+              "measurement": "sqlXeEvents",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "query": "SELECT \"cpu_time\", \"duration\", \"logical_reads\"*8, \"physical_reads\"*8, row_count, \"writes\", \"session_id\", \"AxSession\", \"AxUser\", \"SqlEventName\", \"SqlHostName\", \"SqlUser\", \"SqlQueryHash\",\"hex_query_hash\", \"queryplan_hash\",\"hex_queryplan_hash\", \"DatabaseName\", \"result\",\"isFetch\" FROM \"queryhashcodemetrics\".\"sqlXeEvents\" WHERE \"SqlQueryHash\" =~ /^$QueryHash$/ AND \"AxUser\" =~ /^$USER$/ AND \"SqlUser\" =~ /^$SQLUSER$/ AND \"SqlEventName\" =~ /^$sqleventname$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"AxSession\" =~ /^$SESSION$/ AND  \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND $timeFilter",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "cpu_time"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "logical_reads"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "physical_reads"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "session_id"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxSession"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxUser"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "SqlEventName"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "SqlHostName"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "SqlUser"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "SqlQueryHash"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "queryplan_hash"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "DatabaseName"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "SqlQueryHash"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "writes"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlEventName",
+                  "operator": "=",
+                  "value": "sp_statement_completed"
+                }
+              ]
+            }
+          ],
+          "title": "Panel Title",
+          "transform": "table",
+          "type": "table-old"
+        }
+      ],
+      "repeat": "SQLINSTANCE",
+      "title": "QUERIES ${SQLINSTANCE}",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 23,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$SISTEMA",
+          "fill": 1,
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 6
+          },
+          "id": 29,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": true,
+            "min": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "groupBy": [
+                {
+                  "params": [
+                    "$AGGR_INTERVAL"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "query_hash"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "sqlXeFetches",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "query_hash",
+                  "operator": "=~",
+                  "value": "/^$FetchesQueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Fetches - duration",
+          "tooltip": {
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "µs",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "columns": [],
+          "datasource": "$SISTEMA",
+          "fontSize": "80%",
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 15
+          },
+          "id": 16,
+          "links": [],
+          "pageSize": 30,
+          "scopedVars": {
+            "SQLINSTANCE": {
+              "selected": false,
+              "text": "DE-FFM-S-SQL301:AX2012",
+              "value": "DE-FFM-S-SQL301:AX2012"
+            }
+          },
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 0,
+            "desc": false
+          },
+          "styles": [
+            {
+              "align": "auto",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "alias": "duration",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.duration",
+              "thresholds": [],
+              "type": "number",
+              "unit": "µs"
+            },
+            {
+              "alias": "session_id",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.session_id",
+              "thresholds": [],
+              "type": "number",
+              "unit": "none"
+            },
+            {
+              "alias": "cursor_id",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.cursor_id",
+              "thresholds": [],
+              "type": "number",
+              "unit": "none"
+            },
+            {
+              "alias": "AxUser",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.AxUser",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "AxSession",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.AxSession",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "query_hash",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.query_hash",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "query_hash (hex)",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.query_hash_hex",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "query_plan_hash",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.query_plan_hash",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "query_plan_hash (hex)",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.query_plan_hash_hex",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "cpu_time",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.cpu_time",
+              "thresholds": [],
+              "type": "number",
+              "unit": "µs"
+            },
+            {
+              "alias": "logical_reads",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.logical_reads",
+              "thresholds": [],
+              "type": "number",
+              "unit": "deckbytes"
+            },
+            {
+              "alias": "physical_reads",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.physical_reads",
+              "thresholds": [],
+              "type": "number",
+              "unit": "deckbytes"
+            },
+            {
+              "alias": "writes",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.writes",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            },
+            {
+              "alias": "row_count",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.row_count",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            },
+            {
+              "alias": "SqlHostName",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.SqlHostName",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "SqlUser",
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "sqlXeFetches.SqlUser",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "align": "auto",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "hide": true,
+              "measurement": "sqlXeFetches",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "session_id"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "cursor_id"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxUser"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxSession"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_hash"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_hash_hex"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_plan_hash"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_plan_hash_hex"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "cpu_time"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "logical_reads"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "physical_reads"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "writes"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "row_count"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "query_hash",
+                  "operator": "=~",
+                  "value": "/^$FetchesQueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            },
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "hide": false,
+              "measurement": "sqlXeFetches",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "query": "SELECT \"duration\", \"cpu_time\", \"logical_reads\"*8, \"physical_reads\"*8, \"writes\", \"row_count\", \"session_id\", \"cursor_id\", \"AxUser\", \"AxSession\", \"SqlHostName\",\"SqlUser\",\"query_hash\", \"query_hash_hex\", \"query_plan_hash\", \"query_plan_hash_hex\" FROM \"queryhashcodemetrics\".\"sqlXeFetches\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"query_hash\" =~ /^$FetchesQueryHash$/ AND \"AxSession\" =~ /^$SESSION$/ AND \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"SqlUser\" =~ /^$SQLUSER$/) AND $timeFilter",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "session_id"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "cursor_id"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxUser"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxSession"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_hash"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_hash_hex"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_plan_hash"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_plan_hash_hex"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "cpu_time"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "logical_reads"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "physical_reads"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "writes"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "row_count"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "query_hash",
+                  "operator": "=~",
+                  "value": "/^$FetchesQueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                }
+              ]
+            },
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "hide": true,
+              "measurement": "sqlXeFetches",
+              "orderByTime": "ASC",
+              "policy": "queryhashcodemetrics",
+              "query": "SELECT \"duration\", \"session_id\", \"cursor_id\", \"AxUser\", \"AxSession\", \"query_hash\", \"query_hash_hex\", \"query_plan_hash\", \"query_plan_hash_hex\", \"cpu_time\", \"logical_reads\", \"physical_reads\", \"writes\", \"row_count\" FROM \"queryhashcodemetrics\".\"sqlXeFetches\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"query_hash\" =~ /^$FetchesQueryHash$/ AND \"AxSession\" =~ /^$SESSION$/ AND \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"SqlUser\" =~ /^$SQLUSER$/) AND $timeFilter",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "duration"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "session_id"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "cursor_id"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxUser"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "AxSession"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_hash"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_hash_hex"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_plan_hash"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "query_plan_hash_hex"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "cpu_time"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "logical_reads"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "physical_reads"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "writes"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "row_count"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "AxUser",
+                  "operator": "=~",
+                  "value": "/^$USER$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "query_hash",
+                  "operator": "=~",
+                  "value": "/^$FetchesQueryHash$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "AxSession",
+                  "operator": "=~",
+                  "value": "/^$SESSION$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SQLInstance",
+                  "operator": "=~",
+                  "value": "/^$SQLINSTANCE$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlHostName",
+                  "operator": "=~",
+                  "value": "/^$CLIENTHOST$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "SqlUser",
+                  "operator": "=~",
+                  "value": "/^$SQLUSER$/"
+                }
+              ]
+            }
+          ],
+          "title": "FETCHES",
+          "transform": "timeseries_to_columns",
+          "type": "table-old"
+        }
+      ],
+      "repeat": "SQLINSTANCE",
+      "title": "FETCHES ${SQLINSTANCE}",
+      "type": "row"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "int.normagroup.net",
+          "value": "int.normagroup.net"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "SISTEMA",
+        "options": [],
+        "query": "influxdb",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "^((?!.*FLUX.*).)*$",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "SQLNODE",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"sqlXeEvents\" WITH KEY = \"host\"",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "SQLINSTANCE",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"sqlXeEvents\" WITH KEY = \"SQLInstance\"  where \"host\" =~ /^$SQLNODE$/",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "1m",
+          "value": "1m"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "AGGR_INTERVAL",
+        "options": [
+          {
+            "selected": true,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "2m",
+            "value": "2m"
+          },
+          {
+            "selected": false,
+            "text": "3m",
+            "value": "3m"
+          },
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "15m",
+            "value": "15m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          }
+        ],
+        "query": "1m,2m,3m,5m,10m,15m,30m,1h",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "USER",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"sqlXeEvents\" WITH KEY = \"AxUser\" where \"host\" =~ /^$SQLNODE$/ and \"SQLInstance\" =~/^$SQLINSTANCE$/",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "SQLUSER",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"sqlXeEvents\" WITH KEY = \"SqlUser\" where \"host\" =~ /^$SQLNODE$/ and \"SQLInstance\" =~/^$SQLINSTANCE$/",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "SESSION",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"sqlXeEvents\" WITH KEY = \"AxSession\" where \"host\" =~ /^$SQLNODE$/ and \"SQLInstance\" =~/^$SQLINSTANCE$/",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "$SISTEMA",
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "CLIENTHOST",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"sqlXeEvents\" WITH KEY = \"SqlHostName\" where \"host\" =~ /^$SQLNODE$/ and \"SQLInstance\" =~/^$SQLINSTANCE$/",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "DBNAME",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"sqlXeEvents\" WITH KEY = \"DatabaseName\" where \"host\" =~ /^$SQLNODE$/ and \"SQLInstance\" =~/^$SQLINSTANCE$/",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "*",
+        "current": {
+          "selected": false,
+          "text": [
+            "sp_statement_completed",
+            "sql_statement_completed"
+          ],
+          "value": [
+            "sp_statement_completed",
+            "sql_statement_completed"
+          ]
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "SQLEVENTNAME",
+        "multi": true,
+        "name": "sqleventname",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "rpc_completed",
+            "value": "rpc_completed"
+          },
+          {
+            "selected": true,
+            "text": "sp_statement_completed",
+            "value": "sp_statement_completed"
+          },
+          {
+            "selected": true,
+            "text": "sql_statement_completed",
+            "value": "sql_statement_completed"
+          }
+        ],
+        "query": "rpc_completed, sp_statement_completed, sql_statement_completed",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "QUERYHASH",
+        "multi": true,
+        "name": "QueryHash",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"sqlXeEvents\" WITH KEY = \"SqlQueryHash\" where \"host\" =~ /^$SQLNODE$/ and \"SQLInstance\" =~/^$SQLINSTANCE$/",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "*",
+        "current": {},
+        "datasource": "$SISTEMA",
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "FETCHES QUERYHASH",
+        "multi": true,
+        "name": "FetchesQueryHash",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"sqlXeFetches\" WITH KEY = \"query_hash\" where \"host\" =~ /^$SQLNODE$/ and \"SQLInstance\" =~/^$SQLINSTANCE$/",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "SQLXEview",
+  "uid": "SQLXEview",
+  "version": 5
+}
