@@ -12,8 +12,8 @@ to build the rpm setup the correct rpmbuild environment and than run scripts ./b
 in /bin folder put updated binaries
 
 as result there are two rpms:
-1. mssql-fileserver-0.1-3.x86_64
-2. mssql-fileserver-autosetup-0.1-3.x86_64
+1. mssql-fileserver-0.6.0-3.x86_64.rpm
+2. mssql-fileserver-autosetup-0.6.0-3.x86_64.rpm
 
 ### autosetup
 script 900_mssql_fileserver_generate_client_certs generates all certificates needed by the service to connect to nats-server
