@@ -123,5 +123,27 @@ APPENDIX:
 ============================
 1) List of ProductCode for released versions  (important for upgrading and uninstall):
 
-Productcode for verion 0.6.0:
+
+Productcode for verion 0.6.1:
 {23605492-41CE-43F5-BDAF-3C3A570427D2}
+
+Productcode for verion 0.5.0:
+{028F0085-10F0-496E-8AF0-091CE1E362B5}
+
+Productcode for verion 0.4.1:
+{DD16E428-A3ED-415B-8F68-7A21D5000789}
+
+Productcode for verion 0.4.0:
+{9446603F-3B28-4B5B-86B2-FCFE896EC285}
+
+Productcode for verion 0.3.1:
+{EE218EEE-E01B-4AD9-A112-9A209CE8BFE2}
+
+Productcode for verion 0.3.0:
+{964B29C2-65D9-49FA-905F-FBC82F7C4F05}
+
+Productcode for verion 0.2.0:
+{4ACFA367-02CA-49B8-82D0-F501D2A9AE3E}
+
+Productcode for version 0.1.1:
+{B25BF6EF-109F-4044-8B33-05E29F322C6E}

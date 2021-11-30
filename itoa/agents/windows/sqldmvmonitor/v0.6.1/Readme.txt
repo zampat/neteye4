@@ -176,6 +176,27 @@ If during installation of the new version a error occure, the old version will n
 
 Known issues: upgrading from version 0.1.x during unintall service is stopped but process is still running for approx 30 sec. Please stop service and check that process (DMVMonitor) is removed, before running msi bundle.
 
+===========================
+Migrating to Version 0.4.x
+===========================
+When upgrading to Version 0.4.x you have to run also the powershell script Prepair4SQLDMVMonitor.ps1 (described in Phase 2). You have to run it with the needed parameters. The script will configure setup new xevent attributes.
+This is needed to get all the required information about query fetches. The correct steps to migrate to the new version is:
+1) stop SQL DMV Monitoring and Tracing Service (DMVmonitor). 
+2) run Prepair4SQLDMVMonitor.ps1 with the needed parameters (same parameters as during first setup)
+3) upgrade to new version running msi bundle of version 0.4.x (SQLDMVMonitor-v0.4.1-x64.msi)
+
+Special Anotation regarding migrating to version 0.4.x:
+With the Introduction of 0.4 the Field Types of Maxduration and MaxLastBatch in the Measurment SQLLongTransaction has been changed from float to integer. 
+Data Collected by the Agent regarding SQLLongTransaction  will not be written to the Measurement until you:
+- migrate the 2 Fields from float to integer 
+- or you drop the measurement SQLLongTransaction
+
+If you decide that you want to keep the measurements for SQLLongTransaction, you must :
+1) write the measurement SQLLongTransaction including tags,fields to a temporary measurement (converting the 2 field Maxduration and MaxLastBatch to integer)
+2) drop measurement SQLLongTransaction
+3) write the temporary measurement back to SQLLongTransaction
+
+
 ==================================
 TROUBLESHOOTING
 =================================
@@ -185,10 +206,6 @@ The error occures if the Instance is already installed. In the msi log File you 
 Extract from log:
 "Specified instance {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} via transform  is already installed. MSINEWINSTANCE requires a new instance that is not installed.
 MainEngineThread is returning 1639"
-2) Remote Storage Test: it is possibile to test the connection to remote neteye file storage from command line running the DMVmonitor.exe executable with option -test-remotestorage
-example: "C:\Program Files\SQLDMVMonitor\I00\DMVmonitor.exe" -config ".\sqltrace.conf" -instanceId I00  --test-remotestorage
-3) Tornado Test: it is possible to send test-tornado messages from command line running the DMVmonitor.exe executable with option -test-tornado
-example: "C:\Program Files\SQLDMVMonitor\I00\DMVmonitor.exe" -config ".\sqltrace.conf" -instanceId I00  --test-tornado
 
 ============================
 APPENDIX:
@@ -200,13 +217,53 @@ e.g. for SQL 2012
 
 2) List of ProductCode for released versions based on InstanceID (important for upgrading and uninstall):
 
-Productcode for version 0.6.0
+Productcode for version 0.6.1
 Default={48CFD745-41BB-4512-9B86-0920BEDFA7E3}
 I01={162DE559-D1FE-44FA-AA80-E19A981B2227}
 I02={74E402EA-97DC-4D34-8D7B-AF4CD9420375}
 I03={942BCAD3-4241-4BDB-8CF9-9090DF4AA8B2}
 I04={654C0EAB-EFA5-4578-9CF3-0DE91375E8CB}
 I05={828507F3-6F4D-4D64-8C33-2ECD606FC6DF}
+
+Productcode for version 0.5.1
+Default={CFFC1BC5-8CD6-4599-82C9-0AE5AC893794}
+I01={C4D30AEA-767C-429C-A81A-1F2A8E17AAC6}
+I02={73977971-69EB-4DDD-89F1-4013CCA81E1E}
+I03={A6996681-A88D-4E14-8363-F425ECB6B87A}
+I04={035D7D15-BDC3-4C2D-840A-BF6B5D89A631}
+I05={A85323A3-1427-4558-8F7C-80F9460B18A1}
+
+Productcode for version 0.5.0
+Default={09564825-3DCD-4DC2-96B7-B654710FE633}
+I01={91237714-F050-4FF5-8822-898E84FD4EDF}
+I02={1CD5C97B-B4F9-46CA-BAD6-19B51FF12639}
+I03={AD0578DF-0E16-41A8-B46E-387474F913F1}
+I04={564D433B-A35D-496C-8DA2-60DBBC1361AD}
+I05={0BEB3595-41C3-4C25-8FF4-D1EB85336D1B}
+
+Productcode for version 0.4.1
+Default={D02F7B07-52D9-4A38-BCAF-05A87E1F2EC7}
+I01={DFE7859D-6BE4-4BC1-84C9-526D456690D1}
+I02={4E9F6545-ADA6-40B6-9C70-8AAD9E4EFCBA}
+I03={D3D5A5A1-9D98-4184-B14B-53F4E935BD5A}
+I04={0AF49B0C-D026-4AEA-835C-1F60AD41EE31}
+I05={F1C45643-0F46-4AB9-B1F4-A7B8ECFBCC34}
+
+Productcode for version 0.4.0
+Default={AE113811-DAAD-47CB-ACB6-FAD8AC009663}
+I01={5951BFAA-5AC0-4286-80E5-A4AF36C9C0F4}
+I02={F9482AE2-59D5-4268-BFE5-FB520C43BD7B}
+I03={C616CCCD-2C42-466F-A4FF-447AC21A283D}
+I04={E8245FCC-57C0-4A99-9D7C-83C6FAF2C7B0}
+I05={0EEC6F6A-7033-4B61-9865-267320542EBB}
+
+Productcode for version 0.3.1
+Default={D0E7F4AF-82C4-4B58-87C9-89BDDBEE4779}
+I01={45B4717D-9B42-4998-B98D-14729EB3290D}
+I02={0E5CCFB0-9690-40A2-B216-548977CD54BC}
+I03={E69C1A2F-5B5F-435D-8E6B-1E585A740BA8}
+I04={E783C535-A7F1-4541-888B-FC0F8BCD5411}
+I05={2FD332AC-4ED9-4A24-90EC-5CEB95006E4E}
 
 Productcode for version 0.3.0
 Default={E05B5F69-C9DF-4C2C-8F0D-6A09030B83DB}
