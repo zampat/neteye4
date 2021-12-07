@@ -32,7 +32,7 @@ icingacli cmdorchestrator command create \
 		--name restart-service-windows \
 		--command-type remote \
 		--monitoring-object-filter '_host_host_os=Windows' \
-		--command 'C:\\Progam~1\\Icinga2\\sbin\\scripts\\cmdo_restart_service.cmd' \
+		--command 'C:\\Progra~1\\Icinga2\\sbin\\scripts\\cmdo_restart_service.cmd' \
 		--command-parameters  '["$service_name$"]'\
 		--command-group-id 3
 
