@@ -48,7 +48,7 @@ icingacli cmdorchestrator commandparameter create \
 ## EDIT EXISTING COMMANDGROUP
 
 NOTE: You need to specify the parent group EVEN IF NULL !! - otherwise the resolution for existing parent groups will fail!
-
+```
 # icingacli cmdorchestrator commandgroup edit --id 1 --name Windows_edited --description Windows_added --parent_command_group_id null
 {
     "message": "Object successfully updated",
@@ -60,6 +60,7 @@ NOTE: You need to specify the parent group EVEN IF NULL !! - otherwise the resol
         "parent_command_group_id": null
     }
 }
+```
 
 ## EDIT EXISTING COMMAND
 ```
