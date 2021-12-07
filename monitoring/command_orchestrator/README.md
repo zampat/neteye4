@@ -64,5 +64,5 @@ NOTE: You need to specify the parent group EVEN IF NULL !! - otherwise the resol
 
 ## EDIT EXISTING COMMAND
 ```
-icingacli cmdorchestrator command edit --id 1 --name restart-service-windows --command-type remote --monitoring-object-filter 'host=myhostname1' --command 'C:\\Progam~1\\Icinga2\\sbin\\scripts\\cmdo_restart_service.cmd' --command-parameters  '["$service_name$"]' --command-group-id 2
+icingacli cmdorchestrator command edit --id 1 --name restart-service-windows --command-type remote --monitoring-object-filter 'host=myhostname1' --command 'C:\\Progra~1\\Icinga2\\sbin\\scripts\\cmdo_restart_service.cmd' --command-parameters  '["$service_name$"]' --command-group-id 2
 ```
