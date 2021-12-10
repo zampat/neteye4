@@ -50,11 +50,11 @@ nameserver <DNS Server 2 IP>
 Update system’s and `php.ini` time zone
 ```
 [root@neteye ~]# timedatectl set-timezone Europe/Rome
-[root@neteye ~]# timezone=`timedatectl status | grep "Time zone" | cut -d : -f 2 | tr -d '[:space:]' | cut -d "(" -f 1`; echo "date.timezone=\"$timezone\"" > /etc/opt/rh/rh-php71/php.d/30-timezone.ini
+[root@neteye ~]# timezone=`timedatectl status | grep "Time zone" | cut -d : -f 2 | tr -d '[:space:]' | cut -d "(" -f 1`; echo "date.timezone=\"$timezone\"" > /etc/opt/rh/rh-php73/php.d/30-timezone.ini
 Verify timezone:
-[root@neteye ~]# cat /etc/opt/rh/rh-php71/php.d/30-timezone.ini
+[root@neteye ~]# cat /etc/opt/rh/rh-php73/php.d/30-timezone.ini
 date.timezone="Europe/Rome"
-[root@neteye ~]# systemctl restart rh-php71-php-fpm.service
+[root@neteye ~]# systemctl restart rh-php73-php-fpm.service
 ```
 Set mail relay for Postfix
 ```
@@ -67,7 +67,7 @@ Ensure your system is up-to-date
 [root@neteye ~]# yum update
 [root@neteye ~]# yum --enablerepo=neteye update
 [root@neteye ~]# yum --enablerepo=neteye groupinstall neteye
-[root@neteye ~]# yum --enablerepo=neteye groupinstall neteye-logmanagement
+[root@neteye ~]# yum --enablerepo=neteye groupinstall <additional module name>
 ```
 
 [<<< Back to documentation overview <<<](./README.md)
