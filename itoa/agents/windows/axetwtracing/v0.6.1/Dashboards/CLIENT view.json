@@ -1,14 +1,5 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_FLUX.1869-WPC.LOCAL",
-      "label": "FLUX.1869-wpc.local",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
+  "__inputs": [],
   "__requires": [
     {
       "type": "grafana",
@@ -30,8 +21,8 @@
     },
     {
       "type": "panel",
-      "id": "table-old",
-      "name": "Table (old)",
+      "id": "table",
+      "name": "Table",
       "version": ""
     }
   ],
@@ -52,7 +43,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1635509739851,
+  "iteration": 1639488076887,
   "links": [],
   "panels": [
     {
@@ -67,13 +58,439 @@
       "id": 33,
       "panels": [
         {
-          "columns": [],
           "datasource": "$SISTEMA",
           "fieldConfig": {
-            "defaults": {},
-            "overrides": []
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": null,
+                "displayMode": "auto",
+                "filterable": true
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "time: YYYY-MM-DD HH:mm:ss"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": null
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CLIENT_EVENTS2.AxComputer"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "AxClientHost"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 2
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "rgba(50, 172, 45, 0.97)",
+                          "value": null
+                        },
+                        {
+                          "color": "#cca300",
+                          "value": null
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CLIENT_EVENTS2.AxServer"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "AxAosHost"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 2
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CLIENT_EVENTS2.AxUser"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "AxUser"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 2
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "custom.width"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CLIENT_EVENTS2.FORM"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Form"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 2
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CLIENT_EVENTS2.FormOpen"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "FormOpen"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "rgba(0, 0, 0,0)",
+                          "value": null
+                        },
+                        {
+                          "color": "#1f78c1",
+                          "value": 1
+                        },
+                        {
+                          "color": "rgba(0, 0, 0,0)",
+                          "value": 2
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "from": "",
+                        "id": 1,
+                        "text": "Open",
+                        "to": "",
+                        "type": 1,
+                        "value": "1"
+                      },
+                      {
+                        "from": "",
+                        "id": 2,
+                        "text": "",
+                        "to": "",
+                        "type": 1,
+                        "value": "0"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CLIENT_EVENTS2.FormClose"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "FormClose"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "rgba(0, 0, 0,0)",
+                          "value": null
+                        },
+                        {
+                          "color": "#1f78c1",
+                          "value": 1
+                        },
+                        {
+                          "color": "rgba(0, 0, 0,0)",
+                          "value": 2
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "from": "",
+                        "id": 1,
+                        "text": "Close",
+                        "to": "",
+                        "type": 1,
+                        "value": "1"
+                      },
+                      {
+                        "from": "",
+                        "id": 2,
+                        "text": "",
+                        "to": "",
+                        "type": 1,
+                        "value": "0"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CLIENT_EVENTS2.ControlClicked"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "ControlClicked"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "rgba(0, 0, 0,0)",
+                          "value": null
+                        },
+                        {
+                          "color": "#1f78c1",
+                          "value": 1
+                        },
+                        {
+                          "color": "rgba(0, 0, 0,0)",
+                          "value": 2
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "from": "",
+                        "id": 1,
+                        "text": "Clicked",
+                        "to": "",
+                        "type": 1,
+                        "value": "1"
+                      },
+                      {
+                        "from": "",
+                        "id": 2,
+                        "text": "",
+                        "to": "",
+                        "type": 1,
+                        "value": "0"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CLIENT_EVENTS2.AxSession"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "AxSession"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Form"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 526
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "FormOpen"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 102
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "FormClose"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "ControlClicked"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 134
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AxSession"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 102
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AxUser"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 85
+                  }
+                ]
+              }
+            ]
           },
-          "fontSize": "100%",
           "gridPos": {
             "h": 18,
             "w": 24,
@@ -82,238 +499,16 @@
           },
           "id": 26,
           "links": [],
-          "pageSize": null,
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 0,
-            "desc": false
+          "options": {
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Time"
+              }
+            ]
           },
-          "styles": [
-            {
-              "$$hashKey": "object:285",
-              "alias": "",
-              "align": "auto",
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "pattern": "Time",
-              "type": "date"
-            },
-            {
-              "$$hashKey": "object:286",
-              "alias": "AxClientHost",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(50, 172, 45, 0.97)",
-                "#cca300",
-                "rgba(245, 54, 54, 0.9)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "CLIENT_EVENTS2.AxComputer",
-              "thresholds": [
-                ""
-              ],
-              "type": "string",
-              "unit": "short",
-              "valueMaps": []
-            },
-            {
-              "$$hashKey": "object:287",
-              "alias": "AxAosHost",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "CLIENT_EVENTS2.AxServer",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "$$hashKey": "object:288",
-              "alias": "AxUser",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "CLIENT_EVENTS2.AxUser",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "$$hashKey": "object:289",
-              "alias": "Form",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "CLIENT_EVENTS2.FORM",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "$$hashKey": "object:290",
-              "alias": "FormOpen",
-              "align": "auto",
-              "colorMode": "cell",
-              "colors": [
-                "rgba(0, 0, 0,0)",
-                "#1f78c1",
-                "rgba(0, 0, 0,0)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": null,
-              "mappingType": 1,
-              "pattern": "CLIENT_EVENTS2.FormOpen",
-              "rangeMaps": [
-                {
-                  "from": "1",
-                  "text": "",
-                  "to": "Open"
-                }
-              ],
-              "thresholds": [
-                "1",
-                "2"
-              ],
-              "type": "string",
-              "unit": "none",
-              "valueMaps": [
-                {
-                  "$$hashKey": "object:421",
-                  "text": "",
-                  "value": "0"
-                },
-                {
-                  "$$hashKey": "object:422",
-                  "text": "Open",
-                  "value": "1"
-                }
-              ]
-            },
-            {
-              "$$hashKey": "object:291",
-              "alias": "FormClose",
-              "align": "auto",
-              "colorMode": "cell",
-              "colors": [
-                "rgba(0, 0, 0,0)",
-                "#1f78c1",
-                "rgba(0, 0, 0,0)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": null,
-              "mappingType": 1,
-              "pattern": "CLIENT_EVENTS2.FormClose",
-              "thresholds": [
-                "1",
-                "2"
-              ],
-              "type": "string",
-              "unit": "none",
-              "valueMaps": [
-                {
-                  "$$hashKey": "object:441",
-                  "text": "",
-                  "value": "0"
-                },
-                {
-                  "$$hashKey": "object:442",
-                  "text": "Close",
-                  "value": "1"
-                }
-              ]
-            },
-            {
-              "$$hashKey": "object:292",
-              "alias": "ControlClicked",
-              "align": "auto",
-              "colorMode": "cell",
-              "colors": [
-                "rgba(0, 0, 0,0)",
-                "#1f78c1",
-                "rgba(0, 0, 0,0)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": null,
-              "mappingType": 1,
-              "pattern": "CLIENT_EVENTS2.ControlClicked",
-              "thresholds": [
-                "1",
-                "2"
-              ],
-              "type": "string",
-              "unit": "none",
-              "valueMaps": [
-                {
-                  "$$hashKey": "object:461",
-                  "text": "",
-                  "value": "0"
-                },
-                {
-                  "$$hashKey": "object:462",
-                  "text": "Clicked",
-                  "value": "1"
-                }
-              ]
-            },
-            {
-              "$$hashKey": "object:293",
-              "alias": "AxSession",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": null,
-              "mappingType": 1,
-              "pattern": "CLIENT_EVENTS2.AxSession",
-              "thresholds": [],
-              "type": "number",
-              "unit": "none"
-            },
-            {
-              "$$hashKey": "object:294",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "decimals": 0,
-              "pattern": "/.*/",
-              "sanitize": false,
-              "thresholds": [],
-              "type": "number",
-              "unit": "none"
-            }
-          ],
+          "pluginVersion": "7.5.5",
           "targets": [
             {
               "dsType": "influxdb",
@@ -419,7 +614,7 @@
               "measurement": "CLIENT_EVENTS2",
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "SELECT \"AxUser\", \"Control\" AS \"FORM\", \"FormOpen\", \"FormClose\", \"ControlClicked\", \"AxSession\", \"AxComputer\", \"AxServer\" FROM \"CLIENT_EVENTS2\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"Control\" =~ /^$CONTROLNAME$/ AND AxServer =~ /^$AxAosHost$/ AND AxComputer =~ /^$AxClientHost$/)  AND $timeFilter",
+              "query": "SELECT \"AxUser\", \"Control\" AS \"FORM\", \"FormOpen\", \"FormClose\", \"ControlClicked\", \"AxSession\", \"AxComputer\", \"AxServer\" FROM \"CLIENT_EVENTS2\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"Control\" =~ /^$CONTROLNAME$/ AND AxServer =~ /^$AxAosHost$/ AND AxComputer =~ /^$AxClientHost$/)  AND $timeFilter ",
               "rawQuery": true,
               "refId": "B",
               "resultFormat": "time_series",
@@ -510,9 +705,16 @@
               ]
             }
           ],
-          "title": "EVENTS",
-          "transform": "timeseries_to_columns",
-          "type": "table-old"
+          "transformations": [
+            {
+              "id": "seriesToColumns",
+              "options": {
+                "reducers": []
+              }
+            }
+          ],
+          "transparent": true,
+          "type": "table"
         }
       ],
       "repeat": null,
@@ -764,7 +966,6 @@
           "datasource": "$SISTEMA",
           "fieldConfig": {
             "defaults": {
-              "custom": {},
               "links": []
             },
             "overrides": []
@@ -801,7 +1002,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.2.0",
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -991,7 +1192,6 @@
           "datasource": "$SISTEMA",
           "fieldConfig": {
             "defaults": {
-              "custom": {},
               "links": []
             },
             "overrides": []
@@ -1002,7 +1202,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 4
+            "y": 11
           },
           "hiddenSeries": false,
           "id": 31,
@@ -1028,7 +1228,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.2.0",
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1297,7 +1497,7 @@
       {
         "allValue": "*",
         "current": {},
-        "datasource": "${DS_FLUX.1869-WPC.LOCAL}",
+        "datasource": "$SISTEMAFLUX",
         "definition": "import \"influxdata/influxdb/v1\"\r\nimport \"strings\"\r\nv1.tagValues(\r\nbucket: v.bucket,\r\ntag: \"host\",\r\npredicate: (r) => r._measurement == \"Microsoft_Dynamics_AX_Client_6.3\",\r\nstart: -2w\r\n)\r\n|> map(fn: (r) => ({ r with _value: strings.toUpper(v: r._value) }))",
         "description": null,
         "error": null,
@@ -1321,7 +1521,7 @@
       {
         "allValue": "*",
         "current": {},
-        "datasource": "${DS_FLUX.1869-WPC.LOCAL}",
+        "datasource": "$SISTEMAFLUX",
         "definition": "import \"influxdata/influxdb/v1\"\r\nimport \"strings\"\r\nv1.tagValues(\r\nbucket: v.bucket,\r\ntag: \"host\",\r\npredicate: (r) => r._measurement == \"Microsoft_Dynamics_AX_Object_Server\",\r\nstart: -2w\r\n)\r\n|> map(fn: (r) => ({ r with _value: strings.toUpper(v: r._value) }))",
         "description": null,
         "error": null,
@@ -1437,5 +1637,5 @@
   "timezone": "browser",
   "title": "CLIENT view",
   "uid": "AXCLIENTVIEW",
-  "version": 12
+  "version": 2
 }

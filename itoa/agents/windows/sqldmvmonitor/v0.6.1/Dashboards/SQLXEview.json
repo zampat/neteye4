@@ -1,10 +1,11 @@
 {
+  "__inputs": [],
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.2.0"
+      "version": "7.5.5"
     },
     {
       "type": "panel",
@@ -20,8 +21,8 @@
     },
     {
       "type": "panel",
-      "id": "table-old",
-      "name": "Table (old)",
+      "id": "table",
+      "name": "Table",
       "version": ""
     }
   ],
@@ -42,7 +43,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1615973820427,
+  "iteration": 1639396173473,
   "links": [],
   "panels": [
     {
@@ -62,13 +63,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 8,
             "x": 0,
             "y": 1
           },
+          "hiddenSeries": false,
           "id": 6,
           "legend": {
             "avg": false,
@@ -85,7 +92,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -177,6 +188,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe - physicalReads",
           "tooltip": {
@@ -221,13 +233,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 8,
             "x": 8,
             "y": 1
           },
+          "hiddenSeries": false,
           "id": 8,
           "legend": {
             "avg": false,
@@ -244,7 +262,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -336,6 +358,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -logicalReads",
           "tooltip": {
@@ -380,13 +403,21 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "deckbytes"
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 8,
             "x": 16,
             "y": 1
           },
+          "hiddenSeries": false,
           "id": 10,
           "legend": {
             "avg": false,
@@ -403,7 +434,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -451,6 +486,12 @@
                   {
                     "params": [],
                     "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "*8"
+                    ],
+                    "type": "math"
                   }
                 ]
               ],
@@ -489,6 +530,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe - writes",
           "tooltip": {
@@ -506,7 +548,7 @@
           },
           "yaxes": [
             {
-              "format": "short",
+              "format": "deckbytes",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -533,13 +575,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 0,
             "y": 8
           },
+          "hiddenSeries": false,
           "id": 9,
           "legend": {
             "avg": false,
@@ -556,7 +604,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -642,6 +694,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -cpu_time",
           "tooltip": {
@@ -686,13 +739,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 8,
             "y": 8
           },
+          "hiddenSeries": false,
           "id": 13,
           "legend": {
             "avg": false,
@@ -709,7 +768,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -795,6 +858,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -duration",
           "tooltip": {
@@ -839,13 +903,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
-            "h": 7,
+            "h": 8,
             "w": 8,
             "x": 16,
             "y": 8
           },
+          "hiddenSeries": false,
           "id": 27,
           "legend": {
             "avg": false,
@@ -862,7 +932,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -948,6 +1022,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -count",
           "tooltip": {
@@ -1008,13 +1083,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 24,
             "x": 0,
             "y": 2
           },
+          "hiddenSeries": false,
           "id": 11,
           "legend": {
             "alignAsTable": true,
@@ -1034,7 +1115,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1138,6 +1223,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -Query CPU Time",
           "tooltip": {
@@ -1182,13 +1268,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 24,
             "x": 0,
             "y": 9
           },
+          "hiddenSeries": false,
           "id": 12,
           "legend": {
             "alignAsTable": true,
@@ -1208,7 +1300,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1312,6 +1408,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -Query duration Time",
           "tooltip": {
@@ -1356,13 +1453,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 24,
             "x": 0,
             "y": 16
           },
+          "hiddenSeries": false,
           "id": 14,
           "legend": {
             "alignAsTable": true,
@@ -1382,7 +1485,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1492,6 +1599,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -Query phy reac",
           "tooltip": {
@@ -1536,13 +1644,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 24,
             "x": 0,
             "y": 23
           },
+          "hiddenSeries": false,
           "id": 15,
           "legend": {
             "alignAsTable": true,
@@ -1562,7 +1676,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1672,6 +1790,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -Query logical read",
           "tooltip": {
@@ -1716,13 +1835,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 24,
             "x": 0,
             "y": 30
           },
+          "hiddenSeries": false,
           "id": 36,
           "legend": {
             "alignAsTable": true,
@@ -1742,7 +1867,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1852,6 +1981,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -Query writes",
           "tooltip": {
@@ -1912,13 +2042,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 0,
             "y": 3
           },
+          "hiddenSeries": false,
           "id": 31,
           "legend": {
             "avg": false,
@@ -1935,7 +2071,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2032,6 +2172,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Successful",
           "tooltip": {
@@ -2076,13 +2217,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 8,
             "y": 3
           },
+          "hiddenSeries": false,
           "id": 34,
           "legend": {
             "avg": false,
@@ -2099,7 +2246,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2196,6 +2347,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Errors",
           "tooltip": {
@@ -2240,13 +2392,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 16,
             "y": 3
           },
+          "hiddenSeries": false,
           "id": 35,
           "legend": {
             "avg": false,
@@ -2263,7 +2421,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2360,6 +2522,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Aborted",
           "tooltip": {
@@ -2420,13 +2583,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 26
+            "y": 4
           },
+          "hiddenSeries": false,
           "id": 17,
           "legend": {
             "alignAsTable": true,
@@ -2446,7 +2615,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2545,6 +2718,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -Query count",
           "tooltip": {
@@ -2589,13 +2763,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 33
+            "y": 11
           },
+          "hiddenSeries": false,
           "id": 30,
           "legend": {
             "alignAsTable": true,
@@ -2615,7 +2795,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2720,6 +2904,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "SqlXe -Query count",
           "tooltip": {
@@ -2775,18 +2960,238 @@
       "id": 22,
       "panels": [
         {
-          "columns": [],
           "datasource": "$SISTEMA",
-          "fontSize": "80%",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": null,
+                "filterable": true
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/duration/"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "µs"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 2
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": null
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "logical_reads"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "deckbytes"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": null
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 118
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "physical_reads"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "deckbytes"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": null
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 129
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cpu_time"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "µs"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 2
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": null
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 86
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "hex_query_hash|hex_queryplan_hash"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "writes"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "deckbytes"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 70
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "duration"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 108
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 174
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "row_count"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 71
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AxUser"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 91
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AxSession"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 102
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "session_id"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 98
+                  }
+                ]
+              }
+            ]
+          },
           "gridPos": {
-            "h": 7,
+            "h": 14,
             "w": 24,
             "x": 0,
             "y": 5
           },
           "id": 7,
           "links": [],
-          "pageSize": 30,
+          "options": {
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Time"
+              }
+            ]
+          },
+          "pluginVersion": "7.5.5",
           "scopedVars": {
             "SQLINSTANCE": {
               "selected": false,
@@ -2794,194 +3199,6 @@
               "value": "DE-FFM-S-SQL301:AX2012"
             }
           },
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 0,
-            "desc": false
-          },
-          "styles": [
-            {
-              "align": "auto",
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "pattern": "Time",
-              "type": "date"
-            },
-            {
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "decimals": 3,
-              "pattern": "/duration/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "µs"
-            },
-            {
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 0,
-              "pattern": "logical_reads",
-              "thresholds": [],
-              "type": "number",
-              "unit": "deckbytes"
-            },
-            {
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 0,
-              "pattern": "physical_reads",
-              "thresholds": [],
-              "type": "number",
-              "unit": "deckbytes"
-            },
-            {
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 0,
-              "pattern": "sqlXeEvents.session_id",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            },
-            {
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 3,
-              "pattern": "cpu_time",
-              "thresholds": [],
-              "type": "number",
-              "unit": "µs"
-            },
-            {
-              "alias": "query_hash",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "link": false,
-              "linkTargetBlank": true,
-              "linkTooltip": "",
-              "linkUrl": "../dmvmonitor/queries/$SISTEMA/586087461924866446",
-              "mappingType": 1,
-              "pattern": "SqlQueryHash",
-              "sanitize": false,
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "link": false,
-              "linkTargetBlank": false,
-              "linkTooltip": "",
-              "linkUrl": "../dmvmonitor/queries/$SISTEMA/586087461924866446",
-              "mappingType": 1,
-              "pattern": "hex_query_hash",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "link": false,
-              "linkTargetBlank": false,
-              "linkTooltip": "",
-              "linkUrl": "",
-              "mappingType": 1,
-              "pattern": "queryplan_hash",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "link": false,
-              "linkTargetBlank": true,
-              "linkTooltip": "",
-              "linkUrl": "../dmvmonitor/plans/$SISTEMA/16474117005120685646",
-              "mappingType": 1,
-              "pattern": "hex_queryplan_hash",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "pattern": "/.*/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            }
-          ],
           "targets": [
             {
               "dsType": "influxdb",
@@ -2990,7 +3207,7 @@
               "measurement": "sqlXeEvents",
               "orderByTime": "ASC",
               "policy": "queryhashcodemetrics",
-              "query": "SELECT \"cpu_time\", \"duration\", \"logical_reads\"*8, \"physical_reads\"*8, row_count, \"writes\", \"session_id\", \"AxSession\", \"AxUser\", \"SqlEventName\", \"SqlHostName\", \"SqlUser\", \"SqlQueryHash\",\"hex_query_hash\", \"queryplan_hash\",\"hex_queryplan_hash\", \"DatabaseName\", \"result\",\"isFetch\" FROM \"queryhashcodemetrics\".\"sqlXeEvents\" WHERE \"SqlQueryHash\" =~ /^$QueryHash$/ AND \"AxUser\" =~ /^$USER$/ AND \"SqlUser\" =~ /^$SQLUSER$/ AND \"SqlEventName\" =~ /^$sqleventname$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"AxSession\" =~ /^$SESSION$/ AND  \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND $timeFilter",
+              "query": "SELECT \"duration\", \"cpu_time\", \"logical_reads\"*8, \"physical_reads\"*8, row_count, \"writes\"*8, \"SqlQueryHash\",\"hex_query_hash\", \"queryplan_hash\",\"hex_queryplan_hash\", \"session_id\", \"AxSession\", \"AxUser\", \"SqlEventName\", \"SqlHostName\", \"SqlUser\", \"DatabaseName\", \"result\",\"isFetch\" FROM \"queryhashcodemetrics\".\"sqlXeEvents\" WHERE \"SqlQueryHash\" =~ /^$QueryHash$/ AND \"AxUser\" =~ /^$USER$/ AND \"SqlUser\" =~ /^$SQLUSER$/ AND \"SqlEventName\" =~ /^$sqleventname$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"AxSession\" =~ /^$SESSION$/ AND  \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND $timeFilter",
               "rawQuery": true,
               "refId": "C",
               "resultFormat": "table",
@@ -3149,9 +3366,17 @@
               ]
             }
           ],
-          "title": "Panel Title",
-          "transform": "table",
-          "type": "table-old"
+          "title": " ",
+          "transformations": [
+            {
+              "id": "merge",
+              "options": {
+                "reducers": []
+              }
+            }
+          ],
+          "transparent": true,
+          "type": "table"
         }
       ],
       "repeat": "SQLINSTANCE",
@@ -3175,13 +3400,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "$SISTEMA",
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 24,
             "x": 0,
             "y": 6
           },
+          "hiddenSeries": false,
           "id": 29,
           "legend": {
             "alignAsTable": true,
@@ -3199,7 +3430,11 @@
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "7.5.5",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3297,6 +3532,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Fetches - duration",
           "tooltip": {
@@ -3336,18 +3572,209 @@
           }
         },
         {
-          "columns": [],
           "datasource": "$SISTEMA",
-          "fontSize": "80%",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": null,
+                "filterable": true
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 156
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "duration|cpu_time"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "µs"
+                  },
+                  {
+                    "id": "decimals"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 85
+                  },
+                  {
+                    "id": "decimals"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "logical_reads|physical_reads|writes"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "deckbytes"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 115
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "row_count"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 63
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/hash_hex$/"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "session_id"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 82
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AxUser"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 96
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AxSession"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 86
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "SqlHostName"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 143
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "physical_reads"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 133
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "writes"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 76
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "logical_reads"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 121
+                  }
+                ]
+              }
+            ]
+          },
           "gridPos": {
-            "h": 6,
+            "h": 8,
             "w": 24,
             "x": 0,
             "y": 15
           },
-          "id": 16,
-          "links": [],
-          "pageSize": 30,
+          "id": 38,
+          "options": {
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Time"
+              }
+            ]
+          },
+          "pluginVersion": "7.5.5",
           "scopedVars": {
             "SQLINSTANCE": {
               "selected": false,
@@ -3355,787 +3782,49 @@
               "value": "DE-FFM-S-SQL301:AX2012"
             }
           },
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 0,
-            "desc": false
-          },
-          "styles": [
-            {
-              "align": "auto",
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "pattern": "Time",
-              "type": "date"
-            },
-            {
-              "alias": "duration",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.duration",
-              "thresholds": [],
-              "type": "number",
-              "unit": "µs"
-            },
-            {
-              "alias": "session_id",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 0,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.session_id",
-              "thresholds": [],
-              "type": "number",
-              "unit": "none"
-            },
-            {
-              "alias": "cursor_id",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 0,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.cursor_id",
-              "thresholds": [],
-              "type": "number",
-              "unit": "none"
-            },
-            {
-              "alias": "AxUser",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.AxUser",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "AxSession",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.AxSession",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "query_hash",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.query_hash",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "query_hash (hex)",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.query_hash_hex",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "query_plan_hash",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.query_plan_hash",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "query_plan_hash (hex)",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.query_plan_hash_hex",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "cpu_time",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.cpu_time",
-              "thresholds": [],
-              "type": "number",
-              "unit": "µs"
-            },
-            {
-              "alias": "logical_reads",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.logical_reads",
-              "thresholds": [],
-              "type": "number",
-              "unit": "deckbytes"
-            },
-            {
-              "alias": "physical_reads",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.physical_reads",
-              "thresholds": [],
-              "type": "number",
-              "unit": "deckbytes"
-            },
-            {
-              "alias": "writes",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 0,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.writes",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            },
-            {
-              "alias": "row_count",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 0,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.row_count",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            },
-            {
-              "alias": "SqlHostName",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.SqlHostName",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "SqlUser",
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "sqlXeFetches.SqlUser",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "align": "auto",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "pattern": "/.*/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            }
-          ],
           "targets": [
             {
-              "dsType": "influxdb",
-              "groupBy": [],
-              "hide": true,
-              "measurement": "sqlXeFetches",
-              "orderByTime": "ASC",
-              "policy": "queryhashcodemetrics",
-              "refId": "C",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "duration"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "session_id"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "cursor_id"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "AxUser"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "AxSession"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_hash"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_hash_hex"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_plan_hash"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_plan_hash_hex"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "cpu_time"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "logical_reads"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "physical_reads"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "writes"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "row_count"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [
+              "groupBy": [
                 {
-                  "key": "AxUser",
-                  "operator": "=~",
-                  "value": "/^$USER$/"
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
                 },
                 {
-                  "condition": "AND",
-                  "key": "query_hash",
-                  "operator": "=~",
-                  "value": "/^$FetchesQueryHash$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "AxSession",
-                  "operator": "=~",
-                  "value": "/^$SESSION$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "SQLInstance",
-                  "operator": "=~",
-                  "value": "/^$SQLINSTANCE$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "SqlHostName",
-                  "operator": "=~",
-                  "value": "/^$CLIENTHOST$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "SqlUser",
-                  "operator": "=~",
-                  "value": "/^$SQLUSER$/"
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
                 }
-              ]
-            },
-            {
-              "dsType": "influxdb",
-              "groupBy": [],
+              ],
               "hide": false,
-              "measurement": "sqlXeFetches",
               "orderByTime": "ASC",
-              "policy": "queryhashcodemetrics",
-              "query": "SELECT \"duration\", \"cpu_time\", \"logical_reads\"*8, \"physical_reads\"*8, \"writes\", \"row_count\", \"session_id\", \"cursor_id\", \"AxUser\", \"AxSession\", \"SqlHostName\",\"SqlUser\",\"query_hash\", \"query_hash_hex\", \"query_plan_hash\", \"query_plan_hash_hex\" FROM \"queryhashcodemetrics\".\"sqlXeFetches\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"query_hash\" =~ /^$FetchesQueryHash$/ AND \"AxSession\" =~ /^$SESSION$/ AND \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"SqlUser\" =~ /^$SQLUSER$/) AND $timeFilter",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "duration"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "session_id"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "cursor_id"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "AxUser"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "AxSession"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_hash"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_hash_hex"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_plan_hash"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_plan_hash_hex"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "cpu_time"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "logical_reads"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "physical_reads"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "writes"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "row_count"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "AxUser",
-                  "operator": "=~",
-                  "value": "/^$USER$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "query_hash",
-                  "operator": "=~",
-                  "value": "/^$FetchesQueryHash$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "AxSession",
-                  "operator": "=~",
-                  "value": "/^$SESSION$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "SQLInstance",
-                  "operator": "=~",
-                  "value": "/^$SQLINSTANCE$/"
-                }
-              ]
-            },
-            {
-              "dsType": "influxdb",
-              "groupBy": [],
-              "hide": true,
-              "measurement": "sqlXeFetches",
-              "orderByTime": "ASC",
-              "policy": "queryhashcodemetrics",
-              "query": "SELECT \"duration\", \"session_id\", \"cursor_id\", \"AxUser\", \"AxSession\", \"query_hash\", \"query_hash_hex\", \"query_plan_hash\", \"query_plan_hash_hex\", \"cpu_time\", \"logical_reads\", \"physical_reads\", \"writes\", \"row_count\" FROM \"queryhashcodemetrics\".\"sqlXeFetches\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"query_hash\" =~ /^$FetchesQueryHash$/ AND \"AxSession\" =~ /^$SESSION$/ AND \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"SqlUser\" =~ /^$SQLUSER$/) AND $timeFilter",
+              "policy": "default",
+              "query": "SELECT \"duration\", \"cpu_time\", \"logical_reads\"*8, \"physical_reads\"*8, \"writes\"*8, \"row_count\",\"query_hash\", \"query_hash_hex\", \"query_plan_hash\", \"query_plan_hash_hex\", \"session_id\",\"AxUser\", \"AxSession\", \"SqlHostName\",\"SqlUser\", \"cursor_id\" FROM \"queryhashcodemetrics\".\"sqlXeFetches\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"query_hash\" =~ /^$FetchesQueryHash$/ AND \"AxSession\" =~ /^$SESSION$/ AND \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"SqlUser\" =~ /^$SQLUSER$/) AND $timeFilter",
               "rawQuery": true,
               "refId": "B",
-              "resultFormat": "time_series",
+              "resultFormat": "table",
               "select": [
                 [
                   {
                     "params": [
-                      "duration"
+                      "value"
                     ],
                     "type": "field"
-                  }
-                ],
-                [
+                  },
                   {
-                    "params": [
-                      "session_id"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "cursor_id"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "AxUser"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "AxSession"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_hash"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_hash_hex"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_plan_hash"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "query_plan_hash_hex"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "cpu_time"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "logical_reads"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "physical_reads"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "writes"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "row_count"
-                    ],
-                    "type": "field"
+                    "params": [],
+                    "type": "mean"
                   }
                 ]
               ],
-              "tags": [
-                {
-                  "key": "AxUser",
-                  "operator": "=~",
-                  "value": "/^$USER$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "query_hash",
-                  "operator": "=~",
-                  "value": "/^$FetchesQueryHash$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "AxSession",
-                  "operator": "=~",
-                  "value": "/^$SESSION$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "SQLInstance",
-                  "operator": "=~",
-                  "value": "/^$SQLINSTANCE$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "SqlHostName",
-                  "operator": "=~",
-                  "value": "/^$CLIENTHOST$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "SqlUser",
-                  "operator": "=~",
-                  "value": "/^$SQLUSER$/"
-                }
-              ]
+              "tags": []
             }
           ],
           "title": "FETCHES",
-          "transform": "timeseries_to_columns",
-          "type": "table-old"
+          "transparent": true,
+          "type": "table"
         }
       ],
       "repeat": "SQLINSTANCE",
@@ -4144,7 +3833,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -4155,6 +3844,8 @@
           "text": "int.normagroup.net",
           "value": "int.normagroup.net"
         },
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -4173,6 +3864,8 @@
         "current": {},
         "datasource": "$SISTEMA",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -4195,6 +3888,8 @@
         "current": {},
         "datasource": "$SISTEMA",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -4215,10 +3910,12 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "1m",
-          "value": "1m"
+          "selected": true,
+          "text": "10m",
+          "value": "10m"
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": null,
@@ -4226,7 +3923,7 @@
         "name": "AGGR_INTERVAL",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "1m",
             "value": "1m"
           },
@@ -4246,7 +3943,7 @@
             "value": "5m"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "10m",
             "value": "10m"
           },
@@ -4267,6 +3964,7 @@
           }
         ],
         "query": "1m,2m,3m,5m,10m,15m,30m,1h",
+        "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
       },
@@ -4275,6 +3973,8 @@
         "current": {},
         "datasource": "$SISTEMA",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -4297,6 +3997,8 @@
         "current": {},
         "datasource": "$SISTEMA",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -4319,6 +4021,8 @@
         "current": {},
         "datasource": "$SISTEMA",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -4341,6 +4045,8 @@
         "current": {},
         "datasource": "$SISTEMA",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -4363,6 +4069,8 @@
         "current": {},
         "datasource": "$SISTEMA",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -4393,6 +4101,8 @@
             "sql_statement_completed"
           ]
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "SQLEVENTNAME",
@@ -4429,6 +4139,8 @@
         "current": {},
         "datasource": "$SISTEMA",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "QUERYHASH",
@@ -4451,6 +4163,8 @@
         "current": {},
         "datasource": "$SISTEMA",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "FETCHES QUERYHASH",
@@ -4502,5 +4216,5 @@
   "timezone": "browser",
   "title": "SQLXEview",
   "uid": "SQLXEview",
-  "version": 5
+  "version": 12
 }
