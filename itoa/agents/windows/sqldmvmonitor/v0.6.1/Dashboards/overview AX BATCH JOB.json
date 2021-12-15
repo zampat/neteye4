@@ -5,7 +5,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.2.0"
+      "version": "7.5.5"
     },
     {
       "type": "panel",
@@ -37,7 +37,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1615986651190,
+  "iteration": 1629375876313,
   "links": [],
   "panels": [
     {
@@ -52,7 +52,6 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -91,7 +90,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -217,7 +216,6 @@
       "datasource": "$SISTEMA",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -250,7 +248,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -332,6 +330,12 @@
             {
               "params": [
                 "AOSServer"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "AOSInstance"
               ],
               "type": "tag"
             },
@@ -438,7 +442,6 @@
       "datasource": "$SISTEMA",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -470,7 +473,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -491,6 +494,12 @@
             {
               "params": [
                 "AOSServer"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "AOSInstance"
               ],
               "type": "tag"
             },
@@ -584,7 +593,6 @@
       "datasource": "$SISTEMA",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -616,7 +624,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -730,7 +738,6 @@
       "datasource": "$SISTEMA",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -762,7 +769,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -872,7 +879,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -883,6 +890,8 @@
           "text": "1869-wpc.local",
           "value": "1869-wpc.local"
         },
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -901,6 +910,8 @@
         "current": {},
         "datasource": "$SISTEMA",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "AX Env DB name",
@@ -925,6 +936,8 @@
           "text": "All",
           "value": "$__all"
         },
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": null,
@@ -965,14 +978,16 @@
         "allValue": null,
         "current": {},
         "datasource": "$SISTEMA",
-        "definition": "",
+        "definition": "show tag values from  AXBatchSessionOverviewByAOS with key=host where DBName=~ /^$DBname$/",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "AX Env DB name",
         "multi": false,
         "name": "AOSBATCHSERVERSQry",
         "options": [],
-        "query": "show tag values from  AXBatchSessionOverviewByAOS with key=host",
+        "query": "show tag values from  AXBatchSessionOverviewByAOS with key=host where DBName=~ /^$DBname$/",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1017,5 +1032,5 @@
   "timezone": "browser",
   "title": "Overview AX BATCH JOB",
   "uid": "OVERVIEW-AX-BATCH-JOB",
-  "version": 28
+  "version": 7
 }
