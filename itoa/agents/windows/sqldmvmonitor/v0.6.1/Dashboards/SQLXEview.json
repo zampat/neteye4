@@ -43,7 +43,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1639396173473,
+  "iteration": 1639741790989,
   "links": [],
   "panels": [
     {
@@ -3171,6 +3171,38 @@
                     "value": 98
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "SqlQueryHash"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 190
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "queryplan_hash"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 190
+                  }
+                ]
               }
             ]
           },
@@ -3178,7 +3210,7 @@
             "h": 14,
             "w": 24,
             "x": 0,
-            "y": 5
+            "y": 21
           },
           "id": 7,
           "links": [],
@@ -3201,180 +3233,46 @@
           },
           "targets": [
             {
-              "dsType": "influxdb",
-              "groupBy": [],
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
               "hide": false,
-              "measurement": "sqlXeEvents",
               "orderByTime": "ASC",
-              "policy": "queryhashcodemetrics",
+              "policy": "default",
               "query": "SELECT \"duration\", \"cpu_time\", \"logical_reads\"*8, \"physical_reads\"*8, row_count, \"writes\"*8, \"SqlQueryHash\",\"hex_query_hash\", \"queryplan_hash\",\"hex_queryplan_hash\", \"session_id\", \"AxSession\", \"AxUser\", \"SqlEventName\", \"SqlHostName\", \"SqlUser\", \"DatabaseName\", \"result\",\"isFetch\" FROM \"queryhashcodemetrics\".\"sqlXeEvents\" WHERE \"SqlQueryHash\" =~ /^$QueryHash$/ AND \"AxUser\" =~ /^$USER$/ AND \"SqlUser\" =~ /^$SQLUSER$/ AND \"SqlEventName\" =~ /^$sqleventname$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"AxSession\" =~ /^$SESSION$/ AND  \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND $timeFilter",
               "rawQuery": true,
-              "refId": "C",
+              "refId": "A",
               "resultFormat": "table",
               "select": [
                 [
                   {
                     "params": [
-                      "cpu_time"
+                      "value"
                     ],
                     "type": "field"
-                  }
-                ],
-                [
+                  },
                   {
-                    "params": [
-                      "duration"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "logical_reads"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "physical_reads"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "session_id"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "AxSession"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "AxUser"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "SqlEventName"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "SqlHostName"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "SqlUser"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "SqlQueryHash"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "queryplan_hash"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "DatabaseName"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "SqlQueryHash"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "writes"
-                    ],
-                    "type": "field"
+                    "params": [],
+                    "type": "mean"
                   }
                 ]
               ],
-              "tags": [
-                {
-                  "key": "AxUser",
-                  "operator": "=~",
-                  "value": "/^$USER$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "SqlHostName",
-                  "operator": "=~",
-                  "value": "/^$CLIENTHOST$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "AxUser",
-                  "operator": "=~",
-                  "value": "/^$USER$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "AxSession",
-                  "operator": "=~",
-                  "value": "/^$SESSION$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "SqlEventName",
-                  "operator": "=",
-                  "value": "sp_statement_completed"
-                }
-              ]
+              "tags": []
             }
           ],
           "title": " ",
-          "transformations": [
-            {
-              "id": "merge",
-              "options": {
-                "reducers": []
-              }
-            }
-          ],
+          "transformations": [],
           "transparent": true,
           "type": "table"
         }
@@ -3410,7 +3308,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 6
+            "y": 20
           },
           "hiddenSeries": false,
           "id": 29,
@@ -3728,7 +3626,7 @@
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 133
+                    "value": 115
                   }
                 ]
               },
@@ -3755,6 +3653,50 @@
                     "value": 121
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "query_hash"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 190
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "query_plan_hash"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 190
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cursor_id"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 110
+                  }
+                ]
               }
             ]
           },
@@ -3762,7 +3704,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 15
+            "y": 29
           },
           "id": 38,
           "options": {
@@ -3801,9 +3743,9 @@
               "hide": false,
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "SELECT \"duration\", \"cpu_time\", \"logical_reads\"*8, \"physical_reads\"*8, \"writes\"*8, \"row_count\",\"query_hash\", \"query_hash_hex\", \"query_plan_hash\", \"query_plan_hash_hex\", \"session_id\",\"AxUser\", \"AxSession\", \"SqlHostName\",\"SqlUser\", \"cursor_id\" FROM \"queryhashcodemetrics\".\"sqlXeFetches\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"query_hash\" =~ /^$FetchesQueryHash$/ AND \"AxSession\" =~ /^$SESSION$/ AND \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"SqlUser\" =~ /^$SQLUSER$/) AND $timeFilter",
+              "query": "SELECT \"duration\", \"cpu_time\", \"logical_reads\"*8, \"physical_reads\"*8, \"writes\"*8, \"row_count\",\"query_hash\", \"query_hash_hex\", \"query_plan_hash\", \"query_plan_hash_hex\", \"session_id\", \"AxSession\",\"AxUser\", \"SqlHostName\",\"SqlUser\", \"cursor_id\" FROM \"queryhashcodemetrics\".\"sqlXeFetches\" WHERE (\"AxUser\" =~ /^$USER$/ AND \"query_hash\" =~ /^$FetchesQueryHash$/ AND \"AxSession\" =~ /^$SESSION$/ AND \"SQLInstance\" =~ /^$SQLINSTANCE$/ AND \"SqlHostName\" =~ /^$CLIENTHOST$/ AND \"SqlUser\" =~ /^$SQLUSER$/) AND $timeFilter",
               "rawQuery": true,
-              "refId": "B",
+              "refId": "A",
               "resultFormat": "table",
               "select": [
                 [
@@ -4216,5 +4158,5 @@
   "timezone": "browser",
   "title": "SQLXEview",
   "uid": "SQLXEview",
-  "version": 12
+  "version": 26
 }
