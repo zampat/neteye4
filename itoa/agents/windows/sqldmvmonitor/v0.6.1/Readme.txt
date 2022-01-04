@@ -1,4 +1,4 @@
-﻿Copyright 2020 Würth Phoenix S.r.l.
+Copyright 2020 Würth Phoenix S.r.l.
 
 This README describes the prerequisits for installing the SQL DMV Monitor. 
 It gives a overview of the possible installation options/parameters and describes the installation process providing some examples.
@@ -60,7 +60,7 @@ PREREQUIREMENTS
 - Following software must be installed to be able to setup the SQL DMV Service:
 	- Windows Operation System: Windows 2008 R2 or higher (64 Bit)
 	- .net Framework 4.5.2 or higher
-	- Microsoft Visual C++ 2010 SP1 Redistributable Package (x64) (https://www.microsoft.com/en-US/download/details.aspx?id=13523)
+	- Microsoft Visual C++ 2010 SP1 Redistributable Package (x64) (https://www.microsoft.com/en-us/download/details.aspx?id=26999)
 
 
 PREPARATIONS
@@ -206,6 +206,10 @@ The error occures if the Instance is already installed. In the msi log File you 
 Extract from log:
 "Specified instance {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} via transform  is already installed. MSINEWINSTANCE requires a new instance that is not installed.
 MainEngineThread is returning 1639"
+2) Remote Storage Test: it is possibile to test the connection to remote neteye file storage from command line running the DMVmonitor.exe executable with option -test-remotestorage
+example: "C:\Program Files\SQLDMVMonitor\I00\DMVmonitor.exe" -config ".\sqltrace.conf" -instanceId I00  --test-remotestorage
+3) Tornado Test: it is possible to send test-tornado messages from command line running the DMVmonitor.exe executable with option -test-tornado
+example: "C:\Program Files\SQLDMVMonitor\I00\DMVmonitor.exe" -config ".\sqltrace.conf" -instanceId I00  --test-tornado
 
 ============================
 APPENDIX:
