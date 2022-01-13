@@ -23,6 +23,12 @@ Note: Adjust execution policy if needed
 > Icinga2Agent.ps1
 ```
 
+Windows Policy might enforce TLS 1.3. Define in Powershell 1.2 as acceptable:
+```
+# Security policies might enforce TLS 1.2 in order to allow Invoke-Webrequest
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+```
+
 ## Automated deployment of Icinga2 Agent
 
 Here you find a script collection for a deployment of the Icinga2 Agent on remote Windows servers. [Here you find the documentation.](./deploy_Icinga_agents_remotely.pdf)
