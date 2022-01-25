@@ -1,3 +1,6 @@
+# Security policies might enforce TLS 1.2 in order to allow Invoke-Webrequest
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 [string]$icinga2ver="2.11.3"
 [string]$username = "api-agent"
 [string]$password = "generation"
