@@ -42,8 +42,8 @@ use Getopt::Long;
 
 ################Vars#############
 my %ERRORS=('OK'=>0,'WARNING'=>1,'CRITICAL'=>2,'UNKNOWN'=>3,'DEPENDENT'=>4);
-my %dbOCSVars=('host'=>"mariadb.neteyelocal",'db'=>"ocsweb",'user'=>"root",'pass'=>"");
-my %dbGLPIVars=('host'=>"mariadb.neteyelocal",'db'=>"glpi",'user'=>"icinga_monitoring",'pass'=>"");
+my %dbOCSVars=('host'=>"mariadb.neteyelocal",'db'=>"ocsweb",'user'=>"ocsweb",'pass'=>"vz3X6wX2NV26IcYvALOwVNT66Eb0IQWX");
+my %dbGLPIVars=('host'=>"mariadb.neteyelocal",'db'=>"glpi",'user'=>"icinga_monitoring",'pass'=>"GjCKVXRj0LyhhQuV");
 
 $Version = "2.0";
 $DEBUG=0;
@@ -546,14 +546,15 @@ $str_resultOutput = "UNKNOWN: Now automatic Job matching.";
 #Loop trough all rows
 if (@row= $sqlQuery->fetchrow_array()) {
 
-   my $time_diff = $dateNow - $row[2];
+   $str_resultOutput .= "Job '".$row[0]."' last execution time:'".$row[2]."'<br/>";
+   my $time_diff = $dateNow - $row[3];
 
    if ($time_diff > $o_warn){
 	$var_return = $ERRORS{"WARNING"};	
-	$str_resultOutput = "WARNING: ";
+	$str_resultOutput = "WARNING: The Automatic Action Job: '".$row[0]."' had been executed '".$time_diff."' Seconds ago. (Limit $o_warn) | last_execution=$time_diff;$o_warn;$o_warn ";
    }else{
 	$var_return = $ERRORS{"OK"};	
-	$str_resultOutput = "OK: ";
+	$str_resultOutput = "OK: The Automatic Action Job: '".$row[0]."' had been executed '".$time_diff."' Seconds ago. | last_execution=$time_diff;$o_warn;$o_warn ";
    } 
    $str_resultOutput .= " Last real import of asset data by automatic Job: '".$row[0]."' last execution: '".$row[1]."' ( '".$time_diff."' Seconds ago). | last_execution=$time_diff;$o_warn;$o_warn ";
    $str_detailOutput .= "\n Job '".$row[0]."' last execution time:'".$row[1]."'";
@@ -705,7 +706,7 @@ sub print_usage
 ############################################
 {
     print "Usage: $0 -C <command> [-I] [-w <item age warning in days>] [-c <item age critical in days>] [-x \"<host1,host2,host3,..>\" ]\n";
-    print "-command: age|duplicates|ocs_duplicates|ocs_newsoft|glpi_duplicates|glpi_software|assets_in_monitoring\n";
+    print "-command: age|duplicates|ocs_duplicates|ocs_newsoft|glpi_duplicates|glpi_software\n";
     print "\n";
     print "Run plugin with --help for more info\n";
 }
@@ -729,7 +730,6 @@ specify the kind of check to perform on the OCS assetmanagement
   - ocs_newsoft     check in OCS for software in category NEW 
   - glpi_duplicates check in GLPI for duplicate assests having the same host name  
   Each Duplicate check will lead to a WARNING if a duplicate is found
-  - assets_in_monitoring check if Assets in GLPI are under active monitoring (Monarch)
   - automatic_action_last_run check regular execution of automatic action: verify last run
   - os_count check count of computers with relation to a non existing operating system
 
@@ -755,8 +755,6 @@ verbouse execution mode
 Example Usage:
 $0 -C age -x \"host1,host2,host3,..\" -w 30 -c 60
 $0 -C duplicates -x \"host1,host2,host3,..\"
-$0 -C assets_in_monitoring -x \"host1,host2,host3,..\" -s 20 -t 8 
-   (Where -s is the StatusID and -t the Technician Group ID in GLPI)
 $0 -C automatic_action_last_run -a DataInjection -w 86400
    OK: The Automatic Action Job: 'DataInjection' had been executed '2421' Seconds ago. | last_execution=2421;86400;86400
 

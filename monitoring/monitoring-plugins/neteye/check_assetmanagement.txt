@@ -1,50 +1,41 @@
-Plugin for NetEye 3:
+Plugin for NetEye 4:
 
-Check OCS for hardware asset not beeing updated for a while.
-Check also for duplicate items in the asset management.
-Version: 2.0
+# Introduction
 
-Usage: ./check_inventory.pl -C <command> [-I] [-w <item age warning in days>] [-c <item age critical in days>] [-x "<host1,host2,host3,..>" ]
--command: age|duplicates|ocs_duplicates|ocs_newsoft|glpi_duplicates|glpi_software|assets_in_monitoring
+## Configure
 
-Run plugin with --help for more info
+Prepare a DB user for Database OCS and GLPI with Read-only permissions
+Configure the permissions within the plugin
 
--h, --help
-print this help message
--C, --command
-specify the kind of check to perform on the OCS inventory:
-  - age:            check for old not up-to-date assets
-  - duplicates      check in OCS and GLPI for duplicate assests having the same host name
-  - ocs_duplicates  check in OCS for duplicate assests having the same host name
-  - ocs_newsoft     check in OCS for software in category NEW
-  - glpi_duplicates check in GLPI for duplicate assests having the same host name
-  Each Duplicate check will lead to a WARNING if a duplicate is found
-  - assets_in_monitoring check if Assets in GLPI are under active monitoring (Monarch)
-  - automatic_action_last_run check regular execution of automatic action: verify last run
+This should be improved in the future: Make a copy of this plugin to avoid it to be replaced by any update
 
--w <intiger> --warning <intiger>
-specify the number of days an asset item has not to be updated before returning a warning.
-Default: 10
--c <intiger> --critical <intiger>
-specify the number of days an asset item has not to be updated before returning a critical
-Default: 20
--x "host1,host2,neteye_.*,..."
-    exlude those host name from the check results
-    Expression is taken as case insensitive Perl Regular Expression
+## Usage and Help:
+```
+./check_assetmanagement.pl --help
+```
 
--I Ignore items marked as deleted
+# Command description
 
--s GLPI STATUS ID (only for -C assets_in_monitoring )
--t GLPI Tech. Groups ID (only for -C assets_in_monitoring )
--a GLPI automatic action name to verify (only for -C automatic_action_last_run)
--v, --verbose
-verbouse execution mode
+## age
 
-Example Usage:
-./check_inventory.pl -C age -x "host1,host2,host3,.." -w 30 -c 60
-./check_inventory.pl -C duplicates -x "host1,host2,host3,.."
-./check_inventory.pl -C assets_in_monitoring -x "host1,host2,host3,.." -s 20 -t 8
-   (Where -s is the StatusID and -t the Technician Group ID in GLPI)
-./check_inventory.pl -C automatic_action_last_run -a DataInjection -w 86400
-   OK: The Automatic Action Job: 'DataInjection' had been executed '2421' Seconds ago. | last_execution=2421;86400;86400
+check for old not up-to-date assets
+
+## duplicates  
+
+check in OCS and GLPI for duplicate assests having the same host name
+Each Duplicate check will lead to a WARNING if a duplicate is found
+
+- ocs_duplicates  check in OCS for duplicate assests having the same host name
+- glpi_duplicates check in GLPI for duplicate assests having the same host name
+
+## ocs_newsoft
+
+check in OCS for software in category NEW
+
+## automatic_action_last_run
+
+check regular execution of automatic action: verify last run
+
+## os_count 
+check count of computers with relation to a non existing operating system
 
