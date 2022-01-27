@@ -35,15 +35,22 @@
 # 2.2: (20181015) : Verify last run of a automatic action 
 # 2.3: (20190131) : Filter for Entity ID for Duplicates in GLPI 
 # 2.4: (20210427) : Check if duplicate or invalid operating systems are present
+# 2.5: (20220127) : Adjustment of check to neteye 4 and extract variables into config file
 
 use DBI;
 use POSIX;
 use Getopt::Long;
 
+# Indclude configuration file
+#
+require "./check_assetmanagement.conf";
+
 ################Vars#############
 my %ERRORS=('OK'=>0,'WARNING'=>1,'CRITICAL'=>2,'UNKNOWN'=>3,'DEPENDENT'=>4);
-my %dbOCSVars=('host'=>"mariadb.neteyelocal",'db'=>"ocsweb",'user'=>"ocsweb",'pass'=>"vz3X6wX2NV26IcYvALOwVNT66Eb0IQWX");
-my %dbGLPIVars=('host'=>"mariadb.neteyelocal",'db'=>"glpi",'user'=>"icinga_monitoring",'pass'=>"GjCKVXRj0LyhhQuV");
+#my %dbOCSVars=('host'=>"mariadb.neteyelocal",'db'=>"ocsweb",'user'=>"ocsweb",'pass'=>"secret123");
+my %dbOCSVars=('host'=>$mariadb_host,'db'=>$ocs_db,'user'=>$ocs_user,'pass'=>$ocs_pass);
+#my %dbGLPIVars=('host'=>"mariadb.neteyelocal",'db'=>"glpi",'user'=>"icinga_monitoring",'pass'=>"secret123");
+my %dbGLPIVars=('host'=>$mariadb_host,'db'=>$glpi_db,'user'=>$glpi_user,'pass'=>$glpi_pass);
 
 $Version = "2.0";
 $DEBUG=0;
