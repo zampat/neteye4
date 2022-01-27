@@ -40,10 +40,13 @@ drwxr-xr-x    5 root     system          256 Jun  6 13:51 ..
 ### Configuration of telegraf influxdb collector
 
 Create new influxdb user and grant permissions:
+(Influxdb permissions)[https://docs.influxdata.com/influxdb/v1.8/administration/authentication_and_authorization/#user-management-commands]
 ```
+Connect to influxdb via ssl:
+influx -ssl -unsafeSsl -username root -password $(cat /root/.pwd_influxdb_root) -host influxdb.neteyelocal
+
 > CREATE USER njmon with password 'password123'
-> GRANT WRITE ON aix_perfdata to njmon
-> GRANT READ ON aix_perfdata to njmon
+> GRANT ALL ON aix_perfdata to njmon
 > show users
 ```
 Create a local telegraf service
