@@ -104,7 +104,7 @@ yum install --enablerepo=epel python36.x86_64 python36-pip-8.1.2-8.el7.noarch py
 
 Create a virtualenv (named influxdb)
 ```
-cd /opt/neteye
+cd /opt/neteye/njmon
 virtualenv-3.6 influxdb
 ```
 
@@ -133,8 +133,20 @@ pip3 install influxdb
 ```
  
 2. Create the influxdb database
+Note: Since NetEye 4.19 influxdb operates with SSL and user management
 ```
-create database njmon
+Login is admin:
+> influx -ssl -unsafeSsl -username root -password $(cat /root/.pwd_influxdb_root) -host influxdb.neteyelocal
+
+Show databases and create new database:
+> show databases
+> create database aix_perfdata
+
+Create new user and grant permissions:
+> CREATE USER njmon with password 'password123'
+> GRANT WRITE ON aix_perfdata to njmon
+> GRANT READ ON aix_perfdata to njmon
+> show users
 ```
 
 IF everything is working:
