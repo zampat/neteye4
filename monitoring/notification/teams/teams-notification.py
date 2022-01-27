@@ -156,6 +156,7 @@ def main():
     logger.debug("Generating notification command")
 
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
     #proxy = args.teams_proxy
     proxyDict = { 
               "http"  : args.teams_proxy, 
@@ -166,6 +167,8 @@ def main():
         args.teams_webhook_url,
 	proxies = proxyDict,
         data=payload_attachments,
+        #bypass ssl verification
+        verify = False,
     )
     
     try:

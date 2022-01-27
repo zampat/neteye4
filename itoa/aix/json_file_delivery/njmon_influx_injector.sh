@@ -14,7 +14,7 @@
 
 #Default paths
 NJMON_PERFDATA_PATH="/var/log/njmon"
-NJMON_BIN_PATH="/usr/local/njmon"
+NJMON_BIN_PATH="/opt/neteye/njmon"
 
 #Archive duration in days
 ARCHIVE_PERFDATA_RETENTION="1"
@@ -41,7 +41,7 @@ do
 	echo "Processing: $perfdata_file file." >> ${NJMON_PERFDATA_PATH}/njmon_influx_injector.log 
 
 	# take action on each file. $f store current file name
-	/usr/bin/cat ${perfdata_file} | python ${NJMON_BIN_PATH}/njmon_to_InfluxDB_injector_15.py 
+	/usr/bin/cat ${perfdata_file} | python ${NJMON_BIN_PATH}/njmon_influxDB_injector_30.py 
 	RET=$?
 	   if [ $RET -eq 0 ]
 	   then
@@ -54,10 +54,10 @@ done
 
 #Cleanup process to remove old files from tmp archive
 find ${NJMON_PERFDATA_PATH}/ -mtime +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.json" -exec rm {} \;
-find ${ARCHIVE_PERFDATA_PATH}/ -mtime +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.err" -exec rm {} \;
+find ${NJMON_PERFDATA_PATH}/ -mtime +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.err" -exec rm {} \;
 
-find ${ARCHIVE_PERFDATA_PATH}/done/ -mtime +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.json" -exec rm {} \;
-find ${ARCHIVE_PERFDATA_PATH}/failed/ -mtime +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.json" -exec rm {} \;
+find ${NJMON_PERFDATA_PATH}/done/ -mtime +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.json" -exec rm {} \;
+find ${NJMON_PERFDATA_PATH}/failed/ -mtime +${ARCHIVE_PERFDATA_RETENTION} -type f -name "*.json" -exec rm {} \;
 
 
 #Deactivate virtualenv

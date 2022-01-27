@@ -32,7 +32,7 @@ icingacli cmdorchestrator command create \
 		--name restart-service-windows \
 		--command-type remote \
 		--monitoring-object-filter '_host_host_os=Windows' \
-		--command 'C:\\Progam~1\\Icinga2\\sbin\\scripts\\cmdo_restart_service.cmd' \
+		--command 'C:\\Progra~1\\Icinga2\\sbin\\scripts\\cmdo_restart_service.cmd' \
 		--command-parameters  '["$service_name$"]'\
 		--command-group-id 3
 
@@ -45,8 +45,58 @@ icingacli cmdorchestrator commandparameter create \
 ```
 
 
-## EDIT EXISTING COMMAND
+## EDIT EXISTING COMMANDGROUP
 
+NOTE: You need to specify the parent group EVEN IF NULL !! - otherwise the resolution for existing parent groups will fail!
 ```
-icingacli cmdorchestrator command edit --id 1 --name restart-service-windows --command-type remote --monitoring-object-filter 'host=myhostname1' --command 'C:\\Progam~1\\Icinga2\\sbin\\scripts\\cmdo_restart_service.cmd' --command-parameters  '["$service_name$"]' --command-group-id 2
+# icingacli cmdorchestrator commandgroup edit --id 1 --name Windows_edited --description Windows_added --parent_command_group_id null
+{
+    "message": "Object successfully updated",
+    "result": "ok",
+    "info": {
+        "id": 1,
+        "name": "Windows_edited",
+        "description": "Windows_added",
+        "parent_command_group_id": null
+    }
+}
+```
+
+## EDIT EXISTING COMMAND
+```
+icingacli cmdorchestrator command edit --id 1 --name restart-service-windows --command-type remote --monitoring-object-filter 'host=myhostname1' --command 'C:\\Progra~1\\Icinga2\\sbin\\scripts\\cmdo_restart_service.cmd' --command-parameters  '["$service_name$"]' --command-group-id 2
+```
+## EDIT EXISTING COMMANDPARAMETER
+```
+# icingacli cmdorchestrator commandparameter edit --id 6 --possible-values '["hello world", "hello test", "hello"]'
+```
+
+
+## Example create powershell command:
+The powershell script: test.ps1
+```
+Param(	
+    [Parameter()] [String] $ParameterName
+)
+
+Write-Host " hello world $ParameterName" 
+```
+The command:
+```
+# icingacli cmdorchestrator command create --name "powershell_test_args" --command-type remote --command 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe' --command-parameters '["-ExecutionPolicy", "ByPass", "C:\\\\Progra~1\\\\Icinga2\\\\sbin\\\\scripts\\\\test.ps1", "$service_name$"]' --command-group-id 1 --monitoring-object-filter "host=*win*"
+```
+The commmand parameters:
+```
+# icingacli cmdorchestrator commandparameter create --command-id 4 --parameter '$service_name$' --possible-values '["hello world", "hello test"]' --parameter-type string
+{
+    "message": "Object successfully created",
+    "result": "ok",
+    "info": {
+        "id": 6,
+        "command_id": 4,
+        "parameter": "$service_name$",
+        "parameter_type": "string",
+        "possible_values": "[\"hello world\", \"hello test\"]"
+    }
+}
 ```

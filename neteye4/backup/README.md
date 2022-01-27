@@ -36,6 +36,9 @@ neteye-backup.conf: /etc/sysconfig/
 Define cron job:
 ```
 #crontab -e
-#Backup of neteye at 20:00.
+
+#Backup only DB on active mysql server of neteye at 20:00.
 0 20 * * * /usr/bin/df | grep mysql$ > /dev/null 2>&1 && /usr/local/sbin/backup_neteye.sh --dbonly >/dev/null
+#Only local backup neteye data at 20:00 (no copy to cifs share).
+0 20 * * * /usr/local/sbin/backup_neteye.sh NONE >/dev/null
 ```
