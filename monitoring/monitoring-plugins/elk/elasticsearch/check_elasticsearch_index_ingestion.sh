@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Original author: Michele Santuari
@@ -69,7 +68,8 @@ INDEX_CREATION_INTERVAL="d"
 CURL_COMMAND_PATH="/usr/share/neteye/scripts/searchguard/sg_neteye_curl.sh"
 CURL_CERT=""
 CURL_PRIVATE_KEY=""
-
+ROLLOVER="no"
+CHECK_NO_LOG="no"
 
 
 function help() {
@@ -93,6 +93,8 @@ to elasticsearch date formats"
   echo -e "\t--curl-command-path (str): path to a curl executable to use (default: ${CURL_COMMAND_PATH}"
   echo -e "\t--curl-cert (str): path to the client's certificate (check: man curl for details) (default: ${CURL_CERT}"
   echo -e "\t--curl-key (str): path to the private key of the client (check: man curl for details) (default: ${CURL_PRIVATE_KEY}"
+  echo -e "\t--rollover (flag): whether rollover is enabled or not (default: ${ROLLOVER})"
+  echo -e "\t--check-no-log (flag): whether rollover is enabled or not (default: ${CHECK_NO_LOG})"
 }
 
 
@@ -166,6 +168,15 @@ do
       shift
       shift
       ;;
+      "--rollover")
+      ROLLOVER="yes"
+      shift
+      ;;
+      "--check-no-log")
+      CHECK_NO_LOG="yes"
+      shift
+      ;;
+
       "--curl-key")
       CURL_PRIVATE_KEY="$2"
       shift
@@ -218,18 +229,22 @@ esac
 # Building the curl base command
 CURL_BASE_COMMAND=$(build_curl_command "${CURL_COMMAND_PATH}" "${CURL_CERT}" "${CURL_PRIVATE_KEY}")
 
+if [ "$ROLLOVER" == "no" ];
+then
 # Building index name based on today's date
 # ref: https://www.elastic.co/guide/en/elasticsearch/reference/current/date-math-index-names.html
-CURRENT_INDEX_NAME="%3C${INDEX_STATIC_NAME}-%7Bnow%2F${INDEX_CREATION_INTERVAL}%7B${INDEX_DATE_FORMAT}%7D%7D%3E"
-OLD_INDEX_NAME="%3C${INDEX_STATIC_NAME}-%7Bnow%2F${INDEX_CREATION_INTERVAL}-1${INDEX_CREATION_INTERVAL}%7B${INDEX_DATE_FORMAT}%7D%7D%3E"
-
-
-# Building the url
-URL="${ES_PROTOCOL}://${ES_HOST}:${ES_PORT}/${CURRENT_INDEX_NAME},${OLD_INDEX_NAME}/_search?ignore_unavailable=true"
-
+   CURRENT_INDEX_NAME="%3C${INDEX_STATIC_NAME}-%7Bnow%2F${INDEX_CREATION_INTERVAL}%7B${INDEX_DATE_FORMAT}%7D%7D%3E"
+   OLD_INDEX_NAME="%3C${INDEX_STATIC_NAME}-%7Bnow%2F${INDEX_CREATION_INTERVAL}-1${INDEX_CREATION_INTERVAL}%7B${INDEX_DATE_FORMAT}%7D%7D%3E"
+   FUTURE_INDEX_NAME="%3C${INDEX_STATIC_NAME}-%7Bnow%2F${INDEX_CREATION_INTERVAL}+1${INDEX_CREATION_INTERVAL}%7B${INDEX_DATE_FORMAT}%7D%7D%3E"
+   # Building the url
+  URL="${ES_PROTOCOL}://${ES_HOST}:${ES_PORT}/${CURRENT_INDEX_NAME},${OLD_INDEX_NAME},${FUTURE_INDEX_NAME}/_search?ignore_unavailable=true"
+else
+  URL="${ES_PROTOCOL}://${ES_HOST}:${ES_PORT}/${INDEX_STATIC_NAME}/_search?ignore_unavailable=true"
+fi
 # Building the json payload
 JSON_PAYLOAD="{
-  \"_source\": [\"${INGESTED_TIME_FIELD}\"],
+  \"fields\": [\"${INGESTED_TIME_FIELD}\"],
+  \"_source\": false,
   \"size\": 1,
   \"sort\": [
     {
@@ -244,15 +259,33 @@ JSON=$(${CURL_BASE_COMMAND} -XGET "${URL}" -H 'Content-Type: application/json' -
 
 EXIT_CODE="$?"
 
-LOG_TIMESTAMP=$(echo "$JSON" | jq -r ".hits.hits | .[] | .[\"_source\"] | .[\"${INGESTED_TIME_FIELD}\]")
+LOG_TIMESTAMP=$(echo "$JSON" | jq -r ".hits.hits | .[] | .[\"fields\"] | .[\"${INGESTED_TIME_FIELD}\"][0]")
 
 
-if [[ "${EXIT_CODE}" -ne 0 ]] || [[ -z "${LOG_TIMESTAMP}" ]]; then
-  echo "CHECK UNKNOWN - Not able to collect data neither for '${INDEX_STATIC_NAME}' nor for '${OLD_INDEX_NAME}' indices"
+if [[ "${EXIT_CODE}" -ne 0 ]]; then
+  echo "CHECK UNKNOWN - Not able to collect data neither for ['${CURRENT_INDEX_NAME}', '${OLD_INDEX_NAME}', '${FUTURE_INDEX_NAME}'] indices"
   echo "Request to Elastic APIs exits with code ${EXIT_CODE} and timestamp '${INGESTED_TIME_FIELD}' is not extracted"
   echo "JSON_RESPONSE: ${JSON}"
   exit 3
 fi
+
+
+if [[ "${CHECK_NO_LOG}" == "yes" ]]; then
+   if  [[ -z "${LOG_TIMESTAMP}" ]]; then
+       echo "CHECK OK - No logs as expected"
+       exit 0
+   else
+       echo "CHECK CRITICAL - The index is not empty"
+       exit 2
+   fi
+else
+   if  [[ -z "${LOG_TIMESTAMP}" ]]; then
+       echo "CHECK UNKNOWN - Not able to collect logs"
+       exit 3
+   fi
+fi
+
+
 
 LOG_TIMESTAMP_SEC=$(date -u +%s -d "${LOG_TIMESTAMP}")
 
@@ -272,3 +305,4 @@ else
     echo "CHECK OK - last log dated \"${DATE_OUTPUT}\" | ${PERFORMANCE_DATA}"
     exit 0
 fi
+
