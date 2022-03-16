@@ -38,6 +38,7 @@
 
 # 
 # (C) 2019 - 2020 Patrick Zambelli and contributors, Wuerth Phoenix GmbH
+# (C) 2019 - 2021 Bernd Schmid, Wuerth IT GmbH
 # (C) to Joakim Svendsen https://github.com/EliteLoser from functions from PSipcalc
 ## https://www.powershelladmin.com/wiki/Calculate_and_enumerate_subnets_with_PSipcalc
 ## https://github.com/EliteLoser/PSipcalc/blob/master/PSipcalc.ps1
@@ -58,6 +59,8 @@ param(
 
    # Download extra Plugins if String is filled with values
    $action_force_reinstall_extra_plugins=$FALSE,
+   # Can overwrite the passed value
+   $admin_force_reinstall_extra_plugins=$TRUE,
 
    # Fetch custom nsclient.ini
    [bool]$action_custom_nsclient=$FALSE,
@@ -452,8 +455,12 @@ log_message -message ">>> NetEye deployment script start: $datetime"
 
 
 #Logging of parameters
-log_message -message "[i] Parameter: Force re-install of extra plugins: $action_force_reinstall_extra_plugins"
-
+log_message -message "[i] Parameter: action_force_reinstall_Icinga2_agent: $action_force_reinstall_Icinga2_agent"
+log_message -message "[i] Parameter: action_force_reinstall_extra_plugins: $action_force_reinstall_extra_plugins"
+log_message -message "[i] Parameter: admin_force_reinstall_extra_plugins: $admin_force_reinstall_extra_plugins"
+log_message -message "[i] Parameter: action_custom_nsclient: $action_custom_nsclient"
+log_message -message "[i] Parameter: action_install_OCS_agent: $action_install_OCS_agent"
+log_message -message "[i] Parameter: action_force_reinstall_OCS_agent: $action_force_reinstall_OCS_agent"
 
 
 ### ADVICE: Enable this only if really necessary
@@ -614,7 +621,7 @@ if (( $action_install_Icinga2_agent -eq $TRUE ) -or ($action_update_Icinga2_agen
     }
 
     # FAllback: No Subnet discoverd -> FAllback rule
-    if ( $IP_Subnet_discovered -ne $TRUE ){
+    if ([string]::IsNullOrEmpty($neteye4endpoint)) {
 
         # Default rule: take the first element of Endpoints
         [array] $arr_subnet2test = $arr_subnet_ranges[0]
