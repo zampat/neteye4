@@ -194,7 +194,7 @@ Cycletime: 1 hour: interval=20 secs X cycles = 180
 
 Sample call to send data to neteye:
 ```
-/usr/local/njmon/njmon_aix7_v80 -s 20 -c 180 -I -i 10.1.1.100 -p 8186 -k -K /tmp/njmon.pid
+/usr/local/njmon/njmon_aix7_v80 -s 20 -c 180 -I -i 10.1.1.100 -p 8186 -k -K /tmp/neteye_njmon.pid
 
 Info:
 -s seconds : seconds between snapshots of data (default 60 seconds)
@@ -207,6 +207,6 @@ Info:
 ```
 # crontab -l
 # AIX Performance data injector
-*/5 * * * *     /usr/local/njmon/njmon_aix7_v80 -s 20 -c 180 -I -i 10.1.1.100 -p 8186 -k -K /tmp/njmon.pid
+*/5 * * * *     /usr/local/njmon/njmon_aix7_v80 -s 20 -c 180 -I -i 10.1.1.100 -p 8186 -k -K /tmp/neteye_njmon.pid
 ```
 
