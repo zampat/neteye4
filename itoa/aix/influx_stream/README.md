@@ -206,7 +206,7 @@ Info:
 
 ```
 # crontab -l
-# AIX Performance data injector
-*/5 * * * *     /usr/local/njmon/njmon_aix7_v80 -s 20 -c 180 -I -i 10.1.1.100 -p 8186 -k -K /tmp/neteye_njmon.pid
+# AIX Performance data injector run each hour for 3600 - 20 seconds ( 20 x 179 )
+15 * * * *     /usr/local/njmon/njmon_aix7_v80 -s 20 -c 179 -I -i 10.1.1.100 -p 8186 -k -K /tmp/neteye_njmon.pid
 ```
 
