@@ -16,7 +16,6 @@ __Advice: the following how-to is work in progress and subject to further change
 ## Software from OSS repositories
 
 - AIX Collector binaries: [`njmon_aix_binaries_v21.zip`](https://sourceforge.net/projects/nmon/files/njmon_aix_binaries_v21.zip/download)
-- Converter for Json file to inject performance data to influxdb: [`njmon_to_InfluxDB_injector_15.py`](https://sourceforge.net/projects/nmon/files/njmon_to_InfluxDB_injector_15.py/download)
 - [Sample Grafana dashboard](https://sourceforge.net/projects/nmon/files/Grafana_Template_for_njmon_AIX_v3-1548086037850.json/download)
 
 ## Setup AIX data grabber
@@ -178,19 +177,29 @@ Create a local telegraf service
   #basic_username = "foobar"
 ```
 
-Start service
+Enable and Start service
 ```
 systemctl start telegraf-local@customer_consumer_aix_perfdata.service
+systemctl status telegraf-local@customer_consumer_aix_perfdata.service
+systemctl enable telegraf-local@customer_consumer_aix_perfdata.service
 ```
 
 
-Test on AIX System:
+Run a Test on AIX System:
 
-Define Neteye Influxdb host and port and user
+Define njmon call:
+- Frequency and number of cycles. Careful, when running forever handle the stop and start. It is easier to define a interval and define the number of cycles and then restart the process by cronjob. Example:
+Cycletime: 1 hour: interval=20 secs X cycles = 180 
+- define destination Influxdb host and port
 
 Sample call to send data to neteye:
 ```
 /usr/local/njmon/njmon_aix7_v80 -s 20 -c 180 -I -i 10.1.1.100 -p 8186 -k -K /tmp/njmon.pid
+
+Info:
+-s seconds : seconds between snapshots of data (default 60 seconds)
+-c count   : number of snapshots then stop     (default forever)
+
 ```
 
 5. Register the cronjob as indicated above
