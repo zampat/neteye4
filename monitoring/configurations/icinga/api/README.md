@@ -14,6 +14,12 @@ object ApiUser "api-user" {
 }
 ```
 
+Define a Permission with a Filter on Object of Type array:
+```
+permission = "objects/query/Host"
+filter= {{ "Monitoring_Group" in host.groups }}
+```
+
 Get all services:
 ```
 # curl -k -s -G -u root:0123456789abcdefc 'https://localhost:5665/v1/objects/services' | jq
