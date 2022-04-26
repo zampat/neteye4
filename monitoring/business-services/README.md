@@ -16,7 +16,7 @@ icingacli monitoring list services  --service_display_name=*ping* --service_stat
 
 ## Dynamic BP: Based on Icinga API
 
-ADVICE: This approach is deprecated in favor using icingaweb2 cli
+ADVICE: This approach is deprecated in favor using `icingaweb2 cli`
 
 The plugin allows the definition of filter expressions to group Icinga2 objects using the Icinga DSL query language
 Example: match all hosts having name "*neteye*"

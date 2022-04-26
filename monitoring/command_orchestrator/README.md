@@ -18,8 +18,9 @@ Info:  Note Group ID from result. Needed for command
 
 Note the filter expression: 
 - according icingaweb2 notation
-- filter on standard attribute: "host=myhostname1"
-- filter on custom variable: "_host_host_os=Windows"
+- filter on standard attribute: `"host=myhostname1"`
+- filter on custom variable: `"_host_host_os=Windows"`
+
 ```
 icingacli cmdorchestrator command create --name <Command name> \
    --command-type <Command type> \
@@ -73,7 +74,7 @@ icingacli cmdorchestrator command edit --id 1 --name restart-service-windows --c
 
 
 ## Example create powershell command:
-The powershell script: test.ps1
+The powershell script: `test.ps1`
 ```
 Param(	
     [Parameter()] [String] $ParameterName
@@ -85,7 +86,7 @@ The command:
 ```
 # icingacli cmdorchestrator command create --name "powershell_test_args" --command-type remote --command 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe' --command-parameters '["-ExecutionPolicy", "ByPass", "C:\\\\Progra~1\\\\Icinga2\\\\sbin\\\\scripts\\\\test.ps1", "$service_name$"]' --command-group-id 1 --monitoring-object-filter "host=*win*"
 ```
-The commmand parameters:
+The command parameters:
 ```
 # icingacli cmdorchestrator commandparameter create --command-id 4 --parameter '$service_name$' --possible-values '["hello world", "hello test"]' --parameter-type string
 {

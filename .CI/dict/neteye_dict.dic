@@ -35,6 +35,8 @@ cisco
 CISCO
 CLI
 cmd
+COMMANDGROUP
+COMMANDPARAMETER
 conf
 Conf
 config

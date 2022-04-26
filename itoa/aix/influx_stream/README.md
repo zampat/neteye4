@@ -189,7 +189,7 @@ Run a Test on AIX System:
 
 Define njmon call:
 - Frequency and number of cycles. Careful, when running forever handle the stop and start. It is easier to define a interval and define the number of cycles and then restart the process by cronjob. Example:
-Cycletime: 1 hour: interval=20 secs X cycles = 180 
+Duration of cycle: 1 hour: interval=20 secs X cycles = 180 
 - define destination Influxdb host and port
 
 Sample call to send data to neteye:
