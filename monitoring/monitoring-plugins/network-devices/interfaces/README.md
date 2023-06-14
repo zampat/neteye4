@@ -23,6 +23,21 @@ Install the following packages:
 - `gcc`
 - `net-snmp-devel`
 
+On RHEL8 install "Development Tools"
+`dnf group install "Development Tools"`
+
+In configure.ac adjust some version requiremnets:
+```
+AC_PREREQ([2.69])
+AC_INIT([check_interfaces],[1.4])
+AC_PREFIX_DEFAULT(/usr/local/nagios)
+AC_PROG_CC()
+AC_PROG_INSTALL()
+
+AM_INIT_AUTOMAKE([1.16.1])
+```
+
+
 Compile commands as indicated on git
 ```
 ./configure
