@@ -1,0 +1,5 @@
+{
+    "event_command": "eventcmd_restart_windows_server",
+    "object_name": "lab-st-agent-event-restart-server",
+    "object_type": "template"
+}

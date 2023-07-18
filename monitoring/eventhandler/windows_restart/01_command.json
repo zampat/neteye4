@@ -1,0 +1,17 @@
+{
+    "arguments": {
+        "-ServiceAttempt": "$service.check_attempt$",
+        "-ServiceState": "$service.state$",
+        "-ServiceStateType": "$service.state_type$"
+    },
+    "command": "C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe c:\\Scripts\\event_restart_windows.ps1",
+    "disabled": false,
+    "imports": [],
+    "is_string": null,
+    "methods_execute": "PluginEvent",
+    "object_name": "eventcmd_restart_windows_server",
+    "object_type": "object",
+    "timeout": "60",
+    "vars": {},
+    "zone": null
+}
