@@ -37,12 +37,16 @@ After=syslog.target network.target
 
 [Service]
 Type=forking
-
+User=sahi
 # Clean any existing files in /tmp/.X11-unix environment
-ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
-ExecStart=/usr/sbin/runuser -l sahi -c "/usr/bin/vncserver %i -localhost"
+#ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
+#ExecStart=/usr/sbin/runuser -l sahi -c "/usr/bin/vncserver %i -localhost"
+#ExecStop=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
 #PIDFile=/home/sahi/.vnc/%H%i.pid
-ExecStop=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
+ExecStartPre=/bin/sh -c "/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :"
+ExecStart=/bin/sh -c "/usr/bin/vncserver %i -localhost"
+PIDFile=/home/sahi/.vnc/%H%i.pid
+ExecStop=/bin/sh -c "/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :"
 
 [Install]
 WantedBy=multi-user.target
