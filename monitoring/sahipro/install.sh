@@ -26,12 +26,15 @@ fi
 #
 # VNC Server Installation
 #
-yum -y install tigervnc-server metacity xterm tmpwatch rpm/*.rpm
+yum -y install tigervnc-server metacity xterm tmpwatch firefox java-1.8.0-openjdk sudo rpm/*.rpm
 cp etc/vncserver@.service /etc/systemd/system/
 systemctl daemon-reload
 echo "Starting VNC Daemon insert password if requested"
 /usr/sbin/runuser -l sahi -c '/usr/bin/vncserver :99 -localhost'
+/usr/sbin/runuser -l sahi -c '/usr/bin/vncserver -kill :99'
+cp vnc/xstartup /home/sahi/.vnc/
 systemctl enable vncserver@:99.service
+systemctl start vncserver@:99.service
 
 chown -R sahi:sahi $1
 cp bin/startsahi.sh $1/userdata/bin
