@@ -1,7 +1,7 @@
 # neteye test instance should point to internal pulp repo
 #
 ---
-- hosts: neteye4_rhel8_n1
+- hosts: localhost
   any_errors_fatal: true
   gather_facts: false
 
