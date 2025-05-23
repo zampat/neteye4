@@ -1,0 +1,3 @@
+search_data:
+  - file: "/etc/systemd/system/keycloak.service.d/99-custom.conf"
+    string: "JAVA_OPTS"

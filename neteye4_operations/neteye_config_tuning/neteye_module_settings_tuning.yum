@@ -1,0 +1,32 @@
+# neteye test instance should point to internal pulp repo
+#
+
+- name: Check multiple files for specific strings
+  hosts: all
+  #gather_facts: false
+  vars_files:
+    - config.yml  # Load variables from the config file
+  tasks:
+    - name: Search files for corresponding strings
+      command: grep -q "{{ item.string }}" "{{ item.file }}"
+      register: grep_result
+      ignore_errors: yes
+      loop: "{{ search_data }}"
+
+    - name: Display results
+      debug:
+        msg: >
+          The string '{{ item.string }}' was found in '{{ item.file }}'
+      when: grep_result.results[item_index].rc == 0
+      loop: "{{ search_data }}"
+      loop_control:
+        index_var: item_index
+
+    - name: Handle missing strings
+      debug:
+        msg: "The string '{{ item.string }}' was NOT found in '{{ item.file }}'"
+      when: grep_result.results[item_index].rc != 0
+      loop: "{{ search_data }}"
+      loop_control:
+        index_var: item_index
+
