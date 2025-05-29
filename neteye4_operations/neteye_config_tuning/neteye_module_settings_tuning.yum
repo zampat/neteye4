@@ -2,7 +2,7 @@
 #
 
 - name: Check multiple files for specific strings
-  hosts: all
+  hosts: localhost
   gather_facts: false
   vars_files:
     - config.yml  # Load variables from the config file
