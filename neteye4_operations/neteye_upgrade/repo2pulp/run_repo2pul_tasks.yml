@@ -1,0 +1,13 @@
+- name: Run repo2pulp tasks
+  hosts: localhost
+
+  vars:
+    path_dnf_mirror: "/etc/yum.repos.d/mirrors"
+    path_neteye_ansible_file: "/usr/share/neteye/scripts/upgrade/playbooks/common/generate_mirrorfiles.yml"
+
+  tasks:
+    - name: neteye test instance should point to internal pulp repo
+      ansible.builtin.import_tasks: tasks/point_repos_to_internal_pulp.yml
+
+    - name: Task to avoid rebuild of mirror files - Add comment marks at the beginning of a line
+      ansible.builtin.import_tasks: tasks/disable_neteye_mirrorfile_update.yml

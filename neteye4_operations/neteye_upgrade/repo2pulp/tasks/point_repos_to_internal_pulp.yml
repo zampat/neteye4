@@ -1,0 +1,15 @@
+# neteye test instance should point to internal pulp repo
+#
+- name: prerequisites | get the list of repo files in /etc/yum.repos.d/
+  find:
+    paths: "{{ path_dnf_mirror }}"
+    patterns: "*.mirror"
+  register: repofiles
+
+- name: prerequisites | replace strings in files found
+  replace:
+    dest: "{{ item.path }}"
+    backup: yes
+    regexp: 'https://repo\.wuerth-phoenix\.com'
+    replace: 'http://pulp2internal.wp.lan'
+  loop: "{{ repofiles.files }}"

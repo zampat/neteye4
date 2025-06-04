@@ -1,0 +1,7 @@
+# neteye test instance should point to internal pulp repo
+#
+- name: Add comment marks at the beginning of a line
+  ansible.builtin.replace:
+    path: "{{path_neteye_ansible_file}}"
+    regexp: '^(?!#)(.*)$'
+    replace: '#\1'
