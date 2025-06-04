@@ -1,7 +1,7 @@
 # neteye test instance should point to internal pulp repo
 #
-- name: Add comment marks at the beginning of a line
+- name: Disable mirror rebuild Add "when false" to tasks if missing
   ansible.builtin.replace:
     path: "{{path_neteye_ansible_file}}"
-    regexp: '^(?!#)(.*)$'
-    replace: '#\1'
+    regexp: '^(\s{4})(?!#)(.*)'
+    replace: '#\2'
