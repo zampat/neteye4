@@ -1,4 +1,6 @@
 {
+  "type": "filter",
+  "name": "hsg",
   "description": "Host - Service Generator: Webhook to generate Objects in Icinga and set status",
   "active": true,
   "filter": {
