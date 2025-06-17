@@ -1,5 +1,5 @@
 {
-  "name": "service_smart_action",
+  "name": "sysupdtime_create_update_monitoring_service",
   "description": "Create and update Service object",
   "continue": true,
   "active": true,
@@ -15,8 +15,8 @@
       ]
     },
     "WITH": {
-      "service_name": {
-        "from": "${event.payload.oids.\"SNMPv2-SMI::enterprises.1000.1.1.1.21.0\".content}",
+      "output_value": {
+        "from": "${event.payload.oids.\"SNMPv2-SMI::enterprises.1000.1.1.1.21.2\".content}",
         "regex": {
           "match": "[a-zA-Z\\s]+:([a-zA-Z\\s]+),.*",
           "group_match_idx": 1,
@@ -24,8 +24,8 @@
         },
         "modifiers_post": []
       },
-      "output_value": {
-        "from": "${event.payload.oids.\"SNMPv2-SMI::enterprises.1000.1.1.1.21.2\".content}",
+      "service_name": {
+        "from": "${event.payload.oids.\"SNMPv2-SMI::enterprises.1000.1.1.1.21.0\".content}",
         "regex": {
           "match": "[a-zA-Z\\s]+:([a-zA-Z\\s]+),.*",
           "group_match_idx": 1,
@@ -39,6 +39,10 @@
     {
       "id": "smart_monitoring_check_result",
       "payload": {
+        "check_result": {
+          "exit_status": 0,
+          "plugin_output": "${_variables.output_value}"
+        },
         "host": {
           "address": "localhost",
           "display_name": "Hostname A",
@@ -46,16 +50,12 @@
           "object_name": "hostname"
         },
         "service": {
+          "imports": "generic-passive-freshness-service",
           "object_name": "${_variables.service_name}",
           "vars": {
             "dummydescription": "TEST",
             "dummystate": 0
-          },
-          "imports": "generic-passive-freshness-service"
-        },
-        "check_result": {
-          "plugin_output": "${_variables.output_value}",
-          "exit_status": 0
+          }
         }
       }
     }

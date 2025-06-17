@@ -25,14 +25,14 @@
     {
       "id": "icinga2",
       "payload": {
+        "icinga2_action_name": "process-check-result",
         "icinga2_action_payload": {
-          "type": "Service",
           "exit_status": "0",
-          "plugin_output": "Output message",
           "filter": "host.name==\"neteye\" && service.name ==\"email_event\"",
-          "performance_data": []
-        },
-        "icinga2_action_name": "process-check-result"
+          "performance_data": [],
+          "plugin_output": "Output message",
+          "type": "Service"
+        }
       }
     }
   ]
