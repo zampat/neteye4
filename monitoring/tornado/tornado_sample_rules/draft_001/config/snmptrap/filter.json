@@ -1,4 +1,6 @@
 {
+  "type": "filter",
+  "name": "snmptrap",
   "description": "SNMP Traps collected by snmptrapd (configuration in /neteye/shared/snmptrapd/)",
   "active": true,
   "filter": {

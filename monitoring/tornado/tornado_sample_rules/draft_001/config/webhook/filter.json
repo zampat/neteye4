@@ -1,4 +1,6 @@
 {
+  "type": "filter",
+  "name": "webhook",
   "description": "Webhook HTTP call collected by from \"tornado_webhook_collector\" service",
   "active": true,
   "filter": {
