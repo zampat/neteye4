@@ -1,0 +1,7 @@
+search_data:
+  - file: "/root/.bashrc"
+    string: "influx_login"
+    string_insert: "alias influx_login='influx -host influxdb.neteyelocal -ssl -username root -password $(cat /root/.pwd_influxdb_root)'"
+#  - file: "/etc/systemd/system/elasticrvice.d/99-custom.conf"
+#    string: "JAVA_OPTS"
+#    suggestion: "[Service] \n Environment=\"JAVA_OPTS=-Xms128m -Xmx1024m\""
