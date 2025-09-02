@@ -1,0 +1,36 @@
+---
+- name: Download and replace Icinga Web 2 logo
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Ensure destination directory exists
+      file:
+        path: /usr/share/icingaweb2/public/img/neteye
+        state: directory
+        mode: '0755'
+
+    - name: Download new logo SVG
+      get_url:
+        url: https://openclipart.org/download/22678/jean-victor-balin-icon-monitoring.svg
+        dest: /tmp/icon-monitoring.svg
+        mode: '0644'
+
+    - name: Backup existing logo.svg if it exists
+      copy:
+        src: /usr/share/icingaweb2/public/img/neteye/logo.svg
+        dest: /usr/share/icingaweb2/public/img/neteye/logo.svg.bak
+        remote_src: yes
+      ignore_errors: yes
+
+    - name: Replace logo.svg with downloaded file
+      copy:
+        src: /tmp/icon-monitoring.svg
+        dest: /usr/share/icingaweb2/public/img/neteye/logo.svg
+        remote_src: yes
+        mode: '0644'
+
+    - name: Remove temporary file
+      file:
+        path: /tmp/icon-monitoring.svg
+        state: absent
+
