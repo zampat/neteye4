@@ -737,10 +737,10 @@ def create_plugin_output(res):
         for el in values:
             host = el.split(":")[0]
             if args.object_type == IcingaObjectType.HOSTS.value:
-                link = f"<a href='{url_show_host}?host={host}'>{host}</a>"
+                link = f"<a href='{url_show_host}?host={host}' target='_blank'>{host}</a>"
             else:
                 service = el.split(":")[1]
-                link = f"<a href='{url_show_service}?host={host}&service={service}'>{el}</a>"
+                link = f"<a href='{url_show_service}?host={host}&service={service}' target='_blank'>{el}</a>"
 
             output_objects[args.object_type][key].append(link)
 
