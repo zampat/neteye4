@@ -46,17 +46,4 @@ relayhost = [<SMTP Relay Server IP or FQDN>]
 - generated tags and registered the host in repo
 - Mail relay
 
-### Configurations to perform on operating system
-
-
-
-
-Ensure your system is up-to-date
-```
-[root@neteye ~]# yum update
-[root@neteye ~]# yum --enablerepo=neteye update
-[root@neteye ~]# yum --enablerepo=neteye groupinstall neteye
-[root@neteye ~]# yum --enablerepo=neteye groupinstall <additional module name>
-```
-
 [<<< Back to documentation overview <<<](./README.md)
