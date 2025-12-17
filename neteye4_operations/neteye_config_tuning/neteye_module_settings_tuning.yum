@@ -6,7 +6,17 @@
   gather_facts: false
   vars_files:
     - config.yml  # Load variables from the config file
+
   tasks:
+    - name: Touch file if it does not exists
+      ansible.builtin.file:
+        path: "{{ item.file }}"
+        state: touch
+        owner: "{{ owner | default('root') }}"
+        group: "{{ group | default('root') }}"
+        mode: "{{ mode | default('0644') }}"
+      loop: "{{ search_data }}"
+
     - name: Search files for corresponding strings
       command: grep -q "{{ item.string }}" "{{ item.file }}"
       register: grep_result
@@ -22,11 +32,24 @@
       loop_control:
         index_var: item_index
 
-    - name: Handle missing strings
-      fail:
-        msg: "The string '{{ item.string }}' was NOT found in '{{ item.file }}'. Suggested configuration: '{{ item.suggestion }}'"
+
+    - name: Add the line if it is not present
+      ansible.builtin.lineinfile:
+        path: "{{ item.file }}"
+        regexp: "{{ item.string }}"
+        line: "{{ item.suggestion }}"
+        state: present
+        create: true
       when: grep_result.results[item_index].rc != 0
       loop: "{{ search_data }}"
       loop_control:
         index_var: item_index
+
+#    - name: Handle missing strings
+#      fail:
+#        msg: "The string '{{ item.string }}' was NOT found in '{{ item.file }}'. Suggested configuration: '{{ item.suggestion }}'"
+#      when: grep_result.results[item_index].rc != 0
+#      loop: "{{ search_data }}"
+#      loop_control:
+#        index_var: item_index
 

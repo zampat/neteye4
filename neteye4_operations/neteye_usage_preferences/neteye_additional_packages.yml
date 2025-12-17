@@ -1,0 +1,19 @@
+# Ansible to install packages
+#
+# Install tmux and place custom settings
+- name: Install tmux
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install package tmux
+      ansible.builtin.package:
+        name: tmux
+
+    - name: Copy tmux config file
+      ansible.builtin.copy:
+        src: ./files/.tmux.conf
+        dest: /root/.tmux.conf
+        owner: root
+        group: root
+        mode: '0644'
+

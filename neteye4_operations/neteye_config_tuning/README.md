@@ -1,6 +1,11 @@
 ### Tuning of settings for ideal performance 
 
-Update local dnf repo mapping to point to internal pulp
+Adjust settins of modules for better performance 
+
+Configurations changed from settings in config.yml
+- keycloak: Raise JVM limit from MIN 64m MAX 512m
+
+
 ```
 ansible-playbook -i inventory/neteye_vms.ini neteye_module_settings_tuning.yum
 ```
