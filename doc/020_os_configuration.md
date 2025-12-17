@@ -10,6 +10,7 @@ Configure master or [satellite according] (https://neteye.guide/4.45/getting-sta
 
 __Important Information on Host Names__
 NetEye 4 uses encrypted communications everywhere. One of the parameters for the certificates is the host name. This means that if you have a typo when you enter the host name, or use upper case one time and lower case another, then the certificate will not be accepted and communication with the server will not be possible.
+Avoid SPACE _ and special characters in hostname
 ```
 [root@neteye ~]# hostnamectl set-hostname <hostname.domain>
 [root@neteye ~]# cat /etc/hosts
