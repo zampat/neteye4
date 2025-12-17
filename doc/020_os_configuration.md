@@ -1,28 +1,15 @@
-# NetEye operating system setup
+# Get Ready after setup of Neteye ISO
 
-## Accessing the system
-Access the console via monitor and keyboard in case of hardware, via VM console in case of virtual environment.
-The default credential must be changed after login (enforced by system policy)
-```
-user: root
-password: admin
-```
+## NetEye operating system setup
 
-## Configure OS
+Reference to neteye.guide: [system setup](https://neteye.guide/4.45/getting-started/system-installation/acquire-iso-image.html)
 
-NetEye 4 provides a logic to automate many setup tasks. Basic OS configurations are still required:
-- System Hostname and DNS registration
-- Timezone
-- Network configuration
-- Mail relay
-- Customize credentials
+Configure master or [satellite according] (https://neteye.guide/4.45/getting-started/system-installation/single-node-and-satellites.html)
+
+### Define system’s host name
 
 __Important Information on Host Names__
 NetEye 4 uses encrypted communications everywhere. One of the parameters for the certificates is the host name. This means that if you have a typo when you enter the host name, or use upper case one time and lower case another, then the certificate will not be accepted and communication with the server will not be possible.
-
-### Configurations to perform on operating system
-
-Define system’s host name
 ```
 [root@neteye ~]# hostnamectl set-hostname <hostname.domain>
 [root@neteye ~]# cat /etc/hosts
@@ -31,37 +18,39 @@ Define system’s host name
 <NetEye IP> <hostname.domain> <hostname>
 ```
 
-Configure NIC
+### Configure NIC via network manager
+
+use nmcli or nmtui
+
+### Timezone config:
+
 ```
-[root@neteye ~]# cat /etc/sysconfig/network-scripts/ifcfg-<interface>
-BOOTPROTO=static #To configure according to the client
-ONBOOT=yes
-IPADDR=<NetEye IP>
-NETMASK=<Subnet Masl>
-GATEWAY=<Default Gateway IP>
-```
-Set DNS Resolution
-```
-[root@neteye ~]# cat /etc/resolv.conf
-search <domain>
-nameserver <DNS Server 1 IP>
-nameserver <DNS Server 2 IP>
-```
-Update system’s and `php.ini` time zone
-```
-[root@neteye ~]# timedatectl set-timezone Europe/Rome
-[root@neteye ~]# timezone=`timedatectl status | grep "Time zone" | cut -d : -f 2 | tr -d '[:space:]' | cut -d "(" -f 1`; echo "date.timezone=\"$timezone\"" > /etc/opt/rh/rh-php73/php.d/30-timezone.ini
+[root@neteye ~]# timedatectl set-timezone Europe/Rome
+[root@neteye ~]# timezone=`timedatectl status | grep "Time zone" | cut -d : -f 2 | tr -d '[:space:]' | cut -d "(" -f 1`; echo "date.timezone=\"$timezone\"" > /neteye/local/php/conf/php.d/30-timezone.ini
 Verify timezone:
-[root@neteye ~]# cat /etc/opt/rh/rh-php73/php.d/30-timezone.ini
+[root@neteye ~]# cat /neteye/local/php/conf/php.d/30-timezone.ini
 date.timezone="Europe/Rome"
-[root@neteye ~]# systemctl restart rh-php73-php-fpm.service
+[root@neteye ~]# systemctl restart php-fpm.service
 ```
-Set mail relay for Postfix
+
+## Set mail relay for Postfix
 ```
 [root@neteye ~]# cat /etc/postfix/main.cf
 relayhost = [<SMTP Relay Server IP or FQDN>]
 [root@neteye ~]# systemctl restart postfix.service
 ```
+
+## Once accomplished you have
+- Timezone
+- Network and Hostname defined
+- generated tags and registered the host in repo
+- Mail relay
+
+### Configurations to perform on operating system
+
+
+
+
 Ensure your system is up-to-date
 ```
 [root@neteye ~]# yum update
